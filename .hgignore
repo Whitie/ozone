@@ -1,0 +1,14 @@
+syntax: glob
+*.pyc
+*.bak
+*~
+*.db
+*.geany
+build/*
+dist/*
+tests/*
+docs/_build/*
+labels/*
+MANIFEST
+backend/*
+

@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% load i18n %}
+
+{% block menu %}
+  {% include "menu.html" %}
+{% endblock %}
+
+{% block content %}
+<h2 style="text-align:center;">{% trans "News" %}</h2>
+{% if news.paginator.count %}
+{% for n in news.object_list %}
+  <div class="news">
+    <h3>{{ n.title }}</h3>
+    <p>{{ n.text }}</p>
+    <p>{% trans "Posted on" %} {{ n.date|date:"DATETIME_FORMAT" }}
+       {% trans "by" %} {{ n.author.get_full_name|default:n.author.username }}.
+    </p>
+  </div>
+{% endfor %}
+
+<div style="margin:10px auto;text-align:center;">
+  <span>
+  {% if news.has_previous %}
+    <a href="?page={{ news.previous_page_number }}">{% trans "previous" %}</a>
+  {% endif %}
+  <span>{% trans "Page" %} {{ news.number }} {% trans "of" %}
+        {{ news.paginator.num_pages }}.</span>
+  {% if news.has_next %}
+    <a href="?page={{ news.next_page_number }}">{% trans "next" %}</a>
+  {% endif %}
+  </span>
+</div>
+{% else %}
+<p>{% trans "No News found." %}</p>
+{% endif %}
+
+{% endblock %}
+

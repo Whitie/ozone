@@ -1,0 +1,7 @@
+{% for menu in menus %}
+<p class="menutitle">{{ menu.title }}</p>
+    {% for url, name in menu.entries %}
+    <a class="menu" href="{{ url }}">&raquo; {{ name }}</a><br />
+    {% endfor %}
+{% endfor %}
+

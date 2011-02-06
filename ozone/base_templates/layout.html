@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block head %}{% endblock %}
+
+{% block body %}
+
+{% block header %}
+<div id="header">
+  <img src="/static/img/logo.png" alt="Logo"
+    style="float:right;width:150px;" />
+  <h1>{{ page_title }}</h1>
+</div>
+<div id="topmenu">
+  <a class="top" href="/">{% trans "Home" %}</a>
+  <a class="top" href="/orders/">{% trans "Ordersystem" %}</a>
+</div>
+<hr style="clear:both;" />
+{% endblock %}
+
+{% if messages %}
+<div id="messages">
+  {% for msg in messages %}
+  <p{% if msg.tags %} class="{{ msg.tags }}"{% endif %}>&raquo; {{ msg }}</p>
+  {% endfor %}
+</div>
+<hr />
+{% endif %}
+
+<div id="left">
+  {% block menu %}{% endblock %}
+</div>
+
+<div id="content">
+  {% block content %}{% endblock %}
+</div>
+
+{% block footer %}
+<hr style="clear:both;" />
+<div id="footer">
+<p>Copyright 2010 by Thorsten Weimann</p>
+</div>
+{% endblock %}
+
+{% endblock %}
+
