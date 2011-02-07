@@ -76,6 +76,7 @@ class Order(models.Model):
     order_day = models.ForeignKey(OrderDay, verbose_name=_(u'Order Day'))
     purpose = models.CharField(_(u'Purpose'), max_length=5, blank=True,
         default=u'', choices=PURPOSE_CHOICES)
+    checked = models.BooleanField(_(u'Checked'), default=False)
     ordered = models.DateField(_(u'Ordered'), blank=True, null=True)
 
     def __unicode__(self):

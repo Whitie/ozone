@@ -139,7 +139,7 @@ class StudentGroup(models.Model):
 
     @named(_(u'Groupname'))
     def name(self):
-        return u'%s %s' % (self.job_short, self.start_date.strftime('%Y'))
+        return u'{0} {1}'.format(self.job_short, self.start_date.strftime('%Y'))
 
     def __unicode__(self):
         return self.name()
@@ -177,8 +177,8 @@ class Student(models.Model):
     barcode = models.CharField(_(u'Barcode'), max_length=20, blank=True)
 
     def __unicode__(self):
-        return u'%s, %s (%s)' % (self.lastname, self.firstname,
-                                 self.group.name())
+        return u'{0}, {1} ({2})'.format(self.lastname, self.firstname,
+                                        self.group.name())
 
     class Meta:
         verbose_name = _(u'Student')
@@ -197,8 +197,8 @@ class Memo(models.Model):
             dots = u'...'
         else:
             dots = u''
-        return u'[%s] %s: %s%s' % (self.created.strftime('%x'),
-                                   self.student, self.text[:40], dots)
+        return u'[{0}] {1}: {2}{3}'.format(self.created.strftime('%x'),
+                                           self.student, self.text[:40], dots)
 
     class Meta:
         verbose_name = _(u'Memo')
