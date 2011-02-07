@@ -22,7 +22,7 @@ class Part(models.Model):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, verbose_name=_(u'User'))
+    user = models.OneToOneField(User, verbose_name=_(u'User'), editable=False)
     name_prefix = models.CharField(_(u'Name Prefix'), max_length=12,
         blank=True)
     street = models.CharField(_(u'Street'), max_length=100, blank=True)
