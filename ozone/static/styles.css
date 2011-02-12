@@ -1,7 +1,8 @@
 body {
-    font-family: Verdana;
-    font-size: 12px;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 14px;
     background-color: #c0c0c0;
+    color: #000080;
 }
 
 #header {
@@ -64,20 +65,25 @@ a.top:hover { background-color: #228b22; }
 a.menu:link, a.menu:visited, a.menu:hover, a.menu:active {
     font-weight: bold;
     text-decoration: none;
-    color: #000000;
+    color: #000080;
 }
 
-#left a.menu:hover { color: #000080; }
+#left a.menu:hover { color: #228b22; }
 
 #content {
     width: 80%;
     float: right;
 }
 
+.headline {
+    text-align: center;
+}
+
 .menutitle {
     font-weight: bold;
-    border-top: 1px dashed #000000;
+    border-top: 1px dashed #000080;
     margin-top: 10px;
+    padding-top: 5px;
     font-size: 14px;
 }
 

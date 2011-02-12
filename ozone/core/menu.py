@@ -10,14 +10,19 @@ class Menu(object):
         self.entries = entries
 
     def __iter__(self):
-        for url, name in self.entries:
-            yield url, name
+        for named_url, name in self.entries:
+            yield named_url, name
 
 
-news_menu = Menu(_(u'News'),
-    ('/core/add_news', _(u'Write News')),
-    ('/test', u'TEST')
+core_menu = Menu(_(u'Core'),
+    ('core-companies', _(u'Companies')),
+    ('core-students', _(u'Students')),
+    ('core-groups', _(u'Groups')),
 )
 
-menus = [news_menu]
+news_menu = Menu(_(u'News'),
+    ('core-add-news', _(u'Write News')),
+)
+
+menus = [core_menu, news_menu]
 

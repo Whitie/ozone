@@ -58,6 +58,9 @@ MEDIA_ROOT = os.path.join(_PATH, 'static')
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 MEDIA_URL = '/static/'
 
+# URL which holds the logo of the ozone page
+LOGO_URL = '/static/img/logo.png'
+
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
@@ -99,7 +102,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
+    'django.contrib.admindocs',
     'ozone.core',
     'ozone.orders',
 )
@@ -111,7 +114,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.media',
     'django.contrib.messages.context_processors.messages',
     'core.context_processors.userconf',
+    'core.context_processors.set_global_vars',
 )
 
 AUTH_PROFILE_MODULE = 'core.UserProfile'
 
+LOGIN_URL = '/core/login'
+LOGOUT_URL = '/core/logout'

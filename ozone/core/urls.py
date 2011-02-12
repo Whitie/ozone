@@ -2,7 +2,14 @@
 
 from django.conf.urls.defaults import *
 
+
 urlpatterns = patterns('core.views',
-    (r'^$', 'index'),
-    (r'^add_news/$', 'add_news'),
+    url(r'^$', 'index', name='core-index'),
+    url(r'^add_news/$', 'add_news', name='core-add-news'),
+    url(r'^login/$', 'do_login', name='core-login'),
+    url(r'^logout/$', 'do_logout', name='core-logout'),
+    url(r'^companies/$', 'list_companies', name='core-companies'),
+    url(r'^companies/(?P<startchar>[A-Z_])/$', 'list_companies'),
+    url(r'^students/$', 'list_students', name='core-students'),
+    url(r'^groups/$', 'list_groups', name='core-groups'),
 )
