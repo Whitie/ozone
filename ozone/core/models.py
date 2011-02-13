@@ -166,15 +166,16 @@ class Student(models.Model):
     phone = models.CharField(_(u'Phone'), max_length=30, blank=True)
     mobile = models.CharField(_(u'Mobile'), max_length=30, blank=True)
     company = models.ForeignKey(Company, verbose_name=_(u'Company'),
-        related_name='students')
+        related_name='students', blank=True, null=True)
     group = models.ForeignKey(StudentGroup, verbose_name=_(u'Group'),
-        related_name='students')
+        related_name='students', blank=True, null=True)
     cabinet = models.CharField(_(u'Cabinet'), max_length=20, blank=True)
     key = models.CharField(_(u'Key'), max_length=20, blank=True)
     test_result = models.PositiveSmallIntegerField(_(u'Test Result'),
         blank=True, null=True)
     test_date = models.DateField(_(u'Test Date'), blank=True, null=True)
     barcode = models.CharField(_(u'Barcode'), max_length=20, blank=True)
+    finished = models.BooleanField(_(u'Finished'), default=False)
 
     def __unicode__(self):
         return u'{0}, {1} ({2})'.format(self.lastname, self.firstname,

@@ -1,0 +1,32 @@
+{% load i18n %}
+
+<ul>
+  <li>{% trans "Street" %}: {{ c.street|default:"-" }}</li>
+  <li>{% trans "City" %}: {{ c.zip_code }} {{ c.city|default:"-" }}</li>
+  <li>{% trans "Country" %}: {{ c.country|default:"-" }}</li>
+  <li>{% trans "Phone" %}: {{ c.phone|default:"-" }}</li>
+  <li>{% trans "Fax" %}: {{ c.fax|default:"-" }}</li>
+  <li>{% trans "Customer Number" %}: {{ c.customer_number|default:"-" }}</li>
+  {% if c.web %}
+  <li>{% trans "Homepage" %}: <a href="{{ c.web }}">{{ c.web }}</a></li>
+  {% endif %}
+  <li>{% trans "QM Rating" %}: <span title="{{ c.qm_note|default:"-" }}">
+    {{ c.qm_rating }}</span></li>
+  <li>{% trans "Students" %}: {% if c.has_students %}{{ c.students.count }}
+    {% else %}{% trans "No" %}{% endif %}</li>
+  {% for con in c.contacts.all %}
+  <li><strong>{{ forloop.counter }}) {{ con }}</strong>
+    <ul>
+      <li>{% trans "Phone" %}: {{ con.phone|default:"-" }}</li>
+      {% if con.email %}
+      <li>{% trans "Email" %}: 
+        <a href="mailto:{{ con.email }}">{{ con.email }}</a></li>
+      {% endif %}
+      <li>{% trans "Note" %}: {{ con.note|default:"-" }}</li>
+    </ul>
+  </li>
+  {% empty %}
+  <li>{% trans "No contacts defined." %}</li>
+  {% endfor %}
+</ul>
+

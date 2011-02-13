@@ -2,6 +2,7 @@
 
 import string
 
+from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response, redirect
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
@@ -10,10 +11,12 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
+from django.db.models import Q
 
-from core.models import News, Company
-from core.forms import NewsForm
+from core.models import News, Company, Student
+from core.forms import NewsForm, SearchForm, StudentSearchForm
 from core.menu import menus
+from barcode import get_barcode
 
 # Create your views here.
 
@@ -31,7 +34,7 @@ def index(req):
         news = paginator.page(page)
     except (EmptyPage, InvalidPage):
         news = paginator.page(paginator.num_pages)
-    ctx = dict(page_title=_(u'bbz Tools Overview'), menus=menus, news=news)
+    ctx = dict(page_title=_(u'Ozone Home'), menus=menus, news=news)
     return render_to_response('index.html', ctx,
                               context_instance=RequestContext(req))
 
@@ -85,24 +88,71 @@ def do_logout(req):
 
 
 @login_required
-def list_companies(req, startchar='A'):
-    if startchar.upper() not in string.ascii_uppercase:
-        companies = Company.objects.all()
-        for c in string.ascii_uppercase:
-            companies = companies.exclude(name__istartswith=c)
+def list_companies(req, startchar=''):
+    if req.method == 'POST':
+        form = SearchForm(req.POST)
+        if form.is_valid():
+            s = form.cleaned_data['search']
+            companies = Company.objects.select_related().filter(
+                Q(name__icontains=s) | Q(short_name__icontains=s))
+        else:
+            companies = Company.objects.none()
+            messages.error(req, _(u'Invalid search query.'))
     else:
-        companies = Company.objects.filter(name__istartswith=startchar)
+        form = SearchForm()
+        if not startchar:
+            companies = Company.objects.select_related().all()
+            for c in string.ascii_uppercase:
+                companies = companies.exclude(name__istartswith=c)
+        else:
+            companies = Company.objects.select_related().filter(
+                name__istartswith=startchar)
     ctx = dict(page_title=_(u'Companies'), companies=companies, menus=menus,
-               startchar=startchar, chars=string.ascii_uppercase)
-    return render_to_response('companies.html', ctx,
+        startchar=startchar, chars=string.ascii_uppercase, form=form)
+    return render_to_response('companies/list.html', ctx,
                               context_instance=RequestContext(req))
 
 
 @login_required
-def list_students(req):
-    pass
+def list_students(req, startchar=''):
+    if req.method == 'POST':
+        form = StudentSearchForm(req.POST)
+        if form.is_valid():
+            s = form.cleaned_data['search']
+            q = (Q(lastname__istartswith=s) | Q(company__name__icontains=s) |
+                Q(barcode__istartswith=s) | Q(cabinet__icontains=s))
+            if form.cleaned_data['group']:
+                q &= Q(group__id=form.cleaned_data['group'])
+            else:
+                q |= Q(group__job_short__icontains=s)
+            students = Student.objects.select_related().filter(q)
+        else:
+            students = Student.objects.none()
+            messages.error(req, _(u'Invalid search query.'))
+    else:
+        form = StudentSearchForm()
+        if not startchar:
+            students = Student.objects.select_related().all()
+            for c in string.ascii_uppercase:
+                students = students.exclude(lastname__istartswith=c)
+        else:
+            students = Student.objects.select_related().filter(
+                lastname__istartswith=startchar)
+    students = students.filter(finished=False)
+    ctx = dict(page_title=_(u'Students'), students=students, menus=menus,
+        startchar=startchar, chars=string.ascii_uppercase, form=form)
+    return render_to_response('students/list.html', ctx,
+                              context_instance=RequestContext(req))
 
 
 @login_required
 def list_groups(req):
     pass
+
+
+def barcode(req, barcode='0'):
+    code = get_barcode('code39', barcode)
+    response = HttpResponse(mimetype='image/svg+xml')
+    code.write(response)
+    return response
+

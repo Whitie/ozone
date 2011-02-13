@@ -1,13 +1,25 @@
 # -*- coding: utf-8 -*-
 
-from django.forms import ModelForm
+from django import forms
+from django.utils.translation import ugettext_lazy as _
 
-from core.models import News
+from core.models import News, StudentGroup
 
 
-class NewsForm(ModelForm):
+GROUP_CHOICES = ([(0, _(u'All Groups'))] +
+    [(x.id, x.name()) for x in StudentGroup.objects.all()])
+
+
+class NewsForm(forms.ModelForm):
     class Meta:
         model = News
         exclude = ('author', 'date')
 
 
+class SearchForm(forms.Form):
+    search = forms.CharField(label=_(u'Search'), max_length=50)
+
+
+class StudentSearchForm(SearchForm):
+    group = forms.TypedChoiceField(choices=GROUP_CHOICES, coerce=int,
+        empty_value=0, required=False)

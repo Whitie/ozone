@@ -61,6 +61,12 @@ MEDIA_URL = '/static/'
 # URL which holds the logo of the ozone page
 LOGO_URL = '/static/img/logo.png'
 
+# Session configuration
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_AGE = 7 * 24 * 60 * 60
+SESSION_COOKIE_NAME = 'ozone_sid'
+
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".

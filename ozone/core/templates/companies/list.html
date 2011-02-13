@@ -1,0 +1,41 @@
+{% extends "index.html" %}
+{% load i18n %}
+
+{% block content %}
+<h2 class="headline">{{ startchar|default:"-" }} ({{ companies.count }})</h2>
+<div style="width:100%;text-align:center;">
+  <a href="{% url core-companies %}">{% trans "Other" %}</a> |
+  {% for c in chars %}
+  <a href="{% url core-companies %}{{ c }}/">{{ c }}</a>
+  {% if not forloop.last %} | {% endif %}
+  {% endfor %}
+  <br />
+  <form action="{% url core-companies %}" method="post">
+  {% csrf_token %}
+  {% trans "Search" %}: {{ form.search }}
+  <input type="submit" value="{% trans "Search" %}" />
+  </form>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $(".details").hide();
+  $("h3").click(function() {
+    $(this).next(".details").slideToggle("slow");
+    return true;
+  });
+});
+</script>
+{% for c in companies %}
+<h3 title="{% trans "Click for details." %}">
+  {{ forloop.counter }}. {{ c.name }} ({{ c.short_name }})
+  <a href="/admin/core/company/{{ c.id }}/">
+    <img src="/static/img/edit.png" title="{% trans "Edit" %}" /></a>
+</h3>
+<div class="details">{% include "companies/details.html" %}</div>
+{% empty %}
+<h3>{% trans "No companies found." %}</h3>
+{% endfor %}
+
+{% endblock %}
+

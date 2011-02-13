@@ -1,0 +1,43 @@
+{% load i18n %}
+
+<table style="width:95%;">
+<tr><td style="width:60%;">
+<ul>
+  <li>{% trans "Group" %}: {{ s.group.name|default:"-" }}</li>
+  <li>{% trans "Company" %}: {{ s.company|default:"-" }}</li>
+  <li>{% trans "Birthday" %}: {{ s.birthdate|date:"DATE_FORMAT"|default:"-" }}
+    </li>
+  <li>{% trans "Email" %}: {{ s.email|default:"-" }}</li>
+  <li>{% trans "Phone" %}: {{ s.phone|default:"-" }}</li>
+  <li>{% trans "Mobile" %}: {{ s.mobile|default:"-" }}</li>
+  <li>{% trans "Address" %}
+    <ul>
+      <li>{% trans "Street" %}: {{ s.street|default:"-" }}</li>
+      <li>{% trans "City" %}: {{ s.zip_code }} {{ s.city|default:"-" }}</li>
+      <li>{% trans "Country" %}: {{ s.country|default:"-" }}</li>
+    </ul>
+  </li>
+  {% if s.cabinet or s.key %}
+  <li>{% trans "Misc" %}
+    <ul>
+      <li>{% trans "Cabinet" %}: {{ s.cabinet|default:"-" }}</li>
+      <li>{% trans "Key" %}: {{ s.key|default:"-" }}</li>
+    </ul>
+  </li>
+  {% endif %}
+  {% if s.test_date %}
+  <li>{% trans "Test" %}: {{ s.test_date|date:"DATE_FORMAT" }},
+    {{ s.test_result }} {% trans "Points" %}</li>
+  {% endif %}
+</ul>
+</td>
+<td style="width:40%;">
+{% if s.picture %}
+  <img src="{{ s.picture.url }}" alt="{% trans "Picture" %}" width="100" />
+{% else %}
+  {% trans "No Picture set." %}
+{% endif %}
+</td>
+</tr>
+</table>
+
