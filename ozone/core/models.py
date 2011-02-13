@@ -3,6 +3,7 @@
 import json
 
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
@@ -174,12 +175,18 @@ class Student(models.Model):
     test_result = models.PositiveSmallIntegerField(_(u'Test Result'),
         blank=True, null=True)
     test_date = models.DateField(_(u'Test Date'), blank=True, null=True)
-    barcode = models.CharField(_(u'Barcode'), max_length=20, blank=True)
+    barcode = models.CharField(_(u'Barcode'), max_length=50, blank=True,
+        editable=False)
     finished = models.BooleanField(_(u'Finished'), default=False)
 
     def __unicode__(self):
         return u'{0}, {1} ({2})'.format(self.lastname, self.firstname,
                                         self.group.name())
+
+    def barcode_url(self):
+        url = '/'.join([settings.MEDIA_URL.rstrip('/'), 'barcodes',
+                        '%s.png' % self.barcode])
+        return url
 
     class Meta:
         verbose_name = _(u'Student')
