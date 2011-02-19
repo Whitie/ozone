@@ -4,6 +4,9 @@
 {% block content %}
 <h2 class="headline">{{ startchar|default:"-" }} ({{ students.count }})</h2>
 <div style="width:100%;text-align:center;">
+  {% if perms.core.can_add_student %}
+  <a href="/admin/core/student/add/">{% trans "Add Student" %}</a> |
+  {% endif %}
   <a href="{% url core-students %}">{% trans "Other" %}</a> |
   {% for c in chars %}
   <a href="{% url core-students %}{{ c }}/">{{ c }}</a>
@@ -29,8 +32,10 @@ $(document).ready(function() {
 {% for s in students %}
 <h3 title="{% trans "Click for details" %}">
   {{ forloop.counter }}. {{ s.lastname }}, {{ s.firstname }}
+  {% if perms.core.can_change_student %}
   <a href="/admin/core/student/{{ s.id }}/">
-  <img src="/static/img/edit.png" title="{% trans "Edit" %}" /></a>
+    <img src="/static/img/edit.png" title="{% trans "Edit" %}" /></a>
+  {% endif %}
 </h3>
 <div class="details">{% include "students/details.html" %}</div>
 {% empty %}

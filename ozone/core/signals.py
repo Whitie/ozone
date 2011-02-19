@@ -31,7 +31,6 @@ def create_profile(sender, **kw):
 
 
 def create_barcode(sender, **kw):
-    print kw
     if not 'instance' in kw:
         return
     from django.conf import settings
