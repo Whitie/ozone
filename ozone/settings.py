@@ -72,9 +72,6 @@ SESSION_COOKIE_NAME = 'ozone_sid'
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/media/'
 
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = '+pa^&o76ebs41cpuzy4be-1y5(x45hsp(8dhewb+j!0wo!y5f*'
-
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -127,3 +124,19 @@ AUTH_PROFILE_MODULE = 'core.UserProfile'
 
 LOGIN_URL = '/core/login'
 LOGOUT_URL = '/core/logout'
+
+# Make sure to use a path, which is writeable and not accesible over the web
+SECRET_FILE = os.path.join(_PATH, '.secret')
+
+# Don't change this (except os.urandom raises NotImplementedError)
+try:
+    with open(SECRET_FILE) as fp:
+        SECRET_KEY = fp.read().strip()
+except IOError:
+    SECRET_KEY = os.urandom(40)
+    with open(SECRET_FILE, 'w') as fp:
+        fp.write(SECRET_KEY)
+    try:
+        os.chmod(SECRET_FILE, 0600)
+    except:
+        pass
