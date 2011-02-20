@@ -12,4 +12,5 @@ docs/_build/*
 labels/*
 MANIFEST
 backend/*
+barcodes/*.png
 

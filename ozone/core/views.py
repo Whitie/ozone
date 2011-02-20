@@ -13,7 +13,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Q
 
-from core.models import News, Company, Student
+from core.models import News, Company, Student, StudentGroup
 from core.forms import NewsForm, SearchForm, StudentSearchForm
 from core.menu import menus
 from barcode import get_barcode
@@ -147,6 +147,14 @@ def list_students(req, startchar=''):
 
 @login_required
 def list_groups(req):
+    groups = StudentGroup.objects.select_related().filter(finished=False)
+    ctx = dict(page_title=_(u'Groups'), groups=groups, menus=menus)
+    return render_to_response('students/groups.html', ctx,
+                              context_instance=RequestContext(req))
+
+
+@login_required
+def group_details(req, gid):
     pass
 
 

@@ -13,5 +13,6 @@ urlpatterns = patterns('core.views',
     url(r'^students/$', 'list_students', name='core-students'),
     url(r'^students/(?P<startchar>[A-Z])/$', 'list_students'),
     url(r'^groups/$', 'list_groups', name='core-groups'),
+    url(r'^groups/(?P<gid>\d+)/$', 'group_details', name='core-group-details'),
     url(r'^barcode/(?P<barcode>.+)/$', 'barcode', name='barcode'),
 )

@@ -31,7 +31,7 @@ def create_profile(sender, **kw):
 
 
 def create_barcode(sender, **kw):
-    if not 'instance' in kw:
+    if not 'instance' in kw or not kw.get('created', False):
         return
     from django.conf import settings
     instance = kw['instance']
@@ -41,7 +41,8 @@ def create_barcode(sender, **kw):
     filename = code.save(os.path.join(settings.MEDIA_ROOT, 'barcodes', bc))
     name = os.path.splitext(os.path.split(filename)[1])[0]
     instance.barcode = name
+    instance.save()
 
 
 post_save.connect(create_profile, sender=User)
-pre_save.connect(create_barcode, sender=Student)
+post_save.connect(create_barcode, sender=Student)

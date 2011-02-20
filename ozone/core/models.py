@@ -145,6 +145,10 @@ class StudentGroup(models.Model):
     def __unicode__(self):
         return self.name()
 
+    def save(self, *args, **kwargs):
+        self.job_short = self.job_short.upper()
+        super(StudentGroup, self).save(*args, **kwargs)
+
     class Meta:
         verbose_name = _(u'Group')
         verbose_name_plural = _(u'Groups')

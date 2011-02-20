@@ -1,0 +1,26 @@
+{% extends "index.html" %}
+{% load i18n %}
+
+{% block content %}
+<h2 class="headline">{% trans "Overview" %}</h2>
+<div style="width:100%;text-align:center;">
+  {% if perms.core.can_add_studentgroup %}
+  <a href="/admin/core/studentgroup/add/">{% trans "Add Group" %}</a>
+  {% endif %}
+</div>
+
+{% for g in groups %}
+<h3>{{ forloop.counter }}. <a title="{% trans "Click for details." %}"
+    href="{% url core-group-details g.id %}">{{ g.name }}</a>
+  ({{ g.students.count }} {% trans "Students" %})
+  {% if perms.core.can_change_studentgroup %}
+  <a href="/admin/core/studentgroup/{{ g.id }}/">
+    <img src="/static/img/edit.png" title="{% trans "Edit" %}" /></a>
+  {% endif %}
+</h3>
+{% empty %}
+<h3>{% trans "No groups found." %}</h3>
+{% endfor %}
+
+{% endblock %}
+
