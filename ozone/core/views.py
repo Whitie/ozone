@@ -155,7 +155,19 @@ def list_groups(req):
 
 @login_required
 def group_details(req, gid):
-    pass
+    try:
+        gid = int(gid)
+    except ValueError:
+        messages.error(req, _(u'Group ID must be an integer.'))
+        return redirect('core-groups')
+    try:
+        group = StudentGroup.objects.select_related().get(pk=gid)
+    except StudentGroup.DoesNotExist:
+        messages.error(req, _(u'Group with ID %d does not exist.' % gid))
+        return redirect('core-groups')
+    ctx = dict(page_title=_(u'Group Detail'), group=group, menus=menus)
+    return render_to_response('students/group_detail.html', ctx,
+                              context_instance=RequestContext(req))
 
 
 def barcode(req, barcode='0'):

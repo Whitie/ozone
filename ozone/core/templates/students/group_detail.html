@@ -1,0 +1,21 @@
+{% extends "index.html" %}
+{% load i18n %}
+
+{% block content %}
+<h2 class="headline">{{ group.name }}</h2>
+<p>{{ group.job }} ({{ group.job_short }}), {% trans "Begin" %}:
+  {{ group.start_date|date:"DATE_FORMAT" }}</p>
+<ol>
+  {% for s in group.students.all %}
+  <li>{{ s.lastname }}, {{ s.firstname }}
+    {% if perms.core.can_change_student %}
+    <a href="/admin/core/student/{{ s.id }}/">
+      <img src="/static/img/edit.png" title="{% trans "Edit" %}" /></a>
+    {% endif %}
+    ; {{ s.company.name }}; {{ s.birthdate|date:"DATE_FORMAT" }}
+  </li>
+{% endfor %}
+</ol>
+
+{% endblock %}
+
