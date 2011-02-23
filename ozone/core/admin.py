@@ -27,13 +27,17 @@ class ContactInline(admin.StackedInline):
 class CompanyAdmin(admin.ModelAdmin):
     inlines = (ContactInline,)
     list_display = ('name', 'short_name', 'phone', 'fax', 'customer_number',
-                    'qm_rating')
+                    'qm_rating', 'student_count')
     list_display_links = ('name', 'short_name')
     list_editable = ('phone', 'fax')
     list_filter = ('qm_rating',)
     ordering = ('name',)
     save_on_top = True
     search_fields = ('name', 'short_name', 'zip_code')
+
+    @named(_(u'Student(s)'))
+    def student_count(self, obj):
+        return obj.students.filter(finished=False).count()
 
 
 class StudentAdmin(admin.ModelAdmin):
