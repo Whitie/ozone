@@ -64,7 +64,16 @@ class MemoAdmin(admin.ModelAdmin):
     search_fields = ('created_by__last_name', 'student__lastname')
 
 
-admin.site.register(News)
+class NewsAdmin(admin.ModelAdmin):
+    list_display = ('__unicode__', 'date', 'author', 'public')
+    list_display_links = ('__unicode__',)
+    list_editable = ('public',)
+    list_filter = ('author', 'date', 'public')
+    search_fields = ('title', 'text')
+    ordering = ('-date',)
+
+
+admin.site.register(News, NewsAdmin)
 admin.site.register(Part)
 admin.site.register(UserProfile)
 admin.site.register(Contact, ContactAdmin)
