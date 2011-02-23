@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib import admin
+from django.utils.translation import ugettext_lazy as _
+
+from core.utils import named
 from core.models import *
 
 
@@ -73,9 +76,23 @@ class NewsAdmin(admin.ModelAdmin):
     ordering = ('-date',)
 
 
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ('__unicode__', 'show_email', 'phone', 'mobile', 'part',
+                    'can_login')
+    list_display_links = ('__unicode__',)
+    list_editable = ('phone', 'mobile', 'can_login')
+    list_filter = ('part', 'can_login')
+    search_fields = ('user__username', 'user__last_name', 'user__email')
+    save_on_top = True
+
+    @named(_(u'Email'))
+    def show_email(self, obj):
+        return obj.user.email
+
+
 admin.site.register(News, NewsAdmin)
 admin.site.register(Part)
-admin.site.register(UserProfile)
+admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(Company, CompanyAdmin)
 admin.site.register(Student, StudentAdmin)

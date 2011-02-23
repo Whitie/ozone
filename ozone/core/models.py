@@ -30,7 +30,6 @@ class UserProfile(models.Model):
     zip_code = models.CharField(_(u'Zip Code'), max_length=10, blank=True)
     city = models.CharField(_(u'City'), max_length=100, blank=True)
     country = models.CharField(_(u'Country'), max_length=50, blank=True)
-    email = models.EmailField(_(u'Email'), blank=True)
     phone = models.CharField(_(u'Phone'), max_length=30, blank=True)
     mobile = models.CharField(_(u'Mobile'), max_length=30, blank=True)
     part = models.ForeignKey(Part, verbose_name=_(u'Part'), blank=True,
@@ -58,6 +57,10 @@ class UserProfile(models.Model):
         c = self.config()
         c[key] = value
         self.set_config(c)
+
+    class Meta:
+        verbose_name = _(u'Profile')
+        verbose_name_plural = _(u'Profiles')
 
 
 class News(models.Model):
