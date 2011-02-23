@@ -147,7 +147,8 @@ def list_students(req, startchar=''):
 
 @login_required
 def list_groups(req):
-    groups = StudentGroup.objects.select_related().filter(finished=False)
+    g = StudentGroup.objects.select_related().all()
+    groups = [x for x in g if not x.finished()]
     ctx = dict(page_title=_(u'Groups'), groups=groups, menus=menus)
     return render_to_response('students/groups.html', ctx,
                               context_instance=RequestContext(req))

@@ -34,11 +34,11 @@ class CompanyAdmin(admin.ModelAdmin):
 
 
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ('group', 'company', 'lastname', 'firstname', 'birthdate',
-                    'phone', 'email')
+    list_display = ('lastname', 'firstname', 'group', 'company', 'birthdate',
+                    'phone', 'email', 'finished')
     list_display_links = ('lastname',)
-    list_editable = ('phone', 'email')
-    list_filter = ('group', 'company')
+    list_editable = ('phone', 'email', 'finished')
+    list_filter = ('group', 'company', 'finished')
     save_on_top = True
     search_fields = ('lastname', 'company__name', 'group__job_short')
 
@@ -51,10 +51,9 @@ class StudentInline(admin.StackedInline):
 
 class StudentGroupAdmin(admin.ModelAdmin):
     inlines = (StudentInline,)
-    list_display = ('__unicode__', 'job', 'start_date', 'finished')
+    list_display = ('__unicode__', 'job', 'start_date')
     list_display_links = ('__unicode__', 'job')
-    list_editable = ('finished',)
-    list_filter = ('finished',)
+    list_filter = ('job',)
     save_on_top = True
     search_fields = ('job', 'job_short')
 

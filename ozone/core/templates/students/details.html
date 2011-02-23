@@ -29,6 +29,15 @@
   <li>{% trans "Test" %}: {{ s.test_date|date:"DATE_FORMAT" }},
     {{ s.test_result }} {% trans "Points" %}</li>
   {% endif %}
+  {% if s.exam_1 %}
+  <li>{% trans "Exam 1" %}: {{ s.exam_1 }} {% trans "Points" %}</li>
+  {% endif %}
+  {% if s.exam_2 %}
+  <li>{% trans "Exam 2" %}: {{ s.exam_2 }} {% trans "Points" %}</li>
+  {% endif %}
+  {% if s.exam_1 and s.exam_2 %}
+  <li>{% trans "Final Grade" %}: {{ s.final_grade }} {% trans "Points" %}</li>
+  {% endif %}
 </ul>
 </td>
 <td style="width:40%;">

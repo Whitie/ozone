@@ -136,7 +136,6 @@ class StudentGroup(models.Model):
     job = models.CharField(_(u'Job'), max_length=50, blank=True)
     job_short = models.CharField(_(u'Job Short'), max_length=10,
         help_text=_(u'This field will be converted to uppercase.'))
-    finished = models.BooleanField(_(u'Finished'), default=False)
 
     @named(_(u'Groupname'))
     def name(self):
@@ -144,6 +143,9 @@ class StudentGroup(models.Model):
 
     def __unicode__(self):
         return self.name()
+
+    def finished(self):
+        return all([x.finished for x in self.students.all()])
 
     def save(self, *args, **kwargs):
         self.job_short = self.job_short.upper()
@@ -179,6 +181,12 @@ class Student(models.Model):
     test_result = models.PositiveSmallIntegerField(_(u'Test Result'),
         blank=True, null=True)
     test_date = models.DateField(_(u'Test Date'), blank=True, null=True)
+    exam_1 = models.PositiveSmallIntegerField(_(u'Exam 1'), blank=True,
+        null=True)
+    exam_1_weight = models.PositiveSmallIntegerField(_(u'Exam 1 weight'),
+        blank=True, null=True, default=30)
+    exam_2 = models.PositiveSmallIntegerField(_(u'Exam 2'), blank=True,
+        null=True)
     barcode = models.CharField(_(u'Barcode'), max_length=50, blank=True,
         editable=False)
     finished = models.BooleanField(_(u'Finished'), default=False)
@@ -191,6 +199,12 @@ class Student(models.Model):
         url = '/'.join([settings.MEDIA_URL.rstrip('/'), 'barcodes',
                         '%s.png' % self.barcode])
         return url
+
+    def final_grade(self):
+        if self.exam_1 and self.exam_2:
+            weighted = self.exam_1 * self.exam_1_weight + \
+                       self.exam_2 * (100 - self.exam_1_weight)
+            return int(round(weighted / 100.0, 0))
 
     class Meta:
         verbose_name = _(u'Student')
