@@ -12,8 +12,8 @@
   {% endif %}
   <li>{% trans "QM Rating" %}: <span title="{{ c.qm_note|default:"-" }}">
     {{ c.qm_rating }}</span></li>
-  <li>{% trans "Students" %}: {% if c.has_students %}{{ c.students.count }}
-    {% else %}{% trans "No" %}{% endif %}</li>
+  <li>{% trans "Active Students" %}: {% if c.has_students %}
+    {{ c.active_students }}{% else %}{% trans "No" %}{% endif %}</li>
   {% for con in c.contacts.all %}
   <li><strong>{{ forloop.counter }}) {{ con }}</strong>
     <ul>

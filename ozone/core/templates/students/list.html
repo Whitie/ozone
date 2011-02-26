@@ -4,16 +4,16 @@
 {% block content %}
 <h2 class="headline">{{ startchar|default:"-" }} ({{ students.count }})</h2>
 <div style="width:100%;text-align:center;">
-  {% if perms.core.can_add_student %}
+  {% if perms.core.can_add_student and not archive %}
   <a href="/admin/core/student/add/">{% trans "Add Student" %}</a> |
   {% endif %}
-  <a href="{% url core-students %}">{% trans "Other" %}</a> |
+  <a href="{% if archive %}{% url core-students-archive %}{% else %}{% url core-students %}{% endif %}">{% trans "Other" %}</a> |
   {% for c in chars %}
-  <a href="{% url core-students %}{{ c }}/">{{ c }}</a>
+  <a href="{% if archive %}{% url core-students-archive %}{% else %}{% url core-students %}{% endif %}{{ c }}/">{{ c }}</a>
   {% if not forloop.last %} | {% endif %}
   {% endfor %}
   <br />
-  <form action="{% url core-students %}" method="post">
+  <form action="{% if archive %}{% url core-students-archive %}{% else %}{% url core-students %}{% endif %}" method="post">
   {% csrf_token %}
   {% trans "Search" %}: {{ form.group }} {{ form.search }}
   <input type="submit" value="{% trans "Search" %}" />

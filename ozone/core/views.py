@@ -114,7 +114,7 @@ def list_companies(req, startchar=''):
 
 
 @login_required
-def list_students(req, startchar=''):
+def list_students(req, startchar='', archive=False):
     if req.method == 'POST':
         form = StudentSearchForm(req.POST)
         if form.is_valid():
@@ -138,8 +138,9 @@ def list_students(req, startchar=''):
         else:
             students = Student.objects.select_related().filter(
                 lastname__istartswith=startchar)
-    students = students.filter(finished=False)
-    ctx = dict(page_title=_(u'Students'), students=students, menus=menus,
+    students = students.filter(finished=archive)
+    title = _(u'Students Archive') if archive else _(u'Students')
+    ctx = dict(page_title=title, students=students, menus=menus, archive=archive,
         startchar=startchar, chars=string.ascii_uppercase, form=form)
     return render_to_response('students/list.html', ctx,
                               context_instance=RequestContext(req))

@@ -18,6 +18,7 @@ core_menu = Menu(_(u'Core'),
     ('core-companies', _(u'Companies')),
     ('core-students', _(u'Students')),
     ('core-groups', _(u'Groups')),
+    ('core-students-archive', _(u'Archive')),
 )
 
 news_menu = Menu(_(u'News'),

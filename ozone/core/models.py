@@ -102,6 +102,9 @@ class Company(models.Model):
             return u'{0} ({1})'.format(self.name, self.short_name)
         return self.name
 
+    def active_students(self):
+        return self.students.filter(finished=False).count()
+
     def has_students(self):
         return bool(self.students.count())
 
