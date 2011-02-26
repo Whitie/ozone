@@ -4,5 +4,5 @@ from django.conf.urls.defaults import *
 
 
 urlpatterns = patterns('orders.views',
-    (r'^$', 'index'),
+    url(r'^$', 'index', name='orders-index'),
 )

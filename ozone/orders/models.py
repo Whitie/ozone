@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+from core.models import Company
+
 # Create your models here.
 
 class OrderDay(models.Model):
@@ -25,7 +27,8 @@ class OrderDay(models.Model):
 
 class Article(models.Model):
     name = models.CharField(_(u'Name'), max_length=100)
-    supplier = models.CharField(_(u'Supplier'), max_length=100, blank=True)
+    supplier = models.ForeignKey(Company, verbose_name=_(u'Supplier'),
+        blank=True, null=True)
     ident = models.CharField(_(u'Identifier'), max_length=50,
         help_text=_(u'Article number'), blank=True)
     quantity = models.CharField(_(u'Quantity'), max_length=20, blank=True)
@@ -80,7 +83,7 @@ class Order(models.Model):
     ordered = models.DateField(_(u'Ordered'), blank=True, null=True)
 
     def __unicode__(self):
-        name = self.user.get_full_name() or self.user.username
+        name = unicode(self.user.get_profile())
         return u'{0}x {1} ({2})'.format(self.count, self.article.name, name)
 
     def is_complete(self):
