@@ -19,4 +19,5 @@ urlpatterns = patterns('core.views',
     url(r'^students/archive/(?P<startchar>[A-Z])/$', 'list_students',
         {'archive': True}),
     url(r'^barcode/(?P<barcode>.+)/$', 'barcode', name='barcode'),
+    url(r'^pdf/$', 'pdf', name='core-pdfgen'),
 )

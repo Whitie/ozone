@@ -178,3 +178,13 @@ def barcode(req, barcode='0'):
     code.write(response)
     return response
 
+
+@login_required
+def pdf(req, what='grouplist'):
+    from reportlab.pdfgen import canvas
+    response = HttpResponse(mimetype='application/pdf')
+    p = canvas.Canvas(response)
+    p.drawString(100, 100, u'Hello World!')
+    p.showPage()
+    p.save()
+    return response
