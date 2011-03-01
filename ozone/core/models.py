@@ -53,9 +53,15 @@ class UserProfile(models.Model):
             raise ValueError('Config must be dict object.')
         self._config = json.dumps(config)
 
-    def set_value(self, key, value=None):
+    def set_value(self, key, value=None, append=False):
         c = self.config()
-        c[key] = value
+        if append:
+            if key in c:
+                c[key].append(value)
+            else:
+                c[key] = [value]
+        else:
+            c[key] = value
         self.set_config(c)
 
     class Meta:
