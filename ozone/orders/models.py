@@ -96,9 +96,8 @@ class Order(models.Model):
     class Meta:
         verbose_name = _(u'Order')
         verbose_name_plural = _(u'Orders')
-        permissions = (('can_print', _(u'Can print orders')),
-                       ('can_change_state',
-                        _(u'Can change the state of orders')))
+        permissions = (('can_print', u'Can print orders'),
+                       ('can_change_state', u'Can change the state of orders'))
 
 
 class DeliveredOrder(models.Model):
