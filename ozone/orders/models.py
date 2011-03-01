@@ -64,9 +64,9 @@ class Cost(models.Model):
         verbose_name_plural = _(u'Costs')
 
 
-STATE_CHOICES = ((u'new', _(u'New')), (u'accepted', _(u'Accepted')),
-    (u'rejected', _(u'Rejected')), (u'ordered', _(u'Ordered')),
-    (u'delivered', _(u'Delivered')))
+STATE_CHOICES = ((u'New', _(u'New')), (u'Accepted', _(u'Accepted')),
+    (u'Rejected', _(u'Rejected')), (u'Ordered', _(u'Ordered')),
+    (u'Delivered', _(u'Delivered')))
 
 class Order(models.Model):
     count = models.PositiveIntegerField(_(u'Count'))
