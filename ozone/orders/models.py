@@ -56,7 +56,6 @@ class Cost(models.Model):
     def __unicode__(self):
         return u'{0} {1}'.format(self.short_name, self.ident)
 
-    @property
     def label(self):
         return '{0}{1}'.format(settings.MEDIA_URL, self._label)
 
@@ -87,6 +86,9 @@ class Order(models.Model):
     def __unicode__(self):
         name = unicode(self.user.get_profile())
         return u'{0}x {1} ({2})'.format(self.count, self.article.name, name)
+
+    def state_icon(self):
+        return u'{0}img/{1}.png'.format(settings.MEDIA_URL, self.state)
 
     def is_complete(self):
         delivered = sum([x.count for x in
