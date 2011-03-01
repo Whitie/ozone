@@ -65,8 +65,9 @@ class Cost(models.Model):
         verbose_name_plural = _(u'Costs')
 
 
-PURPOSE_CHOICES = ((u'', _('Normal')), (u'rep', _(u'Repair')),
-    (u'test', _(u'Test')))
+STATE_CHOICES = ((u'new', _(u'New')), (u'accepted', _(u'Accepted')),
+    (u'rejected', _(u'Rejected')), (u'ordered', _(u'Ordered')),
+    (u'delivered', _(u'Delivered')))
 
 class Order(models.Model):
     count = models.PositiveIntegerField(_(u'Count'))
@@ -77,9 +78,10 @@ class Order(models.Model):
     memo = models.TextField(_(u'Memo'), blank=True)
     added = models.DateTimeField(_(u'Added'), auto_now_add=True)
     order_day = models.ForeignKey(OrderDay, verbose_name=_(u'Order Day'))
-    purpose = models.CharField(_(u'Purpose'), max_length=5, blank=True,
-        default=u'', choices=PURPOSE_CHOICES)
-    checked = models.BooleanField(_(u'Checked'), default=False)
+    for_test = models.BooleanField(_(u'For test'), default=False)
+    for_repair = models.BooleanField(_(u'For Repair'), default=False)
+    state = models.CharField(_(u'State'), max_length=10, default='new',
+        choices=STATE_CHOICES)
     ordered = models.DateField(_(u'Ordered'), blank=True, null=True)
 
     def __unicode__(self):
@@ -94,8 +96,9 @@ class Order(models.Model):
     class Meta:
         verbose_name = _(u'Order')
         verbose_name_plural = _(u'Orders')
-        permissions = (('can_print', 'Can print orders'),
-                       ('can_check', 'Can check orders'))
+        permissions = (('can_print', _(u'Can print orders')),
+                       ('can_change_state',
+                        _(u'Can change the state of orders')))
 
 
 class DeliveredOrder(models.Model):
