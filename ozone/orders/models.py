@@ -74,7 +74,7 @@ class Order(models.Model):
     article = models.ForeignKey(Article, verbose_name=_(u'Article'))
     costs = models.ManyToManyField(Cost, through='CostOrder',
         verbose_name=_(u'Costs'))
-    user = models.ForeignKey(User, verbose_name=_(u'User'))
+    users = models.ManyToManyField(User, verbose_name=_(u'Users'))
     memo = models.TextField(_(u'Memo'), blank=True)
     added = models.DateTimeField(_(u'Added'), auto_now_add=True)
     order_day = models.ForeignKey(OrderDay, verbose_name=_(u'Order Day'),
