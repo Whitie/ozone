@@ -79,7 +79,7 @@ class Order(models.Model):
     order_day = models.ForeignKey(OrderDay, verbose_name=_(u'Order Day'))
     for_test = models.BooleanField(_(u'For test'), default=False)
     for_repair = models.BooleanField(_(u'For Repair'), default=False)
-    state = models.CharField(_(u'State'), max_length=10, default='new',
+    state = models.CharField(_(u'State'), max_length=10, default=u'New',
         choices=STATE_CHOICES)
     ordered = models.DateField(_(u'Ordered'), blank=True, null=True)
 
@@ -88,7 +88,7 @@ class Order(models.Model):
         return u'{0}x {1} ({2})'.format(self.count, self.article.name, name)
 
     def state_icon(self):
-        return u'{0}img/{1}.png'.format(settings.MEDIA_URL, self.state)
+        return u'{0}img/{1}.png'.format(settings.MEDIA_URL, self.state.lower())
 
     def is_complete(self):
         delivered = sum([x.count for x in
