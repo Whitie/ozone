@@ -19,7 +19,7 @@ def index(req):
         q = dict(day__gte=date.today())
     else:
         q = dict(day__gt=date.today())
-    odays = OrderDay.objects.select_related().filter(**q)
+    odays = OrderDay.objects.select_related().filter(**q).order_by('-day')
     ctx = dict(page_title=_(u'Orders'), odays=odays, menus=menus)
     return render_to_response('orders/index.html', ctx,
                               context_instance=RequestContext(req))
