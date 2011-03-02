@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
+from datetime import date
 
 from django.db import models
 from django.conf import settings
@@ -14,7 +14,7 @@ from core.models import Company
 
 class OrderDay(models.Model):
     day = models.DateField(_(u'Day'), unique=True,
-        validators=[MinValueValidator(datetime.now())])
+        validators=[MinValueValidator(date.today())])
     user = models.ForeignKey(User, verbose_name=_(u'Responsible User'))
 
     def __unicode__(self):
