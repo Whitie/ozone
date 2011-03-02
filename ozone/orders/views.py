@@ -24,3 +24,6 @@ def index(req):
     return render_to_response('orders/index.html', ctx,
                               context_instance=RequestContext(req))
 
+
+def order_detail(req, order_id):
+    pass

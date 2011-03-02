@@ -1,0 +1,17 @@
+{% extends "index.html" %}
+{% load i18n %}
+
+{% block content %}
+<h2 class="headline">{% trans "Next order days" %}</h2>
+<ul>
+    {% for d in odays %}
+    <li><a href="{% url orders-detail d.id %}">{{ d.day|date:"DATE_FORMAT" }}</a>,
+        {% trans "Responsible user" %}: {{ d.user.get_full_name }},
+        {% trans "Open orders" %}: {{ d.orders.count }}
+    </li>
+    {% empty %}
+    <li>{% trans "No order day found." %}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
+
