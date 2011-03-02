@@ -31,6 +31,7 @@ class Article(models.Model):
         blank=True, null=True)
     ident = models.CharField(_(u'Identifier'), max_length=50,
         help_text=_(u'Article number'), blank=True)
+    barcode = models.CharField(_(u'Barcode'), max_length=40, blank=True)
     quantity = models.CharField(_(u'Quantity'), max_length=20, blank=True)
     price = models.DecimalField(_(u'Price'), max_digits=8, decimal_places=2,
         blank=True)
