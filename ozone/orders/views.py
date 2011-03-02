@@ -27,3 +27,11 @@ def index(req):
 
 def order_detail(req, order_id):
     pass
+
+
+def order(req):
+    pass
+
+
+def myorders(req):
+    pass

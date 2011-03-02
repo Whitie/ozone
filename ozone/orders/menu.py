@@ -6,7 +6,8 @@ from core.menu import Menu
 
 
 order_menu = Menu(_(u'Orders'),
-    ('orders-index', _(u'Main')),
+    ('orders-order', _(u'Order')),
+    ('orders-myorders', _(u'My Orders')),
 )
 
 menus = [order_menu]
