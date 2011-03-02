@@ -5,8 +5,10 @@
 <h2 class="headline">{% trans "Next order days" %}</h2>
 <ul>
     {% for d in odays %}
-    <li><a href="{% url orders-detail d.id %}">{{ d.day|date:"DATE_FORMAT" }}</a>,
-        {% trans "Responsible user" %}: {{ d.user.get_full_name }},
+    <li{% if forloop.first %} style="font-weight:bold;" {% endif %}> 
+        <a href="{% url orders-detail d.id %}" title="{% trans "Click for details." %}">
+        {{ d.day|date:"DATE_FORMAT" }}</a>,
+        {% trans "Responsible user" %}: {{ d.user.get_profile }},
         {% trans "Open orders" %}: {{ d.orders.count }}
     </li>
     {% empty %}
