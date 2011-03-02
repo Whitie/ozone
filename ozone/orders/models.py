@@ -86,8 +86,9 @@ class Order(models.Model):
     ordered = models.DateField(_(u'Ordered'), blank=True, null=True)
 
     def __unicode__(self):
-        name = unicode(self.user.get_profile())
-        return u'{0}x {1} ({2})'.format(self.count, self.article.name, name)
+        names = [unicode(x.get_profile()) for x in self.users.all()]
+        return u'{0}x {1} ({2})'.format(self.count, self.article.name,
+                                        u', '.join(names))
 
     def state_icon(self):
         return u'{0}img/{1}.png'.format(settings.MEDIA_URL, self.state.lower())
@@ -109,6 +110,7 @@ class DeliveredOrder(models.Model):
     order = models.ForeignKey(Order, verbose_name=_(u'Order'))
     count = models.PositiveIntegerField(_(u'Count'))
     date = models.DateField(_(u'Date'), auto_now_add=True)
+    user = models.ForeignKey(User, verbose_name=_(u'User'))
 
     def __unicode__(self):
         return u'{0}x {1} {2}'.format(self.count,
