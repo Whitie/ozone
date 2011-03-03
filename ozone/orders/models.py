@@ -65,9 +65,9 @@ class Cost(models.Model):
         verbose_name_plural = _(u'Costs')
 
 
-STATE_CHOICES = ((u'New', _(u'New')), (u'Accepted', _(u'Accepted')),
-    (u'Rejected', _(u'Rejected')), (u'Ordered', _(u'Ordered')),
-    (u'Delivered', _(u'Delivered')))
+STATE_CHOICES = ((u'new', _(u'New')), (u'accepted', _(u'Accepted')),
+    (u'rejected', _(u'Rejected')), (u'ordered', _(u'Ordered')),
+    (u'delivered', _(u'Delivered')))
 
 class Order(models.Model):
     count = models.PositiveIntegerField(_(u'Count'))
@@ -81,7 +81,7 @@ class Order(models.Model):
         related_name='orders')
     for_test = models.BooleanField(_(u'For test'), default=False)
     for_repair = models.BooleanField(_(u'For Repair'), default=False)
-    state = models.CharField(_(u'State'), max_length=10, default=u'New',
+    state = models.CharField(_(u'State'), max_length=10, default=u'new',
         choices=STATE_CHOICES)
     ordered = models.DateField(_(u'Ordered'), blank=True, null=True)
 
@@ -91,7 +91,7 @@ class Order(models.Model):
                                         u', '.join(names))
 
     def state_icon(self):
-        return u'{0}img/{1}.png'.format(settings.MEDIA_URL, self.state.lower())
+        return u'{0}img/{1}.png'.format(settings.MEDIA_URL, self.state)
 
     def is_complete(self):
         delivered = sum([x.count for x in
