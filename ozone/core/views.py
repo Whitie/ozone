@@ -16,7 +16,9 @@ from django.db.models import Q
 from core.models import News, Company, Student, StudentGroup
 from core.forms import NewsForm, SearchForm, StudentSearchForm
 from core.menu import menus
-from barcode import get_barcode
+from barcode.codex import Code39
+from barcode.writers import ImageWriter
+
 
 # Create your views here.
 
@@ -172,10 +174,15 @@ def group_details(req, gid):
                               context_instance=RequestContext(req))
 
 
-def barcode(req, barcode='0'):
-    code = get_barcode('code39', barcode)
-    response = HttpResponse(mimetype='image/svg+xml')
-    code.write(response)
+def barcode(req, format, barcode=''):
+    if format == 'svg':
+        bc = Code39(barcode, add_checksum=False)
+        mimetype = 'image/svg+xml'
+    else:
+        bc = Code39(barcode, ImageWriter(), add_checksum=False)
+        mimetype = 'image/{0}'.format(format)
+    response = HttpResponse(mimetype=mimetype)
+    bc.write(response, {'format': format.upper()})
     return response
 
 
