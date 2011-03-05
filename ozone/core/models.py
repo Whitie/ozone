@@ -35,6 +35,9 @@ class UserProfile(models.Model):
     part = models.ForeignKey(Part, verbose_name=_(u'Part'), blank=True,
         null=True)
     can_login = models.BooleanField(_(u'Can Login'), default=True)
+    barcode = models.CharField(max_length=100, editable=False, blank=True)
+    _barcode = models.ImageField(upload_to='barcodes', editable=False,
+        blank=True)
     _config = models.TextField(blank=True, editable=False, default='')
 
     def __unicode__(self):
@@ -199,18 +202,14 @@ class Student(models.Model):
         blank=True, null=True, default=30)
     exam_2 = models.PositiveSmallIntegerField(_(u'Exam 2'), blank=True,
         null=True)
-    barcode = models.CharField(_(u'Barcode'), max_length=50, blank=True,
-        editable=False)
+    barcode = models.CharField(max_length=100, editable=False, blank=True)
+    _barcode = models.ImageField(upload_to='barcodes', editable=False,
+        blank=True)
     finished = models.BooleanField(_(u'Finished'), default=False)
 
     def __unicode__(self):
         return u'{0}, {1} ({2})'.format(self.lastname, self.firstname,
                                         self.group.name())
-
-    def barcode_url(self):
-        url = '/'.join([settings.MEDIA_URL.rstrip('/'), 'barcodes',
-                        '%s.png' % self.barcode])
-        return url
 
     def final_grade(self):
         if self.exam_1 and self.exam_2:

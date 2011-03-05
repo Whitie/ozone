@@ -2,13 +2,19 @@
 
 import os
 import re
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from StringIO import StringIO
 
 from django.contrib.auth.models import User
+from django.core.files.base import ContentFile
 from django.db.models.signals import post_save, pre_save
 
 from core.models import UserProfile, Student
-from barcode import get_barcode
+from barcode.codex import Code39
 from barcode.writer import ImageWriter
+
 
 def slugify(value):
     """
@@ -21,28 +27,40 @@ def slugify(value):
     return re.sub('[-\s]+', '-', value)
 
 
+def create_barcode(prefix, ident, name):
+    _name = u'{0}-{1:05d}-{2}'.format(prefix, ident, name)
+    _name = slugify(_name).upper()
+    bc = Code39(_name, writer=ImageWriter(), add_checksum=False)
+    out = StringIO()
+    bc.write(out)
+    return _name, out.getvalue()
+
+
+def create_student_barcode(sender, **kw):
+    if not 'instance' in kw or not kw.get('created', False):
+        return
+    instance = kw['instance']
+    bc, im = create_barcode(u'STU-{0}'.format(instance.lastname[0]),
+                            instance.id, instance.lastname)
+    instance.barcode = bc
+    content = ContentFile(im)
+    instance._barcode.save('{0}.png'.format(bc), content)
+    instance.save()
+
+
 def create_profile(sender, **kw):
     if not 'instance' in kw or not kw.get('created', False):
         return
     instance = kw['instance']
     profile = UserProfile()
     profile.user = instance
+    bc, im = create_barcode(u'USER-{0}'.format(instance.username[0]),
+                            instance.id, instance.username)
+    profile.barcode = bc
+    content = ContentFile(im)
+    profile._barcode.save('{0}.png'.format(bc), content)
     profile.save()
 
 
-def create_barcode(sender, **kw):
-    if not 'instance' in kw or not kw.get('created', False):
-        return
-    from django.conf import settings
-    instance = kw['instance']
-    _name = slugify(instance.lastname).upper()
-    bc = u'%s-%05d-%s' % (_name[0], instance.id, _name)
-    code = get_barcode('code39', bc, writer=ImageWriter())
-    filename = code.save(os.path.join(settings.MEDIA_ROOT, 'barcodes', bc))
-    name = os.path.splitext(os.path.split(filename)[1])[0]
-    instance.barcode = name
-    instance.save()
-
-
 post_save.connect(create_profile, sender=User)
-post_save.connect(create_barcode, sender=Student)
+post_save.connect(create_student_barcode, sender=Student)
