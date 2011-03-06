@@ -47,7 +47,8 @@ class StudentAdmin(admin.ModelAdmin):
     list_editable = ('phone', 'email', 'finished')
     list_filter = ('group', 'company', 'finished')
     save_on_top = True
-    search_fields = ('lastname', 'company__name', 'group__job_short')
+    search_fields = ('lastname', 'company__name', 'group__job_short',
+                     'barcode')
 
 
 class StudentInline(admin.StackedInline):
@@ -86,7 +87,8 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_display_links = ('__unicode__',)
     list_editable = ('phone', 'mobile', 'can_login')
     list_filter = ('part', 'can_login')
-    search_fields = ('user__username', 'user__last_name', 'user__email')
+    search_fields = ('user__username', 'user__last_name', 'user__email',
+                     'barcode')
     save_on_top = True
 
     @named(_(u'Email'))
