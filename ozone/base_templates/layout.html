@@ -17,6 +17,10 @@
 <hr style="clear:both;" />
 {% endblock %}
 
+{% if user.is_authenticated %}
+<div id="show_user">{% trans "Logged in as" %} {{ userprofile }}</div>
+{% endif %}
+
 {% if messages %}
 <div id="messages">
   {% for msg in messages %}

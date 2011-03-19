@@ -10,6 +10,19 @@ body {
     text-align: center;
 }
 
+#show_user {
+    position: fixed;
+    overflow: auto;
+    left: 5px;
+    top: 5px;
+    padding: 2px;
+    width: 360px;
+    text-align: center;
+    border: 1px solid #000080;
+    background-color: #ffff99;
+    color: #000000;
+}
+
 #header h1 {
     padding-top: 30px;
     padding-left: 30px;
