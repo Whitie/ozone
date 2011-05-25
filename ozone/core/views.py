@@ -184,14 +184,3 @@ def barcode(req, format, barcode=''):
     response = HttpResponse(mimetype=mimetype)
     bc.write(response, options={'format': format.upper()})
     return response
-
-
-@login_required
-def pdf(req, what='grouplist'):
-    from reportlab.pdfgen import canvas
-    response = HttpResponse(mimetype='application/pdf')
-    p = canvas.Canvas(response)
-    p.drawString(100, 100, u'Hello World!')
-    p.showPage()
-    p.save()
-    return response

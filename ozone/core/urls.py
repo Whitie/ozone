@@ -20,5 +20,8 @@ urlpatterns = patterns('core.views',
         {'archive': True}),
     url(r'^barcode/(?P<format>[a-z]{3,4})/(?P<barcode>.+)/$', 'barcode',
         name='barcode'),
+)
+
+urlpatterns += patterns('core.pdf_views',
     url(r'^pdf/$', 'pdf', name='core-pdfgen'),
 )
