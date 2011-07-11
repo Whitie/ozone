@@ -6,14 +6,14 @@
 {% block body %}
 
 {% block header %}
-<div id="header">
+<header>
   <img src="{{ LOGO_URL }}" alt="Logo" style="float:right;width:150px;" />
   <h1>{{ page_title }}</h1>
-</div>
-<div id="topmenu">
+</header>
+<nav>
   <a class="top" href="/">{% trans "Home" %}</a>
   <a class="top" href="/orders/">{% trans "Ordersystem" %}</a>
-</div>
+</nav>
 <hr style="clear:both;" />
 {% endblock %}
 
@@ -30,19 +30,19 @@
 <hr />
 {% endif %}
 
-<div id="left">
+<aside>
   {% block menu %}{% endblock %}
-</div>
+</aside>
 
-<div id="content">
+<article>
   {% block content %}{% endblock %}
-</div>
+</article>
 
 {% block footer %}
 <hr style="clear:both;" />
-<div id="footer">
+<footer>
 <p>Copyright 2010 by Thorsten Weimann</p>
-</div>
+</footer>
 {% endblock %}
 
 {% endblock %}

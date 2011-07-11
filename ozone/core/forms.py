@@ -4,6 +4,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 from core.models import News, StudentGroup
+from core.html5_widgets import SearchInput5
 
 
 GROUP_CHOICES = ([(0, _(u'All Groups'))] +
@@ -17,7 +18,8 @@ class NewsForm(forms.ModelForm):
 
 
 class SearchForm(forms.Form):
-    search = forms.CharField(label=_(u'Search'), max_length=50)
+    search = forms.CharField(label=_(u'Search'), max_length=50,
+        widget=SearchInput5())
 
 
 class StudentSearchForm(SearchForm):

@@ -1,6 +1,5 @@
 body { color: #000000; }
-#topmenu { display: none; }
-#left { display: none; }
-#footer { display: none; }
+nav { display: none; }
+aside { display: none; }
+footer { display: none; }
 #messages { display: none; }
-
