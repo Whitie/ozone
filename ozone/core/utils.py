@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+from django.template import RequestContext
+from django.shortcuts import render_to_response
+from django.utils.translation import ugettext_lazy as _
+
 
 def named(verbose_name):
     def decorate(f):
@@ -7,3 +11,10 @@ def named(verbose_name):
         return f
     return decorate
 
+
+def error(req, msg=''):
+    if not msg:
+        msg = _('An internal server error occured.')
+    ctx = dict(page_title=_('Ozone Error'), msg=msg)
+    return render_to_response('error.html', ctx,
+        context_instance=RequestContext(req))

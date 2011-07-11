@@ -13,6 +13,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Q
 
+from core import utils
 from core.models import News, Company, Student, StudentGroup
 from core.forms import NewsForm, SearchForm, StudentSearchForm
 from core.menu import menus
@@ -182,5 +183,8 @@ def barcode(req, format, barcode=''):
         bc = Code39(barcode, ImageWriter(), add_checksum=False)
         mimetype = 'image/{0}'.format(format)
     response = HttpResponse(mimetype=mimetype)
-    bc.write(response, options={'format': format.upper()})
+    try:
+        bc.write(response, options={'format': format.upper()})
+    except KeyError:
+        return utils.error(req, _('Unsupported barcode format.'))
     return response
