@@ -1,1 +1,36 @@
-[{"pk": 1100, "model": "orders.cost", "fields": {"_label": "labels/CL1100.png", "name": "Chemielaboranten", "short_name": "CL"}}, {"pk": 1200, "model": "orders.cost", "fields": {"_label": "labels/CK1200.png", "name": "Chemikanten", "short_name": "CK"}}, {"pk": 1300, "model": "orders.cost", "fields": {"_label": "labels/PK1300.png", "name": "Pharmakanten", "short_name": "PK"}}, {"pk": 1400, "model": "orders.cost", "fields": {"_label": "labels/BL1400.png", "name": "Biologielaboranten", "short_name": "BL"}}, {"pk": 2100, "model": "orders.cost", "fields": {"_label": "labels/BW2100.png", "name": "Bundeswehr", "short_name": "BW"}}, {"pk": 2160, "model": "orders.cost", "fields": {"_label": "labels/BWCT2160.png", "name": "Techniker Bundeswehr", "short_name": "BWCT"}}, {"pk": 2300, "model": "orders.cost", "fields": {"_label": "labels/PKU2300.png", "name": "PK-Umschulung", "short_name": "PKU"}}, {"pk": 2310, "model": "orders.cost", "fields": {"_label": "labels/BLU2310.png", "name": "BL-Umschulung", "short_name": "BLU"}}, {"pk": 2320, "model": "orders.cost", "fields": {"_label": "labels/CLU2320.png", "name": "CL-Umschulung", "short_name": "CLU"}}, {"pk": 2400, "model": "orders.cost", "fields": {"_label": "labels/QFC2400.png", "name": "QFC; gef. Ma\u00dfnahmen, ausser Umschulung", "short_name": "QFC"}}, {"pk": 3400, "model": "orders.cost", "fields": {"_label": "labels/IM3400.png", "name": "Industriemeister", "short_name": "IM"}}, {"pk": 3500, "model": "orders.cost", "fields": {"_label": "labels/APO3500.png", "name": "Apotheker-Seminare", "short_name": "APO"}}, {"pk": 3600, "model": "orders.cost", "fields": {"_label": "labels/BACH3600.png", "name": "Bachelor", "short_name": "BACH"}}, {"pk": 4100, "model": "orders.cost", "fields": {"_label": "labels/BBZ4100.png", "name": "bbz Chemie / Haus", "short_name": "BBZ"}}, {"pk": 6000, "model": "orders.cost", "fields": {"_label": "labels/VERW6000.png", "name": "Verwaltung", "short_name": "VERW"}}, {"pk": 6100, "model": "orders.cost", "fields": {"_label": "labels/MESSE6100.png", "name": "Messe / \u00d6ffentlichkeitsarbeit", "short_name": "MESSE"}}, {"pk": 6400, "model": "orders.cost", "fields": {"_label": "labels/QM6400.png", "name": "Zertifizierung / QM", "short_name": "QM"}}]
+[
+{"pk": 1100, "model": "orders.cost", "fields":
+    {"name": "Chemielaboranten", "short_name": "CL"}},
+{"pk": 1200, "model": "orders.cost", "fields":
+    {"name": "Chemikanten", "short_name": "CK"}},
+{"pk": 1300, "model": "orders.cost", "fields":
+    {"name": "Pharmakanten", "short_name": "PK"}},
+{"pk": 1400, "model": "orders.cost", "fields":
+    {"name": "Biologielaboranten", "short_name": "BL"}},
+{"pk": 2100, "model": "orders.cost", "fields":
+    {"name": "Bundeswehr", "short_name": "BW"}},
+{"pk": 2160, "model": "orders.cost", "fields":
+    {"name": "Techniker Bundeswehr", "short_name": "BWCT"}},
+{"pk": 2300, "model": "orders.cost", "fields":
+    {"name": "PK-Umschulung", "short_name": "PKU"}},
+{"pk": 2310, "model": "orders.cost", "fields":
+    {"name": "BL-Umschulung", "short_name": "BLU"}},
+{"pk": 2320, "model": "orders.cost", "fields":
+    {"name": "CL-Umschulung", "short_name": "CLU"}},
+{"pk": 2400, "model": "orders.cost", "fields":
+    {"name": "QFC; gef. Ma\u00dfnahmen, ausser Umschulung", "short_name": "QFC"}},
+{"pk": 3400, "model": "orders.cost", "fields":
+    {"name": "Industriemeister", "short_name": "IM"}},
+{"pk": 3500, "model": "orders.cost", "fields":
+    {"name": "Apotheker-Seminare", "short_name": "APO"}},
+{"pk": 3600, "model": "orders.cost", "fields":
+    {"name": "Bachelor", "short_name": "BACH"}},
+{"pk": 4100, "model": "orders.cost", "fields":
+    {"name": "bbz Chemie / Haus", "short_name": "BBZ"}},
+{"pk": 6000, "model": "orders.cost", "fields":
+    {"name": "Verwaltung", "short_name": "VERW"}},
+{"pk": 6100, "model": "orders.cost", "fields":
+    {"name": "Messe / \u00d6ffentlichkeitsarbeit", "short_name": "MESSE"}},
+{"pk": 6400, "model": "orders.cost", "fields":
+    {"name": "Zertifizierung / QM", "short_name": "QM"}}
+]

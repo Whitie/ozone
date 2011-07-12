@@ -52,13 +52,9 @@ class Cost(models.Model):
     ident = models.PositiveIntegerField(_(u'Identifier'), primary_key=True)
     short_name = models.CharField(_(u'Short Name'), max_length=10)
     name = models.CharField(_(u'Name'), max_length=50, blank=True)
-    _label = models.CharField(max_length=100, blank=True, editable=False)
 
     def __unicode__(self):
         return u'{0} {1}'.format(self.short_name, self.ident)
-
-    def label(self):
-        return '{0}{1}'.format(settings.MEDIA_URL, self._label)
 
     class Meta:
         verbose_name = _(u'Cost')
