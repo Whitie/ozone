@@ -9,7 +9,7 @@
 <h2 class="headline">{% trans "News" %}</h2>
 {% if news.paginator.count %}
 {% for n in news.object_list %}
-  <section class="news">
+  <section class="news" id="News_{{ n.id }}">
     <h3>{{ n.title }}</h3>
     <p>{{ n.text }}</p>
     <p>{% trans "Posted on" %} {{ n.date|date:"DATETIME_FORMAT" }}
