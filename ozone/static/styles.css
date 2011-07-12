@@ -30,7 +30,7 @@ header h1 {
     color: #000080;
 }
 
-nav {
+nav#topnav {
     clear: left;
     height: 25px;
     margin-bottom: 5px;

@@ -1,6 +1,7 @@
 {% load i18n %}
 {% load urls %}
 
+<nav id="menu">
 {% for menu in menus %}
 <p class="menutitle">{{ menu.title }}</p>
     {% for u, name in menu.entries %}
@@ -20,4 +21,4 @@
   <a class="menu" href="{% url core-login %}">&raquo; {% trans "Login" %}</a>
   <br />
   {% endif %}
-
+</nav>
