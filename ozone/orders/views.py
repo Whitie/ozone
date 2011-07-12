@@ -9,7 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 
-from orders.forms import OrderDayForm
+from orders.forms import OrderDayForm, OrderOldForm, OrderForm
 from orders.models import OrderDay, Order
 from orders.menu import menus
 
@@ -29,8 +29,22 @@ def order_detail(req, order_id):
     pass
 
 
-def order(req):
+@login_required
+def order(req, article=None):
     pass
+
+
+@login_required
+def ask_order(req):
+    if req.method == 'POST':
+        form = OrderOldForm(req.POST)
+        if form.is_valid():
+            return redirect('orders-order', form.cleaned_data['article'])
+    else:
+        form = OrderOldForm()
+    ctx = dict(page_title=_('Orders'), form=form, menus=menus)
+    return render_to_response('orders/select_article.html', ctx,
+                              context_instance=RequestContext(req))
 
 
 def myorders(req):

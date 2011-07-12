@@ -75,7 +75,7 @@ class Order(models.Model):
     added = models.DateTimeField(_(u'Added'), auto_now_add=True)
     order_day = models.ForeignKey(OrderDay, verbose_name=_(u'Order Day'),
         related_name='orders')
-    for_test = models.BooleanField(_(u'For test'), default=False)
+    for_test = models.BooleanField(_(u'For Exam'), default=False)
     for_repair = models.BooleanField(_(u'For Repair'), default=False)
     state = models.CharField(_(u'State'), max_length=10, default=u'new',
         choices=STATE_CHOICES)
