@@ -12,7 +12,8 @@
   <section class="news" id="News_{{ n.id }}">
     <h3>{{ n.title }}</h3>
     <p>{{ n.text }}</p>
-    <p>{% trans "Posted on" %} {{ n.date|date:"DATETIME_FORMAT" }}
+    <p>{% trans "Posted on" %}
+       <time datetime="{{ n.date|date:'c' }}">{{ n.date|date:"DATETIME_FORMAT" }}</time>
        {% trans "by" %} {{ n.author.get_full_name|default:n.author.username }}.
     </p>
   </section>
