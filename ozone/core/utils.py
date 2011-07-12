@@ -18,3 +18,14 @@ def error(req, msg=''):
     ctx = dict(page_title=_('Ozone Error'), msg=msg)
     return render_to_response('error.html', ctx,
         context_instance=RequestContext(req))
+
+
+def check_pdfgen(module):
+    def decorate(f):
+        def pdf_error(req, *args, **kwargs):
+            return error(req, _('PDF generation is not installed.'))
+        if module is None:
+            return pdf_error
+        else:
+            return f
+    return decorate
