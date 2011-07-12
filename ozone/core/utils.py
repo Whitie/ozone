@@ -20,10 +20,10 @@ def error(req, msg=''):
         context_instance=RequestContext(req))
 
 
-def check_pdfgen(module):
+def check_for_import(module, msg=''):
     def decorate(f):
         def pdf_error(req, *args, **kwargs):
-            return error(req, _('PDF generation is not installed.'))
+            return error(req, msg)
         if module is None:
             return pdf_error
         else:

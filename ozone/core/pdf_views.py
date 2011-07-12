@@ -12,7 +12,7 @@ except ImportError:
     canvas = None
 
 
-@utils.check_pdfgen(canvas)
+@utils.check_for_import(canvas, _('PDF generation is not installed.'))
 @login_required
 def pdf(req, what='grouplist'):
     response = HttpResponse(mimetype='application/pdf')

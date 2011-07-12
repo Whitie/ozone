@@ -18,7 +18,10 @@ from core.models import News, Company, Student, StudentGroup
 from core.forms import NewsForm, SearchForm, StudentSearchForm
 from core.menu import menus
 from barcode.codex import Code39
-from barcode.writer import ImageWriter
+try:
+    from barcode.writer import ImageWriter
+except ImportError:
+    ImageWriter = None
 
 
 # Create your views here.
@@ -180,6 +183,8 @@ def barcode(req, format, barcode=''):
         bc = Code39(barcode, add_checksum=False)
         mimetype = 'image/svg+xml'
     else:
+        if ImageWriter is None:
+            return utils.error(req, _('PIL is not installed.'))
         bc = Code39(barcode, ImageWriter(), add_checksum=False)
         mimetype = 'image/{0}'.format(format)
     response = HttpResponse(mimetype=mimetype)
