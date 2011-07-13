@@ -13,6 +13,8 @@ urlpatterns = patterns('',
     (r'^orders/', include('ozone.orders.urls')),
 
     (r'^admin/', include(admin.site.urls)),
+    (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to',
+     {'url': '/static/img/favicon.ico'}),
 
     # Only for Testing!!!
     (r'^static/(?P<path>.*)$', 'django.views.static.serve',
