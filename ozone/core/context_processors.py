@@ -2,7 +2,7 @@
 
 
 def userconf(req):
-    ctx = {'_profile': None, '_config': {}}
+    ctx = {'userprofile': None, 'userconfig': {}}
     if req.user.is_authenticated():
         p = req.user.get_profile()
         ctx['userprofile'] = p

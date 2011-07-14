@@ -4,6 +4,7 @@ syntax: glob
 *~
 *.db
 *.geany
+*.komodo*
 *.secret
 build/*
 dist/*
