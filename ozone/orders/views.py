@@ -47,5 +47,18 @@ def ask_order(req):
                               context_instance=RequestContext(req))
 
 
+@login_required
 def myorders(req):
-    pass
+    order_list = req.user.order_set.all().order_by('-added', 'article__name')
+    paginator = Paginator(order_list, 20)
+    try:
+        page = int(req.GET.get('page', '1'))
+    except ValueError:
+        page = 1
+    try:
+        orders = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        orders = paginator.page(paginator.num_pages)
+    ctx = dict(page_title=_('My Orders'), menus=menus, orders=orders)
+    return render_to_response('orders/myorders.html', ctx,
+                              context_instance=RequestContext(req))
