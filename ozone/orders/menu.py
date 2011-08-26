@@ -6,7 +6,7 @@ from core.menu import Menu
 
 
 order_menu = Menu(_(u'Orders'),
-    ('orders-old', _(u'Order now')),
+    ('orders-ask', _(u'Order now')),
     ('orders-myorders', _(u'My Orders')),
 )
 
