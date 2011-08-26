@@ -1,0 +1,20 @@
+{% extends "index.html" %}
+{% load i18n %}
+
+{% block content %}
+<h2 class="headline">{% trans "Make order" %}</h2>
+{% if form.article.choices %}
+<h3>{% trans "Order old article" %}</h3>
+<form action="{% url orders-ask %}" method="post">
+{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value="{% trans "Next" %}" />
+</form>
+<br /><hr /><br />
+{% endif %}
+<h3>{% trans "Order new article" %}</h3>
+<form action="{% url orders-order %}" method="get">
+<input type="submit" value="{% trans "Next" %}" />
+</form>
+{% endblock %}
+
