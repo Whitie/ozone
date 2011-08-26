@@ -17,7 +17,7 @@ DATE_FORMATS = ['%d.%m.%Y', '%d.%m.%y', '%d/%m/%Y', '%d/%m/%y']
 ODAY_CHOICES = [(x.id, unicode(x)) for x in OrderDay.objects.filter(
                 day__gt=date.today()).order_by('-day')]
 ARTICLE_CHOICES = [(x.id, unicode(x)) for x in Article.objects.all().order_by(
-                    'name', '-quantity')]
+                    'name')]
 SUPPLIER_CHOICES = [(x.id, x.name) for x in Company.objects.all()]
 
 
