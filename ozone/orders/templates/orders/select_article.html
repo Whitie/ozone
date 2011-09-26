@@ -2,11 +2,55 @@
 {% load i18n %}
 
 {% block content %}
+<style>
+#article-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 1em;
+}
+#article-description {
+    margin: 0;
+    padding: 0;
+}
+</style>
+<script>
+$(function() {
+    var articles = [
+    {% for id, name, desc in articles %}
+        { value: "{{ id }}", label: "{{ name }}", desc: "{{ desc }}" }
+        {% if not forloop.last %}, {% endif %}
+    {% endfor %}
+    ];
+
+    $( "#id_article_name" ).autocomplete({
+        minLength: 0,
+        source: articles,
+        focus: function( event, ui ) {
+            $( "#id_article_name" ).val( ui.item.label );
+            return false;
+        },
+        select: function( event, ui ) {
+            $( "#id_article_name" ).val( ui.item.label );
+            $( "#id_article_id" ).val( ui.item.value );
+            $( "#article-description" ).html( ui.item.desc );
+            return false;
+        }
+    })
+    .data( "autocomplete" )._renderItem = function( ul, item ) {
+        return $( "<li></li>" )
+            .data( "item.autocomplete", item )
+            .append( "<a>" + item.label + "<br>" + item.desc + "</a>" )
+            .appendTo( ul );
+    };
+});
+</script>
+
 <h2 class="headline">{% trans "Make order" %}</h2>
 <h3>{% trans "Order old article" %}</h3>
 <form action="{% url orders-ask %}" method="post">
 {% csrf_token %}
 {{ form.as_p }}
+<p id="article-description"></p>
 <input type="submit" value="{% trans "Next" %}" />
 </form>
 <br /><hr /><br />

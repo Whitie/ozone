@@ -16,8 +16,6 @@ USER_CHOICES = [(x.id, x.get_full_name() or x.username) for x in
 DATE_FORMATS = ['%d.%m.%Y', '%d.%m.%y', '%d/%m/%Y', '%d/%m/%y']
 ODAY_CHOICES = [(x.id, unicode(x)) for x in OrderDay.objects.filter(
                 day__gt=date.today()).order_by('-day')]
-ARTICLE_CHOICES = [(x.id, unicode(x)) for x in Article.objects.all().order_by(
-                    'name')]
 SUPPLIER_CHOICES = [(x.id, x.name) for x in Company.objects.all()]
 
 
@@ -29,8 +27,8 @@ class OrderDayForm(forms.Form):
 
 
 class OrderOldForm(forms.Form):
-    article = forms.ChoiceField(label=_('Article'), choices=ARTICLE_CHOICES)
-
+    article_name = forms.CharField(label=_('Article'), max_length=100)
+    article_id = forms.IntegerField(widget=forms.HiddenInput)
 
 class OrderForm(forms.Form):
     count = _wid.IntegerField5(label=_('Count'))

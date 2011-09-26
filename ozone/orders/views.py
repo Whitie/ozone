@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 
 from orders.forms import OrderDayForm, OrderOldForm, OrderForm
-from orders.models import OrderDay, Order
+from orders.models import OrderDay, Order, Article
 from orders.menu import menus
 
 
@@ -42,7 +42,10 @@ def ask_order(req):
             return redirect('orders-order', form.cleaned_data['article'])
     else:
         form = OrderOldForm()
-    ctx = dict(page_title=_('Orders'), form=form, menus=menus)
+    articles = [(x.id, x.name, x.short_desc()) for x in 
+                Article.objects.all().order_by('name')]
+    ctx = dict(page_title=_('Orders'), form=form, menus=menus,
+        articles=articles)
     return render_to_response('orders/select_article.html', ctx,
                               context_instance=RequestContext(req))
 
