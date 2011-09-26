@@ -39,10 +39,10 @@ def ask_order(req):
     if req.method == 'POST':
         form = OrderOldForm(req.POST)
         if form.is_valid():
-            return redirect('orders-order', form.cleaned_data['article'])
+            return redirect('orders-order', form.cleaned_data['article_id'])
     else:
         form = OrderOldForm()
-    articles = [(x.id, x.name, x.short_desc()) for x in 
+    articles = [(x.id, x.name, x.short_desc()) for x in
                 Article.objects.all().order_by('name')]
     ctx = dict(page_title=_('Orders'), form=form, menus=menus,
         articles=articles)
