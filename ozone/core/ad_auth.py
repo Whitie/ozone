@@ -19,7 +19,7 @@ class ADAuthBackend:
 
     def __init__(self):
         if settings.AD_USE_SSL:
-            logger.debug('LDAP SSL enabled')
+            logger.info('LDAP SSL enabled')
             prot = 'ldaps'
         else:
             prot = 'ldap'
