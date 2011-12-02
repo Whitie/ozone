@@ -125,6 +125,108 @@ AUTH_PROFILE_MODULE = 'core.UserProfile'
 LOGIN_URL = '/core/login'
 LOGOUT_URL = '/core/logout'
 
+AUTHENTICATION_BACKENDS = (
+    'ozone.core.ad_auth.ADAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+# Logging ######################################################################
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'verbose': {
+            'format': '[%(asctime)s] %(levelname)s %(module)s %(message)s'
+        },
+        'verbose_req': {
+            'format': '[%(asctime)s] %(levelname)s %(status_code)s %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'null': {
+            'level': 'DEBUG',
+            'class': 'django.utils.log.NullHandler',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+        'file_request': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'verbose_req',
+            'filename': os.path.join(_PATH, 'log', 'ozone_request.log'),
+            'maxBytes': 1000 * 1024,
+            'backupCount': 7,
+        },
+        'file_access': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'verbose',
+            'filename': os.path.join(_PATH, 'log', 'ozone_access.log'),
+            'maxBytes': 1000 * 1024,
+            'backupCount': 7,
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['null'],
+            'propagate': True,
+            'level': 'INFO',
+        },
+        'django.request': {
+            'handlers': ['file_request'],
+            'propagate': False,
+            'level': 'INFO',
+        },
+        'ozone.ad_auth': {
+            'handlers': ['console', 'file_access'],
+            'level': 'DEBUG',
+        },
+    }
+}
+################################################################################
+
+# Active Directory settings ####################################################
+
+# FQDN or IP of the AD server
+AD_DNS_NAME = '10.0.0.2'
+
+# AD LDAP port
+AD_LDAP_PORT = 389
+
+# AD SSL (port should be 636 in order to use SSL)
+AD_USE_SSL = False
+
+# Path to cert file (only with AD_USE_SSL = True)
+AD_CERT_FILE = ''
+
+# Search dn for users and groups
+AD_SEARCH_DN = 'ou=Nutzer,dc=bbzchemie,dc=de'
+
+# NT4 domain name
+AD_NT4_DOMAIN = 'BBZCHEMIE'
+
+# Search fields in the AD
+AD_SEARCH_FIELDS = ['mail', 'givenName', 'sn', 'sAMAccountName', 'memberOf']
+
+# AD admin group (this users get admin status in django)
+AD_MEMBERSHIP_ADMIN = ['EDV']
+
+# AD groups that can access the app(s)
+AD_MEMBERSHIP_REQ = AD_MEMBERSHIP_ADMIN + ['PVT']
+
+# Create AD groups in django and assign users
+AD_CREATE_GROUPS = True
+
+################################################################################
+
+
 # Make sure to use a path, which is writeable and not accesible over the web
 SECRET_FILE = os.path.join(_PATH, '.secret')
 
