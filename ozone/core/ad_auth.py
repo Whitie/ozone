@@ -3,13 +3,17 @@
 import logging
 import re
 
-import ldap
-
 from collections import defaultdict
 
 from django.conf import settings
 from django.contrib.auth.models import User, Group
 from django.utils.encoding import smart_str, smart_unicode
+
+# For testing/running without ldap
+try:
+    import ldap
+except ImportError:
+    ldap = None
 
 
 logger = logging.getLogger('ozone.ad_auth')
@@ -29,6 +33,9 @@ class ADAuthBackend:
 
     def authenticate(self, username=None, password=None):
         logger.info('Trying to authenticate %s', username)
+        if ldap is None:
+            logger.warning('Module ldap not found, falling back')
+            return
         if password is None or not len(password):
             logger.warning('Password for %s not provided', username)
             return
