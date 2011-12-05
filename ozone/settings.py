@@ -85,6 +85,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'audit_log.middleware.UserLoggingMiddleware',
 )
 
 ROOT_URLCONF = 'ozone.urls'
@@ -106,6 +107,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
+    'ozone.active_directory',
     'ozone.core',
     'ozone.orders',
 )
@@ -126,7 +128,7 @@ LOGIN_URL = '/core/login'
 LOGOUT_URL = '/core/logout'
 
 AUTHENTICATION_BACKENDS = (
-    'ozone.core.ad_auth.ADAuthBackend',
+    'ozone.active_directory.auth.ADAuthBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -184,7 +186,7 @@ LOGGING = {
             'propagate': False,
             'level': 'INFO',
         },
-        'ozone.ad_auth': {
+        'ozone.active_directory': {
             'handlers': ['console', 'file_access'],
             'level': 'DEBUG',
         },
@@ -206,7 +208,7 @@ AD_USE_SSL = False
 # Path to cert file (only with AD_USE_SSL = True)
 AD_CERT_FILE = ''
 
-# Search dn for users and groups
+# Search dn for users
 AD_SEARCH_DN = 'ou=Nutzer,dc=bbzchemie,dc=de'
 
 # NT4 domain name
@@ -223,6 +225,10 @@ AD_MEMBERSHIP_REQ = AD_MEMBERSHIP_ADMIN + ['PVT']
 
 # Create AD groups in django and assign users
 AD_CREATE_GROUPS = True
+
+# Don't query AD again for x seconds (default: 8 hours)
+# Set to 0 for no cache
+AD_CACHE_TIME = 8 * 60 * 60
 
 ################################################################################
 
