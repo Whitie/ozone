@@ -7,6 +7,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
+from audit_log.models.managers import AuditLog
 from core.utils import named
 
 
@@ -206,6 +207,8 @@ class Student(models.Model):
     _barcode = models.ImageField(upload_to='barcodes', editable=False,
         blank=True)
     finished = models.BooleanField(_(u'Finished'), default=False)
+
+    audit_log = AuditLog()
 
     def __unicode__(self):
         return u'{0}, {1} ({2})'.format(self.lastname, self.firstname,
