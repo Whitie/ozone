@@ -28,7 +28,7 @@ class OrderDayForm(forms.Form):
 
 class OrderOldForm(forms.Form):
     article_name = forms.CharField(label=_('Article'), max_length=100)
-    article_id = _wid.IntegerField5(widget=forms.HiddenInput)
+    article_id = forms.IntegerField(widget=forms.HiddenInput)
 
 class OrderForm(forms.Form):
     count = _wid.IntegerField5(label=_('Count'))

@@ -18,7 +18,7 @@ $(function() {
     var articles = [
     {% for id, name, desc in articles %}
         { value: "{{ id }}", label: "{{ name }}", desc: "{{ desc }}" }
-        {% if not forloop.last %}, {% endif %}\n
+        {% if not forloop.last %}, {% endif %}
     {% endfor %}
     ];
 
