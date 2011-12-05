@@ -3,7 +3,10 @@
 import logging
 import re
 
-import ldap
+try:
+    import ldap
+except ImportError:
+    ldap = None
 
 from collections import defaultdict
 from datetime import datetime, timedelta
@@ -33,6 +36,9 @@ class ADAuthBackend:
         logger.info('AD cache set to %d seconds', self.cache_time)
 
     def authenticate(self, username=None, password=None):
+        if ldap is None:
+            logger.warning('python-ldap cannot be imported')
+            return
         logger.info('Trying to authenticate %s', username)
         if password is None or not len(password):
             logger.warning('Password for %s not provided', username)
