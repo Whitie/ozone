@@ -14,15 +14,16 @@ formats supported by PIL).
 
 __project__ = 'pyBarcode'
 __author__ = 'Thorsten Weimann'
+__copyright__ = '2010-2011, ' + __author__
 __author_email__ = 'thorsten.weimann@gmx.net'
 __description__ = ('Create standard barcodes with Python. No external '
-                   'modules needed.')
+                   'modules needed (optional PIL support included).')
 __version__ = '0.6'
-__release__ = '0.6.0a1'
+__release__ = '0.6'
 __license__ = 'MIT'
 __url__ = 'http://bitbucket.org/whitie/pybarcode/'
 __classifiers__ = [
-    'Development Status :: 4 - Beta',
+    'Development Status :: 5 - Production/Stable',
     'Environment :: Console',
     'Intended Audience :: Developers',
     'License :: OSI Approved :: MIT License',
@@ -66,7 +67,7 @@ def get_barcode(name, code=None, writer=None):
         barcode = __BARCODE_MAP[name.lower()]
     except KeyError:
         raise BarcodeNotFoundError('The barcode {0!r} you requested is not '
-                                   'known.'.format(name.lower()))
+                                   'known.'.format(name))
     if code is not None:
         return barcode(code, writer)
     else:
