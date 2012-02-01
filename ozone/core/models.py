@@ -11,6 +11,17 @@ from audit_log.models.managers import AuditLog
 from core.utils import named
 
 
+class CommonInfo(models.Model):
+    street = models.CharField(_(u'Street'), max_length=100, blank=True)
+    zip_code = models.CharField(_(u'Zip Code'), max_length=15, blank=True)
+    city = models.CharField(_(u'City'), max_length=100, blank=True)
+    country = models.CharField(_(u'Country'), max_length=50, blank=True)
+    phone = models.CharField(_(u'Phone'), max_length=30, blank=True)
+
+    class Meta:
+        abstract = True
+
+
 class Part(models.Model):
     name = models.CharField(_(u'Name'), max_length=30)
     description = models.TextField(_(u'Description'), blank=True)
@@ -23,15 +34,10 @@ class Part(models.Model):
         verbose_name_plural = _(u'Parts')
 
 
-class UserProfile(models.Model):
+class UserProfile(CommonInfo):
     user = models.OneToOneField(User, verbose_name=_(u'User'), editable=False)
     name_prefix = models.CharField(_(u'Name Prefix'), max_length=12,
         blank=True)
-    street = models.CharField(_(u'Street'), max_length=100, blank=True)
-    zip_code = models.CharField(_(u'Zip Code'), max_length=10, blank=True)
-    city = models.CharField(_(u'City'), max_length=100, blank=True)
-    country = models.CharField(_(u'Country'), max_length=50, blank=True)
-    phone = models.CharField(_(u'Phone'), max_length=30, blank=True)
     mobile = models.CharField(_(u'Mobile'), max_length=30, blank=True)
     part = models.ForeignKey(Part, verbose_name=_(u'Part'), blank=True,
         null=True)
@@ -92,14 +98,9 @@ class News(models.Model):
         ordering = ('-date', 'author')
 
 
-class Company(models.Model):
+class Company(CommonInfo):
     name = models.CharField(_(u'Name'), max_length=100)
     short_name = models.CharField(_(u'Short Name'), max_length=10, blank=True)
-    street = models.CharField(_(u'Street'), max_length=100, blank=True)
-    zip_code = models.CharField(_(u'Zip Code'), max_length=10, blank=True)
-    city = models.CharField(_(u'City'), max_length=100, blank=True)
-    country = models.CharField(_(u'Country'), max_length=50, blank=True)
-    phone = models.CharField(_(u'Phone'), max_length=30, blank=True)
     fax = models.CharField(_(u'Fax'), max_length=30, blank=True)
     customer_number = models.CharField(_(u'Customer Number'), max_length=50,
         blank=True)
@@ -175,18 +176,13 @@ class StudentGroup(models.Model):
 
 SEX_CHOICES = (('M', _(u'Male')), ('F', _(u'Female')))
 
-class Student(models.Model):
+class Student(CommonInfo):
     lastname = models.CharField(_(u'Lastname'), max_length=50)
     firstname = models.CharField(_(u'Firstname'), max_length=50)
     sex = models.CharField(_(u'Sex'), max_length=1, choices=SEX_CHOICES)
     birthdate = models.DateField(_(u'Birthdate'))
     picture = models.ImageField(_(u'Picture'), upload_to='pictures', blank=True)
-    street = models.CharField(_(u'Street'), max_length=100, blank=True)
-    zip_code = models.CharField(_(u'Zip Code'), max_length=10, blank=True)
-    city = models.CharField(_(u'City'), max_length=100, blank=True)
-    country = models.CharField(_(u'Country'), max_length=50, blank=True)
     email = models.EmailField(_(u'Email'), blank=True)
-    phone = models.CharField(_(u'Phone'), max_length=30, blank=True)
     mobile = models.CharField(_(u'Mobile'), max_length=30, blank=True)
     company = models.ForeignKey(Company, verbose_name=_(u'Company'),
         related_name='students', blank=True, null=True)
