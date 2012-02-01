@@ -110,6 +110,7 @@ INSTALLED_APPS = (
     'ozone.active_directory',
     'ozone.core',
     'ozone.orders',
+    'ozone.company_rating',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
