@@ -23,7 +23,7 @@ $(function() {
     ];
 
     $("#id_article_name").autocomplete({
-        minLength: 2,
+        minLength: 1,
         source: articles,
         focus: function(event, ui) {
             $("#id_article_name").val(ui.item.label);

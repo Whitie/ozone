@@ -14,6 +14,15 @@ from orders.models import OrderDay, Order, Article
 from orders.menu import menus
 
 
+def get_next_oday(include_today=False):
+    if include_today:
+        q = dict(day_gte=date.today())
+    else:
+        q = dict(day__gt=date.today())
+    oday = OrderDay.objects.filter(**q).order_by('day')[0]
+    return oday
+
+
 def index(req):
     if req.user.has_perm('orders.can_order'):
         q = dict(day__gte=date.today())
@@ -30,9 +39,20 @@ def order_detail(req, order_id):
 
 
 @login_required
-def order(req, article=None):
-    pass
-
+def order(req, article_id=None):
+    if req.method == 'POST':
+        pass
+    oday = get_next_oday()
+    if article_id is not None:
+        a = Article.objects.get(pk=article_id)
+        form = OrderForm(dict(art_name=a.name, art_supplier=a.supplier.id,
+            art_id=a.ident, art_q=a.quantity, art_price=a.price,
+            count=1, oday=oday.id))
+    else:
+        form = OrderForm(initial={'count': 0})
+    ctx = dict(page_title=_(u'Orders'), form=form, menus=menus)
+    return render_to_response('orders/order.html', ctx,
+                              context_instance=RequestContext(req))
 
 @login_required
 def ask_order(req):

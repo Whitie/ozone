@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+from audit_log.models.managers import AuditLog
 from core.models import Company
 
 # Create your models here.
@@ -83,6 +84,8 @@ class Order(models.Model):
     state = models.CharField(_(u'State'), max_length=10, default=u'new',
         choices=STATE_CHOICES)
     ordered = models.DateField(_(u'Ordered'), blank=True, null=True)
+
+    audit_log = AuditLog()
 
     def __unicode__(self):
         names = [unicode(x.get_profile()) for x in self.users.all()]
