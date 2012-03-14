@@ -10,4 +10,6 @@ urlpatterns = patterns('orders.views',
     url(r'^order/$', 'order', name='orders-order'),
     url(r'^ask_order/$', 'ask_order', name='orders-ask'),
     url(r'^myorders/$', 'myorders', name='orders-myorders'),
+    url(r'^api/article/(?P<article_id>\d+)/$', 'api_article',
+        name='orders-api-article'),
 )
