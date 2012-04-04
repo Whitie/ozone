@@ -42,7 +42,8 @@ class Article(models.Model):
 
     def short_desc(self):
         if self.price:
-            price = u' {0}/{1}€'.format(self.quantity, self.price)
+            price = u' {0}/{1}{2}'.format(self.quantity, self.price,
+                                          settings.CURRENCY[1])
         else:
             price = u''
         return u'{0}{1}'.format(self.supplier, price)

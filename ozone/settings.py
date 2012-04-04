@@ -133,6 +133,9 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+# Default currency
+CURRENCY = (u'Euro', u'€')
+
 # Logging ######################################################################
 
 LOGGING = {
