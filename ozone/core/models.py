@@ -42,6 +42,7 @@ class UserProfile(CommonInfo):
     part = models.ForeignKey(Part, verbose_name=_(u'Part'), blank=True,
         null=True)
     can_login = models.BooleanField(_(u'Can Login'), default=True)
+    external = models.BooleanField(_(u'External'), default=False)
     barcode = models.CharField(max_length=100, editable=False, blank=True)
     _barcode = models.ImageField(upload_to='barcodes', editable=False,
         blank=True)
@@ -105,6 +106,7 @@ class Company(CommonInfo):
     customer_number = models.CharField(_(u'Customer Number'), max_length=50,
         blank=True)
     web = models.URLField(_(u'Web'), blank=True)
+    email = models.EmailField(_(u'Email'), blank=True)
     qm_rating = models.CharField(_(u'QM Rating'), max_length=1, blank=True)
     qm_note = models.TextField(_(u'QM Note'), blank=True)
 
@@ -132,9 +134,10 @@ class Contact(models.Model):
     function = models.CharField(_(u'Function'), max_length=50, blank=True)
     phone = models.CharField(_(u'Phone'), max_length=30, blank=True)
     email = models.EmailField(_(u'Email'), blank=True)
-    note = models.TextField(_(u'Note'), blank=True)
     company = models.ForeignKey(Company, verbose_name=_(u'Company'),
         related_name='contacts')
+
+    audit_log = AuditLog()
 
     def __unicode__(self):
         s = u'{0} {1} {2}'.format(self.name_prefix, self.firstname,
@@ -146,6 +149,22 @@ class Contact(models.Model):
     class Meta:
         verbose_name = _(u'Contact')
         verbose_name_plural = _(u'Contacts')
+
+
+class Note(models.Model):
+    contact = models.ForeignKey(Contact, verbose_name=_(u'Contact'))
+    date = models.DateTimeField(_(u'Date'), auto_now_add=True)
+    user = models.ForeignKey(User, verbose_name=_(u'User'))
+    subject = models.CharField(_(u'Subject'), max_length=50)
+    text = models.TextField(_(u'Text'))
+
+    def __unicode__(self):
+        return u'{0} - {1}, {2}, {3}'.format(self.contact, self.subject,
+            self.user.get_profile(), self.date.strftime('%Y-%m-%d %H:%M'))
+
+    class Meta:
+        verbose_name = _(u'Note')
+        verbose_name_plural = _(u'Notes')
 
 
 class StudentGroup(models.Model):
