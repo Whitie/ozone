@@ -31,7 +31,7 @@ $(document).ready(function() {
 </script>
 {% for s in students %}
 <h3 title="{% trans "Click for details" %}">
-  {{ forloop.counter }}. {{ s.lastname }}, {{ s.firstname }}
+  {{ forloop.counter }}. {{ s.lastname }}, {{ s.firstname }} ({{ s.company.short_name }})
   {% if perms.core.can_change_student %}
   <a href="/admin/core/student/{{ s.id }}/">
     <img src="/static/img/edit.png" title="{% trans "Edit" %}" /></a>

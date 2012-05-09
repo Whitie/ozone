@@ -1,0 +1,14 @@
+{% extends "index.html" %}
+{% load i18n %}
+
+{% block content %}
+<h3 title="{% trans "Click for details." %}">
+  {% trans "Name" %}: {{ c.name }}
+  {% if perms.core.can_change_company %}
+  <a href="/admin/core/company/{{ c.id }}/">
+    <img src="/static/img/edit.png" title="{% trans "Edit" %}" /></a>
+  {% endif %}
+</h3>
+<div class="details">{% include "companies/details.html" %}</div>
+
+{% endblock %}

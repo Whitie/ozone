@@ -1,6 +1,10 @@
 {% load i18n %}
 
 <ul>
+  {% if not single_view %}
+  <li><a href="/core/companies/{{ c.id }}/">
+    {% trans "Open on separate page" %}</a></li>
+  {% endif %}
   <li>{% trans "Street" %}: {{ c.street|default:"-" }}</li>
   <li>{% trans "City" %}: {{ c.zip_code }} {{ c.city|default:"-" }}</li>
   <li>{% trans "Country" %}: {{ c.country|default:"-" }}</li>
@@ -12,17 +16,33 @@
   {% endif %}
   <li>{% trans "QM Rating" %}: <span title="{{ c.qm_note|default:"-" }}">
     {{ c.qm_rating }}</span></li>
-  <li>{% trans "Active Students" %}: {% if c.has_students %}
-    {{ c.active_students }}{% else %}{% trans "No" %}{% endif %}</li>
+  <li>{% trans "Active Students" %}:
+  {% if single_view and c.active_students %}
+  <ul>
+  {% for s in students %}
+    <li>{{ s.group }}: {{ s.lastname }}, {{ s.firstname }} ({{ s.birthdate }})</li>
+  {% endfor %}
+  </ul>
+  {% else %}
+    {% if c.has_students %}{{ c.active_students }}{% else %}
+    {% trans "No" %}{% endif %}
+  {% endif %}
+  </li>
   {% for con in c.contacts.all %}
   <li><strong>{{ forloop.counter }}) {{ con }}</strong>
     <ul>
       <li>{% trans "Phone" %}: {{ con.phone|default:"-" }}</li>
       {% if con.email %}
-      <li>{% trans "Email" %}: 
+      <li>{% trans "Email" %}:
         <a href="mailto:{{ con.email }}">{{ con.email }}</a></li>
       {% endif %}
-      <li>{% trans "Note" %}: {{ con.note|default:"-" }}</li>
+      <li>{% trans "Notes" %} (<a href="/core/companies/addnote/{{ con.id }}/">{% trans "Add Note" %}</a>):
+        <ul>
+        {% for n in con.notes.all %}
+          <li><a href="" title="{{ n.user.get_profile }}: {{ n.text }}">{{ n.date }}</a></li>
+        {% endfor %}
+        </ul>
+      </li>
     </ul>
   </li>
   {% empty %}
@@ -30,3 +50,8 @@
   {% endfor %}
 </ul>
 
+<script>
+$(document).ready(function() {
+  $('a[title]').qtip();
+)}
+</script>

@@ -4,7 +4,14 @@
 <tr><td style="width:60%;">
 <ul>
   <li>{% trans "Group" %}: {{ s.group.name|default:"-" }}</li>
-  <li>{% trans "Company" %}: {{ s.company|default:"-" }}</li>
+  <li>{% trans "Company" %}:
+    {% if s.company %}
+    <a href="/core/companies/{{ s.company.id }}/">
+      {{ s.company }}</a>
+    {% else %}
+    -
+    {% endif %}
+  </li>
   <li>{% trans "Birthday" %}: {{ s.birthdate|date:"DATE_FORMAT"|default:"-" }}
     </li>
   <li>{% trans "Email" %}: {{ s.email|default:"-" }}</li>

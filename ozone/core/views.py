@@ -94,6 +94,17 @@ def do_logout(req):
 
 
 @login_required
+def company_details(req, id):
+    company = Company.objects.get(pk=int(id))
+    students = company.students.select_related().filter(finished=False
+        ).order_by('group__job', 'lastname')
+    ctx = dict(page_title=_(u'Details: %s' % company.name), menus=menus,
+        c=company, single_view=True, students=students)
+    return render_to_response('companies/view_company.html', ctx,
+                              context_instance=RequestContext(req))
+
+
+@login_required
 def list_companies(req, startchar=''):
     if req.method == 'POST':
         form = SearchForm(req.POST)
@@ -114,7 +125,8 @@ def list_companies(req, startchar=''):
             companies = Company.objects.select_related().filter(
                 name__istartswith=startchar)
     ctx = dict(page_title=_(u'Companies'), companies=companies, menus=menus,
-        startchar=startchar, chars=string.ascii_uppercase, form=form)
+        startchar=startchar, chars=string.ascii_uppercase, form=form,
+        single_view=False)
     return render_to_response('companies/list.html', ctx,
                               context_instance=RequestContext(req))
 

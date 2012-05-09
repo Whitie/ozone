@@ -152,7 +152,8 @@ class Contact(models.Model):
 
 
 class Note(models.Model):
-    contact = models.ForeignKey(Contact, verbose_name=_(u'Contact'))
+    contact = models.ForeignKey(Contact, verbose_name=_(u'Contact'),
+        related_name='notes')
     date = models.DateTimeField(_(u'Date'), auto_now_add=True)
     user = models.ForeignKey(User, verbose_name=_(u'User'))
     subject = models.CharField(_(u'Subject'), max_length=50)
