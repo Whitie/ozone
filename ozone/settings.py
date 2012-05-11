@@ -107,10 +107,10 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
-    'ozone.active_directory',
-    'ozone.core',
-    'ozone.orders',
-    'ozone.company_rating',
+    'active_directory',
+    'core',
+    'orders',
+    'company_rating',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -129,7 +129,7 @@ LOGIN_URL = '/core/login'
 LOGOUT_URL = '/core/logout'
 
 AUTHENTICATION_BACKENDS = (
-    'ozone.active_directory.auth.ADAuthBackend',
+    'active_directory.auth.ADAuthBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -190,7 +190,7 @@ LOGGING = {
             'propagate': False,
             'level': 'INFO',
         },
-        'ozone.active_directory': {
+        'active_directory': {
             'handlers': ['console', 'file_access'],
             'level': 'DEBUG',
         },

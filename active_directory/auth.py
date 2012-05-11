@@ -18,7 +18,7 @@ from django.utils.encoding import smart_str, smart_unicode
 from active_directory.models import ADCache
 
 
-logger = logging.getLogger('ozone.active_directory')
+logger = logging.getLogger('active_directory')
 
 
 class ADAuthBackend:

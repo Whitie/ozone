@@ -8,9 +8,9 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    (r'^$', 'ozone.core.views.index'),
-    (r'^core/', include('ozone.core.urls')),
-    (r'^orders/', include('ozone.orders.urls')),
+    (r'^$', 'core.views.index'),
+    (r'^core/', include('core.urls')),
+    (r'^orders/', include('orders.urls')),
 
     (r'^admin/', include(admin.site.urls)),
     (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to',
@@ -18,5 +18,5 @@ urlpatterns = patterns('',
 
     # Only for Testing!!!
     (r'^static/(?P<path>.*)$', 'django.views.static.serve',
-     {'document_root': settings.MEDIA_ROOT}),
+     {'document_root': settings.STATIC_ROOT}),
 )
