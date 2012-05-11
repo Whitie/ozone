@@ -83,12 +83,12 @@ class NewsAdmin(admin.ModelAdmin):
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('__unicode__', 'show_email', 'phone', 'mobile', 'part',
-                    'can_login')
+                    'subjects', 'can_login')
     list_display_links = ('__unicode__',)
-    list_editable = ('phone', 'mobile', 'can_login')
+    list_editable = ('phone', 'mobile', 'subjects', 'can_login')
     list_filter = ('part', 'can_login')
     search_fields = ('user__username', 'user__last_name', 'user__email',
-                     'barcode')
+                     'barcode', 'subjects')
     save_on_top = True
 
     @named(_(u'Email'))

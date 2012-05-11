@@ -38,9 +38,12 @@ class UserProfile(CommonInfo):
     user = models.OneToOneField(User, verbose_name=_(u'User'), editable=False)
     name_prefix = models.CharField(_(u'Name Prefix'), max_length=12,
         blank=True)
+    birthdate = models.DateField(_(u'Birthdate'), null=True, blank=True)
     mobile = models.CharField(_(u'Mobile'), max_length=30, blank=True)
     part = models.ForeignKey(Part, verbose_name=_(u'Part'), blank=True,
         null=True)
+    subjects = models.CharField(_(u'Subjects'), max_length=150, blank=True,
+        help=_(u'Separate two or more subjects with a comma.'))
     can_login = models.BooleanField(_(u'Can Login'), default=True)
     external = models.BooleanField(_(u'External'), default=False)
     barcode = models.CharField(max_length=100, editable=False, blank=True)
