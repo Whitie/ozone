@@ -49,6 +49,9 @@ USE_I18N = True
 # calendars according to the current locale
 USE_L10N = True
 
+# If you set this to False, Django will not use timezone-aware datetimes.
+USE_TZ = True
+
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = STATIC_ROOT = os.path.join(_PATH, 'static')
@@ -57,6 +60,14 @@ MEDIA_ROOT = STATIC_ROOT = os.path.join(_PATH, 'static')
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 MEDIA_URL = STATIC_URL = '/static/'
+
+# List of finder classes that know how to find static files in
+# various locations.
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)
 
 # URL which holds the logo of the ozone page
 LOGO_URL = '/static/img/logo.png'
@@ -85,10 +96,15 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    # Uncomment the next line for simple clickjacking protection:
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'audit_log.middleware.UserLoggingMiddleware',
 )
 
 ROOT_URLCONF = 'ozone.urls'
+
+# Python dotted path to the WSGI application used by Django's runserver.
+WSGI_APPLICATION = 'ozone.wsgi.application'
 
 TEMPLATE_DIRS = (
     os.path.join(_PATH, 'base_templates'),
