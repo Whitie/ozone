@@ -43,7 +43,7 @@ class UserProfile(CommonInfo):
     part = models.ForeignKey(Part, verbose_name=_(u'Part'), blank=True,
         null=True)
     subjects = models.CharField(_(u'Subjects'), max_length=150, blank=True,
-        help=_(u'Separate two or more subjects with a comma.'))
+        help_text=_(u'Separate two or more subjects with a comma.'))
     can_login = models.BooleanField(_(u'Can Login'), default=True)
     external = models.BooleanField(_(u'External'), default=False)
     barcode = models.CharField(max_length=100, editable=False, blank=True)
