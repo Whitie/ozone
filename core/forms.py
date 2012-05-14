@@ -25,3 +25,8 @@ class SearchForm(forms.Form):
 class StudentSearchForm(SearchForm):
     group = forms.TypedChoiceField(choices=GROUP_CHOICES, coerce=int,
         empty_value=0, required=False)
+
+
+class NoteForm(forms.Form):
+    subject = forms.CharField(label=_(u'Subject'), max_length=50)
+    text = forms.CharField(label=_(u'Text'), widget=forms.Textarea)

@@ -149,6 +149,9 @@ class Contact(models.Model):
             return u'{0} ({1})'.format(s, self.function)
         return s
 
+    def shortname(self):
+        return u'{0} {1}'.format(self.name_prefix, self.lastname)
+
     class Meta:
         verbose_name = _(u'Contact')
         verbose_name_plural = _(u'Contacts')

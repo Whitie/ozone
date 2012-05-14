@@ -4,7 +4,7 @@ import string
 
 from django.http import HttpResponse
 from django.template import RequestContext
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
@@ -14,8 +14,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Q
 
 from core import utils
-from core.models import News, Company, Student, StudentGroup
-from core.forms import NewsForm, SearchForm, StudentSearchForm
+from core.models import News, Company, Student, StudentGroup, Contact, Note
+from core.forms import NewsForm, SearchForm, StudentSearchForm, NoteForm
 from core.menu import menus
 from barcode.codex import Code39
 try:
@@ -60,6 +60,31 @@ def add_news(req):
         form = NewsForm()
     ctx = dict(page_title=_(u'Add News'), menus=menus, form=form)
     return render_to_response('news/add.html', ctx,
+                              context_instance=RequestContext(req))
+
+
+@permission_required('core.add_note')
+def add_note(req, id):
+    contact = get_object_or_404(Contact, pk=int(id))
+    company = contact.company
+    old_notes = contact.notes.all().order_by('-date')
+    if req.method == 'POST':
+        form = NoteForm(req.POST)
+        if form.is_valid():
+            note = Note(subject=form.cleaned_data['subject'],
+                text=form.cleaned_data['text'])
+            note.user = req.user
+            note.contact = contact
+            note.save()
+            messages.success(req, _(u'New note saved.'))
+            return redirect('/core/companies/addnote/{0}/'.format(id))
+        else:
+            messages.error(req, _(u'Please enter subject and text.'))
+    else:
+        form = NoteForm()
+    ctx = dict(page_title=_(u'Add Note'), menus=menus, form=form,
+        contact=contact, company=company, notes=old_notes)
+    return render_to_response('companies/add_note.html', ctx,
                               context_instance=RequestContext(req))
 
 

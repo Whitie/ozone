@@ -1,0 +1,30 @@
+{% extends "index.html" %}
+{% load i18n %}
+
+{% block content %}
+<h2 class="headline">
+{% trans "New Note" %}: {{ contact.shortname }} ({{ company.short_name|default:company.name }})
+</h2>
+<div style="width:40%;text-align:left;margin:10px auto;">
+<form action="{% url core-company-addnote contact.id %}" method="post">
+{% csrf_token %}
+<table>
+{{ form }}
+<tr>
+  <th></th>
+  <td><input type="submit" value="{% trans 'Save' %}" /></td>
+</tr>
+</table>
+</form>
+<br />
+<h2 class="headline">{% trans "Old Notes" %}</h2>
+{% for n in notes %}
+<h3>{{ n.date }} - {{ n.subject }}</h3>
+<p>{{ n.user.get_profile }}:</p>
+<p>{{ n.text }}</p>
+<hr />
+{% empty %}
+<p><strong>{% trans "No old notes." %}</strong></p>
+{% endfor %}
+</div>
+{% endblock %}
