@@ -201,6 +201,11 @@ class StudentGroup(models.Model):
 
 
 SEX_CHOICES = (('M', _(u'Male')), ('F', _(u'Female')))
+SUIT_CHOICES = (
+    (1, u'Die Berufseignung ist nicht gegeben.'),
+    (2, u'Die Berufseignung ist bedingt gegeben.'),
+    (3, u'Die Berufseignung ist gegeben.'),
+)
 
 class Student(CommonInfo):
     lastname = models.CharField(_(u'Lastname'), max_length=50)
@@ -216,9 +221,17 @@ class Student(CommonInfo):
         related_name='students', blank=True, null=True)
     cabinet = models.CharField(_(u'Cabinet'), max_length=20, blank=True)
     key = models.CharField(_(u'Key'), max_length=20, blank=True)
+    applied_to = models.CharField(_(u'Applied to'), max_length=150,
+        help_text=_(u'Separate two or more names with a comma.'), blank=True)
+    forwarded_to = models.CharField(_(u'Forwarded to'), max_length=150,
+        help_text=_(u'Separate two or more names with a comma.'), blank=True)
+    jobs = models.CharField(_(u'Jobs'), max_length=150,
+        help_text=_(u'Separate two or more jobs with a comma.'), blank=True)
     test_result = models.PositiveSmallIntegerField(_(u'Test Result'),
         blank=True, null=True)
     test_date = models.DateField(_(u'Test Date'), blank=True, null=True)
+    suit_phrase = models.PositiveSmallIntegerField(_(u'Suit phrase'),
+        choices=SUIT_CHOICES, blank=True, null=True)
     exam_1 = models.PositiveSmallIntegerField(_(u'Exam 1'), blank=True,
         null=True)
     exam_1_weight = models.PositiveSmallIntegerField(_(u'Exam 1 weight'),

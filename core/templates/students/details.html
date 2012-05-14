@@ -14,7 +14,9 @@
   </li>
   <li>{% trans "Birthday" %}: {{ s.birthdate|date:"DATE_FORMAT"|default:"-" }}
     </li>
-  <li>{% trans "Email" %}: {{ s.email|default:"-" }}</li>
+  <li>{% trans "Email" %}:
+    {% if s.email %}<a href="mailto:{{ s.email }}">{{ s.email }}</a>{% else %}-{% endif %}
+  </li>
   <li>{% trans "Phone" %}: {{ s.phone|default:"-" }}</li>
   <li>{% trans "Mobile" %}: {{ s.mobile|default:"-" }}</li>
   <li>{% trans "Address" %}
@@ -48,11 +50,19 @@
 </ul>
 </td>
 <td style="width:40%;">
+  <figure>
 {% if s.picture %}
   <img src="{{ s.picture.url }}" alt="{% trans "Picture" %}" width="100" />
+  <figcaption>
+    {{ s.lastname }}, {{ s.firstname }}
+  </figcaption>
 {% else %}
-  {% trans "No Picture set." %}
+  <img src="/static/img/mustermann.jpg" width="100" />
+  <figcaption>
+    {% trans "No Picture set." %}
+  </figcaption>
 {% endif %}
+  </figure>
 </td>
 </tr>
 </table>
