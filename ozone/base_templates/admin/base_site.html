@@ -1,0 +1,14 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block title %}{{ title }} | {% trans 'Ozone site admin' %}{% endblock %}
+
+{% block branding %}
+<a href="/">
+<h1 id="site-name" title="{% trans 'Click here to go back to Ozone startpage.' %}">
+  {% trans 'Ozone administration' %}
+</h1>
+</a>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
