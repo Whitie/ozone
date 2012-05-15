@@ -2,6 +2,8 @@
 
 import json
 
+from datetime import date
+
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -212,6 +214,8 @@ class Student(CommonInfo):
     firstname = models.CharField(_(u'Firstname'), max_length=50)
     sex = models.CharField(_(u'Sex'), max_length=1, choices=SEX_CHOICES)
     birthdate = models.DateField(_(u'Birthdate'))
+    emergency = models.CharField(_(u'Notice in emergency'), max_length=100,
+        blank=True)
     picture = models.ImageField(_(u'Picture'), upload_to='pictures', blank=True)
     email = models.EmailField(_(u'Email'), blank=True)
     mobile = models.CharField(_(u'Mobile'), max_length=30, blank=True)
@@ -254,6 +258,16 @@ class Student(CommonInfo):
             weighted = self.exam_1 * self.exam_1_weight + \
                        self.exam_2 * (100 - self.exam_1_weight)
             return int(round(weighted / 100.0, 0))
+
+    def first(self):
+        return self.lastname[0].upper()
+
+    def age(self):
+        try:
+            age = date.today() - self.birthdate
+            return age.days // 365
+        except:
+            return 0
 
     class Meta:
         verbose_name = _(u'Student')

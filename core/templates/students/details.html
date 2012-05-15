@@ -12,8 +12,9 @@
     -
     {% endif %}
   </li>
+  <li><strong>{% trans "Notice in Emergency" %}:</strong> {{ s.emergency }}</li>
   <li>{% trans "Birthday" %}: {{ s.birthdate|date:"DATE_FORMAT"|default:"-" }}
-    </li>
+    ({{ s.age }} {% trans "Years" %})</li>
   <li>{% trans "Email" %}:
     {% if s.email %}<a href="mailto:{{ s.email }}">{{ s.email }}</a>{% else %}-{% endif %}
   </li>

@@ -3,16 +3,19 @@
 
 {% block content %}
 <h2 class="headline">{{ group.name }}</h2>
-<p>{{ group.job }} ({{ group.job_short }}), {% trans "Begin" %}:
-  {{ group.start_date|date:"DATE_FORMAT" }}</p>
+<h3>{{ group.job }} ({{ group.job_short }}), {% trans "Begin" %}:
+  {{ group.start_date|date:"DATE_FORMAT" }}</h3>
 <ol>
   {% for s in group.students.all %}
-  <li>{{ s.lastname }}, {{ s.firstname }}
+  <li><a href="/core/students/{{ s.first }}/">{{ s.lastname }}</a>,
+    {{ s.firstname }}
     {% if perms.core.can_change_student %}
     <a href="/admin/core/student/{{ s.id }}/">
       <img src="/static/img/edit.png" title="{% trans "Edit" %}" /></a>
-    {% endif %}
-    ; {{ s.company.name }}; {{ s.birthdate|date:"DATE_FORMAT" }}
+    {% endif %};
+    <a href="/core/companies/{{ s.company.id }}/">{{ s.company.name }}</a>;
+    {{ s.birthdate|date:"DATE_FORMAT" }}
+    ({% blocktrans with age=s.age %}Age: {{ age }} Years{% endblocktrans %})
   </li>
 {% endfor %}
 </ol>

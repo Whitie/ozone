@@ -14,13 +14,16 @@
   {% if c.web %}
   <li>{% trans "Homepage" %}: <a href="{{ c.web }}">{{ c.web }}</a></li>
   {% endif %}
-  <li>{% trans "QM Rating" %}: <span title="{{ c.qm_note|default:"-" }}">
-    {{ c.qm_rating }}</span></li>
+  <li>{% trans "QM Rating" %}: <a href="" title="{{ c.qm_note|default:"-" }}">
+    {{ c.qm_rating }}</a></li>
   <li>{% trans "Active Students" %}:
   {% if single_view and c.active_students %}
   <ul>
   {% for s in students %}
-    <li>{{ s.group }}: {{ s.lastname }}, {{ s.firstname }} ({{ s.birthdate }})</li>
+    <li><a href="/core/groups/{{ s.group.id }}/">{{ s.group }}</a>:
+      <a href="/core/students/{{ s.first }}/">{{ s.lastname }}</a>,
+      {{ s.firstname }}
+      ({{ s.birthdate }}, {{ s.age }} {% trans "Years" %})</li>
   {% endfor %}
   </ul>
   {% else %}
