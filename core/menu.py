@@ -22,6 +22,7 @@ core_menu = Menu(_(u'Core'),
 )
 
 news_menu = Menu(_(u'News'),
+    ('core-index', _(u'Read News')),
     ('core-add-news', _(u'Write News')),
 )
 
