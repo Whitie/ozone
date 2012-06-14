@@ -220,7 +220,7 @@ LOGGING = {
 # Active Directory settings ####################################################
 
 # FQDN or IP of the AD server
-AD_DNS_NAME = '10.0.0.2'
+AD_DNS_NAME = '10.0.0.3'
 
 # AD LDAP port
 AD_LDAP_PORT = 389
@@ -232,10 +232,10 @@ AD_USE_SSL = False
 AD_CERT_FILE = ''
 
 # Search dn for users
-AD_SEARCH_DN = 'ou=Nutzer,dc=bbzchemie,dc=de'
+AD_SEARCH_DN = 'ou=SBSUsers,ou=Users,ou=MyBusiness,dc=bbz,dc=local'
 
 # NT4 domain name
-AD_NT4_DOMAIN = 'BBZCHEMIE'
+AD_NT4_DOMAIN = 'BBZ'
 
 # Search fields in the AD
 AD_SEARCH_FIELDS = ['mail', 'givenName', 'sn', 'sAMAccountName', 'memberOf']
@@ -244,7 +244,15 @@ AD_SEARCH_FIELDS = ['mail', 'givenName', 'sn', 'sAMAccountName', 'memberOf']
 AD_MEMBERSHIP_ADMIN = ['EDV']
 
 # AD groups that can access the app(s)
-AD_MEMBERSHIP_REQ = AD_MEMBERSHIP_ADMIN + ['PVT']
+AD_MEMBERSHIP_REQ = AD_MEMBERSHIP_ADMIN + [
+    'Pharmakanten',
+    'Chemielaboranten',
+    'QMB',
+    'Leitung',
+    'Verwaltung',
+    'Biologielaboranten',
+    'Chemikanten',
+]
 
 # Create AD groups in django and assign users
 AD_CREATE_GROUPS = True
