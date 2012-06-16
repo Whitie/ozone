@@ -33,6 +33,7 @@ class ADAuthBackend:
                                           settings.AD_LDAP_PORT)
         self.cache_time = settings.AD_CACHE_TIME
         logger.info('LDAP URL: %s', self.url)
+        logger.debug('Django PASSWORD_HASHERS: %r', settings.PASSWORD_HASHERS)
         logger.info('AD cache set to %d seconds', self.cache_time)
 
     def authenticate(self, username=None, password=None):
@@ -94,7 +95,12 @@ class ADAuthBackend:
 
     def _get_or_create_user(self, username, password):
         user_info = self._get_user_info(username, password)
-        user, created = User.objects.get_or_create(username=username)
+        try:
+            user = User.objects.get(username=username)
+            created = False
+        except User.DoesNotExist:
+            user = User.objects.create(username=username, password=u'pass')
+            created = True
         if not created:
             logger.info('User %s found in database', username)
         else:
