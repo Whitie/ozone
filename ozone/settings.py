@@ -252,6 +252,7 @@ AD_MEMBERSHIP_REQ = AD_MEMBERSHIP_ADMIN + [
     'Verwaltung',
     'Biologielaboranten',
     'Chemikanten',
+    'QMTeam',
 ]
 
 # Create AD groups in django and assign users
@@ -259,7 +260,8 @@ AD_CREATE_GROUPS = True
 
 # Don't query AD again for x seconds (default: 8 hours)
 # Set to 0 for no cache
-AD_CACHE_TIME = 8 * 60 * 60
+#AD_CACHE_TIME = 8 * 60 * 60
+AD_CACHE_TIME = 0
 
 ################################################################################
 

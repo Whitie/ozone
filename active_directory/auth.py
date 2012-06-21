@@ -33,7 +33,7 @@ class ADAuthBackend:
                                           settings.AD_LDAP_PORT)
         self.cache_time = settings.AD_CACHE_TIME
         logger.info('LDAP URL: %s', self.url)
-        logger.debug('Django PASSWORD_HASHERS: %r', settings.PASSWORD_HASHERS)
+        #logger.debug('Django PASSWORD_HASHERS: %r', settings.PASSWORD_HASHERS)
         logger.info('AD cache set to %d seconds', self.cache_time)
 
     def authenticate(self, username=None, password=None):
@@ -45,7 +45,9 @@ class ADAuthBackend:
             logger.warning('Password for %s not provided', username)
             return
         if self.cache_time:
+            logger.info('Checking cache...')
             user = self._check_cache(username, password)
+            print user
             if user is not None:
                 return user
         try:
@@ -57,6 +59,7 @@ class ADAuthBackend:
             binddn = u'{0}@{1}'.format(username, settings.AD_NT4_DOMAIN)
             l.simple_bind_s(smart_str(binddn), smart_str(password))
             l.unbind_s()
+            print username, password
             return self._get_or_create_user(username, password)
         except ldap.INVALID_CREDENTIALS:
             logger.error('%s: Invalid credentials', username)
@@ -94,13 +97,17 @@ class ADAuthBackend:
             logger.exception('Error during cache lookup')
 
     def _get_or_create_user(self, username, password):
+        logger.debug('_get_or_create_user(%r, %r) called', username, password)
         user_info = self._get_user_info(username, password)
         try:
             user = User.objects.get(username=username)
+            user.set_password(password)
             created = False
         except User.DoesNotExist:
-            user = User.objects.create(username=username, password=u'pass')
+            user = User.objects.create_user(username=username,
+                password=password)
             created = True
+        user.save()
         if not created:
             logger.info('User %s found in database', username)
         else:
@@ -109,7 +116,6 @@ class ADAuthBackend:
             else:
                 logger.error('No info for %s found in AD', username)
                 return
-        user.set_password(password)
         if user_info is None:
             user.is_active = False
             user.save()
