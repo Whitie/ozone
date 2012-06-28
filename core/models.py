@@ -112,8 +112,8 @@ class Company(CommonInfo):
         blank=True)
     web = models.URLField(_(u'Web'), blank=True)
     email = models.EmailField(_(u'Email'), blank=True)
-    qm_rating = models.CharField(_(u'QM Rating'), max_length=1, blank=True)
-    qm_note = models.TextField(_(u'QM Note'), blank=True)
+    #qm_rating = models.CharField(_(u'QM Rating'), max_length=1, blank=True)
+    #qm_note = models.TextField(_(u'QM Note'), blank=True)
 
     def __unicode__(self):
         if self.short_name:
