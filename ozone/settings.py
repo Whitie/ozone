@@ -80,7 +80,7 @@ STATICFILES_DIRS = (
 )
 
 # URL which holds the logo of the ozone page
-LOGO_URL = '/static/img/logo.png'
+LOGO_URL = STATIC_URL + 'img/logo.png'
 
 # Session configuration
 SESSION_SAVE_EVERY_REQUEST = True

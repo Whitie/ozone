@@ -14,8 +14,6 @@
   {% if c.web %}
   <li>{% trans "Homepage" %}: <a href="{{ c.web }}">{{ c.web }}</a></li>
   {% endif %}
-  <li>{% trans "QM Rating" %}: <a href="" title="{{ c.qm_note|default:"-" }}">
-    {{ c.qm_rating }}</a></li>
   <li>{% trans "Active Students" %}:
   {% if single_view and c.active_students %}
   <ul>

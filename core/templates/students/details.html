@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load staticfiles %}
 
 <table style="width:95%;">
 <tr><td style="width:60%;">
@@ -58,7 +59,7 @@
     {{ s.lastname }}, {{ s.firstname }}
   </figcaption>
 {% else %}
-  <img src="/static/img/mustermann.jpg" width="100" />
+  <img src="{% static "img/mustermann.jpg" %}" width="100" />
   <figcaption>
     {% trans "No Picture set." %}
   </figcaption>

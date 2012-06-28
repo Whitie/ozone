@@ -1,5 +1,6 @@
 {% extends "index.html" %}
 {% load i18n %}
+{% load staticfiles %}
 
 {% block content %}
 <h2 class="headline">{{ startchar|default:"-" }} ({{ companies.count }})</h2>
@@ -34,7 +35,7 @@ $(document).ready(function() {
   {{ forloop.counter }}. {{ c.name }} ({{ c.short_name }})
   {% if perms.core.can_change_company %}
   <a href="/admin/core/company/{{ c.id }}/">
-    <img src="/static/img/edit.png" title="{% trans "Edit" %}" /></a>
+    <img src="{% static "img/edit.png" %}" title="{% trans "Edit" %}" /></a>
   {% endif %}
 </h3>
 <div class="details">{% include "companies/details.html" %}</div>

@@ -1,5 +1,6 @@
 {% extends "index.html" %}
 {% load i18n %}
+{% load staticfiles %}
 
 {% block content %}
 <h2 class="headline">{{ group.name }}</h2>
@@ -11,7 +12,7 @@
     {{ s.firstname }}
     {% if perms.core.can_change_student %}
     <a href="/admin/core/student/{{ s.id }}/">
-      <img src="/static/img/edit.png" title="{% trans "Edit" %}" /></a>
+      <img src="{% static "img/edit.png" %}" title="{% trans "Edit" %}" /></a>
     {% endif %};
     <a href="/core/companies/{{ s.company.id }}/">{{ s.company.name }}</a>;
     {{ s.birthdate|date:"DATE_FORMAT" }}
