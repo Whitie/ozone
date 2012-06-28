@@ -57,12 +57,15 @@ USE_TZ = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = STATIC_ROOT = os.path.join(_PATH, 'static')
+# Set to right directory in production
+MEDIA_ROOT = os.path.join(_PATH, 'media')
+STATIC_ROOT = os.path.join(_PATH, 'ozone_static')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+STATIC_URL = '/static/'
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -70,6 +73,10 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)
+
+STATICFILES_DIRS = (
+    os.path.join(_PATH, 'static'),
 )
 
 # URL which holds the logo of the ozone page
@@ -126,6 +133,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
+    'django.contrib.staticfiles',
     'active_directory',
     'core',
     'orders',
@@ -137,6 +145,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.debug',
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
+    'django.core.context_processors.static',
     'django.contrib.messages.context_processors.messages',
     'core.context_processors.userconf',
     'core.context_processors.set_global_vars',
