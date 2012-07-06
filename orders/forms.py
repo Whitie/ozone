@@ -31,16 +31,16 @@ class OrderOldForm(forms.Form):
     article_id = forms.IntegerField(widget=forms.HiddenInput)
 
 class OrderForm(forms.Form):
-    count = _wid.IntegerField5(label=_('Count'))
-    art_name = forms.CharField(label=_('Article'), max_length=100)
-    art_supplier = forms.ChoiceField(label=_('Supplier'),
+    count = _wid.IntegerField5(label=_(u'Count'))
+    art_name = forms.CharField(label=_(u'Article'), max_length=100)
+    art_supplier = forms.ChoiceField(label=_(u'Supplier'),
         choices=SUPPLIER_CHOICES)
-    art_id = forms.CharField(label=_('Identifier'), max_length=50,
+    art_id = forms.CharField(label=_(u'Identifier'), max_length=50,
         required=False)
-    art_q = forms.CharField(label=_('Quantity'), max_length=20)
-    art_price = forms.DecimalField(label=_('Price'), required=False)
-    memo = forms.CharField(label=_('Memo'), widget=forms.Textarea(),
+    art_q = forms.CharField(label=_(u'Quantity'), max_length=20)
+    art_price = forms.DecimalField(label=_(u'Price'), required=False)
+    memo = forms.CharField(label=_(u'Memo'), widget=forms.Textarea(),
         required=False)
-    oday = forms.ChoiceField(label=_('Order Day'), choices=ODAY_CHOICES)
-    exam = forms.BooleanField(label=_('For Exam'), required=False)
-    repair = forms.BooleanField(label=_('Repair'), required=False)
+    oday = forms.ChoiceField(label=_(u'Order Day'), choices=ODAY_CHOICES)
+    exam = forms.BooleanField(label=_(u'Exam'), required=False)
+    repair = forms.BooleanField(label=_(u'Repair'), required=False)

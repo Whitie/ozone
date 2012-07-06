@@ -272,6 +272,7 @@ class Student(CommonInfo):
     class Meta:
         verbose_name = _(u'Student')
         verbose_name_plural = _(u'Students')
+        ordering = ['company__name', 'lastname']
 
 
 class Memo(models.Model):
@@ -292,3 +293,4 @@ class Memo(models.Model):
     class Meta:
         verbose_name = _(u'Memo')
         verbose_name_plural = _(u'Memos')
+        ordering = ['student__lastname']
