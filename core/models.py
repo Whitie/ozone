@@ -132,6 +132,23 @@ class Company(CommonInfo):
         ordering = ('name',)
 
 
+class CooperationContract(models.Model):
+    company = models.ForeignKey(Company, verbose_name=_(u'Company'),
+        related_name='cooperations')
+    date = models.DateField(_(u'Date'))
+    full = models.BooleanField(_(u'Full-Cooperation'), default=True)
+    job = models.CharField(_(u'Job'), max_length=50)
+    note = models.TextField(_(u'Note'), blank=True)
+
+    def __unicode__(self):
+        return u'{0}, {1} ({2})'.format(self.company.name,
+            self.date.strftime('%d.%m.%Y'), self.job)
+
+    class Meta:
+        verbose_name = _(u'Cooperation Contract')
+        verbose_name_plural = _(u'Cooperation Contracts')
+
+
 class Contact(models.Model):
     name_prefix = models.CharField(_(u'Name Prefix'), max_length=12)
     lastname = models.CharField(_(u'Lastname'), max_length=50)
@@ -245,6 +262,9 @@ class Student(CommonInfo):
     barcode = models.CharField(max_length=100, editable=False, blank=True)
     _barcode = models.ImageField(upload_to='barcodes', editable=False,
         blank=True)
+    contract = models.ForeignKey(CooperationContract,
+        verbose_name=_(u'Cooperation Contract'), related_name='students',
+        null=True, blank=True)
     finished = models.BooleanField(_(u'Finished'), default=False)
 
     audit_log = AuditLog()

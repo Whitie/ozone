@@ -49,10 +49,27 @@
   {% empty %}
   <li>{% trans "No contacts defined." %}</li>
   {% endfor %}
+  {% if c.cooperations %}
+  <li><strong>{% trans "Cooperation Contracts" %}</strong>
+    <ul>
+      {% for coop in c.cooperations.all %}
+      <li><a href="" title="{{ coop.note }}">{{ coop.date }} {{ coop.job }}</a>
+        <ul>
+          {% for student in coop.students.all %}
+          <li>{{ student }}</li>
+          {% endfor %}
+        </ul>
+      </li>
+      {% endfor %}
+    </ul>
+  </li>
+  {% else %}
+  <li>{% trans "No Cooperations" %}</li>
+  {% endif %}
 </ul>
 
 <script>
 $(document).ready(function() {
   $('a[title]').qtip();
-)}
+});
 </script>

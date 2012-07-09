@@ -24,12 +24,20 @@ class ContactInline(admin.StackedInline):
     extra = 1
 
 
+class CooperationContractInline(admin.StackedInline):
+    model = CooperationContract
+    max_num = 3
+    extra = 1
+
+
 class CompanyAdmin(admin.ModelAdmin):
-    inlines = (ContactInline,)
+    inlines = (ContactInline, CooperationContractInline)
     list_display = ('name', 'short_name', 'phone', 'fax', 'customer_number',
                     'student_count')
     list_display_links = ('name', 'short_name')
     list_editable = ('phone', 'fax')
+    list_filter = ('cooperations__date', 'cooperations__full',
+                   'cooperations__job')
     ordering = ('name',)
     save_on_top = True
     search_fields = ('name', 'short_name', 'zip_code')
@@ -37,6 +45,16 @@ class CompanyAdmin(admin.ModelAdmin):
     @named(_(u'Student(s)'))
     def student_count(self, obj):
         return obj.students.filter(finished=False).count()
+
+
+class CooperationContractAdmin(admin.ModelAdmin):
+    list_display = ('__unicode__', 'full')
+    list_display_links = ('__unicode__',)
+    list_editable = ('full',)
+    list_filter = ('company__name', 'date', 'full')
+    save_on_top = True
+    ordering = ('company__name', 'date')
+    search_fields = ('company__name', 'date')
 
 
 class StudentAdmin(admin.ModelAdmin):
@@ -100,6 +118,7 @@ admin.site.register(Part)
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(Company, CompanyAdmin)
+admin.site.register(CooperationContract, CooperationContractAdmin)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(StudentGroup, StudentGroupAdmin)
 admin.site.register(Memo, MemoAdmin)
