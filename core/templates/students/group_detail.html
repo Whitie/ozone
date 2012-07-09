@@ -3,7 +3,8 @@
 {% load staticfiles %}
 
 {% block content %}
-<h2 class="headline">{{ group.name }}</h2>
+<h2 class="headline">{{ group.name }}
+  {% if group.school_nr %}({{ group.school_nr }}){% endif %}</h2>
 <h3>{{ group.job }} ({{ group.job_short }}), {% trans "Begin" %}:
   {{ group.start_date|date:"DATE_FORMAT" }}</h3>
 <ol>

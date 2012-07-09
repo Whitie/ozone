@@ -137,7 +137,6 @@ INSTALLED_APPS = (
     'active_directory',
     'core',
     'orders',
-    'company_rating',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

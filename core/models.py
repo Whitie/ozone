@@ -104,6 +104,12 @@ class News(models.Model):
         ordering = ('-date', 'author')
 
 
+RATING_CHOICES = (
+    (u'A', _(u'useable')),
+    (u'B', _(u'useable with restrictions')),
+    (u'C', _(u'not useable')),
+    (u'D', _(u'more ratings needed')),
+)
 class Company(CommonInfo):
     name = models.CharField(_(u'Name'), max_length=100)
     short_name = models.CharField(_(u'Short Name'), max_length=10, blank=True)
@@ -112,8 +118,11 @@ class Company(CommonInfo):
         blank=True)
     web = models.URLField(_(u'Web'), blank=True)
     email = models.EmailField(_(u'Email'), blank=True)
-    #qm_rating = models.CharField(_(u'QM Rating'), max_length=1, blank=True)
-    #qm_note = models.TextField(_(u'QM Note'), blank=True)
+    rating_users = models.ManyToManyField(User, verbose_name=_(u'Rating Users'),
+        blank=True)
+    rating = models.CharField(_(u'Rating'), max_length=1,
+        choices=RATING_CHOICES, default=u'D')
+    rating_note = models.TextField(_(u'Rating Note'), blank=True)
 
     def __unicode__(self):
         if self.short_name:
@@ -192,6 +201,45 @@ class Note(models.Model):
     class Meta:
         verbose_name = _(u'Note')
         verbose_name_plural = _(u'Notes')
+
+
+class CompanyRating(models.Model):
+    company = models.ForeignKey(Company, verbose_name=_(u'Company'),
+        related_name='ratings')
+    user = models.ForeignKey(User, verbose_name=_(u'User'))
+    good_quality = models.PositiveSmallIntegerField(_(u'Good Quality'))
+    delivery_time = models.PositiveSmallIntegerField(_(u'Delivery Time'))
+    quality = models.PositiveSmallIntegerField(_(u'Quality'))
+    price = models.PositiveSmallIntegerField(_(u'Price'))
+    service = models.PositiveSmallIntegerField(_(u'Service'))
+    attainability = models.PositiveSmallIntegerField(_(u'Attainability'))
+    documentation = models.PositiveSmallIntegerField(_(u'Documentation'))
+    rating = models.CharField(_(u'Rating'), max_length=1,
+        choices=RATING_CHOICES)
+    rated = models.DateTimeField(_(u'Rated'), auto_now_add=True)
+    note = models.TextField(_(u'Note'), blank=True)
+
+    def __unicode__(self):
+        return u'{0} - {1} -> {2}'.format(self.user.get_profile(),
+            self.company.name, self.rating)
+
+    def as_list(self):
+        return [self.good_quality, self.delivery_time, self.quality, self.price,
+            self.service, self.attainability, self.documentation]
+
+    def calculate(self):
+        ratings = self.as_list()
+        average = sum(ratings) / 7.0
+        if average >= 3 and min(ratings) > 1:
+            return u'A'
+        elif average < 2:
+            return u'C'
+        else:
+            return u'D'
+
+    class Meta:
+        verbose_name = _(u'Company Rating')
+        verbose_name_plural = _(u'Company Ratings')
 
 
 class StudentGroup(models.Model):

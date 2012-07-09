@@ -53,7 +53,7 @@
   <li><strong>{% trans "Cooperation Contracts" %}</strong>
     <ul>
       {% for coop in c.cooperations.all %}
-      <li><a href="" title="{{ coop.note }}">{{ coop.date }} {{ coop.job }}</a>
+      <li><a href="" title="{{ coop.note }}">{{ coop.date|date:"DATE_FORMAT" }} {{ coop.job }}</a>
         <ul>
           {% for student in coop.students.all %}
           <li>{{ student }}{% if student.finished %} ({% trans "finished" %}){% endif %}</li>
