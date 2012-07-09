@@ -214,6 +214,7 @@ class CompanyRating(models.Model):
     service = models.PositiveSmallIntegerField(_(u'Service'))
     attainability = models.PositiveSmallIntegerField(_(u'Attainability'))
     documentation = models.PositiveSmallIntegerField(_(u'Documentation'))
+    rate = models.BooleanField(_(u'Rate'), default=True)
     rating = models.CharField(_(u'Rating'), max_length=1,
         choices=RATING_CHOICES)
     rated = models.DateTimeField(_(u'Rated'), auto_now_add=True)
