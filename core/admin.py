@@ -26,7 +26,7 @@ class ContactInline(admin.StackedInline):
 
 class CooperationContractInline(admin.StackedInline):
     model = CooperationContract
-    max_num = 3
+    max_num = 5
     extra = 1
 
 
@@ -62,10 +62,10 @@ class StudentAdmin(admin.ModelAdmin):
                     'phone', 'email', 'finished')
     list_display_links = ('lastname',)
     list_editable = ('phone', 'email', 'finished')
-    list_filter = ('group', 'company', 'finished')
+    list_filter = ('group', 'company', 'finished', 'group__school_nr')
     save_on_top = True
     search_fields = ('lastname', 'company__name', 'group__job_short',
-                     'barcode')
+                     'barcode', 'group__school_nr')
 
 
 class StudentInline(admin.StackedInline):
@@ -76,11 +76,12 @@ class StudentInline(admin.StackedInline):
 
 class StudentGroupAdmin(admin.ModelAdmin):
     inlines = (StudentInline,)
-    list_display = ('__unicode__', 'job', 'start_date')
+    list_display = ('__unicode__', 'job', 'start_date', 'school_nr')
     list_display_links = ('__unicode__', 'job')
-    list_filter = ('job',)
+    list_filter = ('job', 'school_nr')
+    list_editable = ('school_nr',)
     save_on_top = True
-    search_fields = ('job', 'job_short')
+    search_fields = ('job', 'job_short', 'school_nr')
 
 
 class MemoAdmin(admin.ModelAdmin):

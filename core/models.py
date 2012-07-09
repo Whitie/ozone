@@ -136,8 +136,9 @@ class CooperationContract(models.Model):
     company = models.ForeignKey(Company, verbose_name=_(u'Company'),
         related_name='cooperations')
     date = models.DateField(_(u'Date'))
-    full = models.BooleanField(_(u'Full-Cooperation'), default=True)
     job = models.CharField(_(u'Job'), max_length=50)
+    full = models.BooleanField(_(u'Full-Cooperation'), default=True)
+    active = models.BooleanField(_(u'Active'), default=True)
     note = models.TextField(_(u'Note'), blank=True)
 
     def __unicode__(self):
@@ -195,6 +196,8 @@ class Note(models.Model):
 
 class StudentGroup(models.Model):
     start_date = models.DateField(_(u'Start Date'))
+    school_nr = models.CharField(_(u'School Number'), max_length=10,
+        blank=True)
     job = models.CharField(_(u'Job'), max_length=50, blank=True)
     job_short = models.CharField(_(u'Job Short'), max_length=10,
         help_text=_(u'This field will be converted to uppercase.'))
