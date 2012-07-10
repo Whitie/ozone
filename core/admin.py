@@ -36,8 +36,7 @@ class CompanyAdmin(admin.ModelAdmin):
                     'student_count')
     list_display_links = ('name', 'short_name')
     list_editable = ('phone', 'fax')
-    list_filter = ('cooperations__date', 'cooperations__full',
-                   'cooperations__job')
+    list_filter = ('cooperations__full', 'cooperations__job')
     ordering = ('name',)
     save_on_top = True
     search_fields = ('name', 'short_name', 'zip_code')
@@ -55,6 +54,20 @@ class CooperationContractAdmin(admin.ModelAdmin):
     save_on_top = True
     ordering = ('company__name', 'date')
     search_fields = ('company__name', 'date')
+
+
+class CompanyRatingAdmin(admin.ModelAdmin):
+    exclude = ('user',)
+    list_display = ('company', 'user', 'rating', 'rated')
+    list_display_links = ('company',)
+    list_filter = ('company__name', 'user', 'rating', 'rated')
+    ordering = ('company__name', '-rated', 'rating')
+    search_fields = ('company__name', 'user')
+
+    def save_model(self, req, obj, form, change):
+        if getattr(obj, 'user', None) is None:
+            obj.user = req.user
+        obj.save()
 
 
 class StudentAdmin(admin.ModelAdmin):
@@ -120,6 +133,7 @@ admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(Company, CompanyAdmin)
 admin.site.register(CooperationContract, CooperationContractAdmin)
+admin.site.register(CompanyRating, CompanyRatingAdmin)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(StudentGroup, StudentGroupAdmin)
 admin.site.register(Memo, MemoAdmin)

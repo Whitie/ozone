@@ -118,6 +118,7 @@ class Company(CommonInfo):
         blank=True)
     web = models.URLField(_(u'Web'), blank=True)
     email = models.EmailField(_(u'Email'), blank=True)
+    rate = models.BooleanField(_(u'Rate'), default=True)
     rating_users = models.ManyToManyField(User, verbose_name=_(u'Rating Users'),
         blank=True)
     rating = models.CharField(_(u'Rating'), max_length=1,
@@ -206,7 +207,8 @@ class Note(models.Model):
 class CompanyRating(models.Model):
     company = models.ForeignKey(Company, verbose_name=_(u'Company'),
         related_name='ratings')
-    user = models.ForeignKey(User, verbose_name=_(u'User'))
+    user = models.ForeignKey(User, verbose_name=_(u'User'), null=True,
+    blank=True)
     good_quality = models.PositiveSmallIntegerField(_(u'Good Quality'))
     delivery_time = models.PositiveSmallIntegerField(_(u'Delivery Time'))
     quality = models.PositiveSmallIntegerField(_(u'Quality'))
@@ -214,7 +216,6 @@ class CompanyRating(models.Model):
     service = models.PositiveSmallIntegerField(_(u'Service'))
     attainability = models.PositiveSmallIntegerField(_(u'Attainability'))
     documentation = models.PositiveSmallIntegerField(_(u'Documentation'))
-    rate = models.BooleanField(_(u'Rate'), default=True)
     rating = models.CharField(_(u'Rating'), max_length=1,
         choices=RATING_CHOICES)
     rated = models.DateTimeField(_(u'Rated'), auto_now_add=True)
