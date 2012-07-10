@@ -50,4 +50,4 @@ class CompanyRatingForm(forms.Form):
     rating = forms.ChoiceField(label=_(u'Rating'), choices=RATING_CHOICES)
     note = forms.CharField(label=_(u'Note'), widget=forms.Textarea,
         required=False, help_text=_(u'This field is required if you rate '
-        u'with B.'))
+        u'with "B".'))
