@@ -1,0 +1,29 @@
+{% extends "index.html" %}
+{% load i18n %}
+{% load urls %}
+
+{% block content %}
+<h2 class="headline">{% trans "Presences" %}</h2>
+
+{% for n, gr in groups %}
+<h3>{{ n }}</h3>
+<ul>
+  {% for g in gr %}
+  <li><a href="{% url core.views.presence_for_group gid=g.id %}"
+    title="{% trans "Klick to manage this group." %}">{{ g }}</a>
+  </li>
+  {% empty %}
+  <li>{% trans "No group for this job." %}</li>
+  {% endfor %}
+  </ul>
+{% empty %}
+<h3>{% trans "No groups found." %}</h3>
+{% endfor %}
+
+<script>
+$(document).ready(function() {
+  $('a[title]').qtip();
+});
+</script>
+
+{% endblock %}

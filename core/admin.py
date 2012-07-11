@@ -132,7 +132,7 @@ class PresenceDayAdmin(admin.ModelAdmin):
                     'instructor')
     list_display_links = ('student',)
     list_editable = ('entry', 'lateness', 'excused', 'note')
-    list_filter = ('student', 'date', 'instructor')
+    list_filter = ('student', 'student__group', 'date', 'instructor')
     search_fields = ('student__lastname', 'date')
     ordering = ('-date', 'student__lastname')
     save_on_top = True

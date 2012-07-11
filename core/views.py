@@ -14,8 +14,10 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Q
 
 from core import utils
-from core.models import News, Company, Student, StudentGroup, Contact, Note
-from core.forms import NewsForm, SearchForm, StudentSearchForm, NoteForm
+from core.models import (News, Company, Student, StudentGroup, Contact, Note,
+                         CompanyRating, PresenceDay)
+from core.forms import (NewsForm, SearchForm, StudentSearchForm, NoteForm,
+                        CompanyRatingForm)
 from core.menu import menus
 from barcode.codex import Code39
 try:
@@ -186,6 +188,7 @@ def list_students(req, startchar='', archive=False):
         q = s.presence_days.filter(entry=u'K')
         s.ill = q.count()
         s.ex = q.filter(excused=True).count()
+        s.nex = s.ill - s.ex
         s.all_days = s.presence_days.filter(entry__in=[u'T', u'F', u'K', u'|']
             ).count()
     title = _(u'Students Archive') if archive else _(u'Students')
@@ -219,6 +222,31 @@ def group_details(req, gid):
     ctx = dict(page_title=_(u'Group Detail'), group=group, menus=menus)
     return render_to_response('students/group_detail.html', ctx,
                               context_instance=RequestContext(req))
+
+
+@login_required
+def presence_overview(req):
+    jobs = StudentGroup.objects.values_list('job', flat=True)
+    jobs = list(set(jobs))
+    jobs.sort()
+    groups = []
+    for j in jobs:
+        g = StudentGroup.objects.select_related().filter(job=j).order_by(
+            'start_date')
+        groups.append((j, g))
+    ctx = dict(page_title=_(u'Presences'), groups=groups, menus=menus)
+    return render_to_response('presence/overview.html', ctx,
+                              context_instance=RequestContext(req))
+
+
+@login_required
+def presence_for_group(req, gid):
+    pass
+
+
+@permission_required('core.add_presenceday')
+def presence_add(req, student_id):
+    pass
 
 
 def barcode(req, format, barcode=''):

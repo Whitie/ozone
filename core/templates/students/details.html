@@ -29,13 +29,15 @@
     </ul>
   </li>
   {% if s.presence_days %}
-  <li><a href="/anwesenheit">{% trans "Presence" %}</a>
+  <li><a href="{% url 'core-presence' %}">{% trans "Presence" %}</a>
     <ul>
       <li><a href="" title="{% trans "All except holiday." %}">
-        {% trans "Total days of absense" %}: {{ s.all_days }}</a>
+        {% trans "Total days of absense" %}</a>: {{ s.all_days }}
       </li>
       <li>{% trans "Illness days" %}: {{ s.ill }}</li>
-      <li>{% trans "Excused" %}: {{ s.ex }}</li>
+      <li><a href="" title="{% trans "Not excused" %}: {{ s.nex }}">
+        {% trans "Excused" %}</a>: {{ s.ex }}
+      </li>
     </ul>
   </li>
   {% else %}
@@ -82,3 +84,8 @@
 </tr>
 </table>
 
+<script>
+$(document).ready(function() {
+  $('a[title]').qtip();
+});
+</script>
