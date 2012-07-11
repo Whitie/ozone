@@ -278,6 +278,12 @@ SUIT_CHOICES = (
     (2, u'Die Berufseignung ist bedingt gegeben.'),
     (3, u'Die Berufseignung ist gegeben.'),
 )
+EDU_CHOICES = (
+    (1, u'Kein Abschluß'),
+    (2, u'Hauptschule'),
+    (3, u'MSA'),
+    (4, u'Abitur'),
+)
 
 class Student(CommonInfo):
     lastname = models.CharField(_(u'Lastname'), max_length=50)
@@ -295,6 +301,8 @@ class Student(CommonInfo):
         related_name='students', blank=True, null=True)
     cabinet = models.CharField(_(u'Cabinet'), max_length=20, blank=True)
     key = models.CharField(_(u'Key'), max_length=20, blank=True)
+    school_education = models.PositiveSmallIntegerField(_(u'School Education'),
+        choices=EDU_CHOICES, null=True, blank=True)
     applied_to = models.CharField(_(u'Applied to'), max_length=150,
         help_text=_(u'Separate two or more names with a comma.'), blank=True)
     forwarded_to = models.CharField(_(u'Forwarded to'), max_length=150,
@@ -367,3 +375,38 @@ class Memo(models.Model):
         verbose_name = _(u'Memo')
         verbose_name_plural = _(u'Memos')
         ordering = ['student__lastname']
+
+
+PRESENCE_CHOICES = (
+    (u'*', u'anwesend'),
+    (u'T', u'nur telefonisch entschuldigt'),
+    (u'|', u'fehlt unentschuldigt'),
+    (u'K', u'krank (Nachweis vorhanden)'),
+    (u'B', u'Berufsschule anwesend'),
+    (u'BK', u'keine Berufsschulkarte vorgelegt'),
+    (u'BE', u'Berufsschule entschuldigt'),
+    (u'F', u'Freistellung'),
+    (u'Pr', u'Prüfung'),
+    (u'U', u'Urlaub'),
+    (u'P', u'Praktikum'),
+    (u'BU', u'Bildungsurlaub'),
+    (u'*F', u'anwesend freigestellt'),
+)
+
+class PresenceDay(models.Model):
+    student = models.ForeignKey(Student, verbose_name=_(u'Student'),
+        related_name='presence_days')
+    date = models.DateField(_(u'Date'))
+    entry = models.CharField(_(u'Entry'), max_length=2,
+        choices=PRESENCE_CHOICES, default='*')
+    lateness = models.IntegerField(_(u'Lateness'), default=0)
+    excused = models.NullBooleanField(_(u'Excused'), blank=True)
+    note = models.CharField(_(u'Note'), max_length=25, blank=True)
+    instructor = models.ForeignKey(User, verbose_name=_(u'Instructor'),
+        editable=False, null=True, blank=True)
+
+    audit_log = AuditLog()
+
+    def __unicode__(self):
+        return u'{0} {1} |{2}|'.format(self.student,
+            self.date.strftime('%d.%m.%Y'), self.entry)

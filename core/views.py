@@ -182,6 +182,12 @@ def list_students(req, startchar='', archive=False):
             students = Student.objects.select_related().filter(
                 lastname__istartswith=startchar)
     students = students.filter(finished=archive)
+    for s in students:
+        q = s.presence_days.filter(entry=u'K')
+        s.ill = q.count()
+        s.ex = q.filter(excused=True).count()
+        s.all_days = s.presence_days.filter(entry__in=[u'T', u'F', u'K', u'|']
+            ).count()
     title = _(u'Students Archive') if archive else _(u'Students')
     ctx = dict(page_title=title, students=students, menus=menus, archive=archive,
         startchar=startchar, chars=string.ascii_uppercase, form=form)

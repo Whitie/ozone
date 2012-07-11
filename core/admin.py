@@ -127,6 +127,22 @@ class UserProfileAdmin(admin.ModelAdmin):
         return obj.user.email
 
 
+class PresenceDayAdmin(admin.ModelAdmin):
+    list_display = ('student', 'date', 'entry', 'lateness', 'excused', 'note',
+                    'instructor')
+    list_display_links = ('student',)
+    list_editable = ('entry', 'lateness', 'excused', 'note')
+    list_filter = ('student', 'date', 'instructor')
+    search_fields = ('student__lastname', 'date')
+    ordering = ('-date', 'student__lastname')
+    save_on_top = True
+
+    def save_model(self, req, obj, form, change):
+        if getattr(obj, 'instructor', None) is None:
+            obj.instructor = req.user
+        obj.save()
+
+
 admin.site.register(News, NewsAdmin)
 admin.site.register(Part)
 admin.site.register(UserProfile, UserProfileAdmin)
@@ -137,4 +153,5 @@ admin.site.register(CompanyRating, CompanyRatingAdmin)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(StudentGroup, StudentGroupAdmin)
 admin.site.register(Memo, MemoAdmin)
+admin.site.register(PresenceDay, PresenceDayAdmin)
 admin.site.register(Note)

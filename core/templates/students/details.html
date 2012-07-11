@@ -15,7 +15,7 @@
   </li>
   <li><strong>{% trans "Notice in Emergency" %}:</strong> {{ s.emergency }}</li>
   <li>{% trans "Birthday" %}: {{ s.birthdate|date:"DATE_FORMAT"|default:"-" }}
-    ({{ s.age }} {% trans "Years" %})</li>
+    ({{ s.age }} {% trans "Years old" %})</li>
   <li>{% trans "Email" %}:
     {% if s.email %}<a href="mailto:{{ s.email }}">{{ s.email }}</a>{% else %}-{% endif %}
   </li>
@@ -28,6 +28,19 @@
       <li>{% trans "Country" %}: {{ s.country|default:"-" }}</li>
     </ul>
   </li>
+  {% if s.presence_days %}
+  <li><a href="/anwesenheit">{% trans "Presence" %}</a>
+    <ul>
+      <li><a href="" title="{% trans "All except holiday." %}">
+        {% trans "Total days of absense" %}: {{ s.all_days }}</a>
+      </li>
+      <li>{% trans "Illness days" %}: {{ s.ill }}</li>
+      <li>{% trans "Excused" %}: {{ s.ex }}</li>
+    </ul>
+  </li>
+  {% else %}
+  <li>{% trans "No presence found for" %} {{ s }}</li>
+  {% endif %}
   {% if s.cabinet or s.key %}
   <li>{% trans "Misc" %}
     <ul>
