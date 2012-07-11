@@ -2,6 +2,8 @@
 
 import string
 
+from datetime import datetime, date, timedelta
+
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response, redirect, get_object_or_404
@@ -24,6 +26,23 @@ try:
     from barcode.writer import ImageWriter
 except ImportError:
     ImageWriter = None
+
+
+# Helper
+def get_presence(students, start, end):
+    l = []
+    dt = end - start
+    for s in students:
+        tmp = []
+        for i in range(dt.days + 1):
+            d = start + timedelta(days=i)
+            try:
+                day = PresenceDay.objects.get(student=s, date=d)
+                tmp.append(day)
+            except PresenceDay.DoesNotExist:
+                tmp.append(None)
+        l.append((s, tmp))
+    return l
 
 
 # Create your views here.
@@ -234,14 +253,47 @@ def presence_overview(req):
         g = StudentGroup.objects.select_related().filter(job=j).order_by(
             'start_date')
         groups.append((j, g))
-    ctx = dict(page_title=_(u'Presences'), groups=groups, menus=menus)
+    ctx = dict(page_title=_(u'Group Overview'), groups=groups, menus=menus)
     return render_to_response('presence/overview.html', ctx,
                               context_instance=RequestContext(req))
 
 
 @login_required
 def presence_for_group(req, gid):
-    pass
+    if req.method == 'POST':
+        start = req.POST['start']
+        end = req.POST['end']
+    else:
+        start = end = None
+    try:
+        gid = int(gid)
+    except ValueError:
+        messages.error(req, _(u'Group ID must be an integer.'))
+        return redirect('core-presence')
+    try:
+        group = StudentGroup.objects.get(pk=gid)
+    except StudentGroup.DoesNotExist:
+        messages.error(req, _(u'Group with ID %d does not exist.' % gid))
+        return redirect('core-presence')
+    if end is None:
+        end = date.today()
+    else:
+        end = datetime.strptime(end, '%d.%m.%Y').date()
+    if start is None:
+        start = date.today() - timedelta(days=31)
+    else:
+        start = datetime.strptime(start, '%d.%m.%Y').date()
+    if start > end:
+        messages.error(_(u'End date before start date.'))
+        return redirect('core-presence')
+    dt = end - start
+    _students = group.students.all().order_by('company__name', 'lastname')
+    students = get_presence(_students, start, end)
+    ctx = dict(page_title=_(u'Presence for Group'), group=group,
+        students=students, menus=menus, start=start, end=end,
+        days=xrange(start.day, start.day + dt.days + 1))
+    return render_to_response('presence/group.html', ctx,
+                              context_instance=RequestContext(req))
 
 
 @permission_required('core.add_presenceday')

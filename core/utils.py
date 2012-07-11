@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from datetime import datetime, date
+
 from django.utils import simplejson
 from django.http import HttpResponse
 from django.template import RequestContext
