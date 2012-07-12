@@ -6,13 +6,13 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: 1.0beta1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-07-12 05:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,39 +20,39 @@ msgstr ""
 
 #: forms.py:23
 msgid "Next Order Day"
-msgstr ""
+msgstr "Nächster Bestelltag"
 
 #: forms.py:25
 msgid "Use this format: dd.mm.yyyy"
-msgstr ""
+msgstr "Benutzen Sie dieses Format: TT.MM.JJJJ"
 
 #: forms.py:26 models.py:19
 msgid "Responsible User"
-msgstr ""
+msgstr "Zuständiger Besteller"
 
 #: forms.py:30 forms.py:35 models.py:52 models.py:75
 msgid "Article"
-msgstr ""
+msgstr "Artikel"
 
 #: forms.py:34 models.py:74 models.py:114
 msgid "Count"
-msgstr ""
+msgstr "Anzahl"
 
 #: forms.py:36 models.py:31
 msgid "Supplier"
-msgstr ""
+msgstr "Lieferant"
 
 #: forms.py:38 models.py:33 models.py:57
 msgid "Identifier"
-msgstr ""
+msgstr "Ident-Nummer"
 
 #: forms.py:40 models.py:36
 msgid "Quantity"
-msgstr ""
+msgstr "Menge"
 
 #: forms.py:41 models.py:37
 msgid "Price"
-msgstr ""
+msgstr "Preis"
 
 #: forms.py:42 models.py:79 templates/orders/order.html:29
 msgid "Memo"
@@ -60,35 +60,35 @@ msgstr ""
 
 #: forms.py:44 models.py:25 models.py:81
 msgid "Order Day"
-msgstr ""
+msgstr "Bestelltag"
 
 #: forms.py:45
 msgid "Exam"
-msgstr ""
+msgstr "Prüfung"
 
 #: forms.py:46
 msgid "Repair"
-msgstr ""
+msgstr "Reparatur"
 
 #: menu.py:8 models.py:106 views.py:33 views.py:50 views.py:65
 msgid "Orders"
-msgstr ""
+msgstr "Bestellungen"
 
 #: menu.py:9
 msgid "Order now"
-msgstr ""
+msgstr "Jetzt bestellen"
 
 #: menu.py:10 views.py:83
 msgid "My Orders"
-msgstr ""
+msgstr "Meine Bestellungen"
 
 #: models.py:17
 msgid "Day"
-msgstr ""
+msgstr "Tag"
 
 #: models.py:26
 msgid "Order Days"
-msgstr ""
+msgstr "Bestelltage"
 
 #: models.py:30 models.py:59
 msgid "Name"
@@ -96,133 +96,133 @@ msgstr ""
 
 #: models.py:34
 msgid "Article number"
-msgstr ""
+msgstr "Artikelnummer"
 
 #: models.py:35
 msgid "Barcode"
-msgstr ""
+msgstr "Strichcode"
 
 #: models.py:53
 msgid "Articles"
-msgstr ""
+msgstr "Artikel"
 
 #: models.py:58
 msgid "Short Name"
-msgstr ""
+msgstr "Kürzel"
 
 #: models.py:65 models.py:128
 msgid "Cost"
-msgstr ""
+msgstr "Kostenstelle"
 
 #: models.py:66 models.py:77
 msgid "Costs"
-msgstr ""
+msgstr "Kostenstellen"
 
 #: models.py:69
 msgid "New"
-msgstr ""
+msgstr "Neu"
 
 #: models.py:69
 msgid "Accepted"
-msgstr ""
+msgstr "Akzeptiert"
 
 #: models.py:70
 msgid "Rejected"
-msgstr ""
+msgstr "Zurückgewiesen"
 
 #: models.py:70 models.py:87
 msgid "Ordered"
-msgstr ""
+msgstr "Bestellt"
 
 #: models.py:71
 msgid "Delivered"
-msgstr ""
+msgstr "Geliefert"
 
 #: models.py:78
 msgid "Users"
-msgstr ""
+msgstr "Benutzer"
 
 #: models.py:80
 msgid "Added"
-msgstr ""
+msgstr "hinzugefügt"
 
 #: models.py:83
 msgid "For Exam"
-msgstr ""
+msgstr "Für Prüfung"
 
 #: models.py:84
 msgid "For Repair"
-msgstr ""
+msgstr "Für Reparatur"
 
 #: models.py:85
 msgid "State"
-msgstr ""
+msgstr "Status"
 
 #: models.py:105 models.py:113 models.py:129
 msgid "Order"
-msgstr ""
+msgstr "Bestellung"
 
 #: models.py:115
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #: models.py:116
 msgid "User"
-msgstr ""
+msgstr "Benutzer"
 
 #: models.py:123
 msgid "Delivered Order"
-msgstr ""
+msgstr "Gelieferte Bestellung"
 
 #: models.py:124
 msgid "Delivered Orders"
-msgstr ""
+msgstr "Gelieferte Bestellungen"
 
 #: models.py:130
 msgid "Percent"
-msgstr ""
+msgstr "Prozent"
 
 #: templates/orders/index.html:5
 msgid "Next order days"
-msgstr ""
+msgstr "Nächste Bestelltage"
 
 #: templates/orders/index.html:9
 msgid "Click for details."
-msgstr ""
+msgstr "Klicken für mehr Informationen."
 
 #: templates/orders/index.html:11
 msgid "Responsible user"
-msgstr ""
+msgstr "Zuständiger Besteller"
 
 #: templates/orders/index.html:12
 msgid "Open orders"
-msgstr ""
+msgstr "Offene Bestellungen"
 
 #: templates/orders/index.html:15
 msgid "No order day found."
-msgstr ""
+msgstr "Kein Bestelltag gefunden."
 
 #: templates/orders/order.html:28
 msgid "Klick to enter message."
-msgstr ""
+msgstr "Klicken, um eine Nachricht einzugeben."
 
 #: templates/orders/order.html:54
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 #: templates/orders/select_article.html:48
 msgid "Make order"
-msgstr ""
+msgstr "Bestellen"
 
 #: templates/orders/select_article.html:49
 msgid "Order old article"
-msgstr ""
+msgstr "Bereits vorhandenen Artikel bestellen"
 
 #: templates/orders/select_article.html:54
 #: templates/orders/select_article.html:59
 msgid "Next"
-msgstr ""
+msgstr "Weiter"
 
 #: templates/orders/select_article.html:57
 msgid "Order new article"
-msgstr ""
+msgstr "Neuen Artikel bestellen"
