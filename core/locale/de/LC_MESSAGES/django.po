@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0beta1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-12 05:43+0200\n"
+"POT-Creation-Date: 2012-07-12 08:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -101,7 +101,7 @@ msgstr "Azubis"
 msgid "Groups"
 msgstr "Gruppen"
 
-#: menu.py:21 templates/presence/overview.html:5
+#: menu.py:21 models.py:416 templates/presence/overview.html:5
 msgid "Presences"
 msgstr "Anwesenheiten"
 
@@ -262,7 +262,7 @@ msgid "Rating Note"
 msgstr "Bemerkung (Bewertung)"
 
 #: models.py:140 models.py:146 models.py:170 models.py:208 models.py:298
-#: templates/presence/group.html:12 templates/students/details.html:8
+#: templates/presence/group.html:13 templates/students/details.html:8
 msgid "Company"
 msgstr "Firma"
 
@@ -286,11 +286,11 @@ msgstr "Kooperationsvertrag"
 msgid "Cooperation Contracts"
 msgstr "Kooperationsverträge"
 
-#: models.py:165 models.py:289 templates/presence/group.html:13
+#: models.py:165 models.py:289 templates/presence/group.html:14
 msgid "Lastname"
 msgstr "Nachname"
 
-#: models.py:166 models.py:290 templates/presence/group.html:14
+#: models.py:166 models.py:290 templates/presence/group.html:15
 msgid "Firstname"
 msgstr "Vorname"
 
@@ -461,6 +461,10 @@ msgstr "Entschuldigt"
 #: models.py:405
 msgid "Instructor"
 msgstr "Ausbilder"
+
+#: models.py:415 templates/students/details.html:32
+msgid "Presence"
+msgstr ""
 
 #: pdf_views.py:15
 msgid "PDF generation is not installed."
