@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-12 05:43+0200\n"
+"POT-Creation-Date: 2012-07-12 08:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -101,7 +101,7 @@ msgstr ""
 msgid "Groups"
 msgstr ""
 
-#: menu.py:21 templates/presence/overview.html:5
+#: menu.py:21 models.py:416 templates/presence/overview.html:5
 msgid "Presences"
 msgstr ""
 
@@ -262,7 +262,7 @@ msgid "Rating Note"
 msgstr ""
 
 #: models.py:140 models.py:146 models.py:170 models.py:208 models.py:298
-#: templates/presence/group.html:12 templates/students/details.html:8
+#: templates/presence/group.html:13 templates/students/details.html:8
 msgid "Company"
 msgstr ""
 
@@ -286,11 +286,11 @@ msgstr ""
 msgid "Cooperation Contracts"
 msgstr ""
 
-#: models.py:165 models.py:289 templates/presence/group.html:13
+#: models.py:165 models.py:289 templates/presence/group.html:14
 msgid "Lastname"
 msgstr ""
 
-#: models.py:166 models.py:290 templates/presence/group.html:14
+#: models.py:166 models.py:290 templates/presence/group.html:15
 msgid "Firstname"
 msgstr ""
 
@@ -460,6 +460,10 @@ msgstr ""
 
 #: models.py:405
 msgid "Instructor"
+msgstr ""
+
+#: models.py:415 templates/students/details.html:32
+msgid "Presence"
 msgstr ""
 
 #: pdf_views.py:15
@@ -725,10 +729,6 @@ msgstr ""
 
 #: templates/students/details.html:24
 msgid "Address"
-msgstr ""
-
-#: templates/students/details.html:32
-msgid "Presence"
 msgstr ""
 
 #: templates/students/details.html:34
