@@ -462,10 +462,6 @@ msgstr "Entschuldigt"
 msgid "Instructor"
 msgstr "Ausbilder"
 
-#: models.py:415 templates/students/details.html:32
-msgid "Presence"
-msgstr ""
-
 #: pdf_views.py:15
 msgid "PDF generation is not installed."
 msgstr "PDF Erzeugung ist nicht installiert."
