@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0beta1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-12 08:21+0200\n"
+"POT-Creation-Date: 2012-07-12 10:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -462,6 +462,10 @@ msgstr "Entschuldigt"
 msgid "Instructor"
 msgstr "Ausbilder"
 
+#: models.py:415 templates/students/details.html:32
+msgid "Presence"
+msgstr "Anwesenheit"
+
 #: pdf_views.py:15
 msgid "PDF generation is not installed."
 msgstr "PDF Erzeugung ist nicht installiert."
@@ -686,7 +690,7 @@ msgid "Click for details."
 msgstr "Klicken für Details."
 
 #: templates/companies/list.html:38 templates/companies/view_company.html:10
-#: templates/students/group_detail.html:16 templates/students/groups.html:21
+#: templates/students/group_detail.html:16 templates/students/groups.html:19
 #: templates/students/list.html:38
 msgid "Edit"
 msgstr "Bearbeiten"
@@ -707,7 +711,7 @@ msgstr "bis"
 msgid "Show"
 msgstr "Anzeigen"
 
-#: templates/presence/overview.html:22 templates/students/groups.html:25
+#: templates/presence/overview.html:22 templates/students/groups.html:23
 msgid "No groups found."
 msgstr "Keine Gruppen gefunden."
 
@@ -726,10 +730,6 @@ msgstr "Jahre alt"
 #: templates/students/details.html:24
 msgid "Address"
 msgstr "Adresse"
-
-#: templates/students/details.html:32
-msgid "Presence"
-msgstr "Anwesenheit"
 
 #: templates/students/details.html:34
 msgid "All except holiday."
@@ -790,15 +790,11 @@ msgid "Add Group"
 msgstr "Gruppe hinzufügen"
 
 #: templates/students/groups.html:16
-#, python-format
-msgid ""
-"\n"
-"    (%(counter)s Student)"
-msgid_plural ""
-"(%(counter)s Students)\n"
-"  "
-msgstr[0] "    (%(counter)s Azubi)"
-msgstr[1] "(%(counter)s Azubis)\n"
+#, fuzzy, python-format
+msgid "(%(counter)s Student)"
+msgid_plural "(%(counter)s Students)"
+msgstr[0] "(%(counter)s Azubi)"
+msgstr[1] "(%(counter)s Azubis)"
 
 #: templates/students/list.html:9
 msgid "Add Student"
