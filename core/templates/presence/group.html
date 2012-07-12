@@ -1,12 +1,13 @@
 {% extends "index.html" %}
 {% load i18n %}
+{% load staticfiles %}
 
 {% block content %}
 <h2 class="headline">{{ group }}</h2>
 <h2 class="headline">
   {{ start|date:"DATE_FORMAT" }} - {{ end|date:"DATE_FORMAT" }}
 </h2>
-<table id="dataTable" style="border:1px solid blue;">
+<table id="dataTable">
   <thead>
     <tr>
       <th>{% trans "Company" %}</th>
@@ -18,16 +19,29 @@
     </tr>
   </thead>
   <tbody>
+    {% for s, ds in students %}
     <tr>
-      {% for s, ds in students %}
       <td>{{ s.company.name }}</td>
       <td>{{ s.lastname }}</td>
       <td>{{ s.firstname }}</td>
       {% for d in ds %}
       <td>{{ d.entry }}</td>
       {% endfor %}
-      {% endfor %}
     </tr>
+    {% endfor %}
   </tbody>
 </table>
+
+<script>
+$(document).ready(function() {
+  var oTable = $('#dataTable').dataTable({
+    "bJQueryUI": true,
+    "bPaginate": false,
+    "sScrollX": "10%",
+    "oLanguage": {
+      "sUrl": "{% static "i18n/de_DE.txt" %}"
+    }
+  });
+});
+</script>
 {% endblock %}

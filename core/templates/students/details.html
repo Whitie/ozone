@@ -29,7 +29,7 @@
     </ul>
   </li>
   {% if s.presence_days %}
-  <li><a href="{% url 'core-presence' %}">{% trans "Presence" %}</a>
+  <li><a href="{% url core.views.presence_overview %}">{% trans "Presence" %}</a>
     <ul>
       <li><a href="" title="{% trans "All except holiday." %}">
         {% trans "Total days of absense" %}</a>: {{ s.all_days }}

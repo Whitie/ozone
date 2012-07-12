@@ -261,8 +261,8 @@ def presence_overview(req):
 @login_required
 def presence_for_group(req, gid):
     if req.method == 'POST':
-        start = req.POST['start']
-        end = req.POST['end']
+        start = req.POST['start'] or None
+        end = req.POST['end'] or None
     else:
         start = end = None
     try:

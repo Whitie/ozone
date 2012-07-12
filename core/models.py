@@ -410,3 +410,8 @@ class PresenceDay(models.Model):
     def __unicode__(self):
         return u'{0} {1} |{2}|'.format(self.student,
             self.date.strftime('%d.%m.%Y'), self.entry)
+
+    class Meta:
+        verbose_name = _(u'Presence')
+        verbose_name_plural = _(u'Presences')
+        ordering = ['student__lastname', '-date']
