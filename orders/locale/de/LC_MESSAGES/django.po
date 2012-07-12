@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-21 09:58+0200\n"
+"POT-Creation-Date: 2012-07-12 05:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,8 +62,8 @@ msgstr ""
 msgid "Order Day"
 msgstr ""
 
-#: forms.py:45 models.py:83
-msgid "For Exam"
+#: forms.py:45
+msgid "Exam"
 msgstr ""
 
 #: forms.py:46
@@ -144,6 +144,10 @@ msgstr ""
 
 #: models.py:80
 msgid "Added"
+msgstr ""
+
+#: models.py:83
+msgid "For Exam"
 msgstr ""
 
 #: models.py:84
