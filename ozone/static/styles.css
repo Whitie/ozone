@@ -84,6 +84,12 @@ a.menu:link, a.menu:visited, a.menu:hover, a.menu:active {
 
 aside a.menu:hover { color: #228b22; }
 
+#accordion_menu ul {
+    margin: 0px;
+    padding: 0px;
+    list-style-type: circle;
+}
+
 article {
     width: 80%;
     float: right;
@@ -95,9 +101,6 @@ article {
 
 .menutitle {
     font-weight: bold;
-    border-top: 1px dashed #000080;
-    margin-top: 10px;
-    padding-top: 5px;
     font-size: 14px;
 }
 

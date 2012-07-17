@@ -2,23 +2,42 @@
 {% load urls %}
 
 <nav id="menu">
+    <div id="accordion_menu">
 {% for menu in menus %}
-<p class="menutitle">{{ menu.title }}</p>
+    <h3><a class="menutitle" href="#">{{ menu.title }}</a></h3>
+    <div>
+    <ul>
     {% for u, name in menu.entries %}
-    <a class="menu" href="{% reverse u %}">&raquo; {{ name }}</a><br />
+    <li><a class="menu" href="{% reverse u %}">{{ name }}</a></li>
     {% endfor %}
+    </ul>
+    </div>
 {% endfor %}
 
-<p class="menutitle">{% trans "User" %}</p>
+<h3><a class="menutitle" href="#">{% trans "User" %}</a></h3>
+<div>
+<ul>
   {% if user.is_authenticated %}
-  <a class="menu" href="{% url core-logout %}">&raquo; {% trans "Logout" %}</a>
-  <br />
+  <li>
+      <a class="menu" href="{% url core-logout %}">{% trans "Logout" %}</a>
+  </li>
     {% if user.is_staff %}
-    <a class="menu" href="{% url admin:index %}">&raquo; {% trans "Admin" %}</a>
-    <br />
+    <li>
+        <a class="menu" href="{% url admin:index %}">{% trans "Admin" %}</a>
+    </li>
     {% endif %}
   {% else %}
-  <a class="menu" href="{% url core-login %}">&raquo; {% trans "Login" %}</a>
-  <br />
+  <li>
+      <a class="menu" href="{% url core-login %}">{% trans "Login" %}</a>
+  </li>
   {% endif %}
+</div>
+
+</div>
 </nav>
+
+<script>
+$(function() {
+    $("#accordion_menu").accordion();
+});
+</script>
