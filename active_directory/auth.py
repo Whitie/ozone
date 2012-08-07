@@ -54,7 +54,7 @@ class ADAuthBackend:
             if settings.AD_USE_SSL:
                 ldap.set_option(ldap.OPT_X_TLS_CACERTFILE,
                                 settings.AD_CERT_FILE)
-            l =ldap.initialize(self.url)
+            l = ldap.initialize(self.url)
             l.set_option(ldap.OPT_PROTOCOL_VERSION, 3)
             binddn = u'{0}@{1}'.format(username, settings.AD_NT4_DOMAIN)
             l.simple_bind_s(smart_str(binddn), smart_str(password))
@@ -97,7 +97,7 @@ class ADAuthBackend:
             logger.exception('Error during cache lookup')
 
     def _get_or_create_user(self, username, password):
-        logger.debug('_get_or_create_user(%r, %r) called', username, password)
+        logger.debug('_get_or_create_user(%r, ***) called', username)
         user_info = self._get_user_info(username, password)
         try:
             user = User.objects.get(username=username)
@@ -123,14 +123,10 @@ class ADAuthBackend:
         elif user_info['is_admin']:
             user.is_staff = True
             user.is_superuser = True
-        else:
-            user.is_staff = False
-            user.is_superuser = False
         user.first_name = user_info['first_name']
         user.last_name = user_info['last_name']
         user.email = user_info['mail']
         if settings.AD_CREATE_GROUPS:
-            groups = list(user.groups.all())
             ad_groups = list(user.groups.filter(name__startswith=u'AD_'))
             user.groups.remove(*ad_groups)
             user.groups.add(*user_info['groups'])
