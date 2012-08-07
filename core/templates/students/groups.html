@@ -5,7 +5,7 @@
 {% block content %}
 <h2 class="headline">{% trans "Overview" %}</h2>
 <div style="width:100%;text-align:center;">
-  {% if perms.core.can_add_studentgroup %}
+  {% if perms.core.add_studentgroup %}
   <a href="/admin/core/studentgroup/add/">{% trans "Add Group" %}</a>
   {% endif %}
 </div>
@@ -14,7 +14,7 @@
 <h3>{{ forloop.counter }}. <a title="{% trans "Click for details." %}"
     href="{% url core-group-details g.id %}">{{ g.name }}</a>
   {% blocktrans count counter=g.students.count %}({{ counter }} Student){% plural %}({{ counter }} Students){% endblocktrans %}
-  {% if perms.core.can_change_studentgroup %}
+  {% if perms.core.change_studentgroup %}
   <a href="/admin/core/studentgroup/{{ g.id }}/">
     <img src="{% static "img/edit.png" %}" title="{% trans "Edit" %}" /></a>
   {% endif %}

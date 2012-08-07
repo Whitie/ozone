@@ -5,7 +5,7 @@
 {% block content %}
 <h2 class="headline">{{ startchar|default:"-" }} ({{ students.count }})</h2>
 <div style="width:100%;text-align:center;">
-  {% if perms.core.can_add_student and not archive %}
+  {% if perms.core.add_student and not archive %}
   <a href="/admin/core/student/add/">{% trans "Add Student" %}</a> |
   {% endif %}
   <a href="{% if archive %}{% url core-students-archive %}{% else %}{% url core-students %}{% endif %}">{% trans "Other" %}</a> |

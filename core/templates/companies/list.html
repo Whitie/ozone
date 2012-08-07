@@ -5,7 +5,7 @@
 {% block content %}
 <h2 class="headline">{{ startchar|default:"-" }} ({{ companies.count }})</h2>
 <div style="width:100%;text-align:center;">
-  {% if perms.core.can_add_company %}
+  {% if perms.core.add_company %}
   <a href="/admin/core/company/add/">{% trans "Add Company" %}</a> |
   {% endif %}
   <a href="{% url core-companies %}">{% trans "Other" %}</a> |
@@ -33,7 +33,7 @@ $(document).ready(function() {
 {% for c in companies %}
 <h3 title="{% trans "Click for details." %}">
   {{ forloop.counter }}. {{ c.name }} ({{ c.short_name }})
-  {% if perms.core.can_change_company %}
+  {% if perms.core.change_company %}
   <a href="/admin/core/company/{{ c.id }}/">
     <img src="{% static "img/edit.png" %}" title="{% trans "Edit" %}" /></a>
   {% endif %}
