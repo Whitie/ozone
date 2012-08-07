@@ -5,7 +5,7 @@ import json
 from datetime import date
 
 from django.db import models
-from django.conf import settings
+#from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
@@ -110,6 +110,8 @@ RATING_CHOICES = (
     (u'C', _(u'not useable')),
     (u'D', _(u'more ratings needed')),
 )
+
+
 class Company(CommonInfo):
     name = models.CharField(_(u'Name'), max_length=100)
     short_name = models.CharField(_(u'Short Name'), max_length=10, blank=True)
@@ -285,6 +287,7 @@ EDU_CHOICES = (
     (4, u'Abitur'),
 )
 
+
 class Student(CommonInfo):
     lastname = models.CharField(_(u'Lastname'), max_length=50)
     firstname = models.CharField(_(u'Firstname'), max_length=50)
@@ -392,6 +395,7 @@ PRESENCE_CHOICES = (
     (u'BU', u'Bildungsurlaub'),
     (u'*F', u'anwesend freigestellt'),
 )
+
 
 class PresenceDay(models.Model):
     student = models.ForeignKey(Student, verbose_name=_(u'Student'),

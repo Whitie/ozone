@@ -9,6 +9,7 @@ def userconf(req):
         ctx['userconfig'] = p.config()
     return ctx
 
+
 def set_global_vars(req):
     from django.conf import settings
     return {'LOGO_URL': settings.LOGO_URL}
