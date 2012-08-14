@@ -1,0 +1,45 @@
+{% extends "index.html" %}
+{% load i18n %}
+
+{% block content %}
+<h2 class="headline">
+{% if only_with_students %}
+  {% trans "Companies with students" %}
+{% else %}
+  {% trans "Companies" %}
+{% endif %} ({{ companies|length }})
+</h2>
+
+<div style="width:60%;text-align:center;margin:5px auto;">
+{% if not only_with_students %}
+<a href="{% url core-companies-with-students %}">
+  {% trans "List only companies with students" %}</a>
+{% else %}
+<a href="{% url core-companies-all %}">
+  {% trans "Show all companies" %}</a>
+{% endif %}
+</div>
+
+{% if companies %}
+<div id="accordion" style="width:60%;margin:0px auto;">
+  {% for c in companies %}
+  <h3><a href="#">{{ c }}</a></h3>
+  <div class="details">{% include "companies/details.html" %}</div>
+  {% endfor %}
+</div>
+{% else %}
+<h3>{% trans "No companies found." %}
+{% endif %}
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#accordion").accordion({
+    animated: 'bounceslide',
+    collapsible: true,
+    autoHeight: false,
+    navigation: true
+  });
+});
+</script>
+
+{% endblock %}

@@ -8,6 +8,7 @@
   {% if perms.core.add_company %}
   <a href="/admin/core/company/add/">{% trans "Add Company" %}</a> |
   {% endif %}
+  <a href="{% url core-companies-all %}">{% trans "All" %}</a> |
   <a href="{% url core-companies %}">{% trans "Other" %}</a> |
   {% for c in chars %}
   <a href="{% url core-companies %}{{ c }}/">{{ c }}</a>
