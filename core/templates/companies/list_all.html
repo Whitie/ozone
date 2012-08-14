@@ -23,7 +23,7 @@
 {% if companies %}
 <div id="accordion" style="width:60%;margin:0px auto;">
   {% for c in companies %}
-  <h3><a href="#">{{ c }}</a></h3>
+  <h3><a href="#">{{ forloop.counter }}) {{ c }}</a></h3>
   <div class="details">{% include "companies/details.html" %}</div>
   {% endfor %}
 </div>
@@ -37,7 +37,7 @@ $(document).ready(function(){
     animated: 'bounceslide',
     collapsible: true,
     autoHeight: false,
-    navigation: true
+    active: false
   });
 });
 </script>

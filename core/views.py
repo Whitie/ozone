@@ -179,7 +179,7 @@ def list_companies(req, startchar=''):
 
 @login_required
 def list_all_companies(req, only_with_students=False):
-    q = Company.objects.select_related().all()
+    q = Company.objects.select_related().all().order_by('name')
     if only_with_students:
         companies = [x for x in q if x.has_students()]
     else:
