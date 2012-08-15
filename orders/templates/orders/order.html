@@ -10,7 +10,8 @@
     <td>{{ form.count }}{{ form.count.errors }}</td>
     <th>{{ form.art_name.label_tag }}:</th>
     <td>{{ form.art_name }}{{ form.art_name.errors }}</td>
-    <th>{{ form.art_supplier.label_tag }}:</th>
+    <th title="{% trans "Click to enter a new supplier." %}" id="supplier_cell">
+        {{ form.art_supplier.label_tag }}:</th>
     <td>{{ form.art_supplier }}{{ form.art_supplier.errors }}</td>
     <th>{{ form.art_id.label_tag }}:</th>
     <td>{{ form.art_id }}{{ form.art_id.errors }}</td>
@@ -46,12 +47,14 @@
 </tr>
 <tr>
 {% for c in costs %}
-<td><input type="text" name="cost_{{ c.short_name }}" maxlength="3" size="3" /></td>
+<td><input type="text" name="cost_{{ c.short_name }}" maxlength="3" size="3"
+    value="0" onkeyup="update_sum()" class="costs" /></td>
 {% endfor %}
 </tr>
 </table>
 <div style="margin:5px auto;width:10%;text-align:center;">
-<input type="submit" value="{% trans "Save" %}" />
+<span id="sum" style="font-weight:bold;"></span>
+<input type="submit" value="{% trans "Order" %}" />
 </div>
 </form>
 
@@ -66,6 +69,20 @@ $(document).ready(function() {
 $('#memo_cell').click(function() {
     $('#memo_field').toggle();
 });
+function update_sum() {
+    var sum = 0;
+    var color = '';
+    $(".costs").each(function(i) {
+        sum = sum + parseInt($(this).val(), 10);
+    });
+    $('#sum').text(sum);
+    if (sum != 100) {
+        color = 'red';
+    } else {
+        color = 'green';
+    }
+    $('#sum').css({'color': color});
+}
 </script>
 
 {% endblock %}

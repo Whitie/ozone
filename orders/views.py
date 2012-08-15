@@ -45,12 +45,12 @@ def order(req, article_id=0):
         form = OrderForm(req.POST)
     else:
         form = OrderForm()
-    oday = get_next_odays()[0]
     costs = Cost.objects.all()
     ctx = dict(page_title=_(u'Orders'), form=form, menus=menus, costs=costs,
         article_id=article_id)
     return render_to_response('orders/order.html', ctx,
                               context_instance=RequestContext(req))
+
 
 @login_required
 def ask_order(req):
@@ -83,6 +83,7 @@ def myorders(req):
     ctx = dict(page_title=_('My Orders'), menus=menus, orders=orders)
     return render_to_response('orders/myorders.html', ctx,
                               context_instance=RequestContext(req))
+
 
 # Ajax
 @json_view
