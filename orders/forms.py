@@ -6,7 +6,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
-from orders.models import Article, OrderDay
+from orders.models import OrderDay
 from core.models import Company
 from core import html5_widgets as _wid
 
@@ -15,7 +15,7 @@ USER_CHOICES = [(x.id, x.get_full_name() or x.username) for x in
                 User.objects.all() if x.has_perm('orders.can_order')]
 DATE_FORMATS = ['%d.%m.%Y', '%d.%m.%y', '%d/%m/%Y', '%d/%m/%y']
 ODAY_CHOICES = [(x.id, unicode(x)) for x in OrderDay.objects.filter(
-                day__gt=date.today()).order_by('-day')]
+                day__gt=date.today()).order_by('day')]
 SUPPLIER_CHOICES = [(x.id, x.name) for x in Company.objects.all()]
 
 
@@ -29,6 +29,7 @@ class OrderDayForm(forms.Form):
 class OrderOldForm(forms.Form):
     article_name = forms.CharField(label=_('Article'), max_length=100)
     article_id = forms.IntegerField(widget=forms.HiddenInput)
+
 
 class OrderForm(forms.Form):
     count = _wid.IntegerField5(label=_(u'Count'))
@@ -44,3 +45,12 @@ class OrderForm(forms.Form):
     oday = forms.ChoiceField(label=_(u'Order Day'), choices=ODAY_CHOICES)
     exam = forms.BooleanField(label=_(u'Exam'), required=False)
     repair = forms.BooleanField(label=_(u'Repair'), required=False)
+
+
+class ShortSupplierForm(forms.Form):
+    name = forms.CharField(label=_(u'Name'), max_length=100)
+    customer_number = forms.CharField(label=_(u'Customer Number'),
+        max_length=50, required=False)
+    phone = forms.CharField(label=_(u'Phone'), max_length=30, required=False)
+    fax = forms.CharField(label=_(u'Fax'), max_length=30, required=False)
+    email = forms.EmailField(label=_(u'Email'), required=False)

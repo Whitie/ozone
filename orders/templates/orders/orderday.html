@@ -1,0 +1,74 @@
+{% extends "index.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block content %}
+<h2 class="headline">{% trans "Orders for" %} {{ oday.day|date:"DATE_FORMAT" }}</h2>
+{% if orders %}
+<table id="dataTable">
+    <thead>
+        <tr>
+            <th>{% trans "Added" %}</th>
+            <th>{% trans "Count" %}</th>
+            <th>{% trans "Article" %}</th>
+            <th>{% trans "Quantity" %}</th>
+            <th>{% trans "Price" %}</th>
+            <th>{% trans "Supplier" %}</th>
+            <th>{% trans "Ordered by" %}</th>
+            <th>{% trans "State" %}</th>
+            <th>{% trans "Edit" %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for o in orders %}
+        <tr>
+            <td style="text-align:center;">
+                {{ o.added|date:"SHORT_DATE_FORMAT" }}
+            </td>
+            <td>
+                <input type="hidden" id="id_order_{{ forloop.counter }}" value="{{ o.id }}" />
+                <input id="count_{{ forloop.counter }}" type="text" value="{{ o.count }}" size="3" />
+            </td>
+            <td title="Ident Number: {{ o.article.ident }}">
+                {{ o.article.name }}</td>
+            <td>{{ o.article.quantity }}</td>
+            <td style="text-align:right;">{{ o.article.fullprice }}</td>
+            <td>{{ o.article.supplier }}</td>
+            <td>{{ o.userlist|join:", " }}</td>
+            <td title="{{ o.state }}" style="text-align:center;">
+                <img src="{{ o.state_icon }}" alt="{{ o.state }}" />
+            </td>
+            <td style="text-align:center;">
+                <input type="button" value="{% trans "Change" %}"
+                    onclick="update_count('{{ forloop.counter }}');" />
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+$(document).ready(function() {
+  var oTable = $('#dataTable').dataTable({
+    "bJQueryUI": true,
+    "bPaginate": true,
+    "oLanguage": {
+      "sUrl": "{% static "i18n/de_DE.txt" %}"
+    }
+  });
+});
+function update_count(oid) {
+    var order_id = $('#id_order_'+oid).val();
+    var count = $('#count_'+oid).val();
+    var url = '/orders/api/update_count/'+order_id+'/'+count+'/'
+    $.get(url, function() {
+        alert('Success');
+    });
+}
+</script>
+
+{% else %}
+<p>{% trans "No orders found." %}</p>
+{% endif %}
+
+{% endblock %}

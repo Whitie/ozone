@@ -1,0 +1,22 @@
+{% extends "index.html" %}
+{% load i18n %}
+
+{% block content %}
+<h2 class="headline">{% trans "Enter supplier data" %}</h2>
+<form method="post" action="{% url orders-add-supplier %}">
+{% csrf_token %}
+<table style="border:1px solid blue;margin:5px auto;">
+{% for f in form %}
+<tr>
+    <th style="text-align:right;">{{ f.label_tag }}:{{ f.errors }}</th>
+    <td>{{ f }}</td>
+</tr>
+{% endfor %}
+<tr>
+    <td></td>
+    <td><input type="submit" value="{% trans "Save" %}" /></td>
+</tr>
+</table>
+</form>
+
+{% endblock %}

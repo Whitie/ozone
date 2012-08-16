@@ -2,7 +2,8 @@
 {% load i18n %}
 
 {% block content %}
-<form method="post" action="{% url orders-order %}">
+<form method="post" action="{% url orders-order %}"
+    onsubmit="return check_costs();">
 {% csrf_token %}
 <table style="border:1px solid blue;margin:5px auto;">
 <tr>
@@ -10,8 +11,7 @@
     <td>{{ form.count }}{{ form.count.errors }}</td>
     <th>{{ form.art_name.label_tag }}:</th>
     <td>{{ form.art_name }}{{ form.art_name.errors }}</td>
-    <th title="{% trans "Click to enter a new supplier." %}" id="supplier_cell">
-        {{ form.art_supplier.label_tag }}:</th>
+    <th>{{ form.art_supplier.label_tag }}:</th>
     <td>{{ form.art_supplier }}{{ form.art_supplier.errors }}</td>
     <th>{{ form.art_id.label_tag }}:</th>
     <td>{{ form.art_id }}{{ form.art_id.errors }}</td>
@@ -19,7 +19,7 @@
 <tr>
     <th>{{ form.art_q.label_tag }}:</th>
     <td>{{ form.art_q }}{{ form.art_q.errors }}</td>
-    <th>{{ form.art_price.label_tag }}:</th>
+    <th title="{{ cur_msg }}">{{ form.art_price.label_tag }}:</th>
     <td>{{ form.art_price }}{{ form.art_price.errors }}</td>
     <th>{{ form.oday.label_tag }}:</th>
     <td>{{ form.oday }}{{ form.oday.errors }}</td>
@@ -54,7 +54,7 @@
 </table>
 <div style="margin:5px auto;width:10%;text-align:center;">
 <span id="sum" style="font-weight:bold;"></span>
-<input type="submit" value="{% trans "Order" %}" />
+<input type="submit" value="{% trans "Order now" %}" />
 </div>
 </form>
 
@@ -69,12 +69,16 @@ $(document).ready(function() {
 $('#memo_cell').click(function() {
     $('#memo_field').toggle();
 });
-function update_sum() {
+function get_sum() {
     var sum = 0;
-    var color = '';
     $(".costs").each(function(i) {
         sum = sum + parseInt($(this).val(), 10);
     });
+    return sum;
+}
+function update_sum() {
+    var sum = get_sum();
+    var color = '';
     $('#sum').text(sum);
     if (sum != 100) {
         color = 'red';
@@ -82,6 +86,14 @@ function update_sum() {
         color = 'green';
     }
     $('#sum').css({'color': color});
+}
+function check_costs() {
+    var sum = get_sum();
+    if (sum != 100) {
+        alert('{{ costs_msg }}');
+        return false;
+    }
+    return true;
 }
 </script>
 

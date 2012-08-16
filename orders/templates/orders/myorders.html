@@ -1,0 +1,53 @@
+{% extends "index.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block content %}
+<h2 class="headline">{% trans "Orders for" %} {{ userprofile }}</h2>
+{% if orders %}
+<table id="dataTable">
+    <thead>
+        <tr>
+            <th>{% trans "Ordered" %}</th>
+            <th>{% trans "Count" %}</th>
+            <th>{% trans "Article" %}</th>
+            <th>{% trans "Quantity" %}</th>
+            <th>{% trans "Price" %}</th>
+            <th>{% trans "Supplier" %}</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for o in orders %}
+        <tr>
+            <td>{{ o.added|date:"SHORT_DATE_FORMAT" }}</td>
+            <td>{{ o.count }}</td>
+            <td title="Ident Number: {{ o.article.ident }}">
+                {{ o.article.name }}</td>
+            <td>{{ o.article.quantity }}</td>
+            <td>{{ o.article.fullprice }}</td>
+            <td>{{ o.article.supplier }}</td>
+            <td><a href="{% url orders-order o.article.id %}">
+                {% trans "Order now" %}</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+$(document).ready(function() {
+  var oTable = $('#dataTable').dataTable({
+    "bJQueryUI": true,
+    "bPaginate": true,
+    "oLanguage": {
+      "sUrl": "{% static "i18n/de_DE.txt" %}"
+    }
+  });
+});
+</script>
+
+{% else %}
+<p>{% trans "No orders found." %}</p>
+{% endif %}
+
+{% endblock %}

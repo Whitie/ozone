@@ -19,7 +19,7 @@ class OrderDay(models.Model):
     user = models.ForeignKey(User, verbose_name=_(u'Responsible User'))
 
     def __unicode__(self):
-        return self.day.strftime('%Y-%m-%d (%W)')
+        return self.day.strftime('%d.%m.%Y (%W)')
 
     class Meta:
         verbose_name = _(u'Order Day')
@@ -40,9 +40,12 @@ class Article(models.Model):
     def __unicode__(self):
         return u'{0} ({1})'.format(self.name, self.short_desc())
 
+    def fullprice(self):
+        return u'{0:.2f} {1}'.format(self.price, settings.CURRENCY[1])
+
     def short_desc(self):
         if self.price:
-            price = u' {0}/{1}{2}'.format(self.quantity, self.price,
+            price = u' {0}/{1:.2f}{2}'.format(self.quantity, self.price,
                                           settings.CURRENCY[1])
         else:
             price = u''
@@ -94,7 +97,7 @@ class Order(models.Model):
                                         u', '.join(names))
 
     def state_icon(self):
-        return u'{0}img/{1}.png'.format(settings.MEDIA_URL, self.state)
+        return u'{0}img/{1}.png'.format(settings.STATIC_URL, self.state)
 
     def is_complete(self):
         delivered = sum([x.count for x in
