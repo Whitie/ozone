@@ -47,8 +47,7 @@ def order_detail(req, order_id):
     for o in orders:
         o.userlist = [x.username for x in o.users.all()]
     ctx = dict(page_title=_(u'Open Orders'), menus=menus, oday=oday,
-        orders=orders)
-    ctx.update(csrf(req))
+        orders=orders, not_changed=_(u'Count was not changed. Aborting.'))
     return render_to_response('orders/orderday.html', ctx,
                               context_instance=RequestContext(req))
 
@@ -117,21 +116,25 @@ def add_supplier(req):
                               context_instance=RequestContext(req))
 
 
-@login_required
+@json_view
 def update_article_count(req, order_id, count):
-    print order_id, count
-#        id_order = req.POST.get('id_order')
-#        count = req.POST.get('count')
-#        order = Order.objects.get(id=int(id_order))
-#        if count == order.count:
-#            messages.error(req, _(u'Count was not changed.'))
-#            return redirect('orders-detail', oid)
-#        order.count = count
-#        if req.user not in order.users:
-#            order.users.add(req.user)
-#        order.save()
-#        messages.success(req, _(u'New count was saved.'))
-#        return redirect('orders-detail', oid)
+    try:
+        order_id, count = int(order_id), int(count)
+        order = Order.objects.select_related().get(id=order_id)
+        old_count = order.count
+        order.count = count
+        try:
+            u = order.users.get(id=req.user.id)
+        except Exception, e:
+            print e
+            order.users.add(req.user)
+        order.save()
+        msg = _(u'Count for %s was changed from %d to %d.' % (order.article.name,
+            old_count, count))
+    except Exception, e:
+        print e
+        msg = e
+    return dict(msg=unicode(msg))
 
 
 # Ajax

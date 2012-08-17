@@ -4,6 +4,19 @@
 
 {% block content %}
 <h2 class="headline">{% trans "Orders for" %} {{ oday.day|date:"DATE_FORMAT" }}</h2>
+<style type="text/css">
+#update_message {
+    display: none;
+    width: 50%;
+    margin: 15px auto;
+    background: green;
+    padding: 5px;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+}
+</style>
+<div id="update_message"></div>
 {% if orders %}
 <table id="dataTable">
     <thead>
@@ -27,6 +40,7 @@
             </td>
             <td>
                 <input type="hidden" id="id_order_{{ forloop.counter }}" value="{{ o.id }}" />
+                <input type="hidden" id="old_{{ forloop.counter }}" value="{{ o.count }}" />
                 <input id="count_{{ forloop.counter }}" type="text" value="{{ o.count }}" size="3" />
             </td>
             <td title="Ident Number: {{ o.article.ident }}">
@@ -60,9 +74,17 @@ $(document).ready(function() {
 function update_count(oid) {
     var order_id = $('#id_order_'+oid).val();
     var count = $('#count_'+oid).val();
-    var url = '/orders/api/update_count/'+order_id+'/'+count+'/'
-    $.get(url, function() {
-        alert('Success');
+    var old = $('#old_'+oid).val();
+    if (parseInt(old, 10) == parseInt(count, 10)) {
+        alert('{{ not_changed }}');
+        return false;
+    }
+    var url = '/orders/api/update_count/'+order_id+'/'+count+'/';
+    $.getJSON(url, function(data) {
+        $('#update_message').text(data['msg']).toggle('slow');
+        setTimeout(function() {
+                $('#update_message').text('').toggle('slow');
+            }, 5000);
     });
 }
 </script>
