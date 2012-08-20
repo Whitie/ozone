@@ -1,0 +1,7 @@
+{% extends "index.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block content %}
+<h2 class="headline">{% trans "Orders for" %} {{ oday.day|date:"DATE_FORMAT" }}</h2>
+{% endblock %}
