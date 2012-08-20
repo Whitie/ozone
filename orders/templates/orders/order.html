@@ -47,7 +47,7 @@
 </tr>
 <tr>
 {% for c in costs %}
-<td><input type="text" name="cost_{{ c.short_name }}" maxlength="3" size="3"
+<td><input type="text" name="cost_{{ c.ident }}" maxlength="3" size="3"
     value="0" onkeyup="update_sum()" class="costs" /></td>
 {% endfor %}
 </tr>

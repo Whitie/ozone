@@ -4,6 +4,8 @@
 
 {% block content %}
 <h2 class="headline">{% trans "Orders for" %} {{ oday.day|date:"DATE_FORMAT" }}</h2>
+<h3 style="text-align:center;color:{% if order_sum > 6000 %}red{% else %}green{% endif %};">
+{% trans "Sum" %}: {{ order_sum|floatformat:2 }}{{ CURRENCY_SYM }}</h3>
 <style type="text/css">
 #update_message {
     display: none;
@@ -46,7 +48,10 @@
             <td title="Ident Number: {{ o.article.ident }}">
                 {{ o.article.name }}</td>
             <td>{{ o.article.quantity }}</td>
-            <td style="text-align:right;">{{ o.article.fullprice }}</td>
+            <td style="text-align:right;"
+                title="{% trans "Single price" %}: {{ o.article.price|floatformat:2 }}{{ CURRENCY_SYM }}">
+                {{ o.sum_price|floatformat:2 }}{{ CURRENCY_SYM }}
+            </td>
             <td>{{ o.article.supplier }}</td>
             <td id="users_{{ forloop.counter }}">{{ o.userlist|join:", " }}</td>
             <td title="{{ o.state }}" style="text-align:center;">

@@ -12,4 +12,8 @@ def userconf(req):
 
 def set_global_vars(req):
     from django.conf import settings
-    return {'LOGO_URL': settings.LOGO_URL}
+    return {
+        'LOGO_URL': settings.LOGO_URL,
+        'CURRENCY_SYM': settings.CURRENCY[1],
+        'CURRENCY_NAME': settings.CURRENCY[0],
+    }

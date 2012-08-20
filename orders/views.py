@@ -17,6 +17,8 @@ from orders.models import OrderDay, Order, Article, Cost, CostOrder
 from orders.menu import menus
 
 
+# Helper
+
 def get_next_odays(include_today=False):
     if include_today:
         q = dict(day__gte=date.today())
@@ -25,6 +27,19 @@ def get_next_odays(include_today=False):
     odays = OrderDay.objects.filter(**q).order_by('day')
     return odays
 
+
+def get_costs(data):
+    costs = []
+    for k, v in data.items():
+        if k.startswith('cost_') and int(v):
+            ident = int(k[5:])
+            percent = int(v)
+            cost = Cost.objects.get(ident=ident)
+            costs.append((cost, percent))
+    return costs
+
+
+# Views
 
 def index(req):
     if req.user.has_perm('orders.can_order'):
@@ -43,10 +58,14 @@ def order_detail(req, order_id):
     oday = OrderDay.objects.get(id=oid)
     orders = Order.objects.select_related().filter(order_day=oday
         ).order_by('-added', 'article__name')
+    order_sum = 0
     for o in orders:
         o.userlist = [x.username for x in o.users.all()]
+        order_sum += o.count * o.article.price
+        o.sum_price = o.count * o.article.price
     ctx = dict(page_title=_(u'Open Orders'), menus=menus, oday=oday,
-        orders=orders, not_changed=_(u'Count was not changed. Aborting.'))
+        orders=orders, not_changed=_(u'Count was not changed. Aborting.'),
+        order_sum=order_sum)
     return render_to_response('orders/orderday.html', ctx,
                               context_instance=RequestContext(req))
 
@@ -55,6 +74,34 @@ def order_detail(req, order_id):
 def order(req, article_id=0):
     if req.method == 'POST':
         form = OrderForm(req.POST)
+        if form.is_valid():
+            costs = get_costs(req.POST)
+            art, created = Article.objects.get_or_create(
+                name=form.cleaned_data['art_name'],
+                ident=form.cleaned_data['art_id'],
+                price=form.cleaned_data['art_price'])
+            if created:
+                art.quantity = form.cleaned_data['art_q']
+                art.supplier = Company.objects.get(
+                    id=int(form.cleaned_data['art_supplier']))
+                art.save()
+            order = Order.objects.create(count=form.cleaned_data['count'],
+                article=art,
+                order_day=OrderDay.objects.get(
+                    id=int(form.cleaned_data['oday'])))
+            order.save()
+            for cost, percent in costs:
+                co = CostOrder.objects.create(percent=percent, order=order,
+                    cost=cost)
+                co.save()
+            order.memo = form.cleaned_data['memo']
+            order.for_test = form.cleaned_data['exam']
+            order.for_repair = form.cleaned_data['repair']
+            order.users.add(req.user)
+            order.save()
+            messages.success(req, _(u'Your order %s was saved.' % order))
+            return redirect('orders-detail', order_id=order.order_day.id)
+        messages.error(req, _(u'Please fill the required fields.'))
     else:
         form = OrderForm()
     costs = Cost.objects.all().order_by('ident')
@@ -118,7 +165,7 @@ def add_supplier(req):
 @permission_required('orders.can_order', raise_exception=True)
 @permission_required('can_change_orderstate', raise_exception=True)
 def manage_orders(req):
-    ctx = dict()
+    ctx = dict(page_title=_(u'Manage Orders'), menus=menus)
     return render_to_response('orders/manage_orders.html', ctx,
                               context_instance=RequestContext(req))
 

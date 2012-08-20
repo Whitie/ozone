@@ -22,11 +22,12 @@
         {% for o in orders %}
         <tr>
             <td>{{ o.added|date:"SHORT_DATE_FORMAT" }}</td>
-            <td>{{ o.count }}</td>
+            <td style="text-align:center;">{{ o.count }}</td>
             <td title="Ident Number: {{ o.article.ident }}">
                 {{ o.article.name }}</td>
             <td>{{ o.article.quantity }}</td>
-            <td>{{ o.article.fullprice }}</td>
+            <td style="text-align:right;" title="{% trans "Single Price" %}!">
+                {{ o.article.fullprice }}</td>
             <td>{{ o.article.supplier }}</td>
             <td title="{{ o.state }}" style="text-align:center;">
                 <img src="{{ o.state_icon }}" alt="{{ o.state }}" />
