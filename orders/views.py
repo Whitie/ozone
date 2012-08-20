@@ -115,6 +115,14 @@ def add_supplier(req):
                               context_instance=RequestContext(req))
 
 
+@permission_required('orders.can_order', raise_exception=True)
+@permission_required('can_change_orderstate', raise_exception=True)
+def manage_orders(req):
+    ctx = dict()
+    return render_to_response('orders/manage_orders.html', ctx,
+                              context_instance=RequestContext(req))
+
+
 # Ajax views
 
 @json_view
