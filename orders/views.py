@@ -116,28 +116,24 @@ def add_supplier(req):
                               context_instance=RequestContext(req))
 
 
+# Ajax views
+
 @json_view
 def update_article_count(req, order_id, count):
+    order_id, count = int(order_id), int(count)
+    order = Order.objects.select_related().get(id=order_id)
+    old_count = order.count
+    order.count = count
     try:
-        order_id, count = int(order_id), int(count)
-        order = Order.objects.select_related().get(id=order_id)
-        old_count = order.count
-        order.count = count
-        try:
-            u = order.users.get(id=req.user.id)
-        except Exception, e:
-            print e
-            order.users.add(req.user)
-        order.save()
-        msg = _(u'Count for %s was changed from %d to %d.' % (order.article.name,
-            old_count, count))
-    except Exception, e:
-        print e
-        msg = e
+        u = order.users.get(id=req.user.id)
+    except:
+        order.users.add(req.user)
+    order.save()
+    msg = _(u'Count for %s was changed from %d to %d.' % (order.article.name,
+        old_count, count))
     return dict(msg=unicode(msg))
 
 
-# Ajax
 @json_view
 def api_article(req, article_id=0):
     article_id = int(article_id)
