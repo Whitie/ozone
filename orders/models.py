@@ -13,6 +13,7 @@ from core.models import Company
 
 # Create your models here.
 
+
 class OrderDay(models.Model):
     day = models.DateField(_(u'Day'), unique=True,
         validators=[MinValueValidator(date.today())])
@@ -72,6 +73,7 @@ class Cost(models.Model):
 STATE_CHOICES = ((u'new', _(u'New')), (u'accepted', _(u'Accepted')),
     (u'rejected', _(u'Rejected')), (u'ordered', _(u'Ordered')),
     (u'delivered', _(u'Delivered')))
+
 
 class Order(models.Model):
     count = models.PositiveIntegerField(_(u'Count'))
@@ -135,4 +137,3 @@ class CostOrder(models.Model):
 
     def __unicode__(self):
         return u'{0} {1}: {2}%'.format(self.order, self.cost, self.percent)
-
