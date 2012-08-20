@@ -48,7 +48,7 @@
             <td>{{ o.article.quantity }}</td>
             <td style="text-align:right;">{{ o.article.fullprice }}</td>
             <td>{{ o.article.supplier }}</td>
-            <td>{{ o.userlist|join:", " }}</td>
+            <td id="users_{{ forloop.counter }}">{{ o.userlist|join:", " }}</td>
             <td title="{{ o.state }}" style="text-align:center;">
                 <img src="{{ o.state_icon }}" alt="{{ o.state }}" />
             </td>
@@ -82,6 +82,7 @@ function update_count(oid) {
     var url = '/orders/api/update_count/'+order_id+'/'+count+'/';
     $.getJSON(url, function(data) {
         $('#update_message').text(data['msg']).toggle('slow');
+        $('#users_'+oid).text(data['user']);
         setTimeout(function() {
                 $('#update_message').text('').toggle('slow');
             }, 5000);

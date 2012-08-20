@@ -14,6 +14,7 @@
             <th>{% trans "Quantity" %}</th>
             <th>{% trans "Price" %}</th>
             <th>{% trans "Supplier" %}</th>
+            <th>{% trans "State" %}</th>
             <th></th>
         </tr>
     </thead>
@@ -27,8 +28,11 @@
             <td>{{ o.article.quantity }}</td>
             <td>{{ o.article.fullprice }}</td>
             <td>{{ o.article.supplier }}</td>
+            <td title="{{ o.state }}" style="text-align:center;">
+                <img src="{{ o.state_icon }}" alt="{{ o.state }}" />
+            </td>
             <td><a href="{% url orders-order o.article.id %}">
-                {% trans "Order now" %}</a></td>
+                {% trans "ReOrder" %}</a></td>
         </tr>
         {% endfor %}
     </tbody>

@@ -6,7 +6,6 @@ from django.conf import settings
 from django.template import RequestContext
 from django.shortcuts import render_to_response, redirect
 from django.utils.translation import ugettext_lazy as _
-from django.core.context_processors import csrf
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 
@@ -131,7 +130,8 @@ def update_article_count(req, order_id, count):
     order.save()
     msg = _(u'Count for %s was changed from %d to %d.' % (order.article.name,
         old_count, count))
-    return dict(msg=unicode(msg))
+    user = [x.username for x in order.users.all()]
+    return dict(msg=unicode(msg), user=u', '.join(user))
 
 
 @json_view
