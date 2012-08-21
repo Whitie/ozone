@@ -27,7 +27,15 @@
   <p{% if msg.tags %} class="{{ msg.tags }}"{% endif %}>&raquo; {{ msg }}</p>
   {% endfor %}
 </div>
-<hr />
+<hr id="message_line" />
+<script type="text/javascript">
+$(document).ready(function() {
+    setTimeout(function() {
+        $('#messages').hide('slow');
+        $('#message_line').hide('slow');
+    }, 10000);
+});
+</script>
 {% endif %}
 
 <aside>

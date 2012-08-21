@@ -3,5 +3,63 @@
 {% load staticfiles %}
 
 {% block content %}
-<h2 class="headline">{% trans "Orders for" %} {{ oday.day|date:"DATE_FORMAT" }}</h2>
+<h2 class="headline">{% trans "Select Order Day" %}</h2>
+<div style="text-align:center;">
+<form action="{% url orders-manage %}" method="post">
+{% csrf_token %}
+<p>{% trans "Please select the order day do you want to edit" %}:
+    <select name="oday" size="1">
+        {% for o in odays %}
+        <option value="{{ o.id }}">{{ o }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="{% trans "Select" %}" />
+</p>
+</form>
+</div>
+<hr />
+<h2 class="headline">{% trans "Select Representative" %}</h2>
+<div id="update_message"></div>
+<div style="text-align:center;">
+{% if perms.orders.can_order %}
+<h3>{% trans "Make orders" %}:</h3>
+<select name="can_order" id="can_order" size="5" multiple="multiple">
+    {% for ou in users %}
+    <option value="{{ ou.id }}"{% if ou.username in can_order %} selected="selected"{% endif %}>
+        {{ ou.get_profile }}
+    </option>
+    {% endfor %}
+</select>
+<br />
+<input type="button" value="{% trans "Save" %}" onclick="save_changes('can_order');" />
+<br />
+{% endif %}
+{% if perms.order.can_change_orderstate %}
+<h3>{% trans "Accept / Reject orders" %}:</h3>
+<select name="can_change_orderstate" id="can_change_orderstate" size="5" multiple="multiple">
+    {% for cu in users %}
+    <option value="{{ cu.id }}"{% if cu.username in can_change %} selected="selected"{% endif %}>
+        {{ cu.get_profile }}
+    </option>
+    {% endfor %}
+</select>
+<br />
+<input type="button" value="{% trans "Save" %}" onclick="save_changes('can_change_orderstate');" />
+{% endif %}
+</div>
+
+<script type="text/javascript">
+function save_changes(action_type) {
+    var users = $('#'+action_type).val() || [];
+    var url = '{% url orders-api-repr %}';
+    var dat = {'type': action_type, 'users': users};
+    $.post(url, dat, function(data) {
+        $('#update_message').text(data['msg']).toggle('slow');
+        setTimeout(function() {
+                $('#update_message').text('').toggle('slow');
+            }, 5000);
+    });
+}
+</script>
+
 {% endblock %}

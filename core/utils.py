@@ -7,6 +7,8 @@ from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.decorators import user_passes_test
+from django.core.exceptions import PermissionDenied
 
 
 def named(verbose_name):
@@ -41,3 +43,14 @@ def check_for_import(module, msg=''):
         else:
             return f
     return decorate
+
+
+def any_permission_required(perms, login_url=None, raise_exception=False):
+    def check_perms(user):
+        for perm in perms:
+            if user.has_perm(perm):
+                return True
+        if raise_exception:
+            raise PermissionDenied
+        return False
+    return user_passes_test(check_perms, login_url=login_url)

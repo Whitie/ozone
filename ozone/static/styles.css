@@ -74,6 +74,7 @@ aside {
     width: 15%;
     float: left;
     line-height: 18px;
+    margin-bottom: 15px;
 }
 
 a.menu:link, a.menu:visited, a.menu:hover, a.menu:active {
@@ -93,6 +94,7 @@ aside a.menu:hover { color: #228b22; }
 article {
     width: 80%;
     float: right;
+    margin-bottom: 15px;
 }
 
 .headline {
@@ -119,4 +121,15 @@ article {
     -webkit-transform: rotate(-90deg);
     -o-transform: rotate(-90deg);
     -ms-transform: rotate(-90deg);
+}
+
+#update_message {
+    display: none;
+    width: 50%;
+    margin: 15px auto;
+    background: green;
+    padding: 5px;
+    color: white;
+    text-align: center;
+    font-weight: bold;
 }

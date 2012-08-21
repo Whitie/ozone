@@ -1,0 +1,18 @@
+{% extends "index.html" %}
+{% load i18n %}
+
+{% block content %}
+<h2 class="headline">{% trans "Delete order with ID" %}: {{ order.id }}</h2>
+<div style="text-align:center;width:60%;margin:5px auto;border:1px solid orange;">
+<h3>{% trans "Are you sure to delete the following article?" %}</h3>
+<p>{{ order.count }}x {{ order.article }}</p>
+<form action="{% url orders-delete oday_id order.id %}" method="post">
+{% csrf_token %}
+<p>
+    <input type="radio" name="delete" value="yes" />{% trans "Yes" %}<br />
+    <input type="radio" name="delete" value="no" checked="checked" />{% trans "No" %}<br />
+    <input type="submit" value="{% trans "Next" %}" />
+</p>
+</form>
+</div>
+{% endblock %}

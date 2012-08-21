@@ -1,6 +1,6 @@
 # Create your views here.
 
-from datetime import date
+from datetime import date, timedelta
 
 from django.conf import settings
 from django.template import RequestContext
@@ -8,8 +8,10 @@ from django.shortcuts import render_to_response, redirect
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.models import User
+from django.contrib.auth.models import Permission
 
-from core.utils import json_view
+from core.utils import json_view, any_permission_required
 from core.models import Company
 from orders.forms import (OrderDayForm, OrderOldForm, OrderForm,
                           ShortSupplierForm)
@@ -63,10 +65,35 @@ def order_detail(req, order_id):
         o.userlist = [x.username for x in o.users.all()]
         order_sum += o.count * o.article.price
         o.sum_price = o.count * o.article.price
+        if req.user.username in o.userlist and o.users.count() == 1:
+            o.deleteable = True
+        else:
+            o.deleteable = False
     ctx = dict(page_title=_(u'Open Orders'), menus=menus, oday=oday,
         orders=orders, not_changed=_(u'Count was not changed. Aborting.'),
         order_sum=order_sum)
     return render_to_response('orders/orderday.html', ctx,
+                              context_instance=RequestContext(req))
+
+
+@login_required
+def delete_order(req, oday_id, order_id):
+    order = Order.objects.get(id=int(order_id))
+    if req.method == 'POST':
+        if req.user.id not in [x.id for x in order.users.all()] or \
+                order.users.count() > 1:
+            messages.error(req, _(u'Cannot delete foreign order!'))
+            return redirect('orders-detail', order_id=oday_id)
+        answer = req.POST.get('delete', u'no')
+        if answer == u'yes':
+            order.delete()
+            messages.success(req, _(u'Order (ID: %s) deleted.' % order_id))
+        else:
+            messages.error(req, _(u'Nothing deleted. Cancelled by user.'))
+        return redirect('orders-detail', order_id=oday_id)
+    ctx = dict(page_title=_(u'Delete Order'), menus=menus, oday_id=oday_id,
+        order=order)
+    return render_to_response('orders/delete.html', ctx,
                               context_instance=RequestContext(req))
 
 
@@ -162,11 +189,33 @@ def add_supplier(req):
                               context_instance=RequestContext(req))
 
 
-@permission_required('orders.can_order', raise_exception=True)
-@permission_required('can_change_orderstate', raise_exception=True)
+@any_permission_required(['orders.can_order', 'orders.can_change_orderstate'],
+                         raise_exception=True)
 def manage_orders(req):
-    ctx = dict(page_title=_(u'Manage Orders'), menus=menus)
+    if req.method == 'POST':
+        day = int(req.POST['oday'])
+        oday = OrderDay.objects.select_related().get(id=day)
+        messages.success(req, _(u'%s selected.' % oday))
+        return redirect('orders-manage', oday_id=day)
+    users = User.objects.exclude(username='admin')
+    can_order = [x.username for x in users if x.has_perm('orders.can_order')]
+    can_change = [x.username for x in users
+                  if x.has_perm('orders.can_change_orderstate')]
+    limit = date.today() - timedelta(days=21)
+    odays = OrderDay.objects.filter(day__gte=limit).order_by('day')
+    ctx = dict(page_title=_(u'Manage Orders'), menus=menus, odays=odays,
+        users=users, can_order=can_order, can_change=can_change)
     return render_to_response('orders/manage_orders.html', ctx,
+                              context_instance=RequestContext(req))
+
+
+@any_permission_required(['orders.can_order', 'orders.can_change_orderstate'],
+                         raise_exception=True)
+def manage_order(req, oday_id):
+    oday = OrderDay.objects.get(id=int(oday_id))
+    orders = Order.objects.select_related().filter(order_day=oday)
+    ctx = dict(page_title=_(u'Manage Orders'), oday=oday, orders=orders)
+    return render_to_response('orders/manage_order.html', ctx,
                               context_instance=RequestContext(req))
 
 
@@ -200,3 +249,27 @@ def api_article(req, article_id=0):
         art_id=a.ident, art_q=a.quantity, art_price=float(a.price),
         count=1, oday=oday.id)
     return data
+
+
+@json_view
+def add_representative(req):
+    users = map(int, req.POST.getlist('users[]', []))
+    action_type = req.POST.get('type')
+    perm = Permission.objects.get(codename=action_type)
+    added = []
+    removed = []
+    for u in User.objects.exclude(username='admin'):
+        if u.id in users:
+            if not u.has_perm('orders.%s' % action_type):
+                added.append(u.username)
+                u.user_permissions.add(perm)
+        else:
+            if u.has_perm('orders.%s' % action_type):
+                removed.append(u.username)
+                u.user_permissions.remove(perm)
+    if not added:
+        added = [u'-']
+    if not removed:
+        removed = [u'-']
+    return {'msg': unicode(_(u'%s added. %s removed.' % (u' / '.join(added),
+        u' / '.join(removed))))}

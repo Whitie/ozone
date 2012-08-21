@@ -4,20 +4,8 @@
 
 {% block content %}
 <h2 class="headline">{% trans "Orders for" %} {{ oday.day|date:"DATE_FORMAT" }}</h2>
-<h3 style="text-align:center;color:{% if order_sum > 6000 %}red{% else %}green{% endif %};">
+<h3 id="sum" style="text-align:center;color:{% if order_sum > 6000 %}red{% else %}green{% endif %};">
 {% trans "Sum" %}: {{ order_sum|floatformat:2 }}{{ CURRENCY_SYM }}</h3>
-<style type="text/css">
-#update_message {
-    display: none;
-    width: 50%;
-    margin: 15px auto;
-    background: green;
-    padding: 5px;
-    color: white;
-    text-align: center;
-    font-weight: bold;
-}
-</style>
 <div id="update_message"></div>
 {% if orders %}
 <table id="dataTable">
@@ -60,6 +48,12 @@
             <td style="text-align:center;">
                 <input type="button" value="{% trans "Change" %}"
                     onclick="update_count('{{ forloop.counter }}');" />
+                {% if o.deleteable %}
+                <a href="{% url orders-delete oday.id o.id %}">
+                    <img src="{% static "img/delete.png" %}" alt="{% trans "Delete" %}"
+                        title="{% trans "Delete" %}"/>
+                </a>
+                {% endif %}
             </td>
         </tr>
         {% endfor %}
@@ -88,6 +82,7 @@ function update_count(oid) {
     $.getJSON(url, function(data) {
         $('#update_message').text(data['msg']).toggle('slow');
         $('#users_'+oid).text(data['user']);
+        $('#sum').hide();
         setTimeout(function() {
                 $('#update_message').text('').toggle('slow');
             }, 5000);
