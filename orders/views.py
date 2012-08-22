@@ -72,6 +72,8 @@ def order_detail(req, order_id):
     ctx = dict(page_title=_(u'Open Orders'), menus=menus, oday=oday,
         orders=orders, not_changed=_(u'Count was not changed. Aborting.'),
         order_sum=order_sum)
+    req.session['came_from'] = 'orders-detail'
+    req.session['came_from_kw'] = {'order_id': order_id}
     return render_to_response('orders/orderday.html', ctx,
                               context_instance=RequestContext(req))
 
@@ -80,17 +82,20 @@ def order_detail(req, order_id):
 def delete_order(req, oday_id, order_id):
     order = Order.objects.get(id=int(order_id))
     if req.method == 'POST':
+        answer = req.POST.get('delete', u'no')
+        redirect_to = req.session.get('came_from', 'orders-detail')
+        kw = req.session.get('came_from_kw', {'order_id': oday_id})
         if req.user.id not in [x.id for x in order.users.all()] or \
                 order.users.count() > 1:
-            messages.error(req, _(u'Cannot delete foreign order!'))
-            return redirect('orders-detail', order_id=oday_id)
-        answer = req.POST.get('delete', u'no')
+            if not req.user.has_perm('orders.can_order'):
+                messages.error(req, _(u'Cannot delete foreign order!'))
+                return redirect(redirect_to, **kw)
         if answer == u'yes':
             order.delete()
             messages.success(req, _(u'Order (ID: %s) deleted.' % order_id))
         else:
             messages.error(req, _(u'Nothing deleted. Cancelled by user.'))
-        return redirect('orders-detail', order_id=oday_id)
+        return redirect(redirect_to, **kw)
     ctx = dict(page_title=_(u'Delete Order'), menus=menus, oday_id=oday_id,
         order=order)
     return render_to_response('orders/delete.html', ctx,
@@ -215,6 +220,8 @@ def manage_order(req, oday_id):
     oday = OrderDay.objects.get(id=int(oday_id))
     orders = Order.objects.select_related().filter(order_day=oday)
     ctx = dict(page_title=_(u'Manage Orders'), oday=oday, orders=orders)
+    req.session['came_from'] = 'orders-manage'
+    req.session['came_from_kw'] = {'oday_id': oday_id}
     return render_to_response('orders/manage_order.html', ctx,
                               context_instance=RequestContext(req))
 
@@ -258,6 +265,7 @@ def add_representative(req):
     perm = Permission.objects.get(codename=action_type)
     added = []
     removed = []
+    msgs = []
     for u in User.objects.exclude(username='admin'):
         if u.id in users:
             if not u.has_perm('orders.%s' % action_type):
@@ -267,9 +275,8 @@ def add_representative(req):
             if u.has_perm('orders.%s' % action_type):
                 removed.append(u.username)
                 u.user_permissions.remove(perm)
-    if not added:
-        added = [u'-']
-    if not removed:
-        removed = [u'-']
-    return {'msg': unicode(_(u'%s added. %s removed.' % (u' / '.join(added),
-        u' / '.join(removed))))}
+    if added:
+        msgs.append(_(u'%s added.' % u', '.join(added)))
+    if removed:
+        msgs.append(_(u'%s removed.' % u', '.join(removed)))
+    return {'msg': u' '.join([unicode(x) for x in msgs])}
