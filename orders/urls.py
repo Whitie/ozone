@@ -15,7 +15,6 @@ urlpatterns = patterns('orders.views',
     url(r'^manage/$', 'manage_orders', name='orders-manage'),
     url(r'^manage/(?P<oday_id>\d+)/$', 'manage_order', name='orders-manage'),
     url(r'^myorders/$', 'myorders', name='orders-myorders'),
-    url(r'^generate_pdf/$', 'generate_pdf', name='orders-genpdf'),
 
     # api
     url(r'^api/article/(?P<article_id>\d+)/$', 'api_article',
@@ -24,4 +23,8 @@ urlpatterns = patterns('orders.views',
         'update_article_count', name='orders-api-count'),
     url(r'^api/representative/$', 'add_representative', name='orders-api-repr'),
     url(r'^api/change_order/$', 'change_order', name='orders-api-change'),
+)
+
+urlpatterns += patterns('orders.pdf_views',
+    url(r'^generate_pdf/$', 'generate_pdf', name='orders-genpdf'),
 )

@@ -228,11 +228,6 @@ def manage_order(req, oday_id):
                               context_instance=RequestContext(req))
 
 
-@permission_required('orders.can_order')
-def generate_pdf(req):
-    pass
-
-
 # Ajax views
 
 @json_view
