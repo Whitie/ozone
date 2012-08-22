@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
 {% block content %}
-<h2 class="headline">{% trans "Edit Order" %}: {{ oday }}</h2>
+<h2 class="headline">{% trans "Edit orders for" %} {{ oday }}</h2>
 <p>{% trans "All changes will be saved automatically." %}
     <span id="saved_msg" style="display:none;"></span>
 </p>
@@ -103,9 +103,9 @@ function update_row(row) {
     data = {'order_id': oid, 'count': count, 'art_name': art_name,
             'art_ident': art_ident, 'price': price, 'state': state};
     $.post('{% url orders-api-change %}', data, function(data) {
-        $('#saved_msg').text('{% trans "All changes saved" %} ({% trans "Row" %}: '+row+').').show('slow');
+        $('#saved_msg').text(data['msg']+' {% trans "Row" %}: '+row+'.').fadeIn('slow');
         setTimeout(function() {
-            $('#saved_msg').text('').hide('slow');
+            $('#saved_msg').fadeOut('slow');
         }, 5000);
     });
 }

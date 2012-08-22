@@ -5,6 +5,7 @@ from datetime import date, timedelta
 from django.conf import settings
 from django.template import RequestContext
 from django.shortcuts import render_to_response, redirect
+from django.views.decorators.http import require_POST
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
@@ -263,7 +264,7 @@ def api_article(req, article_id=0):
         count=1, oday=oday.id)
     return data
 
-
+@require_POST
 @json_view
 def add_representative(req):
     users = map(int, req.POST.getlist('users[]', []))
@@ -288,8 +289,24 @@ def add_representative(req):
     return {'msg': u' '.join([unicode(x) for x in msgs])}
 
 
+@require_POST
 @json_view
 def change_order(req):
-    if req.method == 'POST':
-        print req.POST
-    return {}
+    try:
+        order_id = int(req.POST.get('order_id'))
+        count = int(req.POST.get('count'))
+        state = req.POST.get('state')
+        art_name = req.POST.get('art_name')
+        art_ident = req.POST.get('art_ident')
+        order = Order.objects.get(id=order_id)
+        article = order.article
+        article.name = art_name
+        article.ident = art_ident
+        article.save()
+        order.count = count
+        order.state = state
+        order.save()
+        msg = _(u'All changes to order with ID %d saved.' % order_id)
+    except Exception as e:
+        msg = e
+    return {'msg': unicode(msg)}
