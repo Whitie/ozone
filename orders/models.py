@@ -98,6 +98,12 @@ class Order(models.Model):
         return u'{0}x {1} ({2})'.format(self.count, self.article.name,
                                         u', '.join(names))
 
+    def price(self):
+        try:
+            return self.count * self.article.price
+        except:
+            return 0.0
+
     def state_icon(self):
         return u'{0}img/{1}.png'.format(settings.STATIC_URL, self.state)
 

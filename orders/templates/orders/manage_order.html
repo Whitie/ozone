@@ -1,0 +1,114 @@
+{% extends "index.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block content %}
+<h2 class="headline">{% trans "Edit Order" %}: {{ oday }}</h2>
+<p>{% trans "All changes will be saved automatically." %}
+    <span id="saved_msg" style="display:none;"></span>
+</p>
+
+{% if perms.orders.can_order %}
+<form action="{% url orders-genpdf %}" method="post">
+{% csrf_token %}
+<input type="hidden" name="oday_id" value="{{ oday.id }}" />
+<p><input type="submit" value="{% trans "Generate printouts" %}" /></p>
+</form>
+{% endif %}
+
+<table id="dataTable">
+    <thead>
+        <tr>
+            <th>{% trans "Count" %}</th>
+            <th>{% trans "Article" %}</th>
+            <th>{% trans "Art. ID" %}</th>
+            <th>{% trans "Quantity" %}</th>
+            <th>{% trans "Price" %}</th>
+            <th>{% trans "Supplier" %}</th>
+            <th>{% trans "State" %}</th>
+            <th>{% trans "Delete" %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for o in orders %}
+        <tr id="row_{{ forloop.counter }}">
+            <td>
+                <input type="text" value="{{ o.count }}" name="count"
+                    size="3" onchange="update_row({{ forloop.counter }});"
+                    style="text-align:right;" />
+                <input type="hidden" name="order_id" value="{{ o.id }}" />
+            </td>
+            <td title="{% trans "Only correct typos here!" %}">
+                <input type="text" value="{{ o.article.name }}" name="art_name"
+                    onchange="update_row({{ forloop.counter }});" />
+                <span style="display:none;">{{ o.article.name }}</span>
+            </td>
+            <td title="{% trans "Only correct typos here!" %}">
+                <input type="text" value="{{ o.article.ident }}" name="art_ident"
+                    onchange="update_row({{ forloop.counter }});" />
+            </td>
+            <td>{{ o.article.quantity }}</td>
+            <td title="{% trans "Sum" %}: {{ o.price|floatformat:2 }}{{ CURRENCY_SYM }}">
+                <input type="text" value="{{ o.article.price|floatformat:2 }}"
+                    name="art_price" size="10" onchange="update_row({{ forloop.counter }});"
+                    style="text-align:right;" />{{ CURRENCY_SYM }}
+            </td>
+            <td title="{{ o.memo|default:"-" }}">{{ o.article.supplier }}</td>
+            <td{% if not perms.orders.can_change_orderstate %} title="{{ o.state }}" style="text-align:center;"{% endif %}>
+                {% if perms.orders.can_change_orderstate %}
+                <input type="radio" name="state_{{ forloop.counter }}" value="new"
+                    {% if o.state == 'new' %} checked="checked"{% endif %}
+                    onchange="update_row({{ forloop.counter }});" />
+                    {% trans "New" %}<br />
+                <input type="radio" name="state_{{ forloop.counter }}" value="rejected"
+                    {% if o.state == 'rejected' %} checked="checked"{% endif %}
+                    onchange="update_row({{ forloop.counter }});" />
+                    {% trans "Rejected" %}<br />
+                <input type="radio" name="state_{{ forloop.counter }}" value="accepted"
+                    {% if o.state == 'accepted' %} checked="checked"{% endif %}
+                    onchange="update_row({{ forloop.counter }});" />
+                    {% trans "Accepted" %}<br />
+                {% else %}
+                <img src="{{ o.state_icon }}" alt="{{ o.state }}" />
+                {% endif %}
+            </td>
+            <td style="text-align:center;">
+                <a href="{% url orders-delete oday.id o.id %}">
+                    <img src="{% static "img/delete.png" %}" alt="{% trans "Delete" %}"
+                        title="{% trans "Delete" %}"/>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+$(document).ready(function() {
+  var oTable = $('#dataTable').dataTable({
+    "bJQueryUI": true,
+    "bPaginate": false,
+    "oLanguage": {
+      "sUrl": "{% static "i18n/de_DE.txt" %}"
+    }
+  });
+});
+function update_row(row) {
+    var oid = $('#row_'+row+' > td > :input[name="order_id"]').val();
+    var count = $('#row_'+row+' > td > :input[name="count"]').val();
+    var art_name = $('#row_'+row+' > td > :input[name="art_name"]').val();
+    var art_ident = $('#row_'+row+' > td > :input[name="art_ident"]').val();
+    var price = $('#row_'+row+' > td > :input[name="price"]').val();
+    var state = $('#row_'+row+' > td > :input[name^="state"]:checked').val();
+    data = {'order_id': oid, 'count': count, 'art_name': art_name,
+            'art_ident': art_ident, 'price': price, 'state': state};
+    $.post('{% url orders-api-change %}', data, function(data) {
+        $('#saved_msg').text('{% trans "All changes saved" %} ({% trans "Row" %}: '+row+').').show('slow');
+        setTimeout(function() {
+            $('#saved_msg').text('').hide('slow');
+        }, 5000);
+    });
+}
+</script>
+
+{% endblock %}

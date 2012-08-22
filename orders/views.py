@@ -219,11 +219,17 @@ def manage_orders(req):
 def manage_order(req, oday_id):
     oday = OrderDay.objects.get(id=int(oday_id))
     orders = Order.objects.select_related().filter(order_day=oday)
-    ctx = dict(page_title=_(u'Manage Orders'), oday=oday, orders=orders)
+    ctx = dict(page_title=_(u'Manage Orders'), menus=menus, oday=oday,
+        orders=orders)
     req.session['came_from'] = 'orders-manage'
     req.session['came_from_kw'] = {'oday_id': oday_id}
     return render_to_response('orders/manage_order.html', ctx,
                               context_instance=RequestContext(req))
+
+
+@permission_required('orders.can_order')
+def generate_pdf(req):
+    pass
 
 
 # Ajax views
@@ -280,3 +286,10 @@ def add_representative(req):
     if removed:
         msgs.append(_(u'%s removed.' % u', '.join(removed)))
     return {'msg': u' '.join([unicode(x) for x in msgs])}
+
+
+@json_view
+def change_order(req):
+    if req.method == 'POST':
+        print req.POST
+    return {}
