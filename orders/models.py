@@ -149,7 +149,7 @@ class CostOrder(models.Model):
 class Printout(models.Model):
     order_day = models.ForeignKey(OrderDay, verbose_name=_(u'Order Day'),
         related_name='printouts')
-    internal = models.BooleanField(_(u'Internal'), help=_(u'Internal '
+    internal = models.BooleanField(_(u'Internal'), help_text=_(u'Internal '
         u'means with costs and prices.'), default=True)
     pdf = models.FileField(_(u'PDF-File'), upload_to='orders/%Y/%m')
 
