@@ -1,0 +1,42 @@
+\documentclass[DIN]{scrlttr2}
+
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{ltxtable}
+\usepackage{lastpage}
+
+\KOMAoptions{fromlogo=true,fromphone=true,fromfax=true,pagenumber=botright,enlargefirstpage=on}
+
+\setkomavar{fromfax}{030 / 6 77 44 53}
+\setkomavar{fromphone}{030 / 67 00 04-0}
+\setkomavar{fromname}{Bildungswerk Nordostchemie e. V.}
+\setkomavar{fromaddress}{Adlergestell 333, 12489 Berlin}
+\setkomavar{fromlogo}{\includegraphics[width=3cm]{bbz_logo}}
+
+\setkomavar{toname}{Carl Roth GmbH}
+\setkomavar{toaddress}{Musterstraße 23\\22334 Musterstadt}
+
+\renewcommand*{\raggedsignature}{\raggedright}
+\setkomavar{signature}{%
+  {\begin{tabularx}{\textwidth}{@{}XX@{}}
+    Besteller & genehmigt \\
+    Fr. Paschke & Fr. Cyrus\\
+  \end{tabularx}}%
+}
+\setkomavar{subject}{Bestellung}
+\setkomavar{invoice}[Kundennummer]{xxx}
+\firstfoot{\centering Anzahl der Seiten: \pageref{LastPage}}
+
+\pagestyle{headings}
+
+\begin{document}
+\begin{letter}{}
+\opening{}
+
+\LTXtable{\linewidth}{order_fax_table}
+
+\closing{Mit freundlichen Grüßen}
+\end{letter}
+\end{document}

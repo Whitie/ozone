@@ -1,0 +1,34 @@
+\documentclass[a4paper,paper=landscape]{scrartcl}
+
+\usepackage[landscape,left=10mm,right=10mm,top=25mm]{geometry}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{graphics}
+\usepackage{ltxtable}
+\usepackage{lastpage}
+\usepackage[right]{eurosym}
+\usepackage[automark]{scrpage2}
+
+\pagestyle{scrheadings}
+
+\ihead[]{bbz Chemie}
+\chead[]{Besteller: Fr. Paschke}
+\ohead[]{\today}
+
+\ifoot[]{Besteller\\Fr. Paschke}
+\cfoot[]{Seite \thepage{} von \pageref{LastPage}}
+\ofoot[]{genehmigt\\Fr. Cyrus}
+
+\begin{document}
+
+\begin{center}
+\textbf{BESTELLSCHEIN Chemikalien und Ausbildungsmittel}\\
+\textbf{Lieferant:} Roth
+{
+\small
+\LTXtable{\linewidth}{order_table}
+}
+\end{center}
+
+\end{document}
