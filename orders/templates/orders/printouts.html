@@ -1,0 +1,26 @@
+{% extends "index.html" %}
+{% load i18n %}
+
+{% block content %}
+<h2 class="headline">{% trans "Generating PDF-Files for" %} {{ oday }}</h2>
+<h3 class="headline">{% trans "This may take some minutes!" %}</h3>
+
+<p>
+    <strong>{% trans "With costs (internal use)" %}:</strong>
+    <a id="internal" href=""></a>
+</p>
+<p>
+    <strong>{% trans "For Fax (external use)" %}:</strong>
+    <a id="external" href="">TT</a>
+</p>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#internal,#external').css({'display': 'none'});
+    var data = {'oday_id': {{ oday.id }}}
+    $.post('{% url orders-api-pdf %}', data, function(data) {
+        alert('Ready');
+    });
+});
+</script>
+{% endblock %}
