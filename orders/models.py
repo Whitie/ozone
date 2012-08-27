@@ -11,6 +11,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from audit_log.models.managers import AuditLog
 from core.models import Company
 
+
 # Create your models here.
 
 
@@ -143,3 +144,20 @@ class CostOrder(models.Model):
 
     def __unicode__(self):
         return u'{0} {1}: {2}%'.format(self.order, self.cost, self.percent)
+
+
+class Printout(models.Model):
+    order_day = models.ForeignKey(OrderDay, verbose_name=_(u'Order Day'),
+        related_name='printouts')
+    internal = models.BooleanField(_(u'Internal'), help_text=_(u'Internal '
+        u'means with costs and prices.'), default=True)
+    pdf = models.FileField(_(u'PDF-File'), upload_to='orders/%Y/%m')
+
+    def __unicode__(self):
+        if self.internal:
+            return u'{0} i'.format(self.order_day)
+        return self.order_day
+
+    class Meta:
+        verbose_name = _(u'Printout')
+        verbose_name_plural = _(u'Printouts')

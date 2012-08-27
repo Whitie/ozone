@@ -27,4 +27,7 @@ urlpatterns = patterns('orders.views',
 
 urlpatterns += patterns('orders.pdf_views',
     url(r'^generate_pdf/$', 'generate_pdf', name='orders-genpdf'),
+
+    # api
+    url(r'^api/generate_pdf/$', 'generate_one_pdf', name='orders-api-pdf'),
 )

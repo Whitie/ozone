@@ -26,6 +26,18 @@ def json_view(func):
     return wrap
 
 
+def json_rpc(func):
+    def wrap(req, *args, **kwargs):
+        if req.method == 'POST' and '_JSON_' in req.POST:
+            json_data = simplejson.loads(req.POST['_JSON_'])
+            response = func(req, json_data, *args, **kwargs)
+        else:
+            response = func(req, *args, **kwargs)
+        json = simplejson.dumps(response)
+        return HttpResponse(json, mimetype='application/json')
+    return wrap
+
+
 def error(req, msg=''):
     if not msg:
         msg = _('An internal server error occured.')

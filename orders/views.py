@@ -259,6 +259,7 @@ def api_article(req, article_id=0):
         count=1, oday=oday.id)
     return data
 
+
 @require_POST
 @json_view
 def add_representative(req):
