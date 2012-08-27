@@ -10,7 +10,7 @@ syntax: glob
 *.pdf
 log/*
 build/*
-_build/*
+orders/latex/_build/*
 dist/*
 tests/*
 docs/_build/*

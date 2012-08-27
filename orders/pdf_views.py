@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-import sys, traceback
+
 import codecs
 import os
+
+from datetime import date
 
 from django.core.files.base import ContentFile
 from django.template import RequestContext
@@ -64,20 +66,23 @@ def make_latex(ctx, template, table_template=None):
     return printout, pdf
 
 
-def generate_external(supplier, ctx):
+def generate_external(supplier, _ctx):
+    ctx = _ctx.copy()
     orders = get_orders(ctx['oday'], supplier)
     ctx['supplier'] = supplier
     ctx['orders'] = orders
     return make_latex(ctx, 'order_fax.tex', 'order_fax_table.tex')
 
 
-def generate_internal(ctx):
+def generate_internal(_ctx):
+    ctx = _ctx.copy()
     orders = get_orders(ctx['oday'])
     print orders
     ctx['costs'] = Cost.objects.all()
     for supp in orders:
         for o in supp:
             o.state = u'ordered'
+            o.ordered = date.today()
             o.save()
             o._costs = []
             costs = list(o.costs.all())
@@ -113,21 +118,18 @@ def generate_pdf(req):
 @require_POST
 @json_rpc
 def generate_one_pdf(req, data):
-    try:
-        print data
-        oday_id = data.get('oday_id')
-        supplier_id = data.get('supplier_id', None)
-        oday = OrderDay.objects.get(id=oday_id)
-        s = latex.get_latex_settings()
-        ctx = dict(s=s, oday=oday)
-        if supplier_id is not None:
-            supplier = Company.objects.get(id=supplier_id)
-            printout, filename = generate_external(supplier, ctx)
-            return dict(supplier=supplier.short_name or supplier.name,
-                size=printout.pdf.size, filename=filename, url=printout.pdf.url)
-        else:
-            printout, filename = generate_internal(ctx)
-            return dict(size=printout.pdf.size, filename=filename,
-                url=printout.pdf.url)
-    except:
-        traceback.print_exc(file=sys.stdout)
+    oday_id = data.get('oday_id')
+    supplier_id = data.get('supplier_id', None)
+    oday = OrderDay.objects.get(id=oday_id)
+    s = latex.get_latex_settings()
+    ctx = dict(s=s, oday=oday)
+    if supplier_id is not None:
+        supplier = Company.objects.get(id=supplier_id)
+        printout, filename = generate_external(supplier, ctx)
+        return dict(supplier=supplier.short_name or supplier.name,
+            size=printout.pdf.size, filename=filename,
+            url=printout.pdf.url)
+    else:
+        printout, filename = generate_internal(ctx)
+        return dict(size=printout.pdf.size, filename=filename,
+            url=printout.pdf.url)
