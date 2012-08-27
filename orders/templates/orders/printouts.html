@@ -3,24 +3,35 @@
 
 {% block content %}
 <h2 class="headline">{% trans "Generating PDF-Files for" %} {{ oday }}</h2>
-<h3 class="headline">{% trans "This may take some minutes!" %}</h3>
+<h3 class="headline">{% trans "This may take some time!" %}</h3>
 
-<p>
-    <strong>{% trans "With costs (internal use)" %}:</strong>
-    <a id="internal" href=""></a>
-</p>
-<p>
-    <strong>{% trans "For Fax (external use)" %}:</strong>
-    <a id="external" href="">TT</a>
-</p>
+<div id="external"></div>
+
+<div id="internal"></div>
 
 <script type="text/javascript">
 $(document).ready(function() {
-    $('#internal,#external').css({'display': 'none'});
-    var data = {'oday_id': {{ oday.id }}}
-    $.post('{% url orders-api-pdf %}', data, function(data) {
-        alert('Ready');
-    });
+    var ids = [{{ ids|join:", " }}];
+    var data = {'oday_id': {{ oday.id }}};
+    for (var i = 0; i < ids.length; ++i) {
+        data['supplier_id'] = ids[i];
+        $.post('{% url orders-api-pdf %}', {'_JSON_': JSON.stringify(data)},
+            function(data) {
+                var s = '<p>{% trans "Printout for" %} '+data['supplier']
+                    +': <a href="'+data['url']+'">'+data['filename']
+                    +' ('+data['size']+' Bytes)</a></p>';
+                $('#external').append(s);
+            });
+    }
+    delete data['supplier_id'];
+    $.post('{% url orders-api-pdf %}', {'_JSON_': JSON.stringify(data)},
+        function(data) {
+            $('<hr />').insertAfter('#external');
+            var s = '<p>{% trans "Internal printout" %}: '
+                +': <a href="'+data['url']+'">'+data['filename']
+                +' ('+data['size']+' Bytes)</a></p>';
+            $('#internal').append(s);
+        });
 });
 </script>
 {% endblock %}

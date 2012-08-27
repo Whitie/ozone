@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import os, sys
+import os
+import sys
 
 _PATH = os.path.dirname(os.path.abspath(__file__))
 EXT_DIR = os.path.normpath(os.path.join(_PATH, '..', 'ext'))
@@ -118,9 +119,6 @@ WSGI_APPLICATION = 'ozone.wsgi.application'
 
 TEMPLATE_DIRS = (
     os.path.join(_PATH, 'base_templates'),
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
 )
 
 INSTALLED_APPS = (
@@ -273,6 +271,20 @@ AD_CACHE_TIME = 0
 
 ################################################################################
 
+# Latex settings ###############################################################
+LATEX = {
+    'pdflatex': (r'P:/Portable/latex-portable/miktex-portable/miktex'
+                 r'/bin/pdflatex.exe'),
+    'options': ['-interaction=nonstopmode'],
+    'outdir': r'C:/Windows/temp',
+    'fromfax': u'030 / 6 77 44 53',
+    'fromphone': u'030 / 67 00 04-0',
+    'fromname': u'Bildungswerk Nordostchemie e. V.',
+    'fromaddress': u'Adlergestell 333, 12489 Berlin',
+    'fromlogo': u'P:/container/bbz-tools/ozone/ozone/static/img/bbzlogo.png',
+}
+
+################################################################################
 
 # Make sure to use a path, which is writeable and not accesible over the web
 SECRET_FILE = os.path.join(_PATH, '.secret')

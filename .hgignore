@@ -7,8 +7,10 @@ syntax: glob
 *.geany
 *.komodo*
 *.secret
+*.pdf
 log/*
 build/*
+_build/*
 dist/*
 tests/*
 docs/_build/*

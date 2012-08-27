@@ -152,11 +152,11 @@ class Printout(models.Model):
     internal = models.BooleanField(_(u'Internal'), help_text=_(u'Internal '
         u'means with costs and prices.'), default=True)
     pdf = models.FileField(_(u'PDF-File'), upload_to='orders/%Y/%m')
+    company_name = models.CharField(_(u'Company Name'), max_length=100,
+        blank=True)
 
     def __unicode__(self):
-        if self.internal:
-            return u'{0} i'.format(self.order_day)
-        return self.order_day
+        return u'{0} ({1})'.format(unicode(self.order_day), self.company_name)
 
     class Meta:
         verbose_name = _(u'Printout')

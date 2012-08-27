@@ -2,8 +2,7 @@
 Pos. & Anzahl & Einheit & Art.-Nr. & Artikel\\
 \endhead
 \hline
-1 & 5 & 1kg & XXX34 & Natriumchlorid p.a.\\
-2 & 2 & 250g & 1234567 & Ethylcellulose\\
-3 & 5 & 1kg & XXX34 & Natriumchlorid p.a.\\
-4 & 2 & 250g & 1234567 & Ethylcellulose\\
+(% for o in orders %)
+(( loop.index )) & (( o.count )) & (( o.article.quantity|te )) & (( o.article.ident|te )) & (( o.article.name|te ))\\
+(% endfor %)
 \end{longtable}

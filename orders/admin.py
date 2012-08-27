@@ -11,4 +11,4 @@ admin.site.register(Cost)
 admin.site.register(Order)
 admin.site.register(DeliveredOrder)
 admin.site.register(CostOrder)
-
+admin.site.register(Printout)

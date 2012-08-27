@@ -14,8 +14,7 @@ from django.contrib.auth.models import Permission
 
 from core.utils import json_view, any_permission_required
 from core.models import Company
-from orders.forms import (OrderDayForm, OrderOldForm, OrderForm,
-                          ShortSupplierForm)
+from orders.forms import (OrderOldForm, OrderForm, ShortSupplierForm)
 from orders.models import OrderDay, Order, Article, Cost, CostOrder
 from orders.menu import menus
 

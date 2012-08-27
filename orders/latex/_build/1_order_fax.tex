@@ -9,24 +9,24 @@
 
 \KOMAoptions{fromlogo=true,fromphone=true,fromfax=true,pagenumber=botright,enlargefirstpage=on}
 
-\setkomavar{fromfax}{(( s.fromfax|te ))}
-\setkomavar{fromphone}{(( s.fromphone|te ))}
-\setkomavar{fromname}{(( s.fromname|te ))}
-\setkomavar{fromaddress}{(( s.fromaddress|te ))}
-\setkomavar{fromlogo}{\includegraphics[width=3cm]{(( s.fromlogo ))}}
+\setkomavar{fromfax}{030 / 6 77 44 53}
+\setkomavar{fromphone}{030 / 67 00 04-0}
+\setkomavar{fromname}{Bildungswerk Nordostchemie e. V.}
+\setkomavar{fromaddress}{Adlergestell 333, 12489 Berlin}
+\setkomavar{fromlogo}{\includegraphics[width=3cm]{P:/container/bbz-tools/ozone/ozone/static/img/bbzlogo.png}}
 
-\setkomavar{toname}{(( supplier.name|te ))}
-\setkomavar{toaddress}{(( supplier.street|te ))\\(( supplier.zip_code|te )) (( supplier.city|te ))(% if supplier.fax %)\\Fax: (( supplier.fax|te ))(% endif %)}
+\setkomavar{toname}{Carl Roth GmbH + Co. KG}
+\setkomavar{toaddress}{Musterstr. 12\\12345 Musterstadt\\Fax: 000 / 12345678}
 
 \renewcommand*{\raggedsignature}{\raggedright}
 \setkomavar{signature}{%
   {\begin{tabularx}{\textwidth}{@{}XX@{}}
     Besteller & genehmigt \\
-    (( oday.user.get_profile() )) & Fr. Cyrus\\
+     Thorsten Weimann & Fr. Cyrus\\
   \end{tabularx}}%
 }
 \setkomavar{subject}{Bestellung}
-\setkomavar{invoice}[Kundennummer]{(( supplier.customer_number|default('-', true) ))}
+\setkomavar{invoice}[Kundennummer]{XX12345XX}
 \firstfoot{\centering Anzahl der Seiten: \pageref{LastPage}}
 
 \pagestyle{headings}
@@ -35,7 +35,7 @@
 \begin{letter}{}
 \opening{}
 
-\LTXtable{\linewidth}{(( table ))}
+\LTXtable{\linewidth}{P:/container/bbz-tools/ozone/orders/latex/_build/1_order_fax_table.tex}
 
 \closing{Mit freundlichen Grüßen}
 \end{letter}

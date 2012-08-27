@@ -13,22 +13,34 @@
 \pagestyle{scrheadings}
 
 \ihead[]{bbz Chemie}
-\chead[]{Besteller: Fr. Paschke}
+\chead[]{Besteller: (( oday.user.get_profile() ))}
 \ohead[]{\today}
 
-\ifoot[]{Besteller\\Fr. Paschke}
+\ifoot[]{Besteller\\(( oday.user.get_profile() ))}
 \cfoot[]{Seite \thepage{} von \pageref{LastPage}}
 \ofoot[]{genehmigt\\Fr. Cyrus}
 
 \begin{document}
 
+(% for os in orders %)
 \begin{center}
 \textbf{BESTELLSCHEIN Chemikalien und Ausbildungsmittel}\\
-\textbf{Lieferant:} Roth
+\textbf{Lieferant:} (( os[0].article.supplier.name|te ))
 {
 \small
-\LTXtable{\linewidth}{order_table}
+\begin{longtable}{|c|c|c|l|c|r|r|(( tbl|join('|') ))|c|}
+\hline
+Pos. & \rotatebox{90}{Anzahl} & \rotatebox{90}{Einheit} & Artikel & Art.-Nr. & \rotatebox{90}{Einzelpreis} & \rotatebox{90}{Gesamtpreis} & (% for c in costs %)\rotatebox{90}{(( c ))} & (% endfor %) \rotatebox{90}{Besteller}\\
+\hline
+(% for o in os %)
+(( loop.index )) & (( o.count )) & (( o.article.quantity|te )) & (( o.article.name|te )) & (( o.article.ident|te )) & \EUR{(( "%.2f"|format(o.article.price)|te ))} & \EUR{(( "%.2f"|format(o.price())|te ))} & (( o._costs|join(' & ') )) & (( o.userlist|join(', ')|te ))\\
+\hline
+(% endfor %)
+\end{longtable}
 }
 \end{center}
-
+(% if not loop.last %)
+\newpage
+(% endif %)
+(% endfor %)
 \end{document}
