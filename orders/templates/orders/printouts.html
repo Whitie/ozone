@@ -10,28 +10,45 @@
 <div id="internal"></div>
 
 <script type="text/javascript">
-$(document).ready(function() {
-    var ids = [{{ ids|join:", " }}];
-    var data = {'oday_id': {{ oday.id }}};
-    for (var i = 0; i < ids.length; ++i) {
-        data['supplier_id'] = ids[i];
-        $.post('{% url orders-api-pdf %}', {'_JSON_': JSON.stringify(data)},
+function generate_external(ids) {
+    var container = {'oday_id': {{ oday.id }}};
+    if (ids.length > 0) {
+        container['supplier_id'] = ids[0];
+        $.post(
+            '{% url orders-api-pdf %}',
+            {'_JSON_': JSON.stringify(container)},
             function(data) {
                 var s = '<p>{% trans "Printout for" %} '+data['supplier']
                     +': <a href="'+data['url']+'">'+data['filename']
                     +' ('+data['size']+' Bytes)</a></p>';
                 $('#external').append(s);
-            });
+            }
+        );
+        ids.shift();
+        setTimeout(function() { generate_external(ids); }, 1000);
+    } else {
+        setTimeout(function() { generate_internal(); }, 1000);
     }
-    delete data['supplier_id'];
-    $.post('{% url orders-api-pdf %}', {'_JSON_': JSON.stringify(data)},
+}
+
+function generate_internal() {
+    var container = {'oday_id': {{ oday.id }}};
+    $.post(
+        '{% url orders-api-pdf %}',
+        {'_JSON_': JSON.stringify(container)},
         function(data) {
             $('<hr />').insertAfter('#external');
             var s = '<p>{% trans "Internal printout" %}: '
                 +': <a href="'+data['url']+'">'+data['filename']
                 +' ('+data['size']+' Bytes)</a></p>';
             $('#internal').append(s);
-        });
+        }
+    );
+}
+
+$(document).ready(function() {
+    var ids = [{{ ids|join:", " }}];
+    generate_external(ids);
 });
 </script>
 {% endblock %}
