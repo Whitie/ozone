@@ -21,7 +21,9 @@
     <tbody>
         {% for o in orders %}
         <tr>
-            <td>{{ o.added|date:"SHORT_DATE_FORMAT" }}</td>
+            <td{% if o.ordered %} title="{% trans "Send" %}: {{ o.ordered|date }}"{% else %}{% trans "Not ordered yet" %}"{% endif %}>
+                {{ o.added|date:"SHORT_DATE_FORMAT" }}
+            </td>
             <td style="text-align:center;">{{ o.count }}</td>
             <td title="Ident Number: {{ o.article.ident }}">
                 {{ o.article.name }}</td>
