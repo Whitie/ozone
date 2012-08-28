@@ -54,8 +54,8 @@
                     style="text-align:right;" />{{ CURRENCY_SYM }}
             </td>
             <td title="{{ o.memo|default:"-" }}">{{ o.article.supplier }}</td>
-            <td{% if not perms.orders.can_change_orderstate %} title="{{ o.state }}" style="text-align:center;"{% endif %}>
-                {% if perms.orders.can_change_orderstate %}
+            {% if perms.orders.can_change_orderstate and o.state in states %}
+            <td>
                 <input type="radio" name="state_{{ forloop.counter }}" value="new"
                     {% if o.state == 'new' %} checked="checked"{% endif %}
                     onchange="update_row({{ forloop.counter }});" />
@@ -68,9 +68,10 @@
                     {% if o.state == 'accepted' %} checked="checked"{% endif %}
                     onchange="update_row({{ forloop.counter }});" />
                     {% trans "Accepted" %}<br />
-                {% else %}
+            {% else %}
+            <td title="{{ o.state }}" style="text-align:center;">
                 <img src="{{ o.state_icon }}" alt="{{ o.state }}" />
-                {% endif %}
+            {% endif %}
             </td>
             <td style="text-align:center;">
                 <a href="{% url orders-delete oday.id o.id %}">

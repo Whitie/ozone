@@ -220,7 +220,7 @@ def manage_order(req, oday_id):
     oday = OrderDay.objects.get(id=int(oday_id))
     orders = Order.objects.select_related().filter(order_day=oday)
     ctx = dict(page_title=_(u'Manage Orders'), menus=menus, oday=oday,
-        orders=orders)
+        orders=orders, states=(u'new', u'accepted', u'rejected'))
     req.session['came_from'] = 'orders-manage'
     req.session['came_from_kw'] = {'oday_id': oday_id}
     return render_to_response('orders/manage_order.html', ctx,
