@@ -227,6 +227,21 @@ def manage_order(req, oday_id):
                               context_instance=RequestContext(req))
 
 
+@permission_required('orders.can_order', raise_exception=True)
+def list_printouts(req):
+    odays = OrderDay.objects.select_related().all().order_by('-day')
+    for oday in odays:
+        oday.price = 0
+        oday.count = 0
+        for o in oday.orders.all():
+            oday.price += o.price()
+            oday.count += 1
+    ctx = dict(page_title=_(u'List of all printouts'), menus=menus,
+        odays=odays)
+    return render_to_response('orders/list_printouts.html', ctx,
+                              context_instance=RequestContext(req))
+
+
 # Ajax views
 
 @json_view

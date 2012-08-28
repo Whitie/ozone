@@ -1,0 +1,22 @@
+{% extends "index.html" %}
+{% load i18n %}
+
+{% block content %}
+<h2 class="headline">{% trans "Printouts by day" %}</h2>
+<ul>
+    {% for d in odays %}
+    <li><strong>{{ d }}</strong>, {% trans "Orders" %}: {{ d.count }},
+        {% trans "Sum" %}: {{ d.price|floatformat:2 }} {{ CURRENCY_SYM }}
+        <ul>
+            {% for p in d.printouts.all %}
+            <li><a href="{{ p.pdf.url }}">{{ p.company_name }}</a></li>
+            {% empty %}
+            <li>{% trans "No printouts for this day found." %}</li>
+            {% endfor %}
+        </ul>
+    </li>
+    {% empty %}
+    <li>{% trans "No order day found." %}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
