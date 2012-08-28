@@ -38,17 +38,17 @@ def get_orders(oday, supplier=None):
     return orders
 
 
-def make_latex(ctx, template, table_template=None):
+def make_latex(ctx, template, includefile=None):
     if 'supplier' not in ctx:
         ctx['supplier'] = u'ALL'
     env = latex.get_latex_env(TEMPLATE_PATH)
-    if table_template is not None:
-        ttpl = env.get_template(table_template)
+    if includefile is not None:
+        ttpl = env.get_template(includefile)
         tfilename = os.path.join(BUILD_PATH,
-            '{0}_{1}'.format(ctx['supplier'].id, table_template))
+            '{0}_{1}'.format(ctx['supplier'].id, includefile))
         with codecs.open(tfilename, 'w', encoding='utf-8') as fp:
             fp.write(ttpl.render(**ctx))
-        ctx['table'] = unicode(tfilename).replace(u'\\', u'/')
+        ctx['includefile'] = unicode(tfilename).replace(u'\\', u'/')
     tpl = env.get_template(template)
     _id = getattr(ctx['supplier'], 'id', 'ALL')
     filename = os.path.join(BUILD_PATH, '{0}_{1}'.format(_id, template))
@@ -71,7 +71,7 @@ def generate_external(supplier, _ctx):
     orders = get_orders(ctx['oday'], supplier)
     ctx['supplier'] = supplier
     ctx['orders'] = orders
-    return make_latex(ctx, 'order_fax.tex', 'order_fax_table.tex')
+    return make_latex(ctx, 'order_fax.tex')
 
 
 def generate_internal(_ctx):
@@ -79,11 +79,15 @@ def generate_internal(_ctx):
     orders = get_orders(ctx['oday'])
     print orders
     ctx['costs'] = Cost.objects.all()
+    sums = {}
     for supp in orders:
+        sup_id = supp[0].article.supplier.id
+        sums[sup_id] = 0
         for o in supp:
             o.state = u'ordered'
             o.ordered = date.today()
             o.save()
+            sums[sup_id] += o.count * o.article.price
             o._costs = []
             costs = list(o.costs.all())
             for c in Cost.objects.all():
@@ -92,6 +96,7 @@ def generate_internal(_ctx):
                     o._costs.append(u'{0}'.format(cost.percent))
                 else:
                     o._costs.append(u'')
+    ctx['sums'] = sums
     ctx['orders'] = orders
     ctx['tbl'] = u'c' * Cost.objects.all().count()
     return make_latex(ctx, 'order.tex')

@@ -1,8 +1,0 @@
-\begin{longtable}{cccrX}
-Pos. & Anzahl & Einheit & Art.-Nr. & Artikel\\
-\endhead
-\hline
-(% for o in orders %)
-(( loop.index )) & (( o.count )) & (( o.article.quantity|te )) & (( o.article.ident|te )) & (( o.article.name|te ))\\
-(% endfor %)
-\end{longtable}

@@ -38,6 +38,8 @@ Pos. & \rotatebox{90}{Anzahl} & \rotatebox{90}{Einheit} & Artikel & Art.-Nr. & \
 (% endfor %)
 \end{longtable}
 }
+% Gesamtsumme
+\textbf{Gesamtsumme:} \EUR{(( "%.2f"|format(sums[os[0].article.supplier.id]) ))}
 \end{center}
 (% if not loop.last %)
 \newpage

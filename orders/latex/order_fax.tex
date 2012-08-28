@@ -4,16 +4,16 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{tabularx}
-\usepackage{ltxtable}
+\usepackage{longtable}
 \usepackage{lastpage}
 
-\KOMAoptions{fromlogo=true,fromphone=true,fromfax=true,pagenumber=botright,enlargefirstpage=on}
+\KOMAoptions{fromlogo=true,subject=centered,pagenumber=botright,enlargefirstpage=on}
 
 \setkomavar{fromfax}{(( s.fromfax|te ))}
 \setkomavar{fromphone}{(( s.fromphone|te ))}
 \setkomavar{fromname}{(( s.fromname|te ))}
 \setkomavar{fromaddress}{(( s.fromaddress|te ))}
-\setkomavar{fromlogo}{\includegraphics[width=3cm]{(( s.fromlogo ))}}
+\setkomavar{fromlogo}{\includegraphics[width=4cm]{(( s.fromlogo ))}}
 
 \setkomavar{toname}{(( supplier.name|te ))}
 \setkomavar{toaddress}{(( supplier.street|te ))\\(( supplier.zip_code|te )) (( supplier.city|te ))(% if supplier.fax %)\\Fax: (( supplier.fax|te ))(% endif %)}
@@ -22,11 +22,18 @@
 \setkomavar{signature}{%
   {\begin{tabularx}{\textwidth}{@{}XX@{}}
     Besteller & genehmigt \\
-    (( oday.user.get_profile() )) & Fr. Cyrus\\
+    (( oday.user.get_profile() )) & Tanja Cyrus\\
   \end{tabularx}}%
 }
 \setkomavar{subject}{Bestellung}
 \setkomavar{invoice}[Kundennummer]{(( supplier.customer_number|default('-', true) ))}
+
+\firsthead{
+	\textbf{FAX}%
+	\hspace*{\fill}%
+	\usekomavar{fromlogo}%
+}
+
 \firstfoot{\centering Anzahl der Seiten: \pageref{LastPage}}
 
 \pagestyle{headings}
@@ -35,8 +42,29 @@
 \begin{letter}{}
 \opening{}
 
-\LTXtable{\linewidth}{(( table ))}
+\begin{longtable}{cccrp{8cm}}
+Pos. & Anzahl & Einheit & Art.-Nr. & Artikel\\
+\endhead
+\hline
+(% for o in orders %)
+(( loop.index )) & (( o.count )) & (( o.article.quantity|te )) & (( o.article.ident|te )) & (( o.article.name|te ))\\
+(% endfor %)
+\hline
+\end{longtable}
 
-\closing{Mit freundlichen Grüßen}
+\textbf{Rechnung und Lieferung an:}\\
+
+\begin{center}
+\parbox{7cm}{%
+	\usekomavar{fromname}\\
+	\usekomavar{fromaddress}\\
+	\usekomavar{fromphone}\\
+	\usekomavar{fromfax}\\
+}
+\end{center}
+
+Fragen zur Bestellung beantwortet Ihnen der/die unterzeichnende Besteller/in.
+
+\closing{Freundliche Grüße}
 \end{letter}
 \end{document}
