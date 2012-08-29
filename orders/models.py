@@ -154,6 +154,7 @@ class Printout(models.Model):
     pdf = models.FileField(_(u'PDF-File'), upload_to='orders/%Y/%m')
     company_name = models.CharField(_(u'Company Name'), max_length=100,
         blank=True)
+    generated = models.DateTimeField(_(u'Generated'), auto_now=True)
 
     def __unicode__(self):
         return u'{0} ({1})'.format(unicode(self.order_day), self.company_name)

@@ -9,7 +9,10 @@
         {% trans "Sum" %}: {{ d.price|floatformat:2 }} {{ CURRENCY_SYM }}
         <ul>
             {% for p in d.printouts.all %}
-            <li><a href="{{ p.pdf.url }}">{{ p.company_name }}</a></li>
+            <li>
+                <a href="{{ p.pdf.url }}">{{ p.company_name }}</a>,
+                {% trans "Generated" %}: {{ p.generated|date:"SHORT_DATETIME_FORMAT" }}
+            </li>
             {% empty %}
             <li>{% trans "No printouts for this day found." %}</li>
             {% endfor %}

@@ -56,9 +56,9 @@ def make_latex(ctx, template, includefile=None):
         fp.write(tpl.render(**ctx))
     pdfname, r1, r2 = latex.render_latex_to_pdf(filename, BUILD_PATH)
     pdf = os.path.split(pdfname)[1]
-    _name = getattr(ctx['supplier'], 'name', 'ALL')
-    printout = Printout.objects.create(order_day=ctx['oday'], internal=False,
-        company_name=_name)
+    _name = getattr(ctx['supplier'], 'name', u'ALL')
+    printout, created = Printout.objects.get_or_create(order_day=ctx['oday'],
+        internal=_name == u'ALL', company_name=_name)
     with open(pdfname, 'rb') as fp:
         content = ContentFile(fp.read())
     printout.pdf.save(pdf, content)
