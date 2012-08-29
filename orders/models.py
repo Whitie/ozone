@@ -136,6 +136,7 @@ class DeliveredOrder(models.Model):
     class Meta:
         verbose_name = _(u'Delivered Order')
         verbose_name_plural = _(u'Delivered Orders')
+        ordering = ['order', '-date']
 
 
 class CostOrder(models.Model):
@@ -146,6 +147,11 @@ class CostOrder(models.Model):
 
     def __unicode__(self):
         return u'{0} {1}: {2}%'.format(self.order, self.cost, self.percent)
+
+    class Meta:
+        verbose_name = _(u'Cost Order Relation')
+        verbose_name_plural = _(u'Cost Order Relations')
+        ordering = ['order']
 
 
 class Printout(models.Model):
