@@ -111,12 +111,10 @@ msgid "My Orders"
 msgstr "Meine Bestellungen"
 
 #: menu.py:11 views.py:193
-#, fuzzy
 msgid "Add new Supplier"
-msgstr "Lieferant"
+msgstr "Neuer Lieferant"
 
 #: menu.py:12 views.py:212 views.py:223
-#, fuzzy
 msgid "Manage Orders"
 msgstr "Bestellungen verwalten"
 
@@ -246,7 +244,6 @@ msgid "Printouts"
 msgstr "Ausdrucke"
 
 #: views.py:73
-#, fuzzy
 msgid "Open Orders"
 msgstr "Offene Bestellungen"
 
@@ -268,7 +265,6 @@ msgid "Nothing deleted. Cancelled by user."
 msgstr "Es wurde nichts gelöscht. Benutzerabbruch."
 
 #: views.py:100
-#, fuzzy
 msgid "Delete Order"
 msgstr "Bestellung löschen"
 
@@ -305,7 +301,7 @@ msgid "Please correct the wrong fields."
 msgstr "Bitte korrigieren Sie die falschen Felder."
 
 #: views.py:204
-#, fuzzy, python-format
+#, python-format
 msgid "%s selected."
 msgstr "%s ausgewählt."
 
@@ -384,9 +380,8 @@ msgid "Sum"
 msgstr "Summe"
 
 #: templates/orders/list_printouts.html:18
-#, fuzzy
 msgid "No printouts for this day found."
-msgstr "Kein Bestelltag gefunden."
+msgstr "Keine Ausdrucke für diesen Bestelltag vorhanden."
 
 #: templates/orders/manage_order.html:6
 msgid "Edit orders for"
@@ -423,9 +418,8 @@ msgid "Row"
 msgstr "Zeile"
 
 #: templates/orders/manage_orders.html:6
-#, fuzzy
 msgid "Select Order Day"
-msgstr "Nächster Bestelltag"
+msgstr "Bestelltag auswählen"
 
 #: templates/orders/manage_orders.html:10
 msgid "Please select the order day do you want to edit"
@@ -440,9 +434,8 @@ msgid "Select Representative"
 msgstr "Vertretung auswählen"
 
 #: templates/orders/manage_orders.html:29
-#, fuzzy
 msgid "Make orders"
-msgstr "Bestellen"
+msgstr "Bestellung machen"
 
 #: templates/orders/manage_orders.html:38
 #: templates/orders/manage_orders.html:51
@@ -455,7 +448,6 @@ msgid "Accept / Reject orders"
 msgstr "Bestellungen akzeptieren / zurückweisen"
 
 #: templates/orders/myorders.html:6 templates/orders/orderday.html:6
-#, fuzzy
 msgid "Orders for"
 msgstr "Bestellungen für"
 
@@ -464,7 +456,6 @@ msgid "Send"
 msgstr "Bestellt"
 
 #: templates/orders/myorders.html:24
-#, fuzzy
 msgid "Not ordered yet"
 msgstr "Noch nicht bestellt"
 
@@ -473,12 +464,10 @@ msgid "Single Price"
 msgstr "Einzelpreis"
 
 #: templates/orders/myorders.html:38
-#, fuzzy
 msgid "ReOrder"
 msgstr "Neu bestellen"
 
 #: templates/orders/myorders.html:57 templates/orders/orderday.html:100
-#, fuzzy
 msgid "No orders found."
 msgstr "Keine Bestellungen gefunden."
 
@@ -491,7 +480,6 @@ msgid "Klick to enter message."
 msgstr "Klicken, um eine Nachricht einzugeben."
 
 #: templates/orders/orderday.html:20
-#, fuzzy
 msgid "Ordered by"
 msgstr "Bestellt von"
 

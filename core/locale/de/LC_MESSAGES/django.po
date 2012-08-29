@@ -536,7 +536,6 @@ msgid "Invalid search query."
 msgstr "Ungültige Suchanfrage."
 
 #: views.py:187
-#, fuzzy
 msgid "All Companies"
 msgstr "Alle Firmen"
 
@@ -811,7 +810,7 @@ msgid "Add Group"
 msgstr "Gruppe hinzufügen"
 
 #: templates/students/groups.html:16
-#, fuzzy, python-format
+#, python-format
 msgid "(%(counter)s Student)"
 msgid_plural "(%(counter)s Students)"
 msgstr[0] "(%(counter)s Azubi)"
