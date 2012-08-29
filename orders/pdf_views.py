@@ -127,7 +127,7 @@ def generate_one_pdf(req, data):
     supplier_id = data.get('supplier_id', None)
     oday = OrderDay.objects.get(id=oday_id)
     s = latex.get_latex_settings()
-    ctx = dict(s=s, oday=oday)
+    ctx = dict(s=s, oday=oday, user=req.user)
     if supplier_id is not None:
         supplier = Company.objects.get(id=supplier_id)
         printout, filename = generate_external(supplier, ctx)
