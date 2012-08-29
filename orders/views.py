@@ -289,8 +289,8 @@ def update_article_count(req, order_id, count):
     except:
         order.users.add(req.user)
     order.save()
-    msg = _(u'Count for %s was changed from %d to %d.' % (order.article.name,
-        old_count, count))
+    msg = _(u'Count for %(name)s was changed from %(old)d to %(count)d.' %
+        {'name': order.article.name, 'old': old_count, 'count': count})
     user = [x.username for x in order.users.all()]
     return dict(msg=unicode(msg), user=u', '.join(user))
 

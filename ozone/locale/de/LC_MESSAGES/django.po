@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0beta1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-12 08:21+0200\n"
+"POT-Creation-Date: 2012-08-29 12:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: base_templates/403.html:6
+msgid "Permission denied"
+msgstr "Zugriff verweigert"
+
+#: base_templates/403.html:9
+msgid ""
+"Please contact the administrator if you have to access\n"
+"the requested site."
+msgstr ""
+"Bitte wenden Sie sich an den Administrator, wenn Sie Zugriff\n"
+"auf diese Seite benötigen."
 
 #: base_templates/layout.html:14
 msgid "Home"
