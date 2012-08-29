@@ -43,7 +43,7 @@
             </td>
             <td>{{ o.article.supplier }}</td>
             <td id="users_{{ forloop.counter }}">{{ o.userlist|join:", " }}</td>
-            <td title="{{ o.state }}" style="text-align:center;">
+            <td title="{{ o.get_state_display }}" style="text-align:center;">
                 <img src="{{ o.state_icon }}" alt="{{ o.state }}" />
             </td>
             <td style="text-align:center;">

@@ -76,7 +76,7 @@
                     onchange="update_row({{ forloop.counter }});" />
                     {% trans "Accepted" %}<br />
             {% else %}
-            <td title="{{ o.state }}" style="text-align:center;">
+            <td title="{{ o.get_state_display }}" style="text-align:center;">
                 <img src="{{ o.state_icon }}" alt="{{ o.state }}" />
             {% endif %}
             </td>

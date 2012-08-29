@@ -31,7 +31,7 @@
             <td style="text-align:right;" title="{% trans "Single Price" %}!">
                 {{ o.article.fullprice }}</td>
             <td>{{ o.article.supplier }}</td>
-            <td title="{{ o.state }}" style="text-align:center;">
+            <td title="{{ o.get_state_display }}" style="text-align:center;">
                 <img src="{{ o.state_icon }}" alt="{{ o.state }}" />
             </td>
             <td><a href="{% url orders-order o.article.id %}">
