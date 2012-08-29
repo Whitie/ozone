@@ -28,10 +28,11 @@
             <td style="text-align:center;">
                 {{ o.added|date:"SHORT_DATE_FORMAT" }}
             </td>
-            <td>
+            <td>{% if o.state == 'new' %}
                 <input type="hidden" id="id_order_{{ forloop.counter }}" value="{{ o.id }}" />
                 <input type="hidden" id="old_{{ forloop.counter }}" value="{{ o.count }}" />
                 <input id="count_{{ forloop.counter }}" type="text" value="{{ o.count }}" size="3" />
+                {% else %}{{ o.count }}{% endif %}
             </td>
             <td title="Ident Number: {{ o.article.ident }}">
                 {{ o.article.name }}</td>
@@ -46,13 +47,18 @@
                 <img src="{{ o.state_icon }}" alt="{{ o.state }}" />
             </td>
             <td style="text-align:center;">
+                {% if o.state == 'new' %}
                 <input type="button" value="{% trans "Change" %}"
                     onclick="update_count('{{ forloop.counter }}');" />
+                {% endif %}
                 {% if o.deleteable %}
                 <a href="{% url orders-delete oday.id o.id %}">
                     <img src="{% static "img/delete.png" %}" alt="{% trans "Delete" %}"
                         title="{% trans "Delete" %}"/>
                 </a>
+                {% endif %}
+                {% if o.state != 'new' and not o.deleteable %}
+                {% trans "Not possible" %}
                 {% endif %}
             </td>
         </tr>

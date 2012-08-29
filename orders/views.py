@@ -65,7 +65,8 @@ def order_detail(req, order_id):
         o.userlist = [x.username for x in o.users.all()]
         order_sum += o.count * o.article.price
         o.sum_price = o.count * o.article.price
-        if req.user.username in o.userlist and o.users.count() == 1:
+        if req.user.username in o.userlist and o.users.count() == 1 and\
+            o.state in (u'new', u'accepted', u'rejected'):
             o.deleteable = True
         else:
             o.deleteable = False

@@ -77,7 +77,6 @@ def generate_external(supplier, _ctx):
 def generate_internal(_ctx):
     ctx = _ctx.copy()
     orders = get_orders(ctx['oday'])
-    print orders
     ctx['costs'] = Cost.objects.all()
     sums = {}
     for supp in orders:

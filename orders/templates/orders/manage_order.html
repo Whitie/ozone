@@ -32,26 +32,33 @@
     <tbody>
         {% for o in orders %}
         <tr id="row_{{ forloop.counter }}">
-            <td>
+            <td>{% if o.state in states %}
                 <input type="text" value="{{ o.count }}" name="count"
                     size="3" onchange="update_row({{ forloop.counter }});"
                     style="text-align:right;" />
                 <input type="hidden" name="order_id" value="{{ o.id }}" />
+                {% else %}{{ o.count }}{% endif %}
             </td>
+            {% if o.state in states %}
             <td title="{% trans "Only correct typos here!" %}">
                 <input type="text" value="{{ o.article.name }}" name="art_name"
                     onchange="update_row({{ forloop.counter }});" />
                 <span style="display:none;">{{ o.article.name }}</span>
+            {% else %}<td>{{ o.article.name }}{% endif %}
             </td>
+            {% if o.state in states %}
             <td title="{% trans "Only correct typos here!" %}">
                 <input type="text" value="{{ o.article.ident }}" name="art_ident"
                     onchange="update_row({{ forloop.counter }});" />
+            {% else %}<td>{{ o.article.ident }}{% endif %}
             </td>
             <td>{{ o.article.quantity }}</td>
             <td title="{% trans "Sum" %}: {{ o.price|floatformat:2 }}{{ CURRENCY_SYM }}">
+                {% if o.state in states %}
                 <input type="text" value="{{ o.article.price|floatformat:2 }}"
                     name="art_price" size="10" onchange="update_row({{ forloop.counter }});"
                     style="text-align:right;" />{{ CURRENCY_SYM }}
+                {% else %}{{ o.article.price|floatformat:2 }}{{ CURRENCY_SYM }}{% endif %}
             </td>
             <td title="{{ o.memo|default:"-" }}">{{ o.article.supplier }}</td>
             {% if perms.orders.can_change_orderstate and o.state in states %}
@@ -74,10 +81,12 @@
             {% endif %}
             </td>
             <td style="text-align:center;">
+                {% if o.state in states %}
                 <a href="{% url orders-delete oday.id o.id %}">
                     <img src="{% static "img/delete.png" %}" alt="{% trans "Delete" %}"
                         title="{% trans "Delete" %}"/>
                 </a>
+                {% else %}{% trans "Not possible" %}{% endif %}
             </td>
         </tr>
         {% endfor %}
