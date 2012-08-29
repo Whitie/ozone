@@ -8,7 +8,7 @@
     <span id="saved_msg" style="display:none;"></span>
 </p>
 
-{% if perms.orders.can_order %}
+{% if perms.orders.can_order and oday.has_accepted_order %}
 <form action="{% url orders-genpdf %}" method="post">
 {% csrf_token %}
 <input type="hidden" name="oday_id" value="{{ oday.id }}" />

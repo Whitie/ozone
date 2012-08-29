@@ -23,6 +23,12 @@ class OrderDay(models.Model):
     def __unicode__(self):
         return self.day.strftime('%d.%m.%Y (%W)')
 
+    def has_accepted_order(self):
+        for o in self.orders.all():
+            if o.state == u'accepted':
+                return True
+        return False
+
     class Meta:
         verbose_name = _(u'Order Day')
         verbose_name_plural = _(u'Order Days')
