@@ -164,3 +164,4 @@ class Printout(models.Model):
     class Meta:
         verbose_name = _(u'Printout')
         verbose_name_plural = _(u'Printouts')
+        ordering = ['company_name', '-generated']

@@ -3,10 +3,11 @@
 
 {% block content %}
 <h2 class="headline">{% trans "Printouts by day" %}</h2>
-<ul>
+<div id="po_accordion">
     {% for d in odays %}
-    <li><strong>{{ d }}</strong>, {% trans "Orders" %}: {{ d.count }},
-        {% trans "Sum" %}: {{ d.price|floatformat:2 }} {{ CURRENCY_SYM }}
+    <h3><a href="#">{{ d }}, {% trans "Orders" %}: {{ d.count }},
+        {% trans "Sum" %}: {{ d.price|floatformat:2 }} {{ CURRENCY_SYM }}</a></h3>
+    <div>
         <ul>
             {% for p in d.printouts.all %}
             <li>
@@ -17,9 +18,17 @@
             <li>{% trans "No printouts for this day found." %}</li>
             {% endfor %}
         </ul>
-    </li>
+    </div>
     {% empty %}
-    <li>{% trans "No order day found." %}</li>
+    <h3><a href="#">{% trans "No order day found." %}</a></h3>
+    <div></div>
     {% endfor %}
-</ul>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    var options = {'animated': 'bounceslide', 'collapsible': true};
+    $('#po_accordion').accordion(options);
+});
+</script>
 {% endblock %}
