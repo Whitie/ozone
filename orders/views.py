@@ -14,7 +14,8 @@ from django.contrib.auth.models import Permission
 
 from core.utils import json_view, any_permission_required
 from core.models import Company
-from orders.forms import (OrderOldForm, OrderForm, ShortSupplierForm)
+from orders.forms import (OrderOldForm, OrderForm, ShortSupplierForm,
+                          OrderDayForm)
 from orders.models import OrderDay, Order, Article, Cost, CostOrder
 from orders.menu import menus
 
@@ -233,6 +234,30 @@ def manage_order(req, oday_id):
     req.session['came_from'] = 'orders-manage'
     req.session['came_from_kw'] = {'oday_id': oday_id}
     return render_to_response('orders/manage_order.html', ctx,
+                              context_instance=RequestContext(req))
+
+
+@permission_required('orders.can_order', raise_exception=True)
+def add_oday(req):
+    if req.method == 'POST':
+        form = OrderDayForm(req.POST)
+        if form.is_valid():
+            if form.cleaned_data['user'].is_anonymous():
+                messages.error(req, _(u'The user you specified is not valid.'))
+                return redirect('orders-manage')
+            oday = OrderDay.objects.create(day=form.cleaned_data['day'],
+                user=form.cleaned_data['user'])
+            oday.save()
+            messages.success(req, _(u'New orderday %s added.' % unicode(oday)))
+            return redirect('orders-manage')
+        else:
+            messages.error(req, _(u'Please correct the form.'))
+    else:
+        form = OrderDayForm()
+    odays = get_next_odays(True)
+    ctx = dict(page_title=_(u'Add new orderday'), menus=menus, form=form,
+        odays=[unicode(x) for x in odays])
+    return render_to_response('orders/add_oday.html', ctx,
                               context_instance=RequestContext(req))
 
 

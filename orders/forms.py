@@ -3,7 +3,7 @@
 from datetime import date
 
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AnonymousUser
 from django.utils.translation import ugettext_lazy as _
 
 from orders.models import OrderDay
@@ -17,11 +17,19 @@ DATE_FORMATS = ['%d.%m.%Y', '%d.%m.%y', '%d/%m/%Y', '%d/%m/%y']
 SUPPLIER_CHOICES = [(x.id, x.name) for x in Company.objects.all()]
 
 
+def get_user(uid):
+    try:
+        user = User.objects.get(id=int(uid))
+    except User.DoesNotExist:
+        user = AnonymousUser()
+    return user
+
+
 class OrderDayForm(forms.Form):
-    day = forms.DateField(label=_(u'Next Order Day'),
-        input_formats=DATE_FORMATS, widget=_wid.DateInput5(),
+    day = forms.DateField(label=_(u'Next Orderday'), input_formats=DATE_FORMATS,
         help_text=_(u'Use this format: dd.mm.yyyy'))
-    user = forms.ChoiceField(label=_(u'Responsible User'), choices=USER_CHOICES)
+    user = forms.TypedChoiceField(label=_(u'Responsible User'),
+        choices=USER_CHOICES, coerce=get_user, empty_value=AnonymousUser())
 
 
 class OrderOldForm(forms.Form):

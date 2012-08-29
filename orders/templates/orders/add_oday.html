@@ -1,0 +1,35 @@
+{% extends "index.html" %}
+{% load i18n %}
+
+{% block content %}
+<h2 class="headline">{% trans "New Orderday" %}</h2>
+<div style="width:40%;margin:5px auto;">
+<p>{% trans "Orderdays" %}: {{ odays|join:" | " }}</p>
+<form action="{% url orders-add-oday %}" method="post">
+{% csrf_token %}
+{% for f in form %}
+<p>{{ f.label_tag }}: {{ f }}</p>
+{% endfor %}
+<p><input type="submit" value="{% trans "Save" %}" /></p>
+</form>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    var options = {
+        'dateFormat': 'dd.mm.yy',
+        'dayNamesMin': ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+        'monthNames': ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
+                       'Juli', 'August', 'September', 'Oktober', 'November',
+                       'Dezember'],
+        'showWeek': true,
+        'firstDay': 1,
+        'weekHeader': 'Wo',
+        'minDate': '+0',
+        'nextText': '{% trans "next" %}',
+        'prevText': '{% trans "prev" %}'
+    };
+    $('#id_day').datepicker(options);
+});
+</script>
+{% endblock %}
