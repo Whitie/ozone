@@ -23,7 +23,7 @@ from orders.menu import menus
 
 def get_next_odays(include_today=False):
     if include_today:
-        q = dict(day__gte=date.today())
+        q = dict(day__gte=date.today() - timedelta(days=1))
     else:
         q = dict(day__gt=date.today())
     odays = OrderDay.objects.filter(**q).order_by('day')
@@ -105,8 +105,14 @@ def delete_order(req, oday_id, order_id):
 
 @login_required
 def order(req, article_id=0):
+    if req.user.has_perm('orders.can_order'):
+        choice_filter = {'day__gte': date.today() - timedelta(days=1)}
+    else:
+        choice_filter = {'day__gt': date.today()}
     if req.method == 'POST':
         form = OrderForm(req.POST)
+        form.fields['oday'].choices = [(x.id, unicode(x)) for x in
+            OrderDay.objects.filter(**choice_filter).order_by('day')]
         if form.is_valid():
             costs = get_costs(req.POST)
             art, created = Article.objects.get_or_create(
@@ -137,6 +143,8 @@ def order(req, article_id=0):
         messages.error(req, _(u'Please fill the required fields.'))
     else:
         form = OrderForm()
+        form.fields['oday'].choices = [(x.id, unicode(x)) for x in
+            OrderDay.objects.filter(**choice_filter).order_by('day')]
     costs = Cost.objects.all().order_by('ident')
     ctx = dict(page_title=_(u'Orders'), form=form, menus=menus, costs=costs,
         article_id=article_id, costs_msg=_(u'Sum of costs must be 100!'),
