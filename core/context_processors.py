@@ -16,4 +16,5 @@ def set_global_vars(req):
         'LOGO_URL': settings.LOGO_URL,
         'CURRENCY_SYM': settings.CURRENCY[1],
         'CURRENCY_NAME': settings.CURRENCY[0],
+        'VERSION': settings.VERSION,
     }
