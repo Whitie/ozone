@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0beta1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-29 12:51+0200\n"
+"POT-Creation-Date: 2012-08-30 20:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -608,7 +608,7 @@ msgstr "Seite"
 msgid "of"
 msgstr "von"
 
-#: templates/index.html:30
+#: templates/index.html:30 templates/presence/overview.html:37
 msgid "next"
 msgstr "nächste"
 
@@ -734,6 +734,10 @@ msgstr "Anzeigen"
 #: templates/presence/overview.html:22 templates/students/groups.html:23
 msgid "No groups found."
 msgstr "Keine Gruppen gefunden."
+
+#: templates/presence/overview.html:38
+msgid "prev"
+msgstr "vorherige"
 
 #: templates/students/details.html:16
 msgid "Notice in Emergency"
