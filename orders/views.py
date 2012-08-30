@@ -22,6 +22,20 @@ from orders.menu import menus
 
 # Helper
 
+def get_user_choices():
+    return [(x.id, x.get_full_name() or x.username) for x in
+            User.objects.all() if x.has_perm('orders.can_order')]
+
+
+def get_supplier_choices():
+    return [(x.id, x.name) for x in Company.objects.all()]
+
+
+def get_oday_choices(filters):
+    return [(x.id, unicode(x)) for x in
+            OrderDay.objects.filter(**filters).order_by('day')]
+
+
 def get_next_odays(include_today=False):
     if include_today:
         q = dict(day__gte=date.today() - timedelta(days=1))
@@ -114,8 +128,8 @@ def order(req, article_id=0):
         choice_filter = {'day__gt': date.today()}
     if req.method == 'POST':
         form = OrderForm(req.POST)
-        form.fields['oday'].choices = [(x.id, unicode(x)) for x in
-            OrderDay.objects.filter(**choice_filter).order_by('day')]
+        form.fields['art_supplier'].choices = get_supplier_choices()
+        form.fields['oday'].choices = get_oday_choices(choice_filter)
         if form.is_valid():
             costs = get_costs(req.POST)
             art, created = Article.objects.get_or_create(
@@ -146,8 +160,8 @@ def order(req, article_id=0):
         messages.error(req, _(u'Please fill the required fields.'))
     else:
         form = OrderForm()
-        form.fields['oday'].choices = [(x.id, unicode(x)) for x in
-            OrderDay.objects.filter(**choice_filter).order_by('day')]
+        form.fields['art_supplier'].choices = get_supplier_choices()
+        form.fields['oday'].choices = get_oday_choices(choice_filter)
     costs = Cost.objects.all().order_by('ident')
     ctx = dict(page_title=_(u'Orders'), form=form, menus=menus, costs=costs,
         article_id=article_id, costs_msg=_(u'Sum of costs must be 100!'),
@@ -243,6 +257,7 @@ def manage_order(req, oday_id):
 def add_oday(req):
     if req.method == 'POST':
         form = OrderDayForm(req.POST)
+        form.fields['user'].choices = get_user_choices()
         if form.is_valid():
             if form.cleaned_data['user'].is_anonymous():
                 messages.error(req, _(u'The user you specified is not valid.'))
@@ -256,6 +271,7 @@ def add_oday(req):
             messages.error(req, _(u'Please correct the form.'))
     else:
         form = OrderDayForm()
+        form.fields['user'].choices = get_user_choices()
     odays = get_next_odays(True)
     ctx = dict(page_title=_(u'Add new orderday'), menus=menus, form=form,
         odays=[unicode(x) for x in odays])

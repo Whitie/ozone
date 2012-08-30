@@ -6,15 +6,10 @@ from django import forms
 from django.contrib.auth.models import User, AnonymousUser
 from django.utils.translation import ugettext_lazy as _
 
-from orders.models import OrderDay
-from core.models import Company
 from core import html5_widgets as _wid
 
 
-USER_CHOICES = [(x.id, x.get_full_name() or x.username) for x in
-                User.objects.all() if x.has_perm('orders.can_order')]
 DATE_FORMATS = ['%d.%m.%Y', '%d.%m.%y', '%d/%m/%Y', '%d/%m/%y']
-SUPPLIER_CHOICES = [(x.id, x.name) for x in Company.objects.all()]
 
 
 def get_user(uid):
@@ -29,7 +24,7 @@ class OrderDayForm(forms.Form):
     day = forms.DateField(label=_(u'Next Orderday'), input_formats=DATE_FORMATS,
         help_text=_(u'Use this format: dd.mm.yyyy'))
     user = forms.TypedChoiceField(label=_(u'Responsible User'),
-        choices=USER_CHOICES, coerce=get_user, empty_value=AnonymousUser())
+        coerce=get_user, empty_value=AnonymousUser())
 
 
 class OrderOldForm(forms.Form):
@@ -40,8 +35,7 @@ class OrderOldForm(forms.Form):
 class OrderForm(forms.Form):
     count = _wid.IntegerField5(label=_(u'Count'))
     art_name = forms.CharField(label=_(u'Article'), max_length=100)
-    art_supplier = forms.ChoiceField(label=_(u'Supplier'),
-        choices=SUPPLIER_CHOICES)
+    art_supplier = forms.ChoiceField(label=_(u'Supplier'))
     art_id = forms.CharField(label=_(u'Identifier'), max_length=50,
         required=False)
     art_q = forms.CharField(label=_(u'Quantity'), max_length=20)
