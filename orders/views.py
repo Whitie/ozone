@@ -64,6 +64,8 @@ def order_detail(req, order_id):
     order_sum = 0
     for o in orders:
         o.userlist = [x.username for x in o.users.all()]
+        o.costlist = [u'%s: %d%%' % (unicode(x.cost), x.percent) for x in
+                      CostOrder.objects.filter(order=o)]
         order_sum += o.count * o.article.price
         o.sum_price = o.count * o.article.price
         if req.user.username in o.userlist and o.users.count() == 1 and\

@@ -42,7 +42,9 @@
                 {{ o.sum_price|floatformat:2 }}{{ CURRENCY_SYM }}
             </td>
             <td>{{ o.article.supplier }}</td>
-            <td id="users_{{ forloop.counter }}">{{ o.userlist|join:", " }}</td>
+            <td id="users_{{ forloop.counter }}" title="{% trans 'Costs' %}: {{ o.costlist|join:', ' }}">
+                {{ o.userlist|join:", " }}
+            </td>
             <td title="{{ o.get_state_display }}" style="text-align:center;">
                 <img src="{{ o.state_icon }}" alt="{{ o.state }}" />
             </td>

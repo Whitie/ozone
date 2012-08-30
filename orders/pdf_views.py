@@ -39,7 +39,6 @@ def get_orders(oday, supplier=None):
 
 
 def summarize_orders(orders):
-    print orders
     summarized = []
     art_ids = set([x.article.id for x in orders])
     for i in art_ids:
@@ -51,7 +50,6 @@ def summarize_orders(orders):
             for o in orders.filter(article__id=i)[1:]:
                 order.count += o.count
             summarized.append(order)
-    print summarized
     return summarized
 
 
