@@ -38,6 +38,23 @@ def get_orders(oday, supplier=None):
     return orders
 
 
+def summarize_orders(orders):
+    print orders
+    summarized = []
+    art_ids = set([x.article.id for x in orders])
+    for i in art_ids:
+        art_count = orders.filter(article__id=i).count()
+        if art_count == 1:
+            summarized.append(orders.get(article__id=i))
+        else:
+            order = orders.filter(article__id=i)[0]
+            for o in orders.filter(article__id=i)[1:]:
+                order.count += o.count
+            summarized.append(order)
+    print summarized
+    return summarized
+
+
 def make_latex(ctx, template, includefile=None):
     if 'supplier' not in ctx:
         ctx['supplier'] = u'ALL'
@@ -70,7 +87,7 @@ def generate_external(supplier, _ctx):
     ctx = _ctx.copy()
     orders = get_orders(ctx['oday'], supplier)
     ctx['supplier'] = supplier
-    ctx['orders'] = orders
+    ctx['orders'] = summarize_orders(orders)
     return make_latex(ctx, 'order_fax.tex')
 
 
