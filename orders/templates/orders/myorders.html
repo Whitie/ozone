@@ -25,7 +25,7 @@
                 {{ o.added|date:"SHORT_DATE_FORMAT" }}
             </td>
             <td style="text-align:center;">{{ o.count }}</td>
-            <td title="Ident Number: {{ o.article.ident }}">
+            <td title="{% trans "Ident Number" %}: {{ o.article.ident }}">
                 {{ o.article.name }}</td>
             <td>{{ o.article.quantity }}</td>
             <td style="text-align:right;" title="{% trans "Single Price" %}!">
