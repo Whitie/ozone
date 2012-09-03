@@ -190,7 +190,7 @@ def ask_order(req):
 @login_required
 def myorders(req):
     orders = req.user.order_set.select_related().all(
-        ).order_by('-added', 'article__name')
+        ).order_by('article__name', '-added')
     ctx = dict(page_title=_('My Orders'), menus=menus, orders=orders)
     return render(req, 'orders/myorders.html', ctx)
 
