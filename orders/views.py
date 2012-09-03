@@ -27,7 +27,8 @@ def get_user_choices():
 
 
 def get_supplier_choices():
-    return [(x.id, x.name) for x in Company.objects.all()]
+    l = Company.objects.all()
+    return [(x.id, x.name) for x in l if not x.has_students()]
 
 
 def get_oday_choices(filters):
