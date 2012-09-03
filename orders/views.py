@@ -189,8 +189,14 @@ def ask_order(req):
 
 @login_required
 def myorders(req):
-    orders = req.user.order_set.select_related().all(
+    order_list = req.user.order_set.select_related().all(
         ).order_by('article__name', '-added')
+    orders = []
+    ids = set()
+    for o in order_list:
+        if not o.article.id in ids:
+            ids.add(o.article.id)
+            orders.append(o)
     ctx = dict(page_title=_('My Orders'), menus=menus, orders=orders)
     return render(req, 'orders/myorders.html', ctx)
 
