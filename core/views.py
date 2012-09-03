@@ -184,8 +184,8 @@ def list_all_companies(req, only_with_students=False):
         companies = [x for x in q if x.has_students()]
     else:
         companies = list(q)
-    ctx = dict(page_title=_(u'All Companies'), companies=companies, menus=menus,
-        only_with_students=only_with_students, single_view=False)
+    ctx = dict(page_title=_(u'All Companies'), companies=companies,
+        menus=menus, only_with_students=only_with_students, single_view=False)
     return render_to_response('companies/list_all.html', ctx,
                               context_instance=RequestContext(req))
 
@@ -224,8 +224,9 @@ def list_students(req, startchar='', archive=False):
         s.all_days = s.presence_days.filter(entry__in=[u'T', u'F', u'K', u'|']
             ).count()
     title = _(u'Students Archive') if archive else _(u'Students')
-    ctx = dict(page_title=title, students=students, menus=menus, archive=archive,
-        startchar=startchar, chars=string.ascii_uppercase, form=form)
+    ctx = dict(page_title=title, students=students, menus=menus,
+        archive=archive, startchar=startchar, chars=string.ascii_uppercase,
+        form=form)
     return render_to_response('students/list.html', ctx,
                               context_instance=RequestContext(req))
 
