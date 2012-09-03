@@ -6,8 +6,7 @@ import os
 from datetime import date
 
 from django.core.files.base import ContentFile
-from django.template import RequestContext
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import permission_required
 from django.utils.translation import ugettext_lazy as _
@@ -130,8 +129,7 @@ def generate_pdf(req):
     supplier_ids = [x[0].article.supplier.id for x in orders]
     ctx = dict(page_title=_(u'Printouts'), menus=menus, oday=oday,
         ids=supplier_ids)
-    return render_to_response('orders/printouts.html', ctx,
-                              context_instance=RequestContext(req))
+    return render(req, 'orders/printouts.html', ctx)
 
 
 @require_POST

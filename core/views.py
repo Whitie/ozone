@@ -5,8 +5,7 @@ import string
 from datetime import datetime, date, timedelta
 
 from django.http import HttpResponse
-from django.template import RequestContext
-from django.shortcuts import render_to_response, redirect, get_object_or_404, render
+from django.shortcuts import redirect, get_object_or_404, render
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
@@ -62,8 +61,7 @@ def index(req):
     except (EmptyPage, InvalidPage):
         news = paginator.page(paginator.num_pages)
     ctx = dict(page_title=_(u'Ozone Home'), menus=menus, news=news)
-    return render_to_response('index.html', ctx,
-                              context_instance=RequestContext(req))
+    return render(req, 'index.html', ctx)
 
 
 @permission_required('core.add_news')
@@ -80,8 +78,7 @@ def add_news(req):
     else:
         form = NewsForm()
     ctx = dict(page_title=_(u'Add News'), menus=menus, form=form)
-    return render_to_response('news/add.html', ctx,
-                              context_instance=RequestContext(req))
+    return render(req, 'news/add.html', ctx)
 
 
 @permission_required('core.add_note')
@@ -105,8 +102,7 @@ def add_note(req, id):
         form = NoteForm()
     ctx = dict(page_title=_(u'Add Note'), menus=menus, form=form,
         contact=contact, company=company, notes=old_notes)
-    return render_to_response('companies/add_note.html', ctx,
-                              context_instance=RequestContext(req))
+    return render(req, 'companies/add_note.html', ctx)
 
 
 def do_login(req):
@@ -129,8 +125,7 @@ def do_login(req):
         form = AuthenticationForm()
         req.session.set_test_cookie()
     ctx = dict(page_title=_(u'Login Page'), form=form)
-    return render_to_response('login.html', ctx,
-                              context_instance=RequestContext(req))
+    return render(req, 'login.html', ctx)
 
 
 def do_logout(req):
@@ -146,8 +141,7 @@ def company_details(req, id):
         ).order_by('group__job', 'lastname')
     ctx = dict(page_title=_(u'Details: %s' % company.name), menus=menus,
         c=company, single_view=True, students=students)
-    return render_to_response('companies/view_company.html', ctx,
-                              context_instance=RequestContext(req))
+    return render(req, 'companies/view_company.html', ctx)
 
 
 @login_required
@@ -173,8 +167,7 @@ def list_companies(req, startchar=''):
     ctx = dict(page_title=_(u'Companies'), companies=companies, menus=menus,
         startchar=startchar, chars=string.ascii_uppercase, form=form,
         single_view=False)
-    return render_to_response('companies/list.html', ctx,
-                              context_instance=RequestContext(req))
+    return render(req, 'companies/list.html', ctx)
 
 
 @login_required
@@ -195,8 +188,7 @@ def list_all_companies(req, only_with_students=False):
         companies = paginator.page(paginator.num_pages)
     ctx = dict(page_title=_(u'All Companies'), companies=companies,
         menus=menus, only_with_students=only_with_students, single_view=False)
-    return render_to_response('companies/list_all.html', ctx,
-                              context_instance=RequestContext(req))
+    return render(req, 'companies/list_all.html', ctx)
 
 
 @login_required
@@ -236,8 +228,7 @@ def list_students(req, startchar='', archive=False):
     ctx = dict(page_title=title, students=students, menus=menus,
         archive=archive, startchar=startchar, chars=string.ascii_uppercase,
         form=form)
-    return render_to_response('students/list.html', ctx,
-                              context_instance=RequestContext(req))
+    return render(req, 'students/list.html', ctx)
 
 
 @login_required
@@ -263,8 +254,7 @@ def list_groups(req):
     g = StudentGroup.objects.select_related().all()
     groups = [x for x in g if not x.finished()]
     ctx = dict(page_title=_(u'Groups'), groups=groups, menus=menus)
-    return render_to_response('students/groups.html', ctx,
-                              context_instance=RequestContext(req))
+    return render(req, 'students/groups.html', ctx)
 
 
 @login_required
@@ -280,8 +270,7 @@ def group_details(req, gid):
         messages.error(req, _(u'Group with ID %d does not exist.' % gid))
         return redirect('core-groups')
     ctx = dict(page_title=_(u'Group Detail'), group=group, menus=menus)
-    return render_to_response('students/group_detail.html', ctx,
-                              context_instance=RequestContext(req))
+    return render(req, 'students/group_detail.html', ctx)
 
 
 @login_required
@@ -295,8 +284,7 @@ def presence_overview(req):
             'start_date')
         groups.append((j, g))
     ctx = dict(page_title=_(u'Group Overview'), groups=groups, menus=menus)
-    return render_to_response('presence/overview.html', ctx,
-                              context_instance=RequestContext(req))
+    return render(req, 'presence/overview.html', ctx)
 
 
 @login_required
@@ -333,8 +321,7 @@ def presence_for_group(req, gid):
     ctx = dict(page_title=_(u'Presence for Group'), group=group,
         students=students, menus=menus, start=start, end=end,
         days=xrange(start.day, start.day + dt.days + 1))
-    return render_to_response('presence/group.html', ctx,
-                              context_instance=RequestContext(req))
+    return render(req, 'presence/group.html', ctx)
 
 
 @permission_required('core.add_presenceday')
