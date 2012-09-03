@@ -7,6 +7,7 @@ urlpatterns = patterns('core.views',
     # Common views
     url(r'^$', 'index', name='core-index'),
     url(r'^add_news/$', 'add_news', name='core-add-news'),
+    url(r'^birthdays/$', 'get_next_birthdays', name='core-birthdays'),
     url(r'^login/$', 'do_login', name='core-login'),
     url(r'^logout/$', 'do_logout', name='core-logout'),
     # Companies

@@ -1,0 +1,36 @@
+{% extends "index.html" %}
+{% load i18n %}
+
+{% block content %}
+<h2 class="headline">
+{% blocktrans with d=days %}Next {{ d }} days{% endblocktrans %}
+</h2>
+<form action="" method="get">
+<p>{% trans "Show next" %} <select name="days" size="1">
+    {% for c in choice %}
+    <option value="{{ c }}"{% if c == days %} selected="selected"{% endif %}>{{ c }}</option>
+    {% endfor %}
+    </select> {% trans "days" %}
+    <input type="submit" value="{% trans "go" %}" />
+</p>
+</form>
+<h3>{% trans "Colleagues" %}</h3>
+<ul>
+    {% for u in users %}
+    <li><strong>{{ u.birthdate|date:"D j. E" }}</strong>: {{ u.user.last_name }}, {{ u.user.first_name }}</li>
+    {% empty %}
+    <li>{% trans "No person found" %}.</li>
+    {% endfor %}
+</ul>
+
+<h3>{% trans "Students" %}</h3>
+<ul>
+    {% for s in students %}
+    <li><strong>{{ s.birthdate|date:"D j. E" }}</strong>: {{ s.lastname }}, {{ s.firstname }}</li>
+    {% empty %}
+    <li>{% trans "No person found" %}.</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
+

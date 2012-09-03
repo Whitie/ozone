@@ -22,9 +22,13 @@ core_menu = Menu(_(u'Core'),
     ('core-students-archive', _(u'Archive')),
 )
 
+extra_menu = Menu(_(u'Extra'),
+    ('core-birthdays', _(u'Coming Birthdays')),
+)
+
 news_menu = Menu(_(u'News'),
     ('core-index', _(u'Read News')),
     ('core-add-news', _(u'Write News')),
 )
 
-menus = [core_menu, news_menu]
+menus = [core_menu, extra_menu, news_menu]

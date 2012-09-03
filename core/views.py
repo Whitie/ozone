@@ -16,7 +16,7 @@ from django.db.models import Q
 
 from core import utils
 from core.models import (News, Company, Student, StudentGroup, Contact, Note,
-                         CompanyRating, PresenceDay)
+                         CompanyRating, PresenceDay, UserProfile)
 from core.forms import (NewsForm, SearchForm, StudentSearchForm, NoteForm,
                         CompanyRatingForm)
 from core.menu import menus
@@ -327,6 +327,27 @@ def presence_for_group(req, gid):
 @permission_required('core.add_presenceday')
 def presence_add(req, student_id):
     pass
+
+
+@login_required
+def get_next_birthdays(req):
+    days = int(req.GET.get('days', '14'))
+    choice = [7, 14, 30, 90, 180]
+    start = date.today()
+    dates = [start + timedelta(days=x) for x in xrange(days)]
+    users = []
+    for d in dates:
+        for p in UserProfile.objects.select_related(
+            ).filter(birthdate__month=d.month, birthdate__day=d.day):
+            users.append(p)
+    students = []
+    for d in dates:
+        for s in Student.objects.select_related(
+            ).filter(birthdate__month=d.month, birthdate__day=d.day):
+            students.append(s)
+    ctx = dict(page_title=_(u'Next Birthdays'), menus=menus, users=users,
+        students=students, choice=choice, days=days)
+    return render(req, 'birthdays.html', ctx)
 
 
 def barcode(req, format, barcode=''):
