@@ -7,7 +7,7 @@
   {% trans "Companies with students" %}
 {% else %}
   {% trans "Companies" %}
-{% endif %} ({{ companies|length }})
+{% endif %} ({{ companies.paginator.count }})
 </h2>
 
 <div style="width:60%;text-align:center;margin:5px auto;">
