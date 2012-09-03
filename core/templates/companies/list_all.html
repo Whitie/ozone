@@ -18,6 +18,17 @@
 <a href="{% url core-companies-all %}">
   {% trans "Show all companies" %}</a>
 {% endif %}
+{% if companies.paginator.num_pages > 1 %}
+<form action="" method="get">
+<p>{% trans "Go to page" %}: <select name="page" size="1">
+    {% for num in companies.paginator.page_range %}
+    <option value="{{ num }}"{% if page == num %} selected="selected"{% endif %}>{{ num }}</option>
+    {% endfor %}
+    </select>
+    <input type="submit" value="{% trans "go" %}" />
+</p>
+</form>
+{% endif %}
 </div>
 
 {% if companies %}
