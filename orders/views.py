@@ -209,6 +209,7 @@ def add_supplier(req):
             c.phone = form.cleaned_data['phone']
             c.fax = form.cleaned_data['fax']
             c.email = form.cleaned_data['email']
+            c.rating_users.add(req.user)
             c.save()
             messages.success(req, _(u'New company %s saved.' % c.name))
             return redirect('orders-index')
