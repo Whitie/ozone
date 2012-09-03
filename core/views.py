@@ -181,9 +181,18 @@ def list_companies(req, startchar=''):
 def list_all_companies(req, only_with_students=False):
     q = Company.objects.select_related().all().order_by('name')
     if only_with_students:
-        companies = [x for x in q if x.has_students()]
+        companie_list = [x for x in q if x.has_students()]
     else:
-        companies = list(q)
+        companie_list = list(q)
+    paginator = Paginator(companie_list, 15)
+    try:
+        page = int(req.GET.get('page', '1'))
+    except ValueError:
+        page = 1
+    try:
+        companies = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        companies = paginator.page(paginator.num_pages)
     ctx = dict(page_title=_(u'All Companies'), companies=companies,
         menus=menus, only_with_students=only_with_students, single_view=False)
     return render_to_response('companies/list_all.html', ctx,

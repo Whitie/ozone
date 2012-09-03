@@ -27,6 +27,15 @@
   <div class="details">{% include "companies/details.html" %}</div>
   {% endfor %}
 </div>
+<div style="text-align:center;"><p>
+    {% if companies.has_previous %}
+    <a href="?page={{ companies.previous_page_number }}">{% trans "Previous page" %}</a>
+    {% endif %}
+    {% trans "Page" %} {{ companies.number }} {% trans "of" %} {{ companies.paginator.num_pages }}.
+    {% if companies.has_next %}
+    <a href="?page={{ companies.next_page_number }}">{% trans "Next page" %}</a>
+    {% endif %}
+</p></div>
 {% else %}
 <h3>{% trans "No companies found." %}</h3>
 {% endif %}
