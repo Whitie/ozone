@@ -3,8 +3,7 @@
 from datetime import date, timedelta
 
 from django.conf import settings
-from django.template import RequestContext
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import redirect, render
 from django.views.decorators.http import require_POST
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
@@ -65,8 +64,7 @@ def index(req):
         inc = False
     odays = get_next_odays(inc)
     ctx = dict(page_title=_(u'Orders'), odays=odays, menus=menus)
-    return render_to_response('orders/index.html', ctx,
-                              context_instance=RequestContext(req))
+    return render(req, 'orders/index.html', ctx)
 
 
 @login_required
@@ -92,8 +90,7 @@ def order_detail(req, order_id):
         order_sum=order_sum)
     req.session['came_from'] = 'orders-detail'
     req.session['came_from_kw'] = {'order_id': order_id}
-    return render_to_response('orders/orderday.html', ctx,
-                              context_instance=RequestContext(req))
+    return render(req, 'orders/orderday.html', ctx)
 
 
 @login_required
@@ -116,8 +113,7 @@ def delete_order(req, oday_id, order_id):
         return redirect(redirect_to, **kw)
     ctx = dict(page_title=_(u'Delete Order'), menus=menus, oday_id=oday_id,
         order=order)
-    return render_to_response('orders/delete.html', ctx,
-                              context_instance=RequestContext(req))
+    return render(req, 'orders/delete.html', ctx)
 
 
 @login_required
@@ -166,8 +162,7 @@ def order(req, article_id=0):
     ctx = dict(page_title=_(u'Orders'), form=form, menus=menus, costs=costs,
         article_id=article_id, costs_msg=_(u'Sum of costs must be 100!'),
         cur_msg=_(u'Price in %s.' % settings.CURRENCY[0]))
-    return render_to_response('orders/order.html', ctx,
-                              context_instance=RequestContext(req))
+    return render(req, 'orders/order.html', ctx)
 
 
 @login_required
@@ -182,8 +177,7 @@ def ask_order(req):
                 Article.objects.all().order_by('name')]
     ctx = dict(page_title=_('Orders'), form=form, menus=menus,
         articles=articles)
-    return render_to_response('orders/select_article.html', ctx,
-                              context_instance=RequestContext(req))
+    return render(req, 'orders/select_article.html', ctx)
 
 
 @login_required
@@ -191,8 +185,7 @@ def myorders(req):
     orders = req.user.order_set.select_related().all(
         ).order_by('-added', 'article__name')
     ctx = dict(page_title=_('My Orders'), menus=menus, orders=orders)
-    return render_to_response('orders/myorders.html', ctx,
-                              context_instance=RequestContext(req))
+    return render(req, 'orders/myorders.html', ctx)
 
 
 @permission_required('core.add_company')
@@ -216,8 +209,7 @@ def add_supplier(req):
     else:
         form = ShortSupplierForm()
     ctx = dict(page_title=_(u'Add new Supplier'), menus=menus, form=form)
-    return render_to_response('orders/new_supplier.html', ctx,
-                              context_instance=RequestContext(req))
+    return render(req, 'orders/new_supplier.html', ctx)
 
 
 @any_permission_required(['orders.can_order', 'orders.can_change_orderstate'],
@@ -236,8 +228,7 @@ def manage_orders(req):
     odays = OrderDay.objects.filter(day__gte=limit).order_by('day')
     ctx = dict(page_title=_(u'Manage Orders'), menus=menus, odays=odays,
         users=users, can_order=can_order, can_change=can_change)
-    return render_to_response('orders/manage_orders.html', ctx,
-                              context_instance=RequestContext(req))
+    return render(req, 'orders/manage_orders.html', ctx)
 
 
 @any_permission_required(['orders.can_order', 'orders.can_change_orderstate'],
@@ -249,8 +240,7 @@ def manage_order(req, oday_id):
         orders=orders, states=(u'new', u'accepted', u'rejected'))
     req.session['came_from'] = 'orders-manage'
     req.session['came_from_kw'] = {'oday_id': oday_id}
-    return render_to_response('orders/manage_order.html', ctx,
-                              context_instance=RequestContext(req))
+    return render(req, 'orders/manage_order.html', ctx)
 
 
 @permission_required('orders.can_order', raise_exception=True)
@@ -275,8 +265,7 @@ def add_oday(req):
     odays = get_next_odays(True)
     ctx = dict(page_title=_(u'Add new orderday'), menus=menus, form=form,
         odays=[unicode(x) for x in odays])
-    return render_to_response('orders/add_oday.html', ctx,
-                              context_instance=RequestContext(req))
+    return render(req, 'orders/add_oday.html', ctx)
 
 
 @permission_required('orders.can_order', raise_exception=True)
@@ -290,8 +279,7 @@ def list_printouts(req):
             oday.count += 1
     ctx = dict(page_title=_(u'List of all printouts'), menus=menus,
         odays=odays)
-    return render_to_response('orders/list_printouts.html', ctx,
-                              context_instance=RequestContext(req))
+    return render(req, 'orders/list_printouts.html', ctx)
 
 
 # Ajax views
