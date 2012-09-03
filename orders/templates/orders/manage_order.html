@@ -4,6 +4,8 @@
 
 {% block content %}
 <h2 class="headline">{% trans "Edit orders for" %} {{ oday }}</h2>
+<h3 id="sum" style="text-align:center;color:{% if order_sum > 6000 %}red{% else %}green{% endif %};">
+{% trans "Sum" %}: {{ order_sum|floatformat:2 }}{{ CURRENCY_SYM }}</h3>
 <p>{% trans "All changes will be saved automatically." %}
     <span id="saved_msg" style="display:none;"></span>
 </p>
@@ -25,6 +27,7 @@
             <th>{% trans "Quantity" %}</th>
             <th>{% trans "Price" %}</th>
             <th>{% trans "Supplier" %}</th>
+            <th>{% trans "Orderer" %}</th>
             <th>{% trans "State" %}</th>
             <th>{% trans "Delete" %}</th>
         </tr>
@@ -56,11 +59,12 @@
             <td title="{% trans "Sum" %}: {{ o.price|floatformat:2 }}{{ CURRENCY_SYM }}">
                 {% if o.state in states %}
                 <input type="text" value="{{ o.article.price|floatformat:2 }}"
-                    name="art_price" size="10" onchange="update_row({{ forloop.counter }});"
+                    name="art_price" size="6" onchange="update_row({{ forloop.counter }});"
                     style="text-align:right;" />{{ CURRENCY_SYM }}
                 {% else %}{{ o.article.price|floatformat:2 }}{{ CURRENCY_SYM }}{% endif %}
             </td>
-            <td title="{{ o.memo|default:"-" }}">{{ o.article.supplier }}</td>
+            <td title="{{ o.memo|default:"-" }}">{{ o.article.supplier.short_name }}</td>
+            <td>{{ o.userlist|join:", " }}</td>
             {% if perms.orders.can_change_orderstate and o.state in states %}
             <td>
                 <input type="radio" name="state_{{ forloop.counter }}" value="new"
@@ -108,16 +112,17 @@ function update_row(row) {
     var count = $('#row_'+row+' > td > :input[name="count"]').val();
     var art_name = $('#row_'+row+' > td > :input[name="art_name"]').val();
     var art_ident = $('#row_'+row+' > td > :input[name="art_ident"]').val();
-    var price = $('#row_'+row+' > td > :input[name="price"]').val();
+    var price = $('#row_'+row+' > td > :input[name="art_price"]').val();
     var state = $('#row_'+row+' > td > :input[name^="state"]:checked').val();
     data = {'order_id': oid, 'count': count, 'art_name': art_name,
             'art_ident': art_ident, 'price': price, 'state': state};
-    $.post('{% url orders-api-change %}', data, function(data) {
-        $('#saved_msg').text(data['msg']+' {% trans "Row" %}: '+row+'.').fadeIn('slow');
-        setTimeout(function() {
-            $('#saved_msg').fadeOut('slow');
-        }, 5000);
-    });
+    $.post('{% url orders-api-change %}', {'_JSON_': JSON.stringify(data)},
+        function(data) {
+            $('#saved_msg').text(data['msg']+' {% trans "Row" %}: '+row+'.').fadeIn('slow');
+            setTimeout(function() {
+                $('#saved_msg').fadeOut('slow');
+            }, 5000);
+        });
 }
 </script>
 

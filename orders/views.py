@@ -1,6 +1,7 @@
 # Create your views here.
 
 from datetime import date, timedelta
+from decimal import Decimal
 
 from django.conf import settings
 from django.shortcuts import redirect, render
@@ -11,7 +12,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Permission
 
-from core.utils import json_view, any_permission_required
+from core.utils import json_view, json_rpc, any_permission_required
 from core.models import Company
 from orders.forms import (OrderOldForm, OrderForm, ShortSupplierForm,
                           OrderDayForm)
@@ -28,12 +29,17 @@ def get_user_choices():
 
 def get_supplier_choices():
     l = Company.objects.all()
-    return [(x.id, x.name) for x in l if not x.has_students()]
+    return [(x.id, x.short_name) for x in l if not x.has_students()]
 
 
 def get_oday_choices(filters):
     return [(x.id, unicode(x)) for x in
             OrderDay.objects.filter(**filters).order_by('day')]
+
+
+def get_price(value):
+    value = value.replace(u',', u'.')
+    return Decimal(value)
 
 
 def get_next_odays(include_today=False):
@@ -132,7 +138,7 @@ def order(req, article_id=0):
             art, created = Article.objects.get_or_create(
                 name=form.cleaned_data['art_name'],
                 ident=form.cleaned_data['art_id'],
-                price=form.cleaned_data['art_price'])
+                price=get_price(form.cleaned_data['art_price']))
             if created:
                 art.quantity = form.cleaned_data['art_q']
                 art.supplier = Company.objects.get(
@@ -225,7 +231,7 @@ def manage_orders(req):
     can_order = [x.username for x in users if x.has_perm('orders.can_order')]
     can_change = [x.username for x in users
                   if x.has_perm('orders.can_change_orderstate')]
-    limit = date.today() - timedelta(days=21)
+    limit = date.today() - timedelta(days=14)
     odays = OrderDay.objects.filter(day__gte=limit).order_by('day')
     ctx = dict(page_title=_(u'Manage Orders'), menus=menus, odays=odays,
         users=users, can_order=can_order, can_change=can_change)
@@ -237,8 +243,14 @@ def manage_orders(req):
 def manage_order(req, oday_id):
     oday = OrderDay.objects.get(id=int(oday_id))
     orders = Order.objects.select_related().filter(order_day=oday)
+    order_sum = 0
+    for o in orders:
+        o.userlist = [x.username for x in o.users.all()]
+        order_sum += o.count * o.article.price
+        o.sum_price = o.count * o.article.price
     ctx = dict(page_title=_(u'Manage Orders'), menus=menus, oday=oday,
-        orders=orders, states=(u'new', u'accepted', u'rejected'))
+        orders=orders, states=(u'new', u'accepted', u'rejected'),
+        order_sum=order_sum)
     req.session['came_from'] = 'orders-manage'
     req.session['came_from_kw'] = {'oday_id': oday_id}
     return render(req, 'orders/manage_order.html', ctx)
@@ -341,18 +353,21 @@ def add_representative(req):
 
 
 @require_POST
-@json_view
-def change_order(req):
+@json_rpc
+def change_order(req, data):
+    print data
     try:
-        order_id = int(req.POST.get('order_id'))
-        count = int(req.POST.get('count'))
-        state = req.POST.get('state')
-        art_name = req.POST.get('art_name')
-        art_ident = req.POST.get('art_ident')
+        order_id = int(data['order_id'])
+        count = int(data['count'])
+        state = data['state']
+        art_name = data['art_name']
+        art_ident = data['art_ident']
+        price = Decimal(data['price'].replace(u',', u'.'))
         order = Order.objects.get(id=order_id)
         article = order.article
         article.name = art_name
         article.ident = art_ident
+        article.price = price
         article.save()
         order.count = count
         order.state = state

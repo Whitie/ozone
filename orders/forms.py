@@ -39,7 +39,7 @@ class OrderForm(forms.Form):
     art_id = forms.CharField(label=_(u'Identifier'), max_length=50,
         required=False)
     art_q = forms.CharField(label=_(u'Quantity'), max_length=20)
-    art_price = forms.DecimalField(label=_(u'Price'), required=False)
+    art_price = forms.CharField(label=_(u'Price'), required=False)
     memo = forms.CharField(label=_(u'Memo'), widget=forms.Textarea(),
         required=False)
     oday = forms.ChoiceField(label=_(u'Order Day'))
