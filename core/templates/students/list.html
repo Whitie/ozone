@@ -43,5 +43,11 @@ $(document).ready(function() {
 <h3>{% trans "No students found." %}</h3>
 {% endfor %}
 
+<script>
+$(document).ready(function() {
+  $('a[title]').qtip();
+});
+</script>
+
 {% endblock %}
 
