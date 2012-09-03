@@ -121,8 +121,8 @@ class Company(CommonInfo):
     web = models.URLField(_(u'Web'), blank=True)
     email = models.EmailField(_(u'Email'), blank=True)
     rate = models.BooleanField(_(u'Rate'), default=True)
-    rating_users = models.ManyToManyField(User, verbose_name=_(u'Rating Users'),
-        blank=True)
+    rating_users = models.ManyToManyField(User,
+        verbose_name=_(u'Rating Users'), blank=True)
     rating = models.CharField(_(u'Rating'), max_length=1,
         choices=RATING_CHOICES, default=u'D')
     rating_note = models.TextField(_(u'Rating Note'), blank=True)
@@ -228,8 +228,8 @@ class CompanyRating(models.Model):
             self.company.name, self.rating)
 
     def as_list(self):
-        return [self.good_quality, self.delivery_time, self.quality, self.price,
-            self.service, self.attainability, self.documentation]
+        return [self.good_quality, self.delivery_time, self.quality,
+            self.price, self.service, self.attainability, self.documentation]
 
     def calculate(self):
         ratings = self.as_list()
@@ -246,6 +246,9 @@ class CompanyRating(models.Model):
         verbose_name_plural = _(u'Company Ratings')
 
 
+SUFFIX_CHOICES = ((u'a', u'a'), (u'b', u'b'), (u'c', u'c'))
+
+
 class StudentGroup(models.Model):
     start_date = models.DateField(_(u'Start Date'))
     school_nr = models.CharField(_(u'School Number'), max_length=10,
@@ -253,10 +256,13 @@ class StudentGroup(models.Model):
     job = models.CharField(_(u'Job'), max_length=50, blank=True)
     job_short = models.CharField(_(u'Job Short'), max_length=10,
         help_text=_(u'This field will be converted to uppercase.'))
+    suffix = models.CharField(_(u'Suffix'), max_length=1, blank=True,
+        choices=SUFFIX_CHOICES)
 
     @named(_(u'Groupname'))
     def name(self):
-        return u'{0} {1}'.format(self.job_short, self.start_date.strftime('%Y'))
+        return u'{0} {1}{2}'.format(self.job_short,
+            self.start_date.strftime('%Y'), self.suffix)
 
     def __unicode__(self):
         return self.name()
@@ -295,7 +301,8 @@ class Student(CommonInfo):
     birthdate = models.DateField(_(u'Birthdate'))
     emergency = models.CharField(_(u'Notice in emergency'), max_length=100,
         blank=True)
-    picture = models.ImageField(_(u'Picture'), upload_to='pictures', blank=True)
+    picture = models.ImageField(_(u'Picture'), upload_to='pictures',
+        blank=True)
     email = models.EmailField(_(u'Email'), blank=True)
     mobile = models.CharField(_(u'Mobile'), max_length=30, blank=True)
     company = models.ForeignKey(Company, verbose_name=_(u'Company'),
