@@ -14,8 +14,11 @@ framework.
 
 """
 import os
+import sys
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ozone.settings")
+PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, PATH)
 
 # This application object is used by any WSGI server configured to use this
 # file. This includes Django's development server, if the WSGI_APPLICATION
