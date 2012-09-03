@@ -28,4 +28,3 @@ news_menu = Menu(_(u'News'),
 )
 
 menus = [core_menu, news_menu]
-

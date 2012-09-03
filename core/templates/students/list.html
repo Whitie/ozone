@@ -8,6 +8,9 @@
   {% if perms.core.add_student and not archive %}
   <a href="/admin/core/student/add/">{% trans "Add Student" %}</a> |
   {% endif %}
+  {% if not archive %}
+  <a href="{% url core-students-all %}">{% trans "All" %}</a> |
+  {% endif %}
   <a href="{% if archive %}{% url core-students-archive %}{% else %}{% url core-students %}{% endif %}">{% trans "Other" %}</a> |
   {% for c in chars %}
   <a href="{% if archive %}{% url core-students-archive %}{% else %}{% url core-students %}{% endif %}{{ c }}/">{{ c }}</a>

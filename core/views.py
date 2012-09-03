@@ -6,7 +6,7 @@ from datetime import datetime, date, timedelta
 
 from django.http import HttpResponse
 from django.template import RequestContext
-from django.shortcuts import render_to_response, redirect, get_object_or_404
+from django.shortcuts import render_to_response, redirect, get_object_or_404, render
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
@@ -238,6 +238,24 @@ def list_students(req, startchar='', archive=False):
         form=form)
     return render_to_response('students/list.html', ctx,
                               context_instance=RequestContext(req))
+
+
+@login_required
+def list_all_students(req):
+    student_list = Student.objects.select_related().all(
+        ).order_by('company__name', 'lastname')
+    paginator = Paginator(student_list, 30)
+    try:
+        page = int(req.GET.get('page', '1'))
+    except ValueError:
+        page = 1
+    try:
+        students = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        students = paginator.page(paginator.num_pages)
+    ctx = dict(page_title=_(u'List of all students'), menus=menus,
+        students=students, page=page)
+    return render(req, 'students/list_all.html', ctx)
 
 
 @login_required
