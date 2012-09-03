@@ -10,7 +10,7 @@ sys.path.insert(0, EXT_DIR)
 
 # Django settings for ozone project.
 
-VERSION = '1.0.1'
+VERSION = '1.0.2'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -163,7 +163,7 @@ AUTHENTICATION_BACKENDS = (
 # Default currency
 CURRENCY = (u'Euro', u'€')
 
-# Logging ######################################################################
+# Logging #####################################################################
 
 LOGGING = {
     'version': 1,
@@ -223,9 +223,9 @@ LOGGING = {
         },
     }
 }
-################################################################################
+###############################################################################
 
-# Active Directory settings ####################################################
+# Active Directory settings ###################################################
 
 # FQDN or IP of the AD server
 AD_DNS_NAME = '10.0.0.3'
@@ -271,9 +271,9 @@ AD_CREATE_GROUPS = True
 #AD_CACHE_TIME = 8 * 60 * 60
 AD_CACHE_TIME = 0
 
-################################################################################
+###############################################################################
 
-# Latex settings ###############################################################
+# Latex settings ##############################################################
 LATEX = {
     'pdflatex': (r'P:/Portable/latex-portable/miktex-portable/miktex'
                  r'/bin/pdflatex.exe'),
@@ -284,11 +284,12 @@ LATEX = {
     'fromphone': u'030 / 67 00 04-0',
     'fromname': u'Bildungswerk Nordostchemie e. V.',
     'fromaddress': u'Adlergestell 333, 12489 Berlin',
-    #'fromlogo': u'/home/tweimann/Projekte/bbz-tools/ozone/ozone/static/img/bbzlogo.png',
+    #'fromlogo': u'/home/tweimann/Projekte/bbz-tools/ozone/ozone/'
+                #u'static/img/bbzlogo.png',
     'fromlogo': u'P:/container/bbz-tools/ozone/ozone/static/img/bbzlogo.png',
 }
 
-################################################################################
+###############################################################################
 
 # Make sure to use a path, which is writeable and not accesible over the web
 SECRET_FILE = os.path.join(_PATH, '.secret')
@@ -305,3 +306,12 @@ except IOError:
         os.chmod(SECRET_FILE, 0600)
     except:
         pass
+
+###############################################################################
+
+# Try to import the production settings
+
+try:
+    from production_settings import *
+except ImportError:
+    pass
