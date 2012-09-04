@@ -21,6 +21,9 @@
   <li>
       <a class="menu" href="{% url core-logout %}">{% trans "Logout" %}</a>
   </li>
+  <li>
+      <a class="menu" href="{% url core-profile %}">{% trans "Profile" %}</a>
+  </li>
     {% if user.is_staff %}
     <li>
         <a class="menu" href="{% url admin:index %}">{% trans "Admin" %}</a>

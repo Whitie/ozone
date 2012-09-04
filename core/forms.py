@@ -4,7 +4,7 @@ from django import forms
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.translation import ugettext_lazy as _
 
-from core.models import News, StudentGroup, RATING_CHOICES
+from core.models import News, StudentGroup, RATING_CHOICES, UserProfile
 from core.html5_widgets import SearchInput5, IntegerField5
 
 
@@ -12,6 +12,13 @@ class NewsForm(forms.ModelForm):
     class Meta:
         model = News
         exclude = ('author', 'date')
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        exclude = ('part', 'subjects', 'can_login', 'external', 'barcode',
+                   '_barcode', '_config')
 
 
 class SearchForm(forms.Form):

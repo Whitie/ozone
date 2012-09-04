@@ -258,7 +258,7 @@ AD_MEMBERSHIP_REQ = AD_MEMBERSHIP_ADMIN + [
     'QMB',
     'Leitung',
     'Verwaltung',
-    'Biologielaboranten',
+    'Biolaboranten',
     'Chemikanten',
     'QMTeam',
 ]

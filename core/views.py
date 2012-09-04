@@ -18,7 +18,7 @@ from core import utils
 from core.models import (News, Company, Student, StudentGroup, Contact, Note,
                          CompanyRating, PresenceDay, UserProfile)
 from core.forms import (NewsForm, SearchForm, StudentSearchForm, NoteForm,
-                        CompanyRatingForm)
+                        CompanyRatingForm, ProfileForm)
 from core.menu import menus
 from barcode.codex import Code39
 try:
@@ -67,6 +67,19 @@ def index(req):
         news = paginator.page(paginator.num_pages)
     ctx = dict(page_title=_(u'Ozone Home'), menus=menus, news=news)
     return render(req, 'index.html', ctx)
+
+
+@login_required
+def edit_profile(req):
+    profile = req.user.get_profile()
+    if req.method == 'POST':
+        form = ProfileForm(req.POST, instance=profile)
+        form.save()
+        messages.success(req, _(u'All changes saved.'))
+    else:
+        form = ProfileForm(instance=profile)
+    ctx = dict(page_title=_(u'My Profile'), menus=menus, form=form)
+    return render(req, 'profile.html', ctx)
 
 
 @permission_required('core.add_news')
