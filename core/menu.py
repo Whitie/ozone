@@ -24,6 +24,7 @@ core_menu = Menu(_(u'Core'),
 
 extra_menu = Menu(_(u'Extra'),
     ('core-birthdays', _(u'Coming Birthdays')),
+    ('core-phonelist', _(u'Internal Phonelist')),
 )
 
 news_menu = Menu(_(u'News'),

@@ -82,6 +82,15 @@ def edit_profile(req):
     return render(req, 'profile.html', ctx)
 
 
+@login_required
+def internal_phonelist(req):
+    profiles = UserProfile.objects.select_related().filter(external=False
+        ).exclude(user__username='admin').order_by('user__last_name')
+    ctx = dict(page_title=_(u'Internal Phonelist'), menus=menus,
+        profiles=profiles)
+    return render(req, 'phonelist.html', ctx)
+
+
 @permission_required('core.add_news')
 def add_news(req):
     if req.method == 'POST':

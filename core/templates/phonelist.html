@@ -1,0 +1,40 @@
+{% extends "index.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block content %}
+<h2 class="headline">{% trans "Phonelist" %}</h2>
+<div style="width:50%;margin:5px auto;">
+<table id="dataTable">
+    <thead>
+        <tr>
+            <th>{% trans "Name" %}</th>
+            <th>{% trans "Private" %}</th>
+            <th>{% trans "Mobile" %}</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for p in profiles %}
+    <tr>
+        <td>{{ p.user.last_name }}, {{ p.user.first_name }}</td>
+        <td>{{ p.phone }}</td>
+        <td>{{ p.mobile }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+
+<script>
+$(document).ready(function() {
+  var oTable = $('#dataTable').dataTable({
+    "bJQueryUI": true,
+    "bPaginate": false,
+    "bAutoWidth": true,
+    "oLanguage": {
+      "sUrl": "{% static "i18n/de_DE.txt" %}"
+    }
+  });
+});
+</script>
+{% endblock %}
