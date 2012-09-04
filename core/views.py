@@ -214,7 +214,8 @@ def list_all_companies(req, only_with_students=False):
     except (EmptyPage, InvalidPage):
         companies = paginator.page(paginator.num_pages)
     ctx = dict(page_title=_(u'All Companies'), companies=companies,
-        menus=menus, only_with_students=only_with_students, single_view=False)
+        menus=menus, only_with_students=only_with_students, single_view=False,
+        page=page)
     return render(req, 'companies/list_all.html', ctx)
 
 

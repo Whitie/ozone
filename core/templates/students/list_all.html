@@ -30,7 +30,7 @@
     <a href="?page={{ students.previous_page_number }}">{% trans "Previous page" %}</a>
     {% endif %}
     {% trans "Page" %} {{ students.number }} {% trans "of" %} {{ students.paginator.num_pages }}.
-    {% if companies.has_next %}
+    {% if students.has_next %}
     <a href="?page={{ students.next_page_number }}">{% trans "Next page" %}</a>
     {% endif %}
 </p></div>
