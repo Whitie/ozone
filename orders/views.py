@@ -28,8 +28,15 @@ def get_user_choices():
 
 
 def get_supplier_choices():
-    l = Company.objects.all()
-    return [(x.id, x.short_name) for x in l if not x.has_students()]
+    l = []
+    for c in Company.objects.all().order_by('name'):
+        if not c.has_students():
+            if len(c.name) > 22:
+                name = u'{0}...'.format(c.name[:22])
+            else:
+                name = c.name
+            l.append((c.id, name))
+    return l
 
 
 def get_oday_choices(filters):
@@ -182,7 +189,7 @@ def ask_order(req):
         form = OrderOldForm()
     articles = [(x.id, x.name, x.short_desc()) for x in
                 Article.objects.all().order_by('name')]
-    ctx = dict(page_title=_('Orders'), form=form, menus=menus,
+    ctx = dict(page_title=_(u'Orders'), form=form, menus=menus,
         articles=articles)
     return render(req, 'orders/select_article.html', ctx)
 
@@ -197,7 +204,7 @@ def myorders(req):
         if not o.article.id in ids:
             ids.add(o.article.id)
             orders.append(o)
-    ctx = dict(page_title=_('My Orders'), menus=menus, orders=orders)
+    ctx = dict(page_title=_(u'My Orders'), menus=menus, orders=orders)
     return render(req, 'orders/myorders.html', ctx)
 
 
@@ -211,6 +218,7 @@ def add_supplier(req):
             if not created:
                 messages.error(req, _(u'Company %s already exists.' % c.name))
                 return redirect('orders-index')
+            c.short_name = form.cleaned_data['name'].upper()
             c.customer_number = form.cleaned_data['customer_number']
             c.phone = form.cleaned_data['phone']
             c.fax = form.cleaned_data['fax']
