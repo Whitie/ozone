@@ -143,7 +143,7 @@ def do_login(req):
                 if user.is_active and p.can_login:
                     login(req, user)
                     messages.success(req, _(u'Login accepted.'))
-                    return redirect('/')
+                    return redirect(req.GET.get('next', '/'))
                 else:
                     messages.error(req, _(u'Account is disabled.'))
             else:
