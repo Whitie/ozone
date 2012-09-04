@@ -16,4 +16,21 @@
 </table>
 </form>
 
+<script>
+$(document).ready(function() {
+  $('#id_birthdate').datepicker({
+    'dateFormat': 'dd.mm.yy',
+    'dayNamesMin': ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+    'monthNames': ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
+                   'Juli', 'August', 'September', 'Oktober', 'November',
+                   'Dezember'],
+    'showWeek': true,
+    'firstDay': 1,
+    'weekHeader': 'Wo',
+    'nextText': '{% trans "next" %}',
+    'prevText': '{% trans "prev" %}'
+  });
+});
+</script>
+
 {% endblock %}
