@@ -17,7 +17,11 @@
 <h3>{% trans "Colleagues" %}</h3>
 <ul>
     {% for u in users %}
-    <li><strong>{{ u.birthdate|date:"D j. E" }}</strong>: {{ u.user.last_name }}, {{ u.user.first_name }}</li>
+    <li>
+        <span{% if u.today %} style="background-color:yellow;"{% endif %}>
+            <strong>{{ u.birthdate|date:"D j. E" }}</strong>: {{ u.user.last_name }}, {{ u.user.first_name }}
+        </span>
+    </li>
     {% empty %}
     <li>{% trans "No person found" %}.</li>
     {% endfor %}
@@ -26,7 +30,11 @@
 <h3>{% trans "Students" %}</h3>
 <ul>
     {% for s in students %}
-    <li><strong>{{ s.birthdate|date:"D j. E" }}</strong>: {{ s.lastname }}, {{ s.firstname }} ({{ s.group }})</li>
+    <li>
+        <span{% if s.today %} style="background-color:yellow;"{% endif %}>
+            <strong>{{ s.birthdate|date:"D j. E" }}</strong>: {{ s.lastname }}, {{ s.firstname }} ({{ s.group }})
+        </span>
+    </li>
     {% empty %}
     <li>{% trans "No person found" %}.</li>
     {% endfor %}

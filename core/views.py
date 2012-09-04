@@ -363,19 +363,21 @@ def get_next_birthdays(req):
     days = int(req.GET.get('days', '14'))
     choice = [7, 14, 30, 90, 180]
     start = date.today()
+    today = (start.month, start.day)
     dates = [start + timedelta(days=x) for x in xrange(days)]
     users = []
+    students = []
     for d in dates:
         for p in UserProfile.objects.select_related(
             ).filter(birthdate__month=d.month, birthdate__day=d.day):
+            p.today = (p.birthdate.month, p.birthdate.day) == today
             users.append(p)
-    students = []
-    for d in dates:
         for s in Student.objects.select_related(
             ).filter(birthdate__month=d.month, birthdate__day=d.day):
+            s.today = (s.birthdate.month, s.birthdate.day) == today
             students.append(s)
     ctx = dict(page_title=_(u'Next Birthdays'), menus=menus, users=users,
-        students=students, choice=choice, days=days)
+        students=students, choice=choice, days=days, today=start)
     return render(req, 'birthdays.html', ctx)
 
 
