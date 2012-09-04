@@ -44,6 +44,11 @@ def get_presence(students, start, end):
     return l
 
 
+def get_studentgroups():
+    return [(0, _(u'All Groups'))] + [(x.id, x.name()) for x in
+                                      StudentGroup.objects.all()]
+
+
 # Create your views here.
 
 def index(req):
@@ -195,6 +200,7 @@ def list_all_companies(req, only_with_students=False):
 def list_students(req, startchar='', archive=False):
     if req.method == 'POST':
         form = StudentSearchForm(req.POST)
+        form.fields['group'].choices = get_studentgroups()
         if form.is_valid():
             s = form.cleaned_data['search']
             q = (Q(lastname__istartswith=s) | Q(company__name__icontains=s) |
@@ -209,6 +215,7 @@ def list_students(req, startchar='', archive=False):
             messages.error(req, _(u'Invalid search query.'))
     else:
         form = StudentSearchForm()
+        form.fields['group'].choices = get_studentgroups()
         if not startchar:
             students = Student.objects.select_related().all()
             for c in string.ascii_uppercase:

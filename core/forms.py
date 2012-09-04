@@ -8,10 +8,6 @@ from core.models import News, StudentGroup, RATING_CHOICES
 from core.html5_widgets import SearchInput5, IntegerField5
 
 
-GROUP_CHOICES = ([(0, _(u'All Groups'))] +
-    [(x.id, x.name()) for x in StudentGroup.objects.all()])
-
-
 class NewsForm(forms.ModelForm):
     class Meta:
         model = News
@@ -24,8 +20,7 @@ class SearchForm(forms.Form):
 
 
 class StudentSearchForm(SearchForm):
-    group = forms.TypedChoiceField(choices=GROUP_CHOICES, coerce=int,
-        empty_value=0, required=False)
+    group = forms.TypedChoiceField(coerce=int, empty_value=0, required=False)
 
 
 class NoteForm(forms.Form):
