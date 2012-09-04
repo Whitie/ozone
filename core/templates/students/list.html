@@ -36,9 +36,13 @@ $(document).ready(function() {
 {% for s in students %}
 <h3 title="{% trans "Click for details" %}">
   {{ forloop.counter }}. {{ s.lastname }}, {{ s.firstname }} ({{ s.company.short_name }})
-  {% if perms.core.can_change_student %}
+  {% if perms.core.change_student %}
   <a href="/admin/core/student/{{ s.id }}/">
     <img src="{% static "img/edit.png" %}" title="{% trans "Edit" %}" /></a>
+  {% endif %}
+  {% if perms.core.delete_student %}
+  <a href="/admin/core/student/{{ s.id }}/delete/">
+      <img src="{% static "img/delete.png" %}" title="{% trans "Delete" %}" /></a>
   {% endif %}
 </h3>
 <div class="details">{% include "students/details.html" %}</div>
