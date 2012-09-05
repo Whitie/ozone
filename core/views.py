@@ -2,6 +2,7 @@
 
 import string
 
+from calendar import monthrange
 from datetime import datetime, date, timedelta
 
 from django.http import HttpResponse
@@ -16,7 +17,7 @@ from django.db.models import Q
 
 from core import utils
 from core.models import (News, Company, Student, StudentGroup, Contact, Note,
-                         CompanyRating, PresenceDay, UserProfile)
+    CompanyRating, PresenceDay, UserProfile, PRESENCE_CHOICES)
 from core.forms import (NewsForm, SearchForm, StudentSearchForm, NoteForm,
                         CompanyRatingForm, ProfileForm)
 from core.menu import menus
@@ -35,11 +36,12 @@ def get_presence(students, start, end):
         tmp = []
         for i in range(dt.days + 1):
             d = start + timedelta(days=i)
-            try:
-                day = PresenceDay.objects.get(student=s, date=d)
+            if d.weekday() not in (5, 6):
+                day, created = PresenceDay.objects.get_or_create(student=s,
+                    date=d)
+                if created:
+                    day.save()
                 tmp.append(day)
-            except PresenceDay.DoesNotExist:
-                tmp.append(None)
         l.append((s, tmp))
     return l
 
@@ -350,9 +352,11 @@ def presence_for_group(req, gid):
     dt = end - start
     _students = group.students.all().order_by('company__name', 'lastname')
     students = get_presence(_students, start, end)
+    days = (start + timedelta(days=x) for x in xrange(dt.days + 1))
     ctx = dict(page_title=_(u'Presence for Group'), group=group,
         students=students, menus=menus, start=start, end=end,
-        days=xrange(start.day, start.day + dt.days + 1))
+        days=(x for x in days if x.weekday() not in (5, 6)),
+        choices=[x[0] for x in PRESENCE_CHOICES])
     return render(req, 'presence/group.html', ctx)
 
 

@@ -7,14 +7,15 @@
 <h2 class="headline">
   {{ start|date:"DATE_FORMAT" }} - {{ end|date:"DATE_FORMAT" }}
 </h2>
+<p id="umessage">{% trans "No changes" %}.</p>
 <table id="dataTable">
   <thead>
     <tr>
       <th>{% trans "Company" %}</th>
       <th>{% trans "Lastname" %}</th>
       <th>{% trans "Firstname" %}</th>
-      {% for i in days %}
-      <th>{{ i }}</th>
+      {% for d in days %}
+      <th>{{ d|date:"D d" }}</th>
       {% endfor %}
     </tr>
   </thead>
@@ -22,10 +23,15 @@
     {% for s, ds in students %}
     <tr>
       <td>{{ s.company.name }}</td>
-      <td>{{ s.lastname }}</td>
+      <td><a href="" title="{% trans "Click here to enter notes." %}">{{ s.lastname }}</a></td>
       <td>{{ s.firstname }}</td>
       {% for d in ds %}
-      <td>{{ d.entry }}</td>
+      <td>
+          <select id="p_{{ d.id }}" title="{{ d.get_entry_display }}" name="presence" size="1" onchange="update_row({{ d.id }});">
+          {% for e in choices %}<option value="{{ e }}"{% if e == d.entry %} selected="selected"{% endif %}>{{ e }}</option>{% endfor %}
+          </select><br />
+          <input id="l_{{ d.id }}" type="text" size="2" maxlength="3"{% if d.lateness %} style="border:1px solid red;"{% endif %} name="lateness" value="{% if d.lateness %}{{ d.lateness }}{% endif %}" onchange="update_row({{ d.id }});" title="{% trans "Enter lateness here." %}" />
+      </td>
       {% endfor %}
     </tr>
     {% endfor %}
@@ -43,5 +49,15 @@ $(document).ready(function() {
     }
   });
 });
+$(function() {
+    $('a[title]').qtip();
+});
+function update_row(did) {
+    var day_id = did;
+    var lateness = $('#l_'+did).val();
+    alert(lateness);
+    var presence = $('#p_'+did+' :selected').val();
+    alert(presence);
+}
 </script>
 {% endblock %}

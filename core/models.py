@@ -388,6 +388,7 @@ class Memo(models.Model):
 
 
 PRESENCE_CHOICES = (
+    (u'', u'leer'),
     (u'*', u'anwesend'),
     (u'T', u'nur telefonisch entschuldigt'),
     (u'|', u'fehlt unentschuldigt'),
@@ -409,7 +410,7 @@ class PresenceDay(models.Model):
         related_name='presence_days')
     date = models.DateField(_(u'Date'))
     entry = models.CharField(_(u'Entry'), max_length=2,
-        choices=PRESENCE_CHOICES, default='*')
+        choices=PRESENCE_CHOICES, default='', blank=True)
     lateness = models.IntegerField(_(u'Lateness'), default=0)
     excused = models.NullBooleanField(_(u'Excused'), blank=True)
     note = models.CharField(_(u'Note'), max_length=25, blank=True)
