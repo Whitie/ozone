@@ -1,6 +1,8 @@
 # Create your views here.
 
-from datetime import date, timedelta
+from calendar import monthrange
+from collections import defaultdict
+from datetime import date, datetime, timedelta
 from decimal import Decimal
 
 from django.conf import settings
@@ -67,6 +69,18 @@ def get_costs(data):
             cost = Cost.objects.get(ident=ident)
             costs.append((cost, percent))
     return costs
+
+
+def get_dates():
+    today = date.today()
+    month, year = today.month, today.year
+    if month == 1:
+        start = date(year - 1, 12, 1)
+        end = date(year - 1, 12, 31)
+    else:
+        start = date(year, month - 1, 1)
+        end = date(year, month - 1, monthrange(year, month - 1)[1])
+    return start, end
 
 
 # Views
@@ -308,6 +322,34 @@ def list_printouts(req):
     ctx = dict(page_title=_(u'List of all printouts'), menus=menus,
         odays=odays)
     return render(req, 'orders/list_printouts.html', ctx)
+
+
+@permission_required('orders.controlling', raise_exception=True)
+def ctrl_by_cost(req):
+    ctx = dict(page_title=_(u'Sums by Cost'), menus=menus, costs=[],
+        start=None, end=None)
+    if req.method == 'POST':
+        _start = req.POST.get('start', '')
+        _end = req.POST.get('end', '')
+        if not _start or not _end:
+            start, end = get_dates()
+        else:
+            start = datetime.strptime(_start, '%d.%m.%Y').date()
+            end = datetime.strptime(_end, '%d.%m.%Y').date()
+        d = {}
+        for c in CostOrder.objects.select_related().filter(
+            order__ordered__gte=start, order__ordered__lte=end):
+            price = Decimal(c.order.count) * c.order.article.price
+            cost = (c.cost.short_name, c.cost.ident)
+            if cost not in d:
+                d[cost] = [Decimal(), Decimal(), 0]
+            d[cost][0] += (c.percent / Decimal(100)) * price
+            d[cost][1] += price
+            d[cost][2] += 1
+        l = sorted(((k, v) for k, v in d.iteritems()), key=lambda x: x[1])
+        _ctx = dict(costs=l, start=start, end=end)
+        ctx.update(_ctx)
+    return render(req, 'orders/controlling/bycost.html', ctx)
 
 
 # Ajax views

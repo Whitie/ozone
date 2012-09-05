@@ -18,6 +18,9 @@ urlpatterns = patterns('orders.views',
     url(r'^myorders/$', 'myorders', name='orders-myorders'),
     url(r'^list/printouts/$', 'list_printouts', name='orders-list-printouts'),
 
+    # Controlling
+    url(r'^controlling/by_cost/$', 'ctrl_by_cost', name='orders-ctrl-bycost'),
+
     # api
     url(r'^api/article/(?P<article_id>\d+)/$', 'api_article',
         name='orders-api-article'),
