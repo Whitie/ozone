@@ -330,6 +330,13 @@ def update_article_count(req, order_id, count):
 
 
 @json_view
+def get_articles(req):
+    articles = [{'value': x.id, 'label': x.name, 'desc': x.short_desc()}
+                for x in Article.objects.all().order_by('name')]
+    return articles
+
+
+@json_view
 def api_article(req, article_id=0):
     article_id = int(article_id)
     if not article_id:

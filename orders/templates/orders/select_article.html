@@ -15,16 +15,9 @@
 </style>
 <script>
 $(function() {
-    var articles = [
-    {% for id, name, desc in articles %}
-        { value: "{{ id }}", label: "{{ name }}", desc: "{{ desc }}" }
-        {% if not forloop.last %}, {% endif %}
-    {% endfor %}
-    ];
-
     $("#id_article_name").autocomplete({
         minLength: 1,
-        source: articles,
+        source: '{% url orders-api-articles %}',
         focus: function(event, ui) {
             $("#id_article_name").val(ui.item.label);
             return false;
