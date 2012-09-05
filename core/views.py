@@ -134,6 +134,7 @@ def add_note(req, id):
 
 def do_login(req):
     if req.method == 'POST':
+        next_page = req.POST.get('next', '/')
         form = AuthenticationForm(req, req.POST)
         if form.is_valid():
             user = authenticate(username=form.cleaned_data['username'],
@@ -143,15 +144,16 @@ def do_login(req):
                 if user.is_active and p.can_login:
                     login(req, user)
                     messages.success(req, _(u'Login accepted.'))
-                    return redirect(req.GET.get('next', '/'))
+                    return redirect(next_page)
                 else:
                     messages.error(req, _(u'Account is disabled.'))
             else:
                 messages.error(req, _(u'Username and/or password incorrect.'))
     else:
+        next_page = req.GET.get('next', '/')
         form = AuthenticationForm()
         req.session.set_test_cookie()
-    ctx = dict(page_title=_(u'Login Page'), form=form)
+    ctx = dict(page_title=_(u'Login Page'), form=form, next_page=next_page)
     return render(req, 'login.html', ctx)
 
 

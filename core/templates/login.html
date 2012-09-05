@@ -5,6 +5,7 @@
 <h2 class="headline">{% trans "Login" %}</h2>
 <form method="post" action="{% url core-login %}">
 {% csrf_token %}
+<input type="hidden" name="next" value="{{ next_page }}" />
 <table style="width:50%;margin:5px auto;text-align:left;">
 {{ form }}
 <tr>
