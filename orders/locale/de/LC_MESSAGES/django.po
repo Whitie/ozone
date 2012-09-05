@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0beta1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-04 11:42+0200\n"
+"POT-Creation-Date: 2012-09-05 11:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -97,8 +97,9 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: menu.py:8 models.py:124 views.py:80 views.py:176 views.py:192
+#: menu.py:8 models.py:124 views.py:93 views.py:189 views.py:205
 #: templates/orders/list_printouts.html:8
+#: templates/orders/controlling/bycost.html:28
 msgid "Orders"
 msgstr "Bestellungen"
 
@@ -106,17 +107,25 @@ msgstr "Bestellungen"
 msgid "Order now"
 msgstr "Jetzt bestellen"
 
-#: menu.py:10 views.py:207
+#: menu.py:10 views.py:220
 msgid "My Orders"
 msgstr "Meine Bestellungen"
 
-#: menu.py:11 views.py:233
+#: menu.py:11 views.py:246
 msgid "Add new Supplier"
 msgstr "Neuer Lieferant"
 
-#: menu.py:12 views.py:251 views.py:266
+#: menu.py:12 views.py:264 views.py:279
 msgid "Manage Orders"
 msgstr "Bestellungen verwalten"
+
+#: menu.py:15
+msgid "Controlling"
+msgstr ""
+
+#: menu.py:16
+msgid "By Cost"
+msgstr "Nach Kostenstelle"
 
 #: models.py:19
 msgid "Day"
@@ -251,105 +260,109 @@ msgstr "Ausdruck"
 msgid "Printouts"
 msgstr "Ausdrucke"
 
-#: views.py:102
+#: views.py:115
 msgid "Open Orders"
 msgstr "Offene Bestellungen"
 
-#: views.py:103
+#: views.py:116
 msgid "Count was not changed. Aborting."
 msgstr "Anzahl wurde nicht geändert. Abbruch."
 
-#: views.py:120
+#: views.py:133
 msgid "Cannot delete foreign order!"
 msgstr "Fremde Bestellungen können nicht gelöscht werden!"
 
-#: views.py:124
+#: views.py:137
 #, python-format
 msgid "Order (ID: %s) deleted."
 msgstr "Bestellung (ID: %s) gelöscht."
 
-#: views.py:126
+#: views.py:139
 msgid "Nothing deleted. Cancelled by user."
 msgstr "Es wurde nichts gelöscht. Benutzerabbruch."
 
-#: views.py:128
+#: views.py:141
 msgid "Delete Order"
 msgstr "Bestellung löschen"
 
-#: views.py:168
+#: views.py:181
 #, python-format
 msgid "Your order %s was saved."
 msgstr "Ihre Bestellung %s wurde gespeichert."
 
-#: views.py:170
+#: views.py:183
 msgid "Please fill the required fields."
 msgstr "Bitte füllen Sie die Pflichtfelder aus."
 
-#: views.py:177
+#: views.py:190
 msgid "Sum of costs must be 100!"
 msgstr "Die Summe der Kostenstellen muss 100 ergeben!"
 
-#: views.py:178
+#: views.py:191
 #, python-format
 msgid "Price in %s."
 msgstr "Preis in %s."
 
-#: views.py:219
+#: views.py:232
 #, python-format
 msgid "Company %s already exists."
 msgstr "Firma %s existiert schon."
 
-#: views.py:228
+#: views.py:241
 #, python-format
 msgid "New company %s saved."
 msgstr "Neue Firma %s gespeichert."
 
-#: views.py:230
+#: views.py:243
 msgid "Please correct the wrong fields."
 msgstr "Bitte korrigieren Sie die falschen Felder."
 
-#: views.py:243
+#: views.py:256
 #, python-format
 msgid "%s selected."
 msgstr "%s ausgewählt."
 
-#: views.py:281
+#: views.py:294
 msgid "The user you specified is not valid."
 msgstr "Der angegebene Benutzer ist nicht gültig."
 
-#: views.py:286
+#: views.py:299
 #, python-format
 msgid "New orderday %s added."
 msgstr "Neuer Bestelltag %s hinzugefügt."
 
-#: views.py:289
+#: views.py:302
 msgid "Please correct the form."
 msgstr "Bitte korrigieren Sie das Formular."
 
-#: views.py:294 templates/orders/manage_orders.html:22
+#: views.py:307 templates/orders/manage_orders.html:22
 msgid "Add new orderday"
 msgstr "Neuen Bestelltag hinzufügen"
 
-#: views.py:308 templates/orders/manage_orders.html:23
+#: views.py:321 templates/orders/manage_orders.html:23
 msgid "List of all printouts"
 msgstr "Liste aller Ausdrucke"
 
-#: views.py:326
+#: views.py:328
+msgid "Sums by Cost"
+msgstr "Summen nach Kostenstellen"
+
+#: views.py:367
 #, python-format
 msgid "Count for %(name)s was changed from %(old)d to %(count)d."
 msgstr "Die Anzahl für %(name)s wurde von %(old)d auf %(count)d geändert."
 
-#: views.py:364
+#: views.py:412
 #, python-format
 msgid "%s added."
 msgstr "%s hinzugefügt."
 
-#: views.py:366
+#: views.py:414
 #, python-format
 msgid "%s removed."
 msgstr "%s entfernt."
 
-#: views.py:390
+#: views.py:438
 #, python-format
 msgid "All changes to order with ID %d saved."
 msgstr "Alle Änderungen an der Bestellung (ID: %d) wurden gespeichert."
@@ -369,10 +382,12 @@ msgid "Save"
 msgstr "Speichern"
 
 #: templates/orders/add_oday.html:29
+#: templates/orders/controlling/bycost.html:61
 msgid "next"
 msgstr "nächster"
 
 #: templates/orders/add_oday.html:30
+#: templates/orders/controlling/bycost.html:62
 msgid "prev"
 msgstr "vorheriger"
 
@@ -392,8 +407,8 @@ msgstr "Ja"
 msgid "No"
 msgstr "Nein"
 
-#: templates/orders/delete.html:14 templates/orders/select_article.html:54
-#: templates/orders/select_article.html:59
+#: templates/orders/delete.html:14 templates/orders/select_article.html:47
+#: templates/orders/select_article.html:52
 msgid "Next"
 msgstr "Weiter"
 
@@ -560,14 +575,55 @@ msgstr "Ausdrucke für"
 msgid "Internal printout"
 msgstr "Interne Ausdrucke"
 
-#: templates/orders/select_article.html:48
+#: templates/orders/select_article.html:41
 msgid "Make order"
 msgstr "Bestellen"
 
-#: templates/orders/select_article.html:49
+#: templates/orders/select_article.html:42
 msgid "Order old article"
 msgstr "Bereits vorhandenen Artikel bestellen"
 
-#: templates/orders/select_article.html:57
+#: templates/orders/select_article.html:50
 msgid "Order new article"
 msgstr "Neuen Artikel bestellen"
+
+#: templates/orders/controlling/bycost.html:6
+msgid "Select a time period"
+msgstr "Wählen Sie eine Zeitspanne"
+
+#: templates/orders/controlling/bycost.html:10
+msgid "From"
+msgstr "Von"
+
+#: templates/orders/controlling/bycost.html:11
+#: templates/orders/controlling/bycost.html:19
+msgid "to"
+msgstr "bis"
+
+#: templates/orders/controlling/bycost.html:12
+msgid "Show"
+msgstr "Anzeigen"
+
+#: templates/orders/controlling/bycost.html:18
+msgid "Orders from"
+msgstr "Bestellungen von"
+
+#: templates/orders/controlling/bycost.html:24
+msgid "Short"
+msgstr "Kürzel"
+
+#: templates/orders/controlling/bycost.html:25
+msgid "Number"
+msgstr "Nummer"
+
+#: templates/orders/controlling/bycost.html:26
+msgid "Weighted"
+msgstr "Gewichtet"
+
+#: templates/orders/controlling/bycost.html:27
+msgid "All"
+msgstr "Gesamt"
+
+#: templates/orders/controlling/bycost.html:46
+msgid "No orders found in this period."
+msgstr "Keine Bestellungen in dieser Zeitspanne gefunden."
