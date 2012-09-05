@@ -12,4 +12,8 @@ order_menu = Menu(_(u'Orders'),
     ('orders-manage', _(u'Manage Orders')),
 )
 
-menus = [order_menu]
+controlling_menu = Menu(_(u'Controlling'),
+    ('orders-ctrl-bycost', _(u'By Cost')),
+)
+
+menus = [order_menu, controlling_menu]

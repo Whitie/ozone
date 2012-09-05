@@ -310,6 +310,11 @@ def list_printouts(req):
     return render(req, 'orders/list_printouts.html', ctx)
 
 
+@permission_required('orders.controlling', raise_exception=True)
+def ctrl_by_cost(req):
+    pass
+
+
 # Ajax views
 
 @json_view
