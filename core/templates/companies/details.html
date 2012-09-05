@@ -21,7 +21,7 @@
   <li>{% trans "Note" %}: {{ c.rating_note }}</li>
   {% endif %}
   {% endif %}
-  <li>{% trans "Active Students" %}:
+  <li>{% trans "Active Students" %}{% if single_view %} ({{ c.active_students }}){% endif %}:
   {% if single_view and c.active_students %}
   <ul>
   {% for s in students %}
@@ -57,7 +57,7 @@
   <li>{% trans "No contacts defined." %}</li>
   {% endfor %}
   {% if c.cooperations.count %}
-  <li><strong>{% trans "Cooperation Contracts" %}</strong>
+  <li><strong>{% trans "Cooperation Contracts" %} ({{ c.cooperations.count }})</strong>
     <ul>
       {% for coop in c.cooperations.all %}
       <li><a href="" title="{{ coop.note }}">{{ coop.date|date:"DATE_FORMAT" }} {{ coop.job }}</a>
