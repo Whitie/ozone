@@ -3,20 +3,20 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.0beta1\n"
+"Project-Id-Version: Ozone 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-04 11:42+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2012-09-05 20:36+0200\n"
+"PO-Revision-Date: 2012-09-05 20:40+0100\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: LANGUAGE <weimann@bbz-chemie.de>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #: admin.py:44
 msgid "Student(s)"
@@ -73,7 +73,7 @@ msgstr "Dokumentation"
 msgid "Rating"
 msgstr "Bewertung"
 
-#: forms.py:53 models.py:154 models.py:205 models.py:224 models.py:415
+#: forms.py:53 models.py:154 models.py:205 models.py:224 models.py:416
 #: templates/companies/details.html:21
 msgid "Note"
 msgstr "Bemerkung"
@@ -86,20 +86,20 @@ msgstr "Dieses Feld muss bei \"B\" Bewertungen ausgefüllt werden."
 msgid "Core"
 msgstr "Hauptmenü"
 
-#: menu.py:18 models.py:143 views.py:194 templates/companies/list_all.html:9
+#: menu.py:18 models.py:143 views.py:198 templates/companies/list_all.html:9
 msgid "Companies"
 msgstr "Firmen"
 
-#: menu.py:19 models.py:365 views.py:256 templates/birthdays.html:26
+#: menu.py:19 models.py:365 views.py:261 templates/birthdays.html:30
 #: templates/students/list_all.html:5
 msgid "Students"
 msgstr "Azubis"
 
-#: menu.py:20 models.py:279 views.py:285
+#: menu.py:20 models.py:279 views.py:290
 msgid "Groups"
 msgstr "Gruppen"
 
-#: menu.py:21 models.py:427 templates/presence/overview.html:5
+#: menu.py:21 models.py:428 templates/presence/overview.html:5
 msgid "Presences"
 msgstr "Anwesenheiten"
 
@@ -115,7 +115,7 @@ msgstr ""
 msgid "Coming Birthdays"
 msgstr "Nächste Geburtstage"
 
-#: menu.py:27 views.py:89
+#: menu.py:27 views.py:91
 msgid "Internal Phonelist"
 msgstr "Interne Telefonliste"
 
@@ -217,7 +217,7 @@ msgstr "Profile"
 msgid "Title"
 msgstr "Titel"
 
-#: models.py:91 models.py:150 models.py:195 models.py:410
+#: models.py:91 models.py:150 models.py:195 models.py:411
 msgid "Date"
 msgstr "Datum"
 
@@ -274,7 +274,7 @@ msgid "Rating Note"
 msgstr "Bemerkung (Bewertung)"
 
 #: models.py:142 models.py:148 models.py:172 models.py:210 models.py:308
-#: templates/presence/group.html:13 templates/students/details.html:8
+#: templates/presence/group.html:14 templates/students/details.html:8
 msgid "Company"
 msgstr "Firma"
 
@@ -298,11 +298,11 @@ msgstr "Kooperationsvertrag"
 msgid "Cooperation Contracts"
 msgstr "Kooperationsverträge"
 
-#: models.py:167 models.py:298 templates/presence/group.html:14
+#: models.py:167 models.py:298 templates/presence/group.html:15
 msgid "Lastname"
 msgstr "Nachname"
 
-#: models.py:168 models.py:299 templates/presence/group.html:15
+#: models.py:168 models.py:299 templates/presence/group.html:16
 msgid "Firstname"
 msgstr "Vorname"
 
@@ -442,7 +442,7 @@ msgstr "Abschlußprüfung Teil 2"
 msgid "Finished"
 msgstr "Aus-/Weiterbildung beendet"
 
-#: models.py:364 models.py:370 models.py:408
+#: models.py:364 models.py:370 models.py:409
 msgid "Student"
 msgstr "Azubi"
 
@@ -462,23 +462,23 @@ msgstr ""
 msgid "Memos"
 msgstr ""
 
-#: models.py:411
+#: models.py:412
 msgid "Entry"
 msgstr "Eintrag"
 
-#: models.py:413
+#: models.py:414
 msgid "Lateness"
 msgstr "Verspätung"
 
-#: models.py:414 templates/students/details.html:39
+#: models.py:415 templates/students/details.html:39
 msgid "Excused"
 msgstr "Entschuldigt"
 
-#: models.py:416
+#: models.py:417
 msgid "Instructor"
 msgstr "Ausbilder"
 
-#: models.py:426 templates/students/details.html:32
+#: models.py:427 templates/students/details.html:32
 msgid "Presence"
 msgstr "Anwesenheit"
 
@@ -494,121 +494,121 @@ msgstr "Der Server hat einen internen Fehler."
 msgid "Ozone Error"
 msgstr "Ozone Software Fehler"
 
-#: views.py:48
+#: views.py:50
 msgid "All Groups"
 msgstr "Alle Gruppen"
 
-#: views.py:68
+#: views.py:70
 msgid "Ozone Home"
 msgstr "Ozone Startseite"
 
-#: views.py:78
+#: views.py:80
 msgid "All changes saved."
 msgstr "Alle Änderungen gespeichert."
 
-#: views.py:81 templates/profile.html:5
+#: views.py:83 templates/profile.html:5
 msgid "My Profile"
 msgstr "Mein Profil"
 
-#: views.py:102
+#: views.py:104
 msgid "The News were added."
 msgstr "Die News wurden hinzugefügt."
 
-#: views.py:104
+#: views.py:106
 msgid "Please correct the wrong fields."
 msgstr "Bitte korrigieren Sie die fehlerhaften Felder."
 
-#: views.py:107
+#: views.py:109
 msgid "Add News"
 msgstr "News hinzufügen"
 
-#: views.py:124
+#: views.py:126
 msgid "New note saved."
 msgstr "Neue Bemerkung gespeichert."
 
-#: views.py:127
+#: views.py:129
 msgid "Please enter subject and text."
 msgstr "Bitte Betreff und Text eingeben."
 
-#: views.py:130 templates/companies/details.html:47
+#: views.py:132 templates/companies/details.html:47
 msgid "Add Note"
 msgstr "Bemerkung hinzufügen"
 
-#: views.py:145
+#: views.py:148
 msgid "Login accepted."
 msgstr "Anmeldedaten akzeptiert."
 
-#: views.py:148
+#: views.py:151
 msgid "Account is disabled."
 msgstr "Der Account ist deaktiviert."
 
-#: views.py:150
+#: views.py:153
 msgid "Username and/or password incorrect."
 msgstr "Benutzername und/oder Passwort sind falsch."
 
-#: views.py:154
+#: views.py:158
 msgid "Login Page"
 msgstr "Anmeldeseite"
 
-#: views.py:160
+#: views.py:164
 msgid "Logged out."
 msgstr "Abgemeldet."
 
-#: views.py:169
+#: views.py:173
 #, python-format
 msgid "Details: %s"
 msgstr ""
 
-#: views.py:184 views.py:237
+#: views.py:188 views.py:242
 msgid "Invalid search query."
 msgstr "Ungültige Suchanfrage."
 
-#: views.py:216
+#: views.py:220
 msgid "All Companies"
 msgstr "Alle Firmen"
 
-#: views.py:256
+#: views.py:261
 msgid "Students Archive"
 msgstr "Azubi-Archiv"
 
-#: views.py:276
+#: views.py:281
 msgid "List of all students"
 msgstr "Liste aller Azubis"
 
-#: views.py:294 views.py:329
+#: views.py:299 views.py:334
 msgid "Group ID must be an integer."
 msgstr "Gruppen-ID muss eine Zahl sein."
 
-#: views.py:299 views.py:334
+#: views.py:304 views.py:339
 #, python-format
 msgid "Group with ID %d does not exist."
 msgstr "Gruppen-ID %d existiert nicht."
 
-#: views.py:301
+#: views.py:306
 msgid "Group Detail"
 msgstr "Details Gruppe"
 
-#: views.py:315
+#: views.py:320
 msgid "Group Overview"
 msgstr "Überblick Gruppen"
 
-#: views.py:345
+#: views.py:350
 msgid "End date before start date."
 msgstr "Das Enddatum liegt vor dem Anfangsdatum."
 
-#: views.py:350
+#: views.py:356
 msgid "Presence for Group"
 msgstr "Anwesenheiten für Gruppe"
 
-#: views.py:377
+#: views.py:386
 msgid "Next Birthdays"
 msgstr "Nächste Geburtstage"
 
-#: views.py:388
+#: views.py:397
 msgid "PIL is not installed."
 msgstr "PIL ist nicht installiert."
 
-#: views.py:395
+#: views.py:404
 msgid "Unsupported barcode format."
 msgstr "Nicht unterstütztes Strichcode-Format."
 
@@ -634,7 +634,7 @@ msgstr "los"
 msgid "Colleagues"
 msgstr "Kollegen / Dozenten"
 
-#: templates/birthdays.html:22 templates/birthdays.html.py:31
+#: templates/birthdays.html:26 templates/birthdays.html.py:39
 msgid "No person found"
 msgstr "Keine Person gefunden"
 
@@ -672,7 +672,8 @@ msgstr "Seite"
 msgid "of"
 msgstr "von"
 
-#: templates/index.html:30 templates/presence/overview.html:37
+#: templates/index.html:30 templates/profile.html:30
+#: templates/presence/overview.html:37
 msgid "next"
 msgstr "nächste"
 
@@ -680,7 +681,7 @@ msgstr "nächste"
 msgid "No News found."
 msgstr "Keine News gefunden."
 
-#: templates/login.html:5 templates/login.html.py:13 templates/menu.html:34
+#: templates/login.html:5 templates/login.html.py:14 templates/menu.html:34
 msgid "Login"
 msgstr "Anmelden"
 
@@ -706,12 +707,17 @@ msgstr "Persönliche Daten"
 
 #: templates/profile.html:7
 msgid "This data can only be seen by members of the Management group."
-msgstr "Diese Daten können nur von der Verwaltung eingesehen werden (außer Telefon)."
+msgstr ""
+"Diese Daten können nur von der Verwaltung eingesehen werden (außer Telefon)."
 
 #: templates/profile.html:14 templates/companies/add_note.html:15
 #: templates/news/add.html:8
 msgid "Save"
 msgstr "Speichern"
+
+#: templates/profile.html:31 templates/presence/overview.html:38
+msgid "prev"
+msgstr "vorherige"
 
 #: templates/companies/add_note.html:6
 msgid "New Note"
@@ -812,6 +818,18 @@ msgstr "Vorherige Seite"
 msgid "Next page"
 msgstr "Nächste Seite"
 
+#: templates/presence/group.html:10
+msgid "No changes"
+msgstr "Keine Änderungen"
+
+#: templates/presence/group.html:26
+msgid "Click here to enter notes."
+msgstr "Klicken Sie hier, um Bemerkungen einzugeben."
+
+#: templates/presence/group.html:33
+msgid "Enter lateness here."
+msgstr "Verspätungen hier in Minuten eingeben."
+
 #: templates/presence/overview.html:14
 msgid "From"
 msgstr "Von"
@@ -827,10 +845,6 @@ msgstr "Anzeigen"
 #: templates/presence/overview.html:22 templates/students/groups.html:23
 msgid "No groups found."
 msgstr "Keine Gruppen gefunden."
-
-#: templates/presence/overview.html:38
-msgid "prev"
-msgstr "vorherige"
 
 #: templates/students/details.html:16
 msgid "Notice in Emergency"

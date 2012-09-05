@@ -3,13 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0beta1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-09-05 11:38+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2012-09-05 20:18+0100\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: de\n"
@@ -54,7 +53,7 @@ msgstr "Artikelnummer"
 #: forms.py:41 models.py:44 templates/orders/manage_order.html:27
 #: templates/orders/myorders.html:14 templates/orders/orderday.html:17
 msgid "Quantity"
-msgstr "Menge"
+msgstr "Einheit"
 
 #: forms.py:42 models.py:45 templates/orders/manage_order.html:28
 #: templates/orders/myorders.html:15 templates/orders/orderday.html:18
