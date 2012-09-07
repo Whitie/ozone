@@ -8,6 +8,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 admin.autodiscover()
 
+handler500 = 'core.utils.internal_server_error'
+
 urlpatterns = patterns('',
     (r'^$', 'core.views.index'),
     (r'^core/', include('core.urls')),

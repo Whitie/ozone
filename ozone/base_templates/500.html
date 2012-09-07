@@ -1,6 +1,8 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<h2 class="headline">500</h2>
+<h2 class="headline">{% trans "Error" %} 500 - {% trans "Internal Server Error" %}</h2>
+<h3>{% trans "Please copy the following text and mail it to" %} <a href="mailto:{{ admin.1 }}?subject=Error-500&amp;body={{ err }}">{{ admin.0 }}</a></h3>
+
 {% endblock %}
 

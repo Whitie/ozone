@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime, date
+from urllib import quote
 
+from django.conf import settings
 from django.utils import simplejson
 from django.http import HttpResponse
 from django.template import RequestContext
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.decorators import user_passes_test
 from django.core.exceptions import PermissionDenied
@@ -42,8 +44,15 @@ def error(req, msg=''):
     if not msg:
         msg = _('An internal server error occured.')
     ctx = dict(page_title=_('Ozone Error'), msg=msg)
-    return render_to_response('error.html', ctx,
-        context_instance=RequestContext(req))
+    return render(req, 'error.html', ctx)
+
+
+def internal_server_error(req):
+    import traceback
+    err = traceback.format_exc()
+    admin = settings.ADMINS[0]
+    ctx = dict(error=quote(err), admin=admin)
+    return render(req, '500.html', ctx)
 
 
 def check_for_import(module, msg=''):
