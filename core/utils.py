@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime, date
-from urllib import quote
 
 from django.conf import settings
 from django.utils import simplejson
@@ -48,11 +47,7 @@ def error(req, msg=''):
 
 
 def internal_server_error(req):
-    import traceback
-    err = traceback.format_exc()
-    admin = settings.ADMINS[0]
-    ctx = dict(error=quote(err), admin=admin)
-    return render(req, '500.html', ctx)
+    return render(req, '500.html')
 
 
 def check_for_import(module, msg=''):

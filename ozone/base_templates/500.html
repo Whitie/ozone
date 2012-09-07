@@ -1,8 +1,11 @@
 {% extends "layout.html" %}
+{% load i18n %}
 
 {% block content %}
-<h2 class="headline">{% trans "Error" %} 500 - {% trans "Internal Server Error" %}</h2>
-<h3>{% trans "Please copy the following text and mail it to" %} <a href="mailto:{{ admin.1 }}?subject=Error-500&amp;body={{ err }}">{{ admin.0 }}</a></h3>
+<h2 class="headline">
+    {% trans "Error" %} 500 - {% trans "Internal Server Error" %}
+</h2>
+<h3>{% trans "Full information about the error was mailed to the admin." %}</h3>
 
 {% endblock %}
 
