@@ -10,6 +10,9 @@ syntax: glob
 log/*
 build/*
 orders/latex/_build/*
+core/latex/_build/*
+ozone/production_*
+ozone/local_*
 dist/*
 tests/*
 docs/_build/*

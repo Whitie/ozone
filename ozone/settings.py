@@ -10,7 +10,7 @@ sys.path.insert(0, EXT_DIR)
 
 # Django settings for ozone project.
 
-VERSION = '1.2.1'
+VERSION = '1.3'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -314,4 +314,13 @@ except IOError:
 try:
     from production_settings import *
 except ImportError:
-    pass
+    print 'No production settings imported.'
+
+# Try to import local (testing) settings
+# Be sure to remove local_settings.py[c] on production environment
+
+try:
+    from local_settings import *
+except ImportError:
+    print 'No local settings imported.'
+
