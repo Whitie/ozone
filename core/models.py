@@ -341,8 +341,11 @@ class Student(CommonInfo):
     audit_log = AuditLog()
 
     def __unicode__(self):
-        return u'{0}, {1} ({2})'.format(self.lastname, self.firstname,
-                                        self.group.name())
+        if self.group:
+            return u'{0}, {1} ({2})'.format(self.lastname, self.firstname,
+                                            self.group.name())
+        else:
+            return u'{0}, {1}'.format(self.lastname, self.firstname)
 
     def final_grade(self):
         if self.exam_1 and self.exam_2:
