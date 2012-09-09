@@ -7,7 +7,6 @@
 <h2 class="headline">
   {{ start|date:"DATE_FORMAT" }} - {{ end|date:"DATE_FORMAT" }}
 </h2>
-<p id="upd_message">{% trans "No changes" %}.</p>
 <table id="dataTable">
   <thead>
     <tr>
@@ -23,20 +22,41 @@
     {% for s, ds in students %}
     <tr>
       <td>{{ s.company.name }}</td>
-      <td><a href="" title="{% trans "Click here to enter notes." %}">{{ s.lastname }}</a></td>
+      <td><a href="{% url core-presence-edit s.id %}" title="{% trans "Click here to enter notes." %}">{{ s.lastname }}</a></td>
       <td>{{ s.firstname }}</td>
       {% for d in ds %}
       <td>
-          <select id="p_{{ d.id }}" title="{{ d.get_entry_display }}" name="presence" size="1" onchange="update_row({{ d.id }});">
+          <select id="p_{{ d.id }}" title="{{ d.get_entry_display }}" name="presence" size="1" onchange="update_day({{ d.id }});">
           {% for e in choices %}<option value="{{ e }}"{% if e == d.entry %} selected="selected"{% endif %}>{{ e }}</option>{% endfor %}
           </select><br />
-          <input id="l_{{ d.id }}" type="text" size="2" maxlength="3"{% if d.lateness %} style="border:1px solid red;"{% endif %} name="lateness" value="{% if d.lateness %}{{ d.lateness }}{% endif %}" onchange="update_row({{ d.id }});" title="{% trans "Enter lateness here." %}" />
+          <input id="l_{{ d.id }}" type="text" size="2" maxlength="3"{% if d.lateness %} style="border:1px solid red;"{% endif %} name="lateness" value="{% if d.lateness %}{{ d.lateness }}{% endif %}" onchange="update_day({{ d.id }});" title="{% trans "Enter lateness here." %}" />
       </td>
       {% endfor %}
     </tr>
     {% endfor %}
   </tbody>
 </table>
+
+<style type="text/css">
+#upd_messages {
+    display: none;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 450px;
+    height: 250px;
+    z-index: 3;
+    overflow: scroll;
+    background-color: black;
+    color: green;
+}
+</style>
+
+<div id="upd_messages">
+<h3>{% trans "Changes" %}</h3>
+<ul>
+</ul>
+</div>
 
 <script>
 $(document).ready(function() {
@@ -52,7 +72,7 @@ $(document).ready(function() {
 $(function() {
     $('a[title]').qtip();
 });
-function update_row(did) {
+function update_day(did) {
     var day_id = did;
     var lateness = $('#l_'+did).val();
     var presence = $('#p_'+did+' :selected').val();
@@ -61,10 +81,8 @@ function update_row(did) {
     $.post('{% url core-api-presence-update %}',
         {'_JSON_': JSON.stringify(json_data)},
         function(ret_data) {
-            $('#upd_message').text(ret_data['msg']);
-            setTimeout(function() {
-                $('#upd_message').text('{% trans "All changes saved." %}');
-            }, 1500);
+            $('#upd_messages').show('slow');
+            $('#upd_messages > ul').append('<li>'+ret_data['msg']+'</li>');
         });
 }
 </script>

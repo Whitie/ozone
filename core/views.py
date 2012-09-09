@@ -350,6 +350,8 @@ def presence_for_group(req, gid):
     if start > end:
         messages.error(_(u'End date before start date.'))
         return redirect('core-presence')
+    req.session['presence_start'] = start
+    req.session['presence_end'] = end
     dt = end - start
     _students = group.students.all().order_by('company__name', 'lastname')
     students = get_presence(_students, start, end)
@@ -361,9 +363,15 @@ def presence_for_group(req, gid):
     return render(req, 'presence/group.html', ctx)
 
 
-@permission_required('core.add_presenceday')
-def presence_add(req, student_id):
-    pass
+@permission_required('core.change_presenceday')
+def presence_edit(req, student_id):
+    _student = Student.objects.select_related().get(id=int(student_id))
+    start = req.session.get('presence_start', date.today())
+    end = req.session.get('presence_end', date.today())
+    student = get_presence([_student], start, end)[0]
+    ctx = dict(page_title=_(u'Presence for Student'), menus=menus,
+        student=student, start=start, end=end)
+    return render(req, 'presence/edit.html', ctx)
 
 
 @login_required
