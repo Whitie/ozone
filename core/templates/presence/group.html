@@ -49,6 +49,7 @@
     overflow: scroll;
     background-color: black;
     color: green;
+    border: 1px solid green;
 }
 </style>
 
@@ -68,10 +69,9 @@ $(document).ready(function() {
       "sUrl": "{% static "i18n/de_DE.txt" %}"
     }
   });
+  $('a[title]').qtip();
 });
-$(function() {
-    $('a[title]').qtip();
-});
+
 function update_day(did) {
     var day_id = did;
     var lateness = $('#l_'+did).val();

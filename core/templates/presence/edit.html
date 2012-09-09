@@ -1,0 +1,17 @@
+{% extends "index.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block content %}
+<h2 class="headline">{% trans "Presence" %} - {{ student }}</h2>
+<h2 class="headline">
+  {{ start|date:"DATE_FORMAT" }} - {{ end|date:"DATE_FORMAT" }}
+</h2>
+
+<div style="width:80%;text-align:center;">
+<form action="{% url core-presence-edit student.id %}" method="post">
+{% csrf_token %}
+
+</form>
+</div>
+{% endblock %}

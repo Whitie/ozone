@@ -368,9 +368,9 @@ def presence_edit(req, student_id):
     _student = Student.objects.select_related().get(id=int(student_id))
     start = req.session.get('presence_start', date.today())
     end = req.session.get('presence_end', date.today())
-    student = get_presence([_student], start, end)[0]
+    student, days = get_presence([_student], start, end)[0]
     ctx = dict(page_title=_(u'Presence for Student'), menus=menus,
-        student=student, start=start, end=end)
+        student=student, days=days, start=start, end=end)
     return render(req, 'presence/edit.html', ctx)
 
 
