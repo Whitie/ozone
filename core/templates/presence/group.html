@@ -7,7 +7,7 @@
 <h2 class="headline">
   {{ start|date:"DATE_FORMAT" }} - {{ end|date:"DATE_FORMAT" }}
 </h2>
-<p id="umessage">{% trans "No changes" %}.</p>
+<p id="upd_message">{% trans "No changes" %}.</p>
 <table id="dataTable">
   <thead>
     <tr>
@@ -55,9 +55,17 @@ $(function() {
 function update_row(did) {
     var day_id = did;
     var lateness = $('#l_'+did).val();
-    alert(lateness);
     var presence = $('#p_'+did+' :selected').val();
-    alert(presence);
+    var json_data = {'day_id': day_id, 'lateness': parseInt(lateness),
+                     'presence': presence};
+    $.post('{% url core-api-presence-update %}',
+        {'_JSON_': JSON.stringify(json_data)},
+        function(ret_data) {
+            $('#upd_message').text(ret_data['msg']);
+            setTimeout(function() {
+                $('#upd_message').text('{% trans "All changes saved." %}');
+            }, 1500);
+        });
 }
 </script>
 {% endblock %}

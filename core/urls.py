@@ -47,6 +47,12 @@ urlpatterns = patterns('core.views',
         name='barcode'),
 )
 
+# JSON API
+urlpatterns += patterns('core.json_views',
+    url(r'^api/presence/update/$', 'update_presence',
+        name='core-api-presence-update'),
+)
+
 # PDF generation (not used yet)
 urlpatterns += patterns('core.pdf_views',
     url(r'^pdf/$', 'pdf', name='core-pdfgen'),

@@ -343,7 +343,8 @@ def presence_for_group(req, gid):
     else:
         end = datetime.strptime(end, '%d.%m.%Y').date()
     if start is None:
-        start = date.today() - timedelta(days=31)
+        d = date.today()
+        start = date(d.year, d.month, 1)
     else:
         start = datetime.strptime(start, '%d.%m.%Y').date()
     if start > end:
