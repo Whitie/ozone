@@ -51,6 +51,8 @@ urlpatterns = patterns('core.views',
 urlpatterns += patterns('core.json_views',
     url(r'^api/presence/update/$', 'update_presence',
         name='core-api-presence-update'),
+    url(r'^api/presence/update_day/$', 'update_day',
+        name='core-api-presence-update-day'),
 )
 
 # PDF generation (not used yet)

@@ -133,3 +133,18 @@ article {
     text-align: center;
     font-weight: bold;
 }
+
+#upd_messages {
+    display: none;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 450px;
+    height: 250px;
+    z-index: 3;
+    overflow-y: scroll;
+    background-color: black;
+    color: green;
+    border: 2px solid green;
+    padding:0px 5px;
+}

@@ -3,7 +3,9 @@
 
 {% block content %}
 <h2 class="headline">{% trans "Presences" %}</h2>
-
+<div style="text-align:center;">
+    <p>{% trans "The first call of a list can take some time!" %}</p>
+</div>
 {% for n, gr in groups %}
 <h3>{{ n }}</h3>
 <ul>

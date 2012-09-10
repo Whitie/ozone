@@ -7,6 +7,7 @@
 <h2 class="headline">
   {{ start|date:"DATE_FORMAT" }} - {{ end|date:"DATE_FORMAT" }}
 </h2>
+
 <table id="dataTable">
   <thead>
     <tr>
@@ -36,22 +37,6 @@
     {% endfor %}
   </tbody>
 </table>
-
-<style type="text/css">
-#upd_messages {
-    display: none;
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    width: 450px;
-    height: 250px;
-    z-index: 3;
-    overflow: scroll;
-    background-color: black;
-    color: green;
-    border: 1px solid green;
-}
-</style>
 
 <div id="upd_messages">
 <h3>{% trans "Changes" %}</h3>
