@@ -430,3 +430,22 @@ class PresenceDay(models.Model):
         verbose_name = _(u'Presence')
         verbose_name_plural = _(u'Presences')
         ordering = ['student__lastname', '-date']
+
+
+class PresencePrintout(models.Model):
+    company = models.ForeignKey(Company, verbose_name=_(u'Company'),
+        related_name='printouts')
+    pdf = models.FileField(_(u'PDF-File'), upload_to='presence/%Y/%m')
+    date = models.DateField(_(u'Date'))
+    group = models.ForeignKey(StudentGroup, verbose_name=_(u'Group'),
+        related_name='presence_printouts')
+    generated = models.DateTimeField(_(u'Generated'), auto_now=True)
+
+    def __unicode__(self):
+        return u'{0} ({1})'.format(self.company.short_name,
+            self.date.strftime('%m/%Y'))
+
+    class Meta:
+        verbose_name = _(u'Printout')
+        verbose_name_plural = _(u'Printouts')
+        ordering = ['company__name', '-generated']

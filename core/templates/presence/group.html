@@ -9,8 +9,10 @@
 </h2>
 <div style="text-align:center;">
 <p><a href="{% url core-pdf-presence-clean group.id end.year end.month %}">
-    {% trans "Print empty page for" %} {{ end|date:"F Y" }}
-</a></p>
+    {% trans "Print empty page for" %} {{ end|date:"F Y" }}</a>
+<a href="{% url core-pdf-presence group.id end.year end.month %}">
+    {% trans "Print filled page for" %} {{ end|date:"F Y" }}</a>
+</p>
 </div>
 
 <table id="dataTable">

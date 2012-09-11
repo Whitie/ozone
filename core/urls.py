@@ -61,4 +61,9 @@ urlpatterns += patterns('core.pdf_views',
     url(r'^pdf/presence/clean/(?P<gid>\d+)/'
         r'(?P<year>\d{4})/(?P<month>\d{1,2})/$', 'generate_presence_clean',
         name='core-pdf-presence-clean'),
+    url(r'^pdf/presence/filled/(?P<gid>\d+)/'
+        r'(?P<year>\d{4})/(?P<month>\d{1,2})/$', 'generate_presence_filled',
+        name='core-pdf-presence'),
+    url(r'^api/presence/pdf/$', 'generate_presence_pdf',
+        name='core-api-pdf-presence'),
 )

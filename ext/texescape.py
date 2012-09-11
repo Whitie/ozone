@@ -10,6 +10,8 @@
 """
 
 tex_replacements = [
+    # Ozone mapping
+    (u'*', ur'\ast'),
     # map TeX special chars
     (u'$', ur'\$'),
     (u'%', ur'\%'),

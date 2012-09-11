@@ -1,11 +1,21 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.forms.widgets import CheckboxSelectMultiple
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.models import User
 
-from core.models import News, StudentGroup, RATING_CHOICES, UserProfile
+from core.models import News, RATING_CHOICES, UserProfile
 from core.html5_widgets import SearchInput5, IntegerField5
+
+
+DAYS = ((_(u'Mon'), _(u'Mon')), (_(u'Tue'), _(u'Tue')), (_(u'Wed'), _(u'Wed')),
+    (_(u'Thu'), _(u'Thu')), (_(u'Fri'), _(u'Fri')))
+
+
+def get_user():
+    return ((x.id, unicode(x.get_profile())) for x in
+            User.objects.exclude(username='admin'))
 
 
 class NewsForm(forms.ModelForm):
@@ -53,3 +63,11 @@ class CompanyRatingForm(forms.Form):
     note = forms.CharField(label=_(u'Note'), widget=forms.Textarea,
         required=False, help_text=_(u'This field is required if you rate '
         u'with "B".'))
+
+
+class PresenceForm(forms.Form):
+    instructor = forms.TypedChoiceField(label=_(u'Instructor'),
+        choices=get_user(), coerce=int)
+    course = forms.CharField(label=_(u'Course'), max_length=50, required=False)
+    school_days = forms.MultipleChoiceField(label=_(u'School days'),
+        choices=DAYS, required=False, widget=CheckboxSelectMultiple)
