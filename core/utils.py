@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime, date
+from datetime import date, timedelta
 
-from django.conf import settings
 from django.utils import simplejson
 from django.http import HttpResponse
-from django.template import RequestContext
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.decorators import user_passes_test
@@ -70,3 +68,17 @@ def any_permission_required(perms, login_url=None, raise_exception=False):
             raise PermissionDenied
         return False
     return user_passes_test(check_perms, login_url=login_url)
+
+
+def get_edu_year(start):
+    delta = date.today() - start
+    days = delta.days
+    if days < 365:
+        return 1
+    elif days < 730:
+        return 2
+    elif days < 1095:
+        return 3
+    elif days < 1460:
+        return 4
+    return 5

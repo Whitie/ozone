@@ -29,6 +29,7 @@ except ImportError:
 
 
 # Helper
+
 def get_presence(students, start, end):
     l = []
     dt = end - start

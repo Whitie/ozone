@@ -55,7 +55,10 @@ urlpatterns += patterns('core.json_views',
         name='core-api-presence-update-day'),
 )
 
-# PDF generation (not used yet)
+# PDF generation
 urlpatterns += patterns('core.pdf_views',
-    url(r'^pdf/$', 'pdf', name='core-pdfgen'),
+    url(r'^pdf/test/$', 'pdf', name='core-pdfgen'),
+    url(r'^pdf/presence/clean/(?P<gid>\d+)/'
+        r'(?P<year>\d{4})/(?P<month>\d{1,2})/$', 'generate_presence_clean',
+        name='core-pdf-presence-clean'),
 )
