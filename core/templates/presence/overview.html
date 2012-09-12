@@ -7,7 +7,7 @@
     <p>{% trans "The first call of a list can take some time!" %}</p>
 </div>
 {% for n, gr in groups %}
-<h3>{{ n }}</h3>
+<h3>{{ n }} (<a href="{% url core-presence-printouts n %}">{% trans "Old lists" %}</a>)</h3>
 <ul>
   {% for g in gr %}
   <form action="{% url core.views.presence_for_group g.id %}" method="post">

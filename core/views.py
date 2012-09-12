@@ -377,6 +377,18 @@ def presence_edit(req, student_id):
 
 
 @login_required
+def presence_printouts(req, job):
+    groups = StudentGroup.objects.select_related().filter(job=job
+        ).order_by('-start_date', 'job_short')
+    jobs = StudentGroup.objects.values_list('job', flat=True)
+    jobs = list(set(jobs))
+    jobs.sort()
+    ctx = dict(page_title=_(u'Presence %s' % job), menus=menus, jobs=jobs,
+        groups=groups)
+    return render(req, 'presence/list_printouts.html', ctx)
+
+
+@login_required
 def get_next_birthdays(req):
     days = int(req.GET.get('days', '14'))
     choice = [7, 14, 30, 90, 180]
