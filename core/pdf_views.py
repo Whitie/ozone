@@ -134,9 +134,9 @@ def generate_presence_pdf(req, data):
             try:
                 d = PresenceDay.objects.get(student=s,
                     date=date(data['year'], data['month'], num))
-                if d.entry == u'K':
+                if d.entry in (u'K', u'T'):
                     k += 1
-                elif d.entry in (u'*', u'*F'):
+                elif d.entry in (u'*',):
                     whole += 1
                 if d.lateness:
                     days.append(u'$%s_{%d}$' % (
