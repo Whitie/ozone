@@ -45,7 +45,6 @@ def render_latex_to_pdf(filename, outdir=None):
     cmd = [s['pdflatex']] + s['options'] + [filename]
     basename = os.path.splitext(filename)[0]
     outname = '{0}.pdf'.format(basename)
-    print cmd
     ret1 = call(cmd)
     ret2 = call(cmd)
     return (os.path.join(outdir, outname), ret1, ret2)

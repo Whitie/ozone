@@ -7,10 +7,12 @@ syntax: glob
 *.komodo*
 *.secret
 *.pdf
+*.aux
+*.log
 log/*
 build/*
-orders/latex/_build/*
-core/latex/_build/*
+orders/latex/_build/*.tex
+core/latex/_build/*.tex
 ozone/production_*
 ozone/local_*
 dist/*
