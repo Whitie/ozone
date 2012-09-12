@@ -43,6 +43,12 @@
     </tbody>
 </table>
 </form>
+<form action="{% url core.views.presence_for_group student.group.id %}" method="post">
+{% csrf_token %}
+<input type="hidden" name="start" value="{{ start|date:"d.m.Y" }}" />
+<input type="hidden" name="end" value="{{ end|date:"d.m.Y" }}" />
+<input type="submit" value="{% trans "Back" %}" />
+</form>
 </div>
 
 <script>
