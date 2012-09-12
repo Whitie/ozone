@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Ozone 1.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-09-12 12:39+0200\n"
-"PO-Revision-Date: 2012-09-12 12:38+0100\n"
+"PO-Revision-Date: 2012-09-12 14:14+0100\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <weimann@bbz-chemie.de>\n"
 "Language: de\n"
@@ -141,9 +141,8 @@ msgstr "Kurs"
 
 #: forms.py:72
 #: templates/presence/generate_pdf.html:30
-#, fuzzy
 msgid "School days"
-msgstr "Schulbildung"
+msgstr "Schultage"
 
 #: json_views.py:20
 #, python-format
@@ -165,9 +164,8 @@ msgid "Lateness set to %d minutes."
 msgstr "Verspätung auf %d Min. gesetzt."
 
 #: json_views.py:37
-#, fuzzy
 msgid "Nothing changed."
-msgstr "Keine Änderungen"
+msgstr "Keine Änderungen."
 
 #: menu.py:17
 msgid "Core"
@@ -640,7 +638,6 @@ msgid "PDF-File"
 msgstr "PDF-Datei"
 
 #: models.py:444
-#, fuzzy
 msgid "Generated"
 msgstr "Erstellt"
 
@@ -653,7 +650,6 @@ msgid "Printouts"
 msgstr "Ausdrucke"
 
 #: pdf_views.py:111
-#, fuzzy
 msgid "Please correct the required fields."
 msgstr "Bitte korrigieren Sie die fehlerhaften Felder."
 
@@ -781,14 +777,13 @@ msgid "Presence for Group"
 msgstr "Anwesenheiten für Gruppe"
 
 #: views.py:379
-#, fuzzy
 msgid "Presence for Student"
-msgstr "Anwesenheiten für Gruppe"
+msgstr "Anwesenheiten für Azubi"
 
 #: views.py:392
-#, fuzzy, python-format
+#, python-format
 msgid "Presence %s"
-msgstr "Anwesenheiten"
+msgstr "Anwesenheit %s"
 
 #: views.py:418
 msgid "Next Birthdays"
@@ -1035,9 +1030,8 @@ msgid "State"
 msgstr "Status"
 
 #: templates/presence/edit.html:77
-#, fuzzy
 msgid "Saved"
-msgstr "Speichern"
+msgstr "Gesichert"
 
 #: templates/presence/generate_pdf.html:23
 msgid "Apply"
@@ -1068,9 +1062,8 @@ msgid "Enter lateness here."
 msgstr "Verspätungen hier in Minuten eingeben."
 
 #: templates/presence/group.html:49
-#, fuzzy
 msgid "Changes"
-msgstr "Keine Änderungen"
+msgstr "Änderungen"
 
 #: templates/presence/group.html:57
 msgid "Legend"
@@ -1078,9 +1071,8 @@ msgstr "Legende"
 
 #: templates/presence/list_printouts.html:5
 #: templates/presence/overview.html:13
-#, fuzzy
 msgid "Old lists"
-msgstr "Alte Bemerkungen"
+msgstr "Alte Listen"
 
 #: templates/presence/overview.html:7
 msgid "The first call of a list can take some time!"
