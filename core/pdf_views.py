@@ -93,7 +93,7 @@ def generate_presence_filled(req, gid, year, month):
     companies = []
     for s in group.students.all():
         if s.company not in companies:
-            count = s.company.students.filter(group=group).count()
+            count = s.company.students.filter(finished=False).count()
             s.company.group_count = count
             printouts = PresencePrintout.objects.filter(company=s.company,
                 date=ts)

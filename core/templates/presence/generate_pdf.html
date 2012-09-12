@@ -34,7 +34,7 @@ td {
 <h3>{% trans "Companies" %}</h3>
 <ul>
 {% for c in companies %}
-<li><strong>{{ c.name }}</strong> ({{ c.group_count }} {% trans "Student(s)" %})
+<li><strong>{{ c.name }}</strong> - {{ c.group_count }} {% trans "Student(s)" %}
     {% if show and perms.core.add_presenceprintout %}<input id="but_{{ c.id }}" type="button" value="{% trans "Generate Printout" %}" onclick="generate_company({{ c.id }});" />{% endif %}
     <span style="display:none;" id="res_{{ c.id }}"></span>
     {% if c.currents %}<ul>{% trans "Generated printouts" %}
