@@ -25,9 +25,9 @@ td {
 </table>
 </form>
 {% else %}
-<p>{% trans "Instructor" %}: {{ instructor.get_profile }},
-    {% trans "Course" %}: {{ course }},
-    {% trans "School days" %}: {{ school_days|join:", " }}
+<p><strong>{% trans "Instructor" %}:</strong> {{ instructor.get_profile }},
+    <strong>{% trans "Course" %}:</strong> {{ course }},
+    <strong>{% trans "School days" %}:</strong> {{ school_days|join:", " }}
 </p>
 {% endif %}
 </div>
@@ -35,8 +35,13 @@ td {
 <ul>
 {% for c in companies %}
 <li><strong>{{ c.name }}</strong> ({{ c.group_count }} {% trans "Student(s)" %})
-    {% if show %}<input type="button" value="{% trans "Generate Printout" %}" onclick="generate_company({{ c.id }});" />{% endif %}
+    {% if show and perms.core.add_presenceprintout %}<input type="button" value="{% trans "Generate Printout" %}" onclick="generate_company({{ c.id }});" />{% endif %}
     <span style="display:none;" id="res_{{ c.id }}"></span>
+    {% if c.currents %}<ul>{% trans "Generated printouts" %}
+        {% for cur in c.currents %}
+        <li><a href="{{ cur.pdf.url }}">{{ cur.pdf.name }}</a></li>
+        {% endfor %}</ul>
+    {% endif %}
 </li>
 {% endfor %}
 </ul>

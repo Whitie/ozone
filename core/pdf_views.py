@@ -88,15 +88,18 @@ def generate_presence_filled(req, gid, year, month):
     instructor = None
     course = None
     school_days = None
-    group = StudentGroup.objects.get(id=int(gid))
+    ts = date(int(year), int(month), 1)
+    group = StudentGroup.objects.select_related().get(id=int(gid))
     companies = []
     for s in group.students.all():
         if s.company not in companies:
             count = s.company.students.filter(group=group).count()
             s.company.group_count = count
+            printouts = PresencePrintout.objects.filter(company=s.company,
+                date=ts)
+            s.company.currents = printouts
             companies.append(s.company)
     show = False
-    ts = date(int(year), int(month), 1)
     if req.method == 'POST':
         form = PresenceForm(req.POST)
         if form.is_valid():
