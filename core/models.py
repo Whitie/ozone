@@ -402,6 +402,7 @@ PRESENCE_CHOICES = (
     (u'F', u'Freistellung'),
     (u'Pr', u'Prüfung'),
     (u'U', u'Urlaub'),
+    (u'/', u'nicht im bbz'),
     (u'P', u'Praktikum'),
     (u'BU', u'Bildungsurlaub'),
     (u'*F', u'anwesend freigestellt'),
@@ -442,10 +443,10 @@ class PresencePrintout(models.Model):
     generated = models.DateTimeField(_(u'Generated'), auto_now=True)
 
     def __unicode__(self):
-        return u'{0} ({1})'.format(self.company.short_name,
-            self.date.strftime('%m/%Y'))
+        return u'{0} {1}'.format(self.company.short_name,
+            self.date.strftime('%B %Y'))
 
     class Meta:
         verbose_name = _(u'Printout')
         verbose_name_plural = _(u'Printouts')
-        ordering = ['company__name', '-generated']
+        ordering = ['-date', 'company__name']
