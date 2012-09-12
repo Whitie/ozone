@@ -54,3 +54,5 @@ class ShortSupplierForm(forms.Form):
     phone = forms.CharField(label=_(u'Phone'), max_length=30, required=False)
     fax = forms.CharField(label=_(u'Fax'), max_length=30, required=False)
     email = forms.EmailField(label=_(u'Email'), required=False)
+    web = forms.URLField(label=_(u'Homepage'), verify_exists=True,
+        required=False)
