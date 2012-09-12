@@ -402,10 +402,12 @@ def get_next_birthdays(req):
         for p in UserProfile.objects.select_related(
             ).filter(birthdate__month=d.month, birthdate__day=d.day):
             p.today = (p.birthdate.month, p.birthdate.day) == today
+            p.bdate = d
             users.append(p)
         for s in Student.objects.select_related(
             ).filter(birthdate__month=d.month, birthdate__day=d.day):
             s.today = (s.birthdate.month, s.birthdate.day) == today
+            s.bdate = d
             students.append(s)
     ctx = dict(page_title=_(u'Next Birthdays'), menus=menus, users=users,
         students=students, choice=choice, days=days, today=start)
