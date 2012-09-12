@@ -35,7 +35,7 @@ td {
 <ul>
 {% for c in companies %}
 <li><strong>{{ c.name }}</strong> ({{ c.group_count }} {% trans "Student(s)" %})
-    {% if show and perms.core.add_presenceprintout %}<input type="button" value="{% trans "Generate Printout" %}" onclick="generate_company({{ c.id }});" />{% endif %}
+    {% if show and perms.core.add_presenceprintout %}<input id="but_{{ c.id }}" type="button" value="{% trans "Generate Printout" %}" onclick="generate_company({{ c.id }});" />{% endif %}
     <span style="display:none;" id="res_{{ c.id }}"></span>
     {% if c.currents %}<ul>{% trans "Generated printouts" %}
         {% for cur in c.currents %}
@@ -61,6 +61,7 @@ function generate_company(cid) {
         function(res_data) {
             link = '<a href="'+res_data['url']+'">'+res_data['name']+'</a>';
             $('#res_'+cid).append(link).show();
+            $('#but_'+cid).attr('disabled', 'disabled');
         }
     );
 }
