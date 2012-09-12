@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0beta1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-05 11:38+0200\n"
+"POT-Creation-Date: 2012-09-12 12:40+0200\n"
 "PO-Revision-Date: 2012-09-05 20:18+0100\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -346,22 +346,22 @@ msgstr "Liste aller Ausdrucke"
 msgid "Sums by Cost"
 msgstr "Summen nach Kostenstellen"
 
-#: views.py:367
+#: views.py:368
 #, python-format
 msgid "Count for %(name)s was changed from %(old)d to %(count)d."
 msgstr "Die Anzahl für %(name)s wurde von %(old)d auf %(count)d geändert."
 
-#: views.py:412
+#: views.py:413
 #, python-format
 msgid "%s added."
 msgstr "%s hinzugefügt."
 
-#: views.py:414
+#: views.py:415
 #, python-format
 msgid "%s removed."
 msgstr "%s entfernt."
 
-#: views.py:438
+#: views.py:439
 #, python-format
 msgid "All changes to order with ID %d saved."
 msgstr "Alle Änderungen an der Bestellung (ID: %d) wurden gespeichert."
