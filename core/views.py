@@ -88,13 +88,8 @@ def edit_profile(req):
 
 @login_required
 def internal_phonelist(req):
-    _profiles = UserProfile.objects.select_related().filter(external=False
+    profiles = UserProfile.objects.select_related().filter(external=False
         ).exclude(user__username='admin').order_by('user__last_name')
-    tmp = [x.user.email.lower() for x in _profiles]
-    profiles = []
-    for p in _profiles:
-        if p.user.email.lower() not in tmp:
-            profiles.append(p)
     ctx = dict(page_title=_(u'Internal Phonelist'), menus=menus,
         profiles=profiles)
     return render(req, 'phonelist.html', ctx)
@@ -403,14 +398,11 @@ def get_next_birthdays(req):
     dates = [start + timedelta(days=x) for x in xrange(days)]
     users = []
     students = []
-    tmp = set([x.email.lower() for x in
-               User.objects.exclude(username='admin')])
     for d in dates:
         for p in UserProfile.objects.select_related(
             ).filter(birthdate__month=d.month, birthdate__day=d.day):
             p.today = (p.birthdate.month, p.birthdate.day) == today
-            if p.user.email.lower() not in tmp:
-                users.append(p)
+            users.append(p)
         for s in Student.objects.select_related(
             ).filter(birthdate__month=d.month, birthdate__day=d.day):
             s.today = (s.birthdate.month, s.birthdate.day) == today
