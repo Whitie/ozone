@@ -19,7 +19,7 @@
     {% for u in users %}
     <li>
         <span{% if u.today %} style="background-color:yellow;"{% endif %}>
-            <strong>{{ u.birthdate|date:"D j. E" }}</strong>: {{ u.user.last_name }}, {{ u.user.first_name }}
+            <strong>{{ u.birthdate|date:"j. E" }}</strong>: {{ u.user.last_name }}, {{ u.user.first_name }}
         </span>
     </li>
     {% empty %}
@@ -32,7 +32,7 @@
     {% for s in students %}
     <li>
         <span{% if s.today %} style="background-color:yellow;"{% endif %}>
-            <strong>{{ s.birthdate|date:"D j. E" }}</strong>: {{ s.lastname }}, {{ s.firstname }} ({{ s.group }})
+            <strong>{{ s.birthdate|date:"j. E" }}</strong>: {{ s.lastname }}, {{ s.firstname }} ({{ s.group }})
         </span>
     </li>
     {% empty %}
