@@ -42,7 +42,7 @@ urlpatterns = patterns('core.views',
         name='core-presence-group'),
     url(r'^presence/edit/(?P<student_id>\d+)/$', 'presence_edit',
         name='core-presence-edit'),
-    url(r'^presence/printouts/(?P<job>[A-Z][a-z]+)/$', 'presence_printouts',
+    url(r'^presence/printouts/(?P<job>.+)/$', 'presence_printouts',
         name='core-presence-printouts'),
     # Barcode generation (not used yet)
     url(r'^barcode/(?P<format>[a-z]{3,4})/(?P<barcode>.+)/$', 'barcode',
