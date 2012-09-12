@@ -51,6 +51,16 @@
 </ul>
 </div>
 
+<table style="margin:5px auto;">
+    <tr>
+    {% for sym, txt in legend %}
+        <td>{% if forloop.first %}<small>{% trans "Legend" %}:</small>{% endif %}</td>
+        <td style="width:15px;"></td>
+        <td><small>{{ sym }} = {{ txt }}</small></td>
+    {% cycle '' '' '' '</tr><tr>' %}
+    {% endfor %}
+</table>
+
 <script>
 $(document).ready(function() {
   var oTable = $('#dataTable').dataTable({

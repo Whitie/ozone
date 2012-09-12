@@ -97,6 +97,10 @@ article {
     margin-bottom: 15px;
 }
 
+small {
+    font-size: 10px;
+}
+
 .headline {
     text-align: center;
 }

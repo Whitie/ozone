@@ -396,6 +396,7 @@ PRESENCE_CHOICES = (
     (u'T', u'nur telefonisch entschuldigt'),
     (u'|', u'fehlt unentschuldigt'),
     (u'K', u'krank (Nachweis vorhanden)'),
+    (u'FT', u'Feiertag'),
     (u'B', u'Berufsschule anwesend'),
     (u'BK', u'keine Berufsschulkarte vorgelegt'),
     (u'BE', u'Berufsschule entschuldigt'),

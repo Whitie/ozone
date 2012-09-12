@@ -360,7 +360,7 @@ def presence_for_group(req, gid):
     ctx = dict(page_title=_(u'Presence for Group'), group=group,
         students=students, menus=menus, start=start, end=end,
         days=(x for x in days if x.weekday() not in (5, 6)),
-        choices=[x[0] for x in PRESENCE_CHOICES])
+        choices=[x[0] for x in PRESENCE_CHOICES], legend=PRESENCE_CHOICES[1:])
     return render(req, 'presence/group.html', ctx)
 
 
