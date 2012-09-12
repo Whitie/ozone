@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0beta1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-30 20:54+0200\n"
+"POT-Creation-Date: 2012-09-12 13:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,6 +29,18 @@ msgid ""
 msgstr ""
 "Bitte wenden Sie sich an den Administrator, wenn Sie Zugriff\n"
 "auf diese Seite benötigen."
+
+#: base_templates/500.html:6
+msgid "Error"
+msgstr "Fehler"
+
+#: base_templates/500.html:6
+msgid "Internal Server Error"
+msgstr "Interner Server Fehler"
+
+#: base_templates/500.html:8
+msgid "Full information about the error was mailed to the admin."
+msgstr "Die kompletten Informationen über diesen Fehler wurden an den Administrator geschickt."
 
 #: base_templates/layout.html:14
 msgid "Home"
