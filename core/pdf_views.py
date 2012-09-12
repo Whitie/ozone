@@ -144,7 +144,7 @@ def generate_presence_pdf(req, data):
                 else:
                     days.append(latex.tex_escape(d.entry))
                 if d.note:
-                    notes.append(u'{0}{1}'.format(
+                    notes.append(u'{0} {1}'.format(
                         d.date.strftime('%d.%m.'), d.note))
             except PresenceDay.DoesNotExist:
                 days.append(u'')
