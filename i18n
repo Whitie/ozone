@@ -1,0 +1,21 @@
+#!/bin/bash
+
+DIRS=("orders" "active_directory" "core" "ozone")
+
+case "$1" in
+
+    compile) ACTION="compilemessages"
+             ;;
+
+    *) ACTION="makemessages -l de"
+       ;;
+
+esac
+
+for d in ${DIRS[@]}
+do
+    cd $d
+    /usr/bin/django-admin.py $ACTION
+    cd ..
+done
+

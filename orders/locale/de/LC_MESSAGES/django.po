@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0beta1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-12 12:40+0200\n"
+"POT-Creation-Date: 2012-09-13 15:22+0200\n"
 "PO-Revision-Date: 2012-09-05 20:18+0100\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -96,6 +96,10 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
+#: forms.py:57
+msgid "Homepage"
+msgstr ""
+
 #: menu.py:8 models.py:124 views.py:93 views.py:189 views.py:205
 #: templates/orders/list_printouts.html:8
 #: templates/orders/controlling/bycost.html:28
@@ -110,11 +114,11 @@ msgstr "Jetzt bestellen"
 msgid "My Orders"
 msgstr "Meine Bestellungen"
 
-#: menu.py:11 views.py:246
+#: menu.py:11 views.py:247
 msgid "Add new Supplier"
 msgstr "Neuer Lieferant"
 
-#: menu.py:12 views.py:264 views.py:279
+#: menu.py:12 views.py:265 views.py:282
 msgid "Manage Orders"
 msgstr "Bestellungen verwalten"
 
@@ -255,7 +259,7 @@ msgstr "Generiert"
 msgid "Printout"
 msgstr "Ausdruck"
 
-#: models.py:178 pdf_views.py:130
+#: models.py:178 pdf_views.py:134
 msgid "Printouts"
 msgstr "Ausdrucke"
 
@@ -307,61 +311,61 @@ msgstr "Preis in %s."
 msgid "Company %s already exists."
 msgstr "Firma %s existiert schon."
 
-#: views.py:241
+#: views.py:242
 #, python-format
 msgid "New company %s saved."
 msgstr "Neue Firma %s gespeichert."
 
-#: views.py:243
+#: views.py:244
 msgid "Please correct the wrong fields."
 msgstr "Bitte korrigieren Sie die falschen Felder."
 
-#: views.py:256
+#: views.py:257
 #, python-format
 msgid "%s selected."
 msgstr "%s ausgewählt."
 
-#: views.py:294
+#: views.py:297
 msgid "The user you specified is not valid."
 msgstr "Der angegebene Benutzer ist nicht gültig."
 
-#: views.py:299
+#: views.py:302
 #, python-format
 msgid "New orderday %s added."
 msgstr "Neuer Bestelltag %s hinzugefügt."
 
-#: views.py:302
+#: views.py:305
 msgid "Please correct the form."
 msgstr "Bitte korrigieren Sie das Formular."
 
-#: views.py:307 templates/orders/manage_orders.html:22
+#: views.py:310 templates/orders/manage_orders.html:22
 msgid "Add new orderday"
 msgstr "Neuen Bestelltag hinzufügen"
 
-#: views.py:321 templates/orders/manage_orders.html:23
+#: views.py:324 templates/orders/manage_orders.html:23
 msgid "List of all printouts"
 msgstr "Liste aller Ausdrucke"
 
-#: views.py:328
+#: views.py:331
 msgid "Sums by Cost"
 msgstr "Summen nach Kostenstellen"
 
-#: views.py:368
+#: views.py:370
 #, python-format
 msgid "Count for %(name)s was changed from %(old)d to %(count)d."
 msgstr "Die Anzahl für %(name)s wurde von %(old)d auf %(count)d geändert."
 
-#: views.py:413
+#: views.py:417
 #, python-format
 msgid "%s added."
 msgstr "%s hinzugefügt."
 
-#: views.py:415
+#: views.py:419
 #, python-format
 msgid "%s removed."
 msgstr "%s entfernt."
 
-#: views.py:439
+#: views.py:442
 #, python-format
 msgid "All changes to order with ID %d saved."
 msgstr "Alle Änderungen an der Bestellung (ID: %d) wurden gespeichert."
@@ -406,8 +410,8 @@ msgstr "Ja"
 msgid "No"
 msgstr "Nein"
 
-#: templates/orders/delete.html:14 templates/orders/select_article.html:47
-#: templates/orders/select_article.html:52
+#: templates/orders/delete.html:14 templates/orders/select_article.html:22
+#: templates/orders/select_article.html:27
 msgid "Next"
 msgstr "Weiter"
 
@@ -574,15 +578,15 @@ msgstr "Ausdrucke für"
 msgid "Internal printout"
 msgstr "Interne Ausdrucke"
 
-#: templates/orders/select_article.html:41
+#: templates/orders/select_article.html:16
 msgid "Make order"
 msgstr "Bestellen"
 
-#: templates/orders/select_article.html:42
+#: templates/orders/select_article.html:17
 msgid "Order old article"
 msgstr "Bereits vorhandenen Artikel bestellen"
 
-#: templates/orders/select_article.html:50
+#: templates/orders/select_article.html:25
 msgid "Order new article"
 msgstr "Neuen Artikel bestellen"
 
