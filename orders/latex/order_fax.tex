@@ -18,7 +18,7 @@
 \setkomavar{fromlogo}{\includegraphics[width=4cm]{(( s.fromlogo ))}}
 
 \setkomavar{toname}{(( supplier.name|te ))}
-\setkomavar{toaddress}{(( supplier.street|te ))\\(( supplier.zip_code|te )) (( supplier.city|te ))(% if supplier.fax %)\\Fax: (( supplier.fax|te ))(% endif %)}
+\setkomavar{toaddress}{(( supplier.street|te ))\\(( supplier.zip_code|te )) (( supplier.city|te ))(% if supplier.fax %)\\Fax: (( supplier.fax|te ))(% endif %)(% if supplier.web %)\\(( supplier.web ))(% endif %)}
 
 \renewcommand*{\raggedsignature}{\raggedright}
 \setkomavar{signature}{%
