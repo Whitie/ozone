@@ -20,7 +20,6 @@ from orders.menu import menus
 
 PATH = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_PATH = os.path.join(PATH, 'latex')
-BUILD_PATH = os.path.join(TEMPLATE_PATH, '_build')
 
 
 def get_orders(oday, supplier=None):
@@ -52,23 +51,33 @@ def summarize_orders(orders):
     return summarized
 
 
+def clean_file(filename):
+    try:
+        os.remove(filename)
+    except:
+        pass
+
+
 def make_latex(ctx, template, includefile=None):
     if 'supplier' not in ctx:
         ctx['supplier'] = u'ALL'
     env = latex.get_latex_env(TEMPLATE_PATH)
+    s = latex.get_latex_settings()
     if includefile is not None:
         ttpl = env.get_template(includefile)
-        tfilename = os.path.join(BUILD_PATH,
+        tfilename = os.path.join(s['build_dir'],
             '{0}_{1}'.format(ctx['supplier'].id, includefile))
+        clean_file(tfilename)
         with codecs.open(tfilename, 'w', encoding='utf-8') as fp:
             fp.write(ttpl.render(**ctx))
         ctx['includefile'] = unicode(tfilename).replace(u'\\', u'/')
     tpl = env.get_template(template)
     _id = getattr(ctx['supplier'], 'id', 'ALL')
-    filename = os.path.join(BUILD_PATH, '{0}_{1}'.format(_id, template))
+    filename = os.path.join(s['build_dir'], '{0}_{1}'.format(_id, template))
+    clean_file(filename)
     with codecs.open(filename, 'w', encoding='utf-8') as fp:
         fp.write(tpl.render(**ctx))
-    pdfname, r1, r2 = latex.render_latex_to_pdf(filename, BUILD_PATH)
+    pdfname, r1, r2 = latex.render_latex_to_pdf(filename)
     pdf = os.path.split(pdfname)[1]
     _name = getattr(ctx['supplier'], 'name', u'ALL')
     printout, created = Printout.objects.get_or_create(order_day=ctx['oday'],
@@ -118,11 +127,6 @@ def generate_internal(_ctx):
 @require_POST
 @permission_required('orders.can_order')
 def generate_pdf(req):
-    for f in os.listdir(BUILD_PATH):
-        try:
-            os.remove(os.path.join(BUILD_PATH, f))
-        except:
-            pass
     oday_id = int(req.POST.get('oday_id'))
     oday = OrderDay.objects.get(id=oday_id)
     orders = get_orders(oday)

@@ -11,8 +11,7 @@ syntax: glob
 *.log
 log/*
 build/*
-orders/latex/_build/*.tex
-core/latex/_build/*.tex
+_latex_build/*.tex
 ozone/production_*
 ozone/local_*
 dist/*

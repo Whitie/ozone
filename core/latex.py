@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import os.path
+import os
 
 import texescape
 
@@ -36,15 +36,27 @@ def get_latex_settings():
     return s
 
 
-def render_latex_to_pdf(filename, outdir=None):
+def clean_build_dir(directory):
+    for f in os.listdir(directory):
+        ext = os.path.splitext(f)[1]
+        if ext not in ('.sty', '.tex'):
+            try:
+                os.remove(os.path.join(directory, f))
+            except:
+                pass
+
+
+def render_latex_to_pdf(filename, build_dir=None):
     s = get_latex_settings()
-    if outdir is None:
-        outdir = s['outdir']
+    if build_dir is None:
+        build_dir = s['build_dir']
+    clean_build_dir(build_dir)
+    build_dir = build_dir.replace('\\', '/')
     filename = filename.replace('\\', '/')
-    s['options'].append('-output-directory={0}'.format(outdir))
+    s['options'].append('-output-directory={0}'.format(build_dir))
     cmd = [s['pdflatex']] + s['options'] + [filename]
     basename = os.path.splitext(filename)[0]
     outname = '{0}.pdf'.format(basename)
     ret1 = call(cmd)
     ret2 = call(cmd)
-    return (os.path.join(outdir, outname), ret1, ret2)
+    return (os.path.join(build_dir, outname), ret1, ret2)

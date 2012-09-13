@@ -24,7 +24,6 @@ from core.forms import PresenceForm
 
 PATH = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_PATH = os.path.join(PATH, 'latex')
-BUILD_PATH = os.path.join(TEMPLATE_PATH, '_build')
 
 
 def iter_days(start, end):
@@ -35,16 +34,21 @@ def iter_days(start, end):
 
 def make_latex(ctx, template, company=None):
     env = latex.get_latex_env(TEMPLATE_PATH)
+    s = latex.get_latex_settings()
     tpl = env.get_template(template)
     if company is not None:
         name = '{0}_{1}_{2}'.format(unicode(ctx['group']), company.short_name,
             template)
     else:
         name = '{0}_{1}'.format(unicode(ctx['group']), template)
-    filename = os.path.join(BUILD_PATH, name)
+    filename = os.path.join(s['build_dir'], name)
+    try:
+        os.remove(filename)
+    except:
+        pass
     with codecs.open(filename, 'w', encoding='utf-8') as fp:
         fp.write(tpl.render(**ctx))
-    pdfname, r1, r2 = latex.render_latex_to_pdf(filename, BUILD_PATH)
+    pdfname, r1, r2 = latex.render_latex_to_pdf(filename)
     return pdfname
 
 

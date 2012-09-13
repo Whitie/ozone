@@ -10,7 +10,7 @@ sys.path.insert(0, EXT_DIR)
 
 # Django settings for ozone project.
 
-VERSION = '1.3.3'
+VERSION = '1.3.4'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -283,15 +283,13 @@ AD_CACHE_TIME = 0
 LATEX = {
     'pdflatex': (r'P:/Portable/latex-portable/miktex-portable/miktex'
                  r'/bin/pdflatex.exe'),
-    #'pdflatex': '/usr/bin/pdflatex',
     'options': ['-interaction=nonstopmode'],
-    'outdir': r'C:/Windows/temp',
+    'outdir': r'C:/Windows/temp',  # Deprecated
+    'build_dir': os.path.abspath(os.path.join(_PATH, '..', '_latex_build')),
     'fromfax': u'030 / 6 77 44 53',
     'fromphone': u'030 / 67 00 04-0',
     'fromname': u'Bildungswerk Nordostchemie e. V.',
     'fromaddress': u'Adlergestell 333, 12489 Berlin',
-    #'fromlogo': u'/home/tweimann/Projekte/bbz-tools/ozone/ozone/'
-                #u'static/img/bbzlogo.png',
     'fromlogo': u'P:/container/bbz-tools/ozone/ozone/static/img/bbzlogo.png',
 }
 
