@@ -7,6 +7,7 @@ from decimal import Decimal
 from django.conf import settings
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_POST
+from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
@@ -358,6 +359,7 @@ def ctrl_by_cost(req):
 
 @json_view
 def update_article_count(req, order_id, count):
+    translation.activate(req.LANGUAGE_CODE)
     order_id, count = int(order_id), int(count)
     order = Order.objects.select_related().get(id=order_id)
     old_count = order.count
@@ -396,6 +398,7 @@ def api_article(req, article_id=0):
 @require_POST
 @json_view
 def add_representative(req):
+    translation.activate(req.LANGUAGE_CODE)
     users = map(int, req.POST.getlist('users[]', []))
     action_type = req.POST.get('type')
     perm = Permission.objects.get(codename=action_type)
@@ -421,7 +424,7 @@ def add_representative(req):
 @require_POST
 @json_rpc
 def change_order(req, data):
-    print data
+    translation.activate(req.LANGUAGE_CODE)
     try:
         order_id = int(data['order_id'])
         count = int(data['count'])
