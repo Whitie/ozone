@@ -271,6 +271,8 @@ def manage_orders(req):
                          raise_exception=True)
 def manage_order(req, oday_id):
     oday = OrderDay.objects.get(id=int(oday_id))
+    for o in Order.objects.filter(count=0):
+        o.delete()
     orders = Order.objects.select_related().filter(order_day=oday)
     order_sum = 0
     for o in orders:
