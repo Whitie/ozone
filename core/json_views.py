@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.http import require_POST
 
@@ -10,7 +9,6 @@ from core.models import PresenceDay
 
 @json_rpc
 def update_presence(req, data):
-    translation.activate(req.LANGUAGE_CODE)
     pday = PresenceDay.objects.select_for_update().get(id=data['day_id'])
     msg = [u'{0}, {1} ({2}):'.format(pday.student.lastname,
         pday.student.firstname, pday.date.strftime('%d.%m.'))]

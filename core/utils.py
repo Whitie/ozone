@@ -5,6 +5,7 @@ from datetime import date, timedelta
 from django.utils import simplejson
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.decorators import user_passes_test
 from django.core.exceptions import PermissionDenied
@@ -19,21 +20,31 @@ def named(verbose_name):
 
 def json_view(func):
     def wrap(req, *args, **kw):
-        response = func(req, *args, **kw)
-        json = simplejson.dumps(response)
-        return HttpResponse(json, mimetype='application/json')
+        cur_lang = translation.get_language()
+        try:
+            translation.activate(req.LANGUAGE_CODE)
+            response = func(req, *args, **kw)
+            json = simplejson.dumps(response)
+            return HttpResponse(json, mimetype='application/json')
+        finally:
+            translation.activate(cur_lang)
     return wrap
 
 
 def json_rpc(func):
     def wrap(req, *args, **kwargs):
-        if req.method == 'POST' and '_JSON_' in req.POST:
-            json_data = simplejson.loads(req.POST['_JSON_'])
-            response = func(req, json_data, *args, **kwargs)
-        else:
-            response = func(req, *args, **kwargs)
-        json = simplejson.dumps(response)
-        return HttpResponse(json, mimetype='application/json')
+        cur_lang = translation.get_language()
+        try:
+            translation.activate(req.LANGUAGE_CODE)
+            if req.method == 'POST' and '_JSON_' in req.POST:
+                json_data = simplejson.loads(req.POST['_JSON_'])
+                response = func(req, json_data, *args, **kwargs)
+            else:
+                response = func(req, *args, **kwargs)
+            json = simplejson.dumps(response)
+            return HttpResponse(json, mimetype='application/json')
+        finally:
+            translation.activate(cur_lang)
     return wrap
 
 
