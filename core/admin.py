@@ -143,6 +143,15 @@ class PresenceDayAdmin(admin.ModelAdmin):
         obj.save()
 
 
+class PresencePrintoutAdmin(admin.ModelAdmin):
+    list_display = ('company', 'group', 'date', 'generated')
+    list_display_links = ('company',)
+    list_filter = ('company', 'group', 'date')
+    search_fields = ('company__name', 'company__short_name', 'group__job',
+                     'group__job_short')
+    ordering = ('date', 'company__name', 'group__job')
+
+
 admin.site.register(News, NewsAdmin)
 admin.site.register(Part)
 admin.site.register(UserProfile, UserProfileAdmin)
@@ -155,3 +164,4 @@ admin.site.register(StudentGroup, StudentGroupAdmin)
 admin.site.register(Memo, MemoAdmin)
 admin.site.register(PresenceDay, PresenceDayAdmin)
 admin.site.register(Note)
+admin.site.register(PresencePrintout, PresencePrintoutAdmin)
