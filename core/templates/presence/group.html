@@ -95,6 +95,11 @@ function update_day(did) {
         function(ret_data) {
             $('#upd_messages').show('slow');
             $('#upd_messages > ul').append('<li>'+ret_data['msg']+'</li>');
+            if (parseInt(lateness) > 0) {
+                $('#l_'+did).css('border', '1px solid red');
+            } else {
+                $('#l_'+did).css('border', '');
+            }
         });
 }
 

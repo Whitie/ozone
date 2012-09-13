@@ -74,6 +74,11 @@ function update_day(did) {
         function(ret_data) {
             $('#instructor_'+did).text(ret_data['instructor']);
             if (ret_data['updated'] == true) {
+                if (parseInt(late) > 0) {
+                    $('#lateness_'+did).css('border', '1px solid red');
+                } else {
+                    $('#lateness_'+did).css('border', '');
+                }
                 $('#state_'+did).text('{% trans "Saved" %}');
                 setTimeout(function() {
                     $('#state_'+did).text('');
