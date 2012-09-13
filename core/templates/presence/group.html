@@ -15,6 +15,16 @@
 </p>
 </div>
 
+<p>{% trans "Set presence for all" %}:
+    <select size="1" id="p_all_day">
+        {% for d in days %}<option value="{{ d|date:"Y-m-d" }}">{{ d|date:"d.m." }}</option>{% endfor %}
+    </select>
+    <select id="p_all" size="1">
+        {% for e in choices %}<option value="{{ e }}"{% if e == "*" %} selected="selected"{% endif %}>{{ e }}</option>{% endfor %}
+    </select>
+    <input type="button" value="{% trans "Set now" %}" onclick="update_all();" />
+</p>
+
 <table id="dataTable">
   <thead>
     <tr>
@@ -34,7 +44,7 @@
       <td>{{ s.firstname }}</td>
       {% for d in ds %}
       <td>
-          <select id="p_{{ d.id }}" title="{{ d.get_entry_display }}" name="presence" size="1" onchange="update_day({{ d.id }});">
+          <select id="p_{{ d.id }}"  class="{{ d.date|date:"Y-m-d" }}" title="{{ d.get_entry_display }}" name="presence" size="1" onchange="update_day({{ d.id }});">
           {% for e in choices %}<option value="{{ e }}"{% if e == d.entry %} selected="selected"{% endif %}>{{ e }}</option>{% endfor %}
           </select><br />
           <input id="l_{{ d.id }}" type="text" size="2" maxlength="3"{% if d.lateness %} style="border:1px solid red;"{% endif %} name="lateness" value="{% if d.lateness %}{{ d.lateness }}{% endif %}" onchange="update_day({{ d.id }});" title="{% trans "Enter lateness here." %}" />
@@ -86,6 +96,15 @@ function update_day(did) {
             $('#upd_messages').show('slow');
             $('#upd_messages > ul').append('<li>'+ret_data['msg']+'</li>');
         });
+}
+
+function update_all() {
+    var date = $('#p_all_day :selected').val();
+    var entry = $('#p_all :selected').val();
+    $('select.'+date).each(function(index) {
+        $(this).val(entry);
+        $(this).change();
+    });
 }
 </script>
 {% endblock %}

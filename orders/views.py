@@ -358,7 +358,6 @@ def ctrl_by_cost(req):
 
 @json_view
 def update_article_count(req, order_id, count):
-    print [(k,v) for k, v in req.META.items() if k.startswith('HTTP')]
     order_id, count = int(order_id), int(count)
     order = Order.objects.select_related().get(id=order_id)
     old_count = order.count
