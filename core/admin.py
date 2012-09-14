@@ -36,7 +36,7 @@ class CompanyAdmin(admin.ModelAdmin):
                     'student_count')
     list_display_links = ('name', 'short_name')
     list_editable = ('phone', 'fax')
-    list_filter = ('cooperations__full', 'cooperations__job')
+    list_filter = ('cooperations__full', 'cooperations__job', 'rate')
     ordering = ('name',)
     save_on_top = True
     search_fields = ('name', 'short_name', 'zip_code')
