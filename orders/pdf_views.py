@@ -73,7 +73,8 @@ def make_latex(ctx, template, includefile=None):
         ctx['includefile'] = unicode(tfilename).replace(u'\\', u'/')
     tpl = env.get_template(template)
     _id = getattr(ctx['supplier'], 'id', 'ALL')
-    filename = os.path.join(s['build_dir'], '{0}_{1}'.format(_id, template))
+    filename = os.path.join(s['build_dir'], '{0}_{1}_{2}'.format(_id,
+        ctx['oday'].id, template))
     clean_file(filename)
     with codecs.open(filename, 'w', encoding='utf-8') as fp:
         fp.write(tpl.render(**ctx))
