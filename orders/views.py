@@ -30,13 +30,12 @@ def get_user_choices():
 
 def get_supplier_choices():
     l = []
-    for c in Company.objects.all().order_by('name'):
-        if not c.has_students():
-            if len(c.name) > 22:
-                name = u'{0}...'.format(c.name[:22])
-            else:
-                name = c.name
-            l.append((c.id, name))
+    for c in Company.objects.filter(rate=True).order_by('name'):
+        if len(c.name) > 22:
+            name = u'{0}...'.format(c.name[:22])
+        else:
+            name = c.name
+        l.append((c.id, name))
     return l
 
 
