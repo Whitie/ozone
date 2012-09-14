@@ -23,6 +23,7 @@
 <script type="text/javascript">
 function generate_external(oday_id, cid) {
     var container = {'oday_id': oday_id, 'supplier_id': cid};
+    $('but_'+cid).attr('disabled', 'disabled');
     $.post(
         '{% url orders-api-pdf %}',
         {'_JSON_': JSON.stringify(container)},
@@ -30,13 +31,13 @@ function generate_external(oday_id, cid) {
             var s = '<a href="'+data['url']+'">'+data['filename']
                    +' ('+data['size']+' Bytes)</a>';
             $('#pdf_'+cid).append(s).show();
-            $('#but_'+cid).attr('disabled', 'disabled');
         }
     );
 }
 
 function generate_internal(oday_id) {
     var container = {'oday_id': oday_id};
+    $('#but_internal').attr('disabled', 'disabled');
     $.post(
         '{% url orders-api-pdf %}',
         {'_JSON_': JSON.stringify(container)},
@@ -45,7 +46,6 @@ function generate_internal(oday_id) {
             var s = '<a href="'+data['url']+'">'+data['filename']
                    +' ('+data['size']+' Bytes)</a>';
             $('#pdf_internal').append(s).show();
-            $('#but_internal').attr('disabled', 'disabled');
         }
     );
 }
