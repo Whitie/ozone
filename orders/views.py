@@ -377,7 +377,7 @@ def get_articles(req):
     term = req.GET.get('term')
     articles = [{'value': x.id, 'label': x.name, 'desc': x.short_desc()}
                 for x in Article.objects.filter(
-                    name__istartswith=term).order_by('name')]
+                    name__icontains=term).order_by('name')]
     return articles
 
 
