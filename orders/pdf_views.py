@@ -130,9 +130,14 @@ def generate_pdf(req):
     oday_id = int(req.POST.get('oday_id'))
     oday = OrderDay.objects.get(id=oday_id)
     orders = get_orders(oday)
+    supplier = []
+    for s in [x[0].article.supplier for x in orders]:
+        s.ocount = Order.objects.filter(article__supplier=s, order_day=oday,
+            state__in=[u'accepted', u'ordered']).count()
+        supplier.append(s)
     supplier_ids = [x[0].article.supplier.id for x in orders]
     ctx = dict(page_title=_(u'Printouts'), menus=menus, oday=oday,
-        ids=supplier_ids)
+        ids=supplier_ids, supplier=supplier)
     return render(req, 'orders/printouts.html', ctx)
 
 
@@ -147,8 +152,7 @@ def generate_one_pdf(req, data):
     if supplier_id is not None:
         supplier = Company.objects.get(id=supplier_id)
         printout, filename = generate_external(supplier, ctx)
-        return dict(supplier=supplier.short_name or supplier.name,
-            size=printout.pdf.size, filename=filename,
+        return dict(size=printout.pdf.size, filename=filename,
             url=printout.pdf.url)
     else:
         printout, filename = generate_internal(ctx)

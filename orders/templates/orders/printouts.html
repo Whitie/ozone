@@ -2,53 +2,52 @@
 {% load i18n %}
 
 {% block content %}
-<h2 class="headline">{% trans "Generating PDF-Files for" %} {{ oday }}</h2>
+<h2 class="headline">{% trans "Generate PDF-Files for" %} {{ oday }}</h2>
 <h3 class="headline">{% trans "This may take some time!" %}</h3>
 
-<div id="external"></div>
-
-<div id="internal"></div>
+<h3>{% trans "Fax printouts" %}</h3>
+<ul>
+    {% for s in supplier %}
+    <li><strong>{{ s.name }} ({{ s.ocount }})</strong>
+        <input type="button" value="{% trans "Generate PDF" %}" id="but_{{ s.id }}" onclick="generate_external({{ oday.id }}, {{ s.id }});" />
+        <span id="pdf_{{ s.id }}" style="display:none;"></span>
+    </li>
+    {% endfor %}
+</ul>
+<hr />
+<h3>{% trans "Internal printout" %}</h3>
+<p><input type="button" value="{% trans "Generate PDF" %}" id="but_internal" onclick="generate_internal({{ oday.id }});" />
+    <span id="pdf_internal" style="display:none;"></span>
+</p>
 
 <script type="text/javascript">
-function generate_external(ids) {
-    var container = {'oday_id': {{ oday.id }}};
-    if (ids.length > 0) {
-        container['supplier_id'] = ids[0];
-        $.post(
-            '{% url orders-api-pdf %}',
-            {'_JSON_': JSON.stringify(container)},
-            function(data) {
-                var s = '<p>{% trans "Printout for" %} '+data['supplier']
-                    +': <a href="'+data['url']+'">'+data['filename']
-                    +' ('+data['size']+' Bytes)</a></p>';
-                $('#external').append(s);
-            }
-        );
-        ids.shift();
-        setTimeout(function() { generate_external(ids); }, 1000);
-    } else {
-        setTimeout(function() { generate_internal(); }, 1000);
-    }
+function generate_external(oday_id, cid) {
+    var container = {'oday_id': oday_id, 'supplier_id': cid};
+    $.post(
+        '{% url orders-api-pdf %}',
+        {'_JSON_': JSON.stringify(container)},
+        function(data) {
+            var s = '<a href="'+data['url']+'">'+data['filename']
+                   +' ('+data['size']+' Bytes)</a>';
+            $('#pdf_'+cid).append(s).show();
+            $('#but_'+cid).attr('disabled', 'disabled');
+        }
+    );
 }
 
-function generate_internal() {
-    var container = {'oday_id': {{ oday.id }}};
+function generate_internal(oday_id) {
+    var container = {'oday_id': oday_id};
     $.post(
         '{% url orders-api-pdf %}',
         {'_JSON_': JSON.stringify(container)},
         function(data) {
             $('<hr />').insertAfter('#external');
-            var s = '<p>{% trans "Internal printout" %}: '
-                +': <a href="'+data['url']+'">'+data['filename']
-                +' ('+data['size']+' Bytes)</a></p>';
-            $('#internal').append(s);
+            var s = '<a href="'+data['url']+'">'+data['filename']
+                   +' ('+data['size']+' Bytes)</a>';
+            $('#pdf_internal').append(s).show();
+            $('#but_internal').attr('disabled', 'disabled');
         }
     );
 }
-
-$(document).ready(function() {
-    var ids = [{{ ids|join:", " }}];
-    generate_external(ids);
-});
 </script>
 {% endblock %}
