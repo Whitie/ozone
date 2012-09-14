@@ -25,7 +25,7 @@ class OrderDay(models.Model):
 
     def has_accepted_order(self):
         for o in self.orders.all():
-            if o.state == u'accepted':
+            if o.state in (u'accepted', u'ordered'):
                 return True
         return False
 
