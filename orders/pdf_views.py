@@ -24,7 +24,7 @@ TEMPLATE_PATH = os.path.join(PATH, 'latex')
 
 def get_orders(oday, supplier=None):
     all_orders = Order.objects.select_related(
-        ).filter(order_day=oday, state=u'accepted')
+        ).filter(order_day=oday, state__in=[u'accepted', u'ordered'])
     if supplier is not None:
         return all_orders.filter(article__supplier=supplier)
     companies = set()
