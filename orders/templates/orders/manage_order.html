@@ -6,9 +6,7 @@
 <h2 class="headline">{% trans "Edit orders for" %} {{ oday }}</h2>
 <h3 id="sum" style="text-align:center;color:{% if order_sum > 6000 %}red{% else %}green{% endif %};">
 {% trans "Sum" %}: {{ order_sum|floatformat:2 }}{{ CURRENCY_SYM }}</h3>
-<p>{% trans "All changes will be saved automatically." %}
-    <span id="saved_msg" style="display:none;"></span>
-</p>
+<p>{% trans "All changes will be saved automatically." %}</p>
 
 {% if perms.orders.can_order and oday.has_accepted_order %}
 <form action="{% url orders-genpdf %}" method="post">
@@ -97,6 +95,12 @@
     </tbody>
 </table>
 
+<div id="upd_messages">
+<h3>{% trans "Changes" %}</h3>
+<ul>
+</ul>
+</div>
+
 <script>
 $(document).ready(function() {
   var oTable = $('#dataTable').dataTable({
@@ -118,10 +122,9 @@ function update_row(row) {
             'art_ident': art_ident, 'price': price, 'state': state};
     $.post('{% url orders-api-change %}', {'_JSON_': JSON.stringify(data)},
         function(data) {
-            $('#saved_msg').text(data['msg']+' {% trans "Row" %}: '+row+'.').fadeIn('slow');
-            setTimeout(function() {
-                $('#saved_msg').fadeOut('slow');
-            }, 5000);
+            $('#upd_messages').show('slow');
+            var msg = data['msg']+' {% trans "Row" %}: '+row+'.';
+            $('#upd_messages > ul').append('<li>'+msg+'</li>');
         });
 }
 </script>

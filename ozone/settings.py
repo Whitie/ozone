@@ -10,7 +10,7 @@ sys.path.insert(0, EXT_DIR)
 
 # Django settings for ozone project.
 
-VERSION = '1.4.3'
+VERSION = '1.4.4'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -328,4 +328,3 @@ try:
     from local_settings import *
 except ImportError:
     print 'No local settings imported.'
-
