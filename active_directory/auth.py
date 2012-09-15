@@ -40,6 +40,8 @@ class ADAuthBackend:
         if ldap is None:
             logger.warning('python-ldap cannot be imported')
             return
+        # Windows usernames are case insensitive
+        username = username.lower()
         logger.info('Trying to authenticate %s', username)
         if password is None or not len(password):
             logger.warning('Password for %s not provided', username)
@@ -59,7 +61,6 @@ class ADAuthBackend:
             binddn = u'{0}@{1}'.format(username, settings.AD_NT4_DOMAIN)
             l.simple_bind_s(smart_str(binddn), smart_str(password))
             l.unbind_s()
-            print username, password
             return self._get_or_create_user(username, password)
         except ldap.INVALID_CREDENTIALS:
             logger.error('%s: Invalid credentials', username)
@@ -136,6 +137,7 @@ class ADAuthBackend:
 
     def _check_groups(self, membership):
         logger.debug('Checking AD group membership')
+        logger.debug('AD Strings: %r', ' / '.join(membership))
         is_valid = False
         is_admin = False
         groups = []
