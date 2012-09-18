@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.models import Permission
 
 from core.utils import json_view, json_rpc
-from orders.models import Order, Article
+from orders.models import Order, Article, DeliveredOrder
 from orders.views import helper as h
 
 
@@ -99,3 +99,32 @@ def change_order(req, data):
     msg = (u'Alle Änderungen an Bestellung: %(name)s (ID: %(id)d) '
            u'gespeichert.' % {'name': article.name, 'id': order_id})
     return {'msg': msg}
+
+
+@require_POST
+@json_rpc
+def update_delivery(req, data):
+    order = Order.objects.select_related().get(id=data['oid'])
+    dorder = DeliveredOrder.objects.create(order=order, count=data['count'],
+        user=req.user)
+    dorder.save()
+    dsum = 0
+    for d in DeliveredOrder.objects.filter(order=order):
+        dsum += d.count
+    missing = order.count - dsum
+    msg = [u'Wareneingang %(count)dx für %(art)s gespeichert von %(u)s.' %
+           {'count': dorder.count, 'art': order.article.name,
+            'u': dorder.user.get_profile()}]
+    if not order.is_complete():
+        msg.append(u'%dx fehlt noch.' % missing)
+    else:
+        msg.append(u'Bestellung ist komplett.')
+        order.state = u'delivered'
+        order.save()
+    entry = u'<strong>%(count)dx</strong> %(date)s(%(u)s)<br />' % {
+        'count': dorder.count,
+        'date': dorder.date.strftime('%d.%m.%Y'),
+        'u': dorder.user.username}
+    ret = dict(msg=u' '.join(msg), complete=order.is_complete(),
+        missing=missing, entry=entry)
+    return ret

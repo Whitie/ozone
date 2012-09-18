@@ -22,6 +22,10 @@ urlpatterns = patterns('orders.views.web',
     url(r'^controlling/by_cost/$', 'ctrl_by_cost', name='orders-ctrl-bycost'),
 )
 
+urlpatterns += patterns('orders.views.delivery',
+    url(r'^delivery/$', 'index', name='orders-delivery'),
+)
+
 urlpatterns += patterns('orders.views.ajax',
     # api
     url(r'^api/article/(?P<article_id>\d+)/$', 'api_article',
@@ -32,6 +36,7 @@ urlpatterns += patterns('orders.views.ajax',
     url(r'^api/representative/$', 'add_representative',
         name='orders-api-repr'),
     url(r'^api/change_order/$', 'change_order', name='orders-api-change'),
+    url(r'^api/delivery/$', 'update_delivery', name='orders-api-delivery'),
 )
 
 urlpatterns += patterns('orders.views.pdf',

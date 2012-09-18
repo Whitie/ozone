@@ -116,7 +116,7 @@ class Order(models.Model):
 
     def is_complete(self):
         delivered = sum([x.count for x in
-                         self.deliveredorder_set.objects.all()])
+                         self.deliveries.all()])
         return delivered == self.count
 
     class Meta:
@@ -130,7 +130,8 @@ class Order(models.Model):
 
 
 class DeliveredOrder(models.Model):
-    order = models.ForeignKey(Order, verbose_name=_(u'Order'))
+    order = models.ForeignKey(Order, verbose_name=_(u'Order'),
+        related_name='deliveries')
     count = models.PositiveIntegerField(_(u'Count'))
     date = models.DateField(_(u'Date'), auto_now_add=True)
     user = models.ForeignKey(User, verbose_name=_(u'User'))

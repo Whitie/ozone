@@ -68,13 +68,14 @@ def delete_order(req, oday_id, order_id):
         if req.user.id not in [x.id for x in order.users.all()] or \
                 order.users.count() > 1:
             if not req.user.has_perm('orders.can_order'):
-                messages.error(req, _(u'Cannot delete foreign order!'))
+                messages.error(req, u'Fremde Bestellungen können nicht '
+                                    u'gelöscht werden!')
                 return redirect(redirect_to, **kw)
         if answer == u'yes':
             order.delete()
-            messages.success(req, _(u'Order (ID: %s) deleted.' % order_id))
+            messages.success(req, u'Bestellung (ID: %s) gelöscht.' % order_id)
         else:
-            messages.error(req, _(u'Nothing deleted. Cancelled by user.'))
+            messages.error(req, u'Nichts gelöscht. Benutzerabbruch!')
         return redirect(redirect_to, **kw)
     ctx = dict(page_title=_(u'Delete Order'), menus=menus, oday_id=oday_id,
         order=order)
@@ -116,9 +117,10 @@ def order(req, article_id=0):
             order.for_repair = form.cleaned_data['repair']
             order.users.add(req.user)
             order.save()
-            messages.success(req, _(u'Your order %s was saved.' % order))
+            messages.success(req, u'Ihre Bestellung %s wurde gespeichert.' %
+                             order)
             return redirect('orders-detail', order_id=order.order_day.id)
-        messages.error(req, _(u'Please fill the required fields.'))
+        messages.error(req, u'Bitte füllen Sie die benötigten Felder aus.')
     else:
         form = OrderForm()
         form.fields['art_supplier'].choices = h.get_supplier_choices()
@@ -167,7 +169,8 @@ def add_supplier(req):
             c, created = Company.objects.get_or_create(
                 name=form.cleaned_data['name'])
             if not created:
-                messages.error(req, _(u'Company %s already exists.' % c.name))
+                messages.error(req, u'Lieferant %s existiert bereits.' %
+                               c.name)
                 return redirect('orders-index')
             c.short_name = form.cleaned_data['name'].upper()
             c.customer_number = form.cleaned_data['customer_number']
@@ -177,9 +180,9 @@ def add_supplier(req):
             c.web = form.cleaned_data['web']
             c.rating_users.add(req.user)
             c.save()
-            messages.success(req, _(u'New company %s saved.' % c.name))
+            messages.success(req, u'Neuer Lieferant %s gespeichert.' % c.name)
             return redirect('orders-index')
-        messages.error(req, _(u'Please correct the wrong fields.'))
+        messages.error(req, u'Bitte korrigieren Sie die falschen Felder.')
     else:
         form = ShortSupplierForm()
     ctx = dict(page_title=_(u'Add new Supplier'), menus=menus, form=form)
@@ -192,7 +195,7 @@ def manage_orders(req):
     if req.method == 'POST':
         day = int(req.POST['oday'])
         oday = OrderDay.objects.select_related().get(id=day)
-        messages.success(req, _(u'%s selected.' % oday))
+        messages.success(req, u'%s ausgewählt.' % oday)
         return redirect('orders-manage', oday_id=day)
     users = User.objects.exclude(username='admin')
     can_order = [x.username for x in users if x.has_perm('orders.can_order')]
@@ -234,15 +237,17 @@ def add_oday(req):
         form.fields['user'].choices = h.get_user_choices()
         if form.is_valid():
             if form.cleaned_data['user'].is_anonymous():
-                messages.error(req, _(u'The user you specified is not valid.'))
+                messages.error(req, u'Der angegebene Benutzer ist nicht '
+                                    u'gültig.')
                 return redirect('orders-manage')
             oday = OrderDay.objects.create(day=form.cleaned_data['day'],
                 user=form.cleaned_data['user'])
             oday.save()
-            messages.success(req, _(u'New orderday %s added.' % unicode(oday)))
+            messages.success(req, u'Neuer Bestelltag %s hinzugefügt.' %
+                             unicode(oday))
             return redirect('orders-manage')
         else:
-            messages.error(req, _(u'Please correct the form.'))
+            messages.error(req, u'Bitte korrigieren Sie das Formular.')
     else:
         form = OrderDayForm()
         form.fields['user'].choices = h.get_user_choices()

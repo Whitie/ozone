@@ -1,0 +1,120 @@
+{% extends "index.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block content %}
+<h2 class="headline">{% trans "Open Orders" %}</h2>
+<table class="dataTable">
+    <thead>
+        <th>{% trans "Ordered" %}</th>
+        <th>{% trans "Article" %}</th>
+        <th>{% trans "Art. ID" %}</th>
+        <th>{% trans "Supplier" %}</th>
+        <th>{% trans "Count" %}</th>
+        <th>{% trans "Deliveries" %}</th>
+        <th>{% trans "Delivered" %}</th>
+        <th>{% trans "Orderer" %}</th>
+    </thead>
+    <tbody>
+        {% for o in orders %}
+        <tr>
+            <td>{{ o.ordered|date:"SHORT_DATE_FORMAT" }}</td>
+            <td>{{ o.article.name }}</td>
+            <td>{{ o.article.ident }}</td>
+            <td>{{ o.article.supplier }}</td>
+            <td>{{ o.count }}</td>
+            <td title="{% trans "Missing" %}: {{ o.missing }}" id="msg_{{ o.id }}">
+                {% for d in o.deliveries.all %}
+                <strong>{{ d.count }}x</strong> {{ d.date|date:"SHORT_DATE_FORMAT" }}({{ d.user.username }})<br />
+                {% empty %}-{% endfor %}
+            </td>
+            <td>{% if perms.orders.can_order %}
+                <input type="text" size="3" maxlength="3" id="count_{{ o.id }}" onchange="delivery({{ o.id }});" />
+                <input type="hidden" id="missing_{{ o.id }}" value="{{ o.missing }}" />
+                <span onclick="delivery_all({{ o.id }});">{% trans "All" %}</span>
+                {% else %}{{ o.dsum }}{% endif %}
+            </td>
+            <td>{{ o.userlist|join:", " }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2 class="headline">{% trans "Delivered last 30 days" %}</h2>
+<table class="dataTable">
+    <thead>
+        <th>{% trans "Ordered" %}</th>
+        <th>{% trans "Article" %}</th>
+        <th>{% trans "Art. ID" %}</th>
+        <th>{% trans "Supplier" %}</th>
+        <th>{% trans "Count" %}</th>
+        <th>{% trans "Deliveries" %}</th>
+        <th>{% trans "Avg. time to delivery" %}</th>
+        <th>{% trans "Orderer" %}</th>
+    </thead>
+    <tbody>
+        {% for o in dorders %}
+        <tr>
+            <td>{{ o.ordered|date:"SHORT_DATE_FORMAT" }}</td>
+            <td>{{ o.article.name }}</td>
+            <td>{{ o.article.ident }}</td>
+            <td>{{ o.article.supplier }}</td>
+            <td>{{ o.count }}</td>
+            <td>
+                {% for d in o.deliveries.all %}
+                <strong>{{ d.count }}x</strong> {{ d.date|date:"SHORT_DATE_FORMAT" }}({{ d.user.username }})<br />
+                {% endfor %}
+            </td>
+            <td>{{ o.avg_days|floatformat:0 }} {% trans "days" %}</td>
+            <td>{{ o.userlist|join:", " }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div id="upd_messages">
+<h3>{% trans "Changes" %}</h3>
+<ul>
+</ul>
+</div>
+
+<script>
+$(document).ready(function() {
+  var oTable = $('.dataTable').dataTable({
+    "bJQueryUI": true,
+    "bPaginate": false,
+    "oLanguage": {
+      "sUrl": "{% static "i18n/de_DE.txt" %}"
+    }
+  });
+});
+
+function update_delivery(oid, count) {
+    var dat = {'oid': oid, 'count': count};
+    $.post('{% url orders-api-delivery %}', {'_JSON_': JSON.stringify(dat)},
+        function(res_data) {
+            $('#upd_messages').show('slow');
+            $('#upd_messages > ul').append('<li>'+res_data['msg']+'</li>');
+            $('#count_'+oid).val('');
+            $('#msg_'+oid).append(res_data['entry']);
+            if (res_data['complete'] == true) {
+                $('#count_'+oid).attr('disabled', 'disabled');
+            }
+            $('#missing_'+oid).val(res_data['missing']);
+        }
+    );
+}
+
+function delivery(oid) {
+    var delivered = parseInt($('#count_'+oid).val());
+    update_delivery(oid, delivered);
+}
+
+function delivery_all(oid) {
+    var delivered = $('#missing_'+oid).val();
+    var inp = $('#count_'+oid);
+    inp.val(delivered);
+    inp.change();
+}
+</script>
+{% endblock %}
