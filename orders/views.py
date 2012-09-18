@@ -7,7 +7,7 @@ from decimal import Decimal
 from django.conf import settings
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_POST
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
@@ -422,23 +422,23 @@ def add_representative(req):
 @require_POST
 @json_rpc
 def change_order(req, data):
-    try:
-        order_id = int(data['order_id'])
-        count = int(data['count'])
-        state = data['state']
-        art_name = data['art_name']
-        art_ident = data['art_ident']
-        price = Decimal(data['price'].replace(u',', u'.'))
-        order = Order.objects.get(id=order_id)
-        article = order.article
-        article.name = art_name
-        article.ident = art_ident
-        article.price = price
-        article.save()
-        order.count = count
-        order.state = state
-        order.save()
-        msg = _(u'All changes to order with ID %d saved.' % order_id)
-    except Exception as e:
-        msg = e
+    order_id = int(data['order_id'])
+    count = int(data['count'])
+    print req.LANGUAGE_CODE
+    print _(u'[TEST] Order ID: %d' % order_id)
+    state = data['state']
+    art_name = data['art_name']
+    art_ident = data['art_ident']
+    price = Decimal(data['price'].replace(u',', u'.'))
+    order = Order.objects.get(id=order_id)
+    article = order.article
+    article.name = art_name
+    article.ident = art_ident
+    article.price = price
+    article.save()
+    order.count = count
+    order.state = state
+    order.save()
+    msg = _(u'All changes to order %(name)s (ID: %(id)d) saved.' %
+        {'name': article.name, 'id': order_id})
     return {'msg': unicode(msg)}
