@@ -3,7 +3,7 @@
 from django.conf.urls.defaults import *
 
 
-urlpatterns = patterns('orders.views',
+urlpatterns = patterns('orders.views.web',
     url(r'^$', 'index', name='orders-index'),
     url(r'^detail/(?P<order_id>\d+)/$', 'order_detail', name='orders-detail'),
     url(r'^delete/(?P<oday_id>\d+)/(?P<order_id>\d+)/$', 'delete_order',
@@ -20,7 +20,9 @@ urlpatterns = patterns('orders.views',
 
     # Controlling
     url(r'^controlling/by_cost/$', 'ctrl_by_cost', name='orders-ctrl-bycost'),
+)
 
+urlpatterns += patterns('orders.views.ajax',
     # api
     url(r'^api/article/(?P<article_id>\d+)/$', 'api_article',
         name='orders-api-article'),
@@ -32,7 +34,7 @@ urlpatterns = patterns('orders.views',
     url(r'^api/change_order/$', 'change_order', name='orders-api-change'),
 )
 
-urlpatterns += patterns('orders.pdf_views',
+urlpatterns += patterns('orders.views.pdf',
     url(r'^generate_pdf/$', 'generate_pdf', name='orders-genpdf'),
 
     # api

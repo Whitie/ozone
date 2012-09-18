@@ -1,84 +1,23 @@
+# -*- coding: utf-8 -*-
 # Create your views here.
 
-from calendar import monthrange
 from datetime import date, datetime, timedelta
 from decimal import Decimal
 
 from django.conf import settings
 from django.shortcuts import redirect, render
-from django.views.decorators.http import require_POST
-from django.utils.translation import ugettext as _, ugettext_lazy as _ul
+from django.utils.translation import ugettext as _
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
-from django.contrib.auth.models import Permission
 
-from core.utils import json_view, json_rpc, any_permission_required
+from core.utils import any_permission_required
 from core.models import Company
 from orders.forms import (OrderOldForm, OrderForm, ShortSupplierForm,
                           OrderDayForm)
 from orders.models import OrderDay, Order, Article, Cost, CostOrder
+from orders.views import helper as h
 from orders.menu import menus
-
-
-# Helper
-
-def get_user_choices():
-    return [(x.id, x.get_full_name() or x.username) for x in
-            User.objects.all() if x.has_perm('orders.can_order')]
-
-
-def get_supplier_choices():
-    l = []
-    for c in Company.objects.filter(rate=True).order_by('name'):
-        if len(c.name) > 22:
-            name = u'{0}...'.format(c.name[:22])
-        else:
-            name = c.name
-        l.append((c.id, name))
-    return l
-
-
-def get_oday_choices(filters):
-    return [(x.id, unicode(x)) for x in
-            OrderDay.objects.filter(**filters).order_by('day')]
-
-
-def get_price(value):
-    value = value.replace(u',', u'.')
-    return Decimal(value)
-
-
-def get_next_odays(include_today=False):
-    if include_today:
-        q = dict(day__gte=date.today() - timedelta(days=1))
-    else:
-        q = dict(day__gt=date.today())
-    odays = OrderDay.objects.filter(**q).order_by('day')
-    return odays
-
-
-def get_costs(data):
-    costs = []
-    for k, v in data.items():
-        if k.startswith('cost_') and int(v):
-            ident = int(k[5:])
-            percent = int(v)
-            cost = Cost.objects.get(ident=ident)
-            costs.append((cost, percent))
-    return costs
-
-
-def get_dates():
-    today = date.today()
-    month, year = today.month, today.year
-    if month == 1:
-        start = date(year - 1, 12, 1)
-        end = date(year - 1, 12, 31)
-    else:
-        start = date(year, month - 1, 1)
-        end = date(year, month - 1, monthrange(year, month - 1)[1])
-    return start, end
 
 
 # Views
@@ -88,7 +27,7 @@ def index(req):
         inc = True
     else:
         inc = False
-    odays = get_next_odays(inc)
+    odays = h.get_next_odays(inc)
     ctx = dict(page_title=_(u'Orders'), odays=odays, menus=menus)
     return render(req, 'orders/index.html', ctx)
 
@@ -150,14 +89,14 @@ def order(req, article_id=0):
         choice_filter = {'day__gt': date.today()}
     if req.method == 'POST':
         form = OrderForm(req.POST)
-        form.fields['art_supplier'].choices = get_supplier_choices()
-        form.fields['oday'].choices = get_oday_choices(choice_filter)
+        form.fields['art_supplier'].choices = h.get_supplier_choices()
+        form.fields['oday'].choices = h.get_oday_choices(choice_filter)
         if form.is_valid():
-            costs = get_costs(req.POST)
+            costs = h.get_costs(req.POST)
             art, created = Article.objects.get_or_create(
                 name=form.cleaned_data['art_name'],
                 ident=form.cleaned_data['art_id'],
-                price=get_price(form.cleaned_data['art_price']))
+                price=h.get_price(form.cleaned_data['art_price']))
             if created:
                 art.quantity = form.cleaned_data['art_q']
                 art.supplier = Company.objects.get(
@@ -182,8 +121,8 @@ def order(req, article_id=0):
         messages.error(req, _(u'Please fill the required fields.'))
     else:
         form = OrderForm()
-        form.fields['art_supplier'].choices = get_supplier_choices()
-        form.fields['oday'].choices = get_oday_choices(choice_filter)
+        form.fields['art_supplier'].choices = h.get_supplier_choices()
+        form.fields['oday'].choices = h.get_oday_choices(choice_filter)
     costs = Cost.objects.all().order_by('ident')
     ctx = dict(page_title=_(u'Orders'), form=form, menus=menus, costs=costs,
         article_id=article_id, costs_msg=_(u'Sum of costs must be 100!'),
@@ -292,7 +231,7 @@ def manage_order(req, oday_id):
 def add_oday(req):
     if req.method == 'POST':
         form = OrderDayForm(req.POST)
-        form.fields['user'].choices = get_user_choices()
+        form.fields['user'].choices = h.get_user_choices()
         if form.is_valid():
             if form.cleaned_data['user'].is_anonymous():
                 messages.error(req, _(u'The user you specified is not valid.'))
@@ -306,8 +245,8 @@ def add_oday(req):
             messages.error(req, _(u'Please correct the form.'))
     else:
         form = OrderDayForm()
-        form.fields['user'].choices = get_user_choices()
-    odays = get_next_odays(True)
+        form.fields['user'].choices = h.get_user_choices()
+    odays = h.get_next_odays(True)
     ctx = dict(page_title=_(u'Add new orderday'), menus=menus, form=form,
         odays=[unicode(x) for x in odays])
     return render(req, 'orders/add_oday.html', ctx)
@@ -335,7 +274,7 @@ def ctrl_by_cost(req):
         _start = req.POST.get('start', '')
         _end = req.POST.get('end', '')
         if not _start or not _end:
-            start, end = get_dates()
+            start, end = h.get_dates()
         else:
             start = datetime.strptime(_start, '%d.%m.%Y').date()
             end = datetime.strptime(_end, '%d.%m.%Y').date()
@@ -353,94 +292,3 @@ def ctrl_by_cost(req):
         _ctx = dict(costs=l, start=start, end=end)
         ctx.update(_ctx)
     return render(req, 'orders/controlling/bycost.html', ctx)
-
-
-# Ajax views
-
-@json_view
-def update_article_count(req, order_id, count):
-    order_id, count = int(order_id), int(count)
-    order = Order.objects.select_related().get(id=order_id)
-    old_count = order.count
-    order.count = count
-    try:
-        u = order.users.get(id=req.user.id)
-    except:
-        order.users.add(req.user)
-    order.save()
-    msg = _(u'Count for %(name)s was changed from %(old)d to %(count)d.' %
-        {'name': order.article.name, 'old': old_count, 'count': count})
-    user = [x.username for x in order.users.all()]
-    return dict(msg=unicode(msg), user=u', '.join(user))
-
-
-@json_view
-def get_articles(req):
-    term = req.GET.get('term')
-    articles = [{'value': x.id, 'label': x.name, 'desc': x.short_desc()}
-                for x in Article.objects.filter(
-                    name__icontains=term).order_by('name')]
-    return articles
-
-
-@json_view
-def api_article(req, article_id=0):
-    article_id = int(article_id)
-    if not article_id:
-        return {'count': 1}
-    oday = get_next_odays()[0]
-    a = Article.objects.get(pk=article_id)
-    data = dict(art_name=a.name, art_supplier=a.supplier.id,
-        art_id=a.ident, art_q=a.quantity, art_price=float(a.price),
-        count=1, oday=oday.id)
-    return data
-
-
-@require_POST
-@json_view
-def add_representative(req):
-    users = map(int, req.POST.getlist('users[]', []))
-    action_type = req.POST.get('type')
-    perm = Permission.objects.get(codename=action_type)
-    added = []
-    removed = []
-    msgs = []
-    for u in User.objects.exclude(username='admin'):
-        if u.id in users:
-            if not u.has_perm('orders.%s' % action_type):
-                added.append(u.username)
-                u.user_permissions.add(perm)
-        else:
-            if u.has_perm('orders.%s' % action_type):
-                removed.append(u.username)
-                u.user_permissions.remove(perm)
-    if added:
-        msgs.append(_(u'%s added.' % u', '.join(added)))
-    if removed:
-        msgs.append(_(u'%s removed.' % u', '.join(removed)))
-    return {'msg': u' '.join([unicode(x) for x in msgs])}
-
-
-@require_POST
-@json_rpc
-def change_order(req, data):
-    order_id = int(data['order_id'])
-    count = int(data['count'])
-    print req.LANGUAGE_CODE
-    print _(u'[TEST] Order ID: %d' % order_id)
-    state = data['state']
-    art_name = data['art_name']
-    art_ident = data['art_ident']
-    price = Decimal(data['price'].replace(u',', u'.'))
-    order = Order.objects.get(id=order_id)
-    article = order.article
-    article.name = art_name
-    article.ident = art_ident
-    article.price = price
-    article.save()
-    order.count = count
-    order.state = state
-    order.save()
-    msg = _(u'All changes to order %(name)s (ID: %(id)d) saved.' %
-        {'name': article.name, 'id': order_id})
-    return {'msg': unicode(msg)}
