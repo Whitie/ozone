@@ -94,7 +94,7 @@ function update_day(did) {
         {'_JSON_': JSON.stringify(json_data)},
         function(ret_data) {
             $('#upd_messages').show('slow');
-            $('#upd_messages > ul').append('<li>'+ret_data['msg']+'</li>');
+            $('#upd_messages > ul').prepend('<li>'+ret_data['msg']+'</li>');
             if (parseInt(lateness) > 0) {
                 $('#l_'+did).css('border', '1px solid red');
             } else {

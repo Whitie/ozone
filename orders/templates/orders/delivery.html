@@ -26,7 +26,7 @@
             <td title="{% trans "Missing" %}: {{ o.missing }}" id="msg_{{ o.id }}">
                 {% for d in o.deliveries.all %}
                 <strong>{{ d.count }}x</strong> {{ d.date|date:"SHORT_DATE_FORMAT" }}({{ d.user.username }})<br />
-                {% empty %}-{% endfor %}
+                {% endfor %}
             </td>
             <td>{% if perms.orders.can_order %}
                 <input type="text" size="3" maxlength="3" id="count_{{ o.id }}" onchange="delivery({{ o.id }});" />
@@ -94,7 +94,7 @@ function update_delivery(oid, count) {
     $.post('{% url orders-api-delivery %}', {'_JSON_': JSON.stringify(dat)},
         function(res_data) {
             $('#upd_messages').show('slow');
-            $('#upd_messages > ul').append('<li>'+res_data['msg']+'</li>');
+            $('#upd_messages > ul').prepend('<li>'+res_data['msg']+'</li>');
             $('#count_'+oid).val('');
             $('#msg_'+oid).append(res_data['entry']);
             if (res_data['complete'] == true) {

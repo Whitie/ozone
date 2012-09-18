@@ -123,7 +123,7 @@ function update_row(row) {
     $.post('{% url orders-api-change %}', {'_JSON_': JSON.stringify(data)},
         function(data) {
             $('#upd_messages').show('slow');
-            $('#upd_messages > ul').append('<li>'+data['msg']+'</li>');
+            $('#upd_messages > ul').prepend('<li>'+data['msg']+'</li>');
         });
 }
 </script>
