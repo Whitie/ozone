@@ -31,12 +31,12 @@
 \textbf{Lieferant:} (( os[0].article.supplier.name|te ))
 {
 \small
-\begin{longtable}{|c|c|c|p{5.9cm}|c|r|r|(( tbl|join('|') ))|c|}
+\begin{longtable}{|c|c|c|p{5.9cm}|c|r|r|p{0.7cm}|(( tbl|join('|') ))|}
 \hline
-Pos. & \rotatebox{90}{Anzahl} & \rotatebox{90}{Einheit} & Artikel & Art.-Nr. & \rotatebox{90}{Einzelpreis} & \rotatebox{90}{Gesamtpreis} & (% for c in costs %)\rotatebox{90}{(( c ))} & (% endfor %) \rotatebox{90}{Besteller}\\
+Pos. & \rotatebox{90}{Anzahl} & \rotatebox{90}{Einheit} & Artikel & Art.-Nr. & \rotatebox{90}{Einzelpreis} & \rotatebox{90}{Gesamtpreis} & \rotatebox{90}{Besteller} & (% for c in costs %)\rotatebox{90}{(( c ))}(% if not loop.last %) & (% endif %)(% endfor %)\\
 \hline
 (% for o in os %)
-(( loop.index )) & (( o.count )) & (( o.article.quantity|te )) & (( o.article.name|te )) & (( o.article.ident|te )) & \EUR{(( "%.2f"|format(o.article.price)|te ))} & \EUR{(( "%.2f"|format(o.price())|te ))} & (( o._costs|join(' & ') )) & (( o.userlist|join(', ')|te ))\\
+(( loop.index )) & (( o.count )) & (( o.article.quantity|te )) & (( o.article.name|te )) & (( o.article.ident|te )) & \EUR{(( "%.2f"|format(o.article.price)|te ))} & \EUR{(( "%.2f"|format(o.price())|te ))} & (( o.userlist|join(' ') )) & (( o._costs|join(' & ') ))\\
 \hline
 (% endfor %)
 \end{longtable}

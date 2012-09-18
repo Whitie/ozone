@@ -110,6 +110,7 @@ def generate_internal(_ctx):
             o.state = u'ordered'
             o.ordered = date.today()
             o.save()
+            o.userlist = [x.username for x in o.users.all()]
             sums[sup_id] += o.count * o.article.price
             o._costs = []
             costs = list(o.costs.all())
