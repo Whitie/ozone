@@ -108,7 +108,7 @@ def generate_internal(_ctx):
         sums[sup_id] = 0
         for o in supp:
             # Only set state and date on first generation
-            if o.state not in (u'ordered', u'delivered'):
+            if o.state == u'accepted':
                 o.state = u'ordered'
                 o.ordered = date.today()
                 o.save()
