@@ -62,7 +62,7 @@
                 {% else %}{{ o.article.price|floatformat:2 }}{{ CURRENCY_SYM }}{% endif %}
             </td>
             <td title="{{ o.memo|default:"-" }}">{{ o.article.supplier.short_name }}</td>
-            <td>{{ o.userlist|join:", " }}</td>
+            <td title="{{ o.costlist|join:", " }}">{{ o.userlist|join:", " }}</td>
             {% if perms.orders.can_change_orderstate and o.state in states %}
             <td>
                 <input type="radio" name="state_{{ forloop.counter }}" value="new"

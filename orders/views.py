@@ -7,7 +7,7 @@ from decimal import Decimal
 from django.conf import settings
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_POST
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext_lazy as _ul
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
@@ -278,6 +278,8 @@ def manage_order(req, oday_id):
         o.userlist = [x.username for x in o.users.all()]
         order_sum += o.count * o.article.price
         o.sum_price = o.count * o.article.price
+        o.costlist = [u'%s: %d%%' % (unicode(x.cost), x.percent) for x in
+                      CostOrder.objects.filter(order=o)]
     ctx = dict(page_title=_(u'Manage Orders'), menus=menus, oday=oday,
         orders=orders, states=(u'new', u'accepted', u'rejected'),
         order_sum=order_sum)
