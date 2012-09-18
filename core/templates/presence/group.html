@@ -47,7 +47,7 @@
           <select id="p_{{ d.id }}"  class="{{ d.date|date:"Y-m-d" }}" title="{{ d.get_entry_display }}" name="presence" size="1" onchange="update_day({{ d.id }});">
           {% for e in choices %}<option value="{{ e }}"{% if e == d.entry %} selected="selected"{% endif %}>{{ e }}</option>{% endfor %}
           </select><br />
-          <input id="l_{{ d.id }}" type="text" size="2" maxlength="3"{% if d.lateness %} style="border:1px solid red;"{% endif %} name="lateness" value="{% if d.lateness %}{{ d.lateness }}{% endif %}" onchange="update_day({{ d.id }});" title="{% trans "Enter lateness here." %}" />
+          <input id="l_{{ d.id }}" type="text" size="2" maxlength="3"{% if d.lateness %} style="border:1px solid red;"{% endif %} name="lateness" value="{% if d.lateness %}{{ d.lateness }}{% endif %}" onchange="lateness_changed({{ d.id }});" title="{% trans "Enter lateness here." %}" />
       </td>
       {% endfor %}
     </tr>
@@ -110,6 +110,11 @@ function update_all() {
         $(this).val(entry);
         $(this).change();
     });
+}
+
+function lateness_changed(did) {
+    $('#p_'+did+'').val('*').attr('selected', 'selected');
+    update_day(did);
 }
 </script>
 {% endblock %}

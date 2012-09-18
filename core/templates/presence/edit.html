@@ -32,7 +32,7 @@
             </td>
             <td>
                 <input style="text-align:right;{% if d.lateness %}border:1px solid red;{% endif %}" type="text" size="2" maxlength="3"
-                    id="lateness_{{ d.id }}" onchange="update_day({{ d.id }});" {% if d.lateness %}value="{{ d.lateness }}" {% endif %}/>
+                    id="lateness_{{ d.id }}" onchange="lateness_changed({{ d.id }});" {% if d.lateness %}value="{{ d.lateness }}" {% endif %}/>
             </td>
             <td><input type="text" size="25" maxlength="25" id="note_{{ d.id }}" value="{{ d.note }}" onchange="update_day({{ d.id }});" /></td>
             <td id="instructor_{{ d.id }}">{{ d.instructor.get_profile|default:"-" }}</td>
@@ -85,6 +85,11 @@ function update_day(did) {
                 }, 2000);
             }
         });
+}
+
+function lateness_changed(did) {
+    $('#presence_'+did+'').val('*').attr('selected', 'selected');
+    update_day(did);
 }
 </script>
 {% endblock %}

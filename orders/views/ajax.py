@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.models import Permission
 
 from core.utils import json_view, json_rpc
+from core.models import Company
 from orders.models import Order, Article, DeliveredOrder
 from orders.views import helper as h
 
@@ -81,17 +82,19 @@ def add_representative(req):
 @require_POST
 @json_rpc
 def change_order(req, data):
-    order_id = int(data['order_id'])
-    count = int(data['count'])
+    order_id = data['order_id']
+    count = data['count']
     state = data['state']
     art_name = data['art_name']
     art_ident = data['art_ident']
     price = Decimal(data['price'].replace(u',', u'.'))
     order = Order.objects.get(id=order_id)
+    supplier = Company.objects.get(id=data['supp_id'])
     article = order.article
     article.name = art_name
     article.ident = art_ident
     article.price = price
+    article.supplier = supplier
     article.save()
     order.count = count
     order.state = state
