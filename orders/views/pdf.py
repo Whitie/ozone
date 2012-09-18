@@ -107,9 +107,11 @@ def generate_internal(_ctx):
         sup_id = supp[0].article.supplier.id
         sums[sup_id] = 0
         for o in supp:
-            o.state = u'ordered'
-            o.ordered = date.today()
-            o.save()
+            # Only set state and date on first generation
+            if o.state not in (u'ordered', u'delivered'):
+                o.state = u'ordered'
+                o.ordered = date.today()
+                o.save()
             o.userlist = [x.username for x in o.users.all()]
             sums[sup_id] += o.count * o.article.price
             o._costs = []
