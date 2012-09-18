@@ -17,25 +17,25 @@ def update_presence(req, data):
         updated = True
         if data['presence']:
             pday.entry = data['presence']
-            msg.append(_(u'Presence updated with %(entry)s (%(disp)s).' %
-                {'entry': pday.entry, 'disp': pday.get_entry_display()}))
+            msg.append(u'Anwesenheit aktualisiert mit %(entry)s (%(disp)s).' %
+                {'entry': pday.entry, 'disp': pday.get_entry_display()})
         else:
             pday.entry = u''
-            msg.append(_(u'Presence set to unknown!'))
+            msg.append(u'Anwesenheit auf unbekannt gesetzt!')
     if data['lateness'] != pday.lateness:
         updated = True
         if data['lateness'] is None and pday.lateness != 0:
-            msg.append(_(u'Lateness %d minutes deleted!' % pday.lateness))
+            msg.append(u'Verspätung %d Minuten gelöscht!' % pday.lateness)
             pday.lateness = 0
         elif data['lateness'] is not None:
             pday.lateness = data['lateness']
-            msg.append(_(u'Lateness set to %d minutes.' % pday.lateness))
+            msg.append(u'Verspätung auf %d Minuten gesetzt.' % pday.lateness)
     if updated:
         pday.instructor = req.user
         pday.save()
     else:
-        msg.append(_(u'Nothing changed.'))
-    return {'msg': u' '.join([unicode(x) for x in msg])}
+        msg.append(u'Nichts verändert.')
+    return {'msg': u' '.join(msg)}
 
 
 @json_rpc

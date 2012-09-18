@@ -112,7 +112,7 @@ def generate_presence_filled(req, gid, year, month):
             school_days = form.cleaned_data['school_days']
             show = True
         else:
-            messages.error(req, _(u'Please correct the required fields.'))
+            messages.error(req, u'Bitte korrigieren Sie die Pflichtfelder.')
     else:
         form = PresenceForm()
     ctx = dict(page_title=_(u'Presence PDF-Generation'), menus=menus,

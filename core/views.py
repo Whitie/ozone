@@ -79,7 +79,7 @@ def edit_profile(req):
     if req.method == 'POST':
         form = ProfileForm(req.POST, instance=profile)
         form.save()
-        messages.success(req, _(u'All changes saved.'))
+        messages.success(req, u'Alle Änderungen gespeichert.')
     else:
         form = ProfileForm(instance=profile)
     ctx = dict(page_title=_(u'My Profile'), menus=menus, form=form)
@@ -103,9 +103,9 @@ def add_news(req):
             news = form.save(commit=False)
             news.author = req.user
             news.save()
-            messages.success(req, _(u'The News were added.'))
+            messages.success(req, u'Meldung wurde hinzugefügt.')
             return redirect('/')
-        messages.error(req, _(u'Please correct the wrong fields.'))
+        messages.error(req, u'Bitte korrigieren Sie die falschen Felder.')
     else:
         form = NewsForm()
     ctx = dict(page_title=_(u'Add News'), menus=menus, form=form)
@@ -125,10 +125,10 @@ def add_note(req, id):
             note.user = req.user
             note.contact = contact
             note.save()
-            messages.success(req, _(u'New note saved.'))
+            messages.success(req, u'Neue Bemerkung gespeichert.')
             return redirect('/core/companies/addnote/{0}/'.format(id))
         else:
-            messages.error(req, _(u'Please enter subject and text.'))
+            messages.error(req, u'Bitte Betreff und Text eingeben.')
     else:
         form = NoteForm()
     ctx = dict(page_title=_(u'Add Note'), menus=menus, form=form,
@@ -147,12 +147,12 @@ def do_login(req):
                 p = user.get_profile()
                 if user.is_active and p.can_login:
                     login(req, user)
-                    messages.success(req, _(u'Login accepted.'))
+                    messages.success(req, u'Login akzeptiert.')
                     return redirect(next_page)
                 else:
-                    messages.error(req, _(u'Account is disabled.'))
+                    messages.error(req, u'Account ist deaktiviert.')
             else:
-                messages.error(req, _(u'Username and/or password incorrect.'))
+                messages.error(req, u'Benutzer und/oder Passwort falsch.')
     else:
         next_page = req.GET.get('next', '/')
         form = AuthenticationForm()
@@ -163,7 +163,7 @@ def do_login(req):
 
 def do_logout(req):
     logout(req)
-    messages.success(req, _(u'Logged out.'))
+    messages.success(req, u'Erfolgreich abgemeldet.')
     return redirect('/')
 
 
@@ -187,7 +187,7 @@ def list_companies(req, startchar=''):
                 Q(name__icontains=s) | Q(short_name__icontains=s))
         else:
             companies = Company.objects.none()
-            messages.error(req, _(u'Invalid search query.'))
+            messages.error(req, u'Ungültige Suche.')
     else:
         form = SearchForm()
         if not startchar:
@@ -241,7 +241,7 @@ def list_students(req, startchar='', archive=False):
             students = Student.objects.select_related().filter(q)
         else:
             students = Student.objects.none()
-            messages.error(req, _(u'Invalid search query.'))
+            messages.error(req, u'Ungültige Suche.')
     else:
         form = StudentSearchForm()
         form.fields['group'].choices = get_studentgroups()
@@ -298,12 +298,12 @@ def group_details(req, gid):
     try:
         gid = int(gid)
     except ValueError:
-        messages.error(req, _(u'Group ID must be an integer.'))
+        messages.error(req, u'Gruppen-ID muss eine Zahl sein.')
         return redirect('core-groups')
     try:
         group = StudentGroup.objects.select_related().get(pk=gid)
     except StudentGroup.DoesNotExist:
-        messages.error(req, _(u'Group with ID %d does not exist.' % gid))
+        messages.error(req, u'Gruppe (ID: %d) existiert nicht.' % gid)
         return redirect('core-groups')
     ctx = dict(page_title=_(u'Group Detail'), group=group, menus=menus)
     return render(req, 'students/group_detail.html', ctx)
@@ -333,12 +333,12 @@ def presence_for_group(req, gid):
     try:
         gid = int(gid)
     except ValueError:
-        messages.error(req, _(u'Group ID must be an integer.'))
+        messages.error(req, u'Gruppen-ID muss eine Zahl sein.')
         return redirect('core-presence')
     try:
         group = StudentGroup.objects.get(pk=gid)
     except StudentGroup.DoesNotExist:
-        messages.error(req, _(u'Group with ID %d does not exist.' % gid))
+        messages.error(req, u'Gruppe (ID: %d) existiert nicht.' % gid)
         return redirect('core-presence')
     if end is None:
         end = date.today()
@@ -350,7 +350,7 @@ def presence_for_group(req, gid):
     else:
         start = datetime.strptime(start, '%d.%m.%Y').date()
     if start > end:
-        messages.error(_(u'End date before start date.'))
+        messages.error(u'Das Enddatum liegt vor dem Startdatum!')
         return redirect('core-presence')
     req.session['presence_start'] = start
     req.session['presence_end'] = end
