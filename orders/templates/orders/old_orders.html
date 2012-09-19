@@ -40,6 +40,7 @@ $(document).ready(function() {
   var oTable = $('#dataTable').dataTable({
     "bJQueryUI": true,
     "bPaginate": true,
+    "iDisplayLength": 25,
     "aLengthMenu": [[25, 50, 100, -1], [25, 50, 100, "{% trans "All" %}"]],
     "oLanguage": {
       "sUrl": "{% static "i18n/de_DE.txt" %}"
