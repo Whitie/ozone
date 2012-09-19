@@ -13,7 +13,7 @@ Achtung, Anwesenheiten sind im Test. Bitte noch nicht benutzen!
 <h3>{{ n }} (<a href="{% url core-presence-printouts n %}">{% trans "Old lists" %}</a>)</h3>
 <ul>
   {% for g in gr %}
-  <form action="{% url core.views.presence_for_group g.id %}" method="post">
+  <form action="{% url core-presence-group g.id %}" method="post">
   {% csrf_token %}
   <li><strong>{{ g }}</strong>
     {% trans "From" %} <input type="text" class="dateWidget" name="start" />
