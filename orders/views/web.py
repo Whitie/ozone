@@ -33,6 +33,13 @@ def index(req):
 
 
 @login_required
+def show_old_orders(req):
+    orders = h.get_order_for_every_article()
+    ctx = dict(page_title=_(u'Old Orders'), menus=menus, orders=orders)
+    return render(req, 'orders/old_orders.html', ctx)
+
+
+@login_required
 def order_detail(req, order_id):
     oid = int(order_id)
     oday = OrderDay.objects.get(id=oid)

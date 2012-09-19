@@ -1,0 +1,53 @@
+{% extends "index.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block content %}
+<h2 class="headline">{% trans "All ordered articles" %}</h2>
+{% if orders %}
+<table id="dataTable">
+    <thead>
+        <tr>
+            <th>{% trans "Article Name" %}</th>
+            <th>{% trans "Art. ID" %}</th>
+            <th>{% trans "Supplier" %}</th>
+            <th>{% trans "Quantity" %}</th>
+            <th>{% trans "Price" %}</th>
+            <th>{% trans "Last Orderer" %}</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for o in orders %}
+        <tr>
+            <td>{{ o.article.name }}</td>
+            <td style="text-align:center;">{{ o.article.ident }}</td>
+            <td>{{ o.article.supplier }}</td>
+            <td>{{ o.article.quantity }}</td>
+            <td style="text-align:right;">{{ o.article.fullprice }}</td>
+            <td>{{ o.userlist|join:", " }}</td>
+            <td><a href="{% url orders-order o.article.id %}">
+                {% trans "ReOrder" %}</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+$(document).ready(function() {
+  var oTable = $('#dataTable').dataTable({
+    "bJQueryUI": true,
+    "bPaginate": true,
+    "aLengthMenu": [[25, 50, 100, -1], [25, 50, 100, "{% trans "All" %}"]],
+    "oLanguage": {
+      "sUrl": "{% static "i18n/de_DE.txt" %}"
+    }
+  });
+});
+</script>
+
+{% else %}
+<p>{% trans "No orders found." %}</p>
+{% endif %}
+
+{% endblock %}

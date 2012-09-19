@@ -6,7 +6,20 @@ from decimal import Decimal
 
 from django.contrib.auth.models import User
 from core.models import Company
-from orders.models import OrderDay, Cost
+from orders.models import OrderDay, Cost, Order, Article
+
+
+def get_order_for_every_article():
+    orders = []
+    for art in Article.objects.all().order_by('name'):
+        try:
+            order = Order.objects.select_related().filter(
+                article=art).latest('added')
+            order.userlist = [x.username for x in order.users.all()]
+            orders.append(order)
+        except Order.DoesNotExist:
+            pass
+    return orders
 
 
 def get_user_choices():

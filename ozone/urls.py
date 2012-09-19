@@ -11,7 +11,7 @@ admin.autodiscover()
 handler500 = 'core.utils.internal_server_error'
 
 urlpatterns = patterns('',
-    (r'^$', 'core.views.index'),
+    (r'^$', 'core.views.web.index'),
     (r'^core/', include('core.urls')),
     (r'^orders/', include('orders.urls')),
 

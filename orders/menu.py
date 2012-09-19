@@ -8,6 +8,7 @@ from core.menu import Menu
 order_menu = Menu(_(u'Orders'),
     ('orders-ask', _(u'Order now')),
     ('orders-myorders', _(u'My Orders')),
+    ('orders-old', _(u'Old Orders')),
     ('orders-add-supplier', _(u'Add new Supplier')),
     ('orders-delivery', _(u'Delivery')),
     ('orders-manage', _(u'Manage Orders')),
