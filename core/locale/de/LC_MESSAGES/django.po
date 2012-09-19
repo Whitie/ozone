@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ozone 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-19 09:09+0200\n"
+"POT-Creation-Date: 2012-09-19 13:59+0200\n"
 "PO-Revision-Date: 2012-09-13 15:14+0100\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <weimann@bbz-chemie.de>\n"
@@ -119,16 +119,16 @@ msgid "Core"
 msgstr "Hauptmenü"
 
 #: menu.py:18 models.py:143 templates/companies/list_all.html:9
-#: templates/presence/generate_pdf.html:34 views/web.py:175
+#: templates/presence/generate_pdf.html:34 views/web.py:176
 msgid "Companies"
 msgstr "Firmen"
 
 #: menu.py:19 models.py:368 templates/birthdays.html:30
-#: templates/students/list_all.html:5 views/web.py:238
+#: templates/students/list_all.html:5 views/web.py:239
 msgid "Students"
 msgstr "Azubis"
 
-#: menu.py:20 models.py:279 views/web.py:267
+#: menu.py:20 models.py:279 views/web.py:268
 msgid "Groups"
 msgstr "Gruppen"
 
@@ -148,7 +148,7 @@ msgstr "Extra"
 msgid "Coming Birthdays"
 msgstr "Nächste Geburtstage"
 
-#: menu.py:27 views/web.py:68
+#: menu.py:27 views/web.py:69
 msgid "Internal Phonelist"
 msgstr "Interne Telefonliste"
 
@@ -627,7 +627,7 @@ msgstr "Telefonliste"
 msgid "Private"
 msgstr "Privat"
 
-#: templates/profile.html:5 views/web.py:60
+#: templates/profile.html:5 views/web.py:61
 msgid "My Profile"
 msgstr "Mein Profil"
 
@@ -685,7 +685,7 @@ msgstr "Jahre"
 msgid "No"
 msgstr "Nein"
 
-#: templates/companies/details.html:47 views/web.py:109
+#: templates/companies/details.html:47 views/web.py:110
 msgid "Add Note"
 msgstr "Bemerkung hinzufügen"
 
@@ -942,65 +942,65 @@ msgstr "Alle Gruppen"
 msgid "Presence PDF-Generation"
 msgstr "Anwesenheit PDF-Erzeugung"
 
-#: views/web.py:47
+#: views/web.py:48
 msgid "Ozone Home"
 msgstr "Ozone Startseite"
 
-#: views/web.py:86
+#: views/web.py:87
 msgid "Add News"
 msgstr "News hinzufügen"
 
-#: views/web.py:135
+#: views/web.py:136
 msgid "Login Page"
 msgstr "Anmeldeseite"
 
-#: views/web.py:150
+#: views/web.py:151
 #, python-format
 msgid "Details: %s"
 msgstr "Details: %s"
 
-#: views/web.py:197
+#: views/web.py:198
 msgid "All Companies"
 msgstr "Alle Firmen"
 
-#: views/web.py:238
+#: views/web.py:239
 msgid "Students Archive"
 msgstr "Azubi-Archiv"
 
-#: views/web.py:258
+#: views/web.py:259
 msgid "List of all students"
 msgstr "Liste aller Azubis"
 
-#: views/web.py:283
+#: views/web.py:284
 msgid "Group Detail"
 msgstr "Details Gruppe"
 
-#: views/web.py:297
+#: views/web.py:298
 msgid "Group Overview"
 msgstr "Überblick Gruppen"
 
-#: views/web.py:336
+#: views/web.py:337
 msgid "Presence for Group"
 msgstr "Anwesenheiten für Gruppe"
 
-#: views/web.py:349
+#: views/web.py:350
 msgid "Presence for Student"
 msgstr "Anwesenheiten für Azubi"
 
-#: views/web.py:362
+#: views/web.py:363
 #, python-format
 msgid "Presence %s"
 msgstr "Anwesenheit %s"
 
-#: views/web.py:387
+#: views/web.py:388
 msgid "Next Birthdays"
 msgstr "Nächste Geburtstage"
 
-#: views/web.py:398
+#: views/web.py:399
 msgid "PIL is not installed."
 msgstr "PIL ist nicht installiert."
 
-#: views/web.py:405
+#: views/web.py:406
 msgid "Unsupported barcode format."
 msgstr "Nicht unterstütztes Strichcode-Format."
 

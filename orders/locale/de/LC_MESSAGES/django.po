@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0beta1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-19 09:09+0200\n"
+"POT-Creation-Date: 2012-09-19 13:59+0200\n"
 "PO-Revision-Date: 2012-09-19 09:02+0100\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,87 +17,59 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: forms.py:24
+#: forms.py:22
 msgid "Next Orderday"
 msgstr "Nächster Bestelltag"
 
-#: forms.py:25
+#: forms.py:24
 msgid "Use this format: dd.mm.yyyy"
 msgstr "Benutzen Sie dieses Format: TT.MM.JJJJ"
 
-#: forms.py:26
-#: models.py:21
+#: forms.py:25 models.py:21
 msgid "Responsible User"
 msgstr "Zuständiger Besteller"
 
-#: forms.py:31
-#: forms.py:37
-#: models.py:63
-#: models.py:87
-#: templates/orders/delivery.html:10
-#: templates/orders/delivery.html.py:47
-#: templates/orders/manage_order.html:23
-#: templates/orders/myorders.html:13
+#: forms.py:30 forms.py:36 models.py:63 models.py:87
+#: templates/orders/delivery.html:10 templates/orders/delivery.html.py:47
+#: templates/orders/manage_order.html:23 templates/orders/myorders.html:13
 #: templates/orders/orderday.html:16
 msgid "Article"
 msgstr "Artikel"
 
-#: forms.py:36
-#: models.py:86
-#: models.py:135
-#: templates/orders/delivery.html:13
-#: templates/orders/delivery.html.py:50
-#: templates/orders/manage_order.html:22
-#: templates/orders/myorders.html:12
-#: templates/orders/orderday.html:15
+#: forms.py:35 models.py:86 models.py:135 templates/orders/delivery.html:13
+#: templates/orders/delivery.html.py:50 templates/orders/manage_order.html:22
+#: templates/orders/myorders.html:12 templates/orders/orderday.html:15
 msgid "Count"
 msgstr "Anzahl"
 
-#: forms.py:38
-#: models.py:39
-#: templates/orders/delivery.html:12
-#: templates/orders/delivery.html.py:49
-#: templates/orders/manage_order.html:27
-#: templates/orders/myorders.html:16
-#: templates/orders/old_orders.html:13
+#: forms.py:37 models.py:39 templates/orders/delivery.html:12
+#: templates/orders/delivery.html.py:49 templates/orders/manage_order.html:27
+#: templates/orders/myorders.html:16 templates/orders/old_orders.html:13
 #: templates/orders/orderday.html:19
 msgid "Supplier"
 msgstr "Lieferant"
 
-#: forms.py:39
-#: models.py:41
-#: models.py:68
+#: forms.py:39 models.py:41 models.py:68
 msgid "Identifier"
 msgstr "Artikelnummer"
 
-#: forms.py:41
-#: models.py:44
-#: templates/orders/manage_order.html:25
-#: templates/orders/myorders.html:14
-#: templates/orders/old_orders.html:14
+#: forms.py:41 models.py:44 templates/orders/manage_order.html:25
+#: templates/orders/myorders.html:14 templates/orders/old_orders.html:14
 #: templates/orders/orderday.html:17
 msgid "Quantity"
 msgstr "Einheit"
 
-#: forms.py:42
-#: models.py:45
-#: templates/orders/manage_order.html:26
-#: templates/orders/myorders.html:15
-#: templates/orders/old_orders.html:15
+#: forms.py:42 models.py:45 templates/orders/manage_order.html:26
+#: templates/orders/myorders.html:15 templates/orders/old_orders.html:15
 #: templates/orders/orderday.html:18
 msgid "Price"
 msgstr "Preis"
 
-#: forms.py:43
-#: models.py:91
-#: templates/orders/order.html:29
+#: forms.py:43 models.py:91 templates/orders/order.html:33
 msgid "Memo"
 msgstr "Memo"
 
-#: forms.py:45
-#: models.py:33
-#: models.py:93
-#: models.py:165
+#: forms.py:45 models.py:33 models.py:93 models.py:165
 msgid "Order Day"
 msgstr "Bestelltag"
 
@@ -109,9 +81,7 @@ msgstr "Prüfung"
 msgid "Repair"
 msgstr "Reparatur"
 
-#: forms.py:51
-#: models.py:38
-#: models.py:70
+#: forms.py:51 models.py:38 models.py:70
 msgid "Name"
 msgstr "Name"
 
@@ -135,44 +105,33 @@ msgstr "Email"
 msgid "Homepage"
 msgstr "Homepage"
 
-#: menu.py:8
-#: models.py:124
-#: templates/orders/list_printouts.html:8
-#: templates/orders/controlling/bycost.html:28
-#: views/web.py:31
-#: views/web.py:134
-#: views/web.py:150
+#: menu.py:8 models.py:124 templates/orders/list_printouts.html:8
+#: templates/orders/controlling/bycost.html:28 views/web.py:31
+#: views/web.py:133 views/web.py:149
 msgid "Orders"
 msgstr "Bestellungen"
 
-#: menu.py:9
-#: templates/orders/order.html:61
+#: menu.py:9 templates/orders/order.html:65
 msgid "Order now"
 msgstr "Jetzt bestellen"
 
-#: menu.py:10
-#: views/web.py:165
+#: menu.py:10 views/web.py:164
 msgid "My Orders"
 msgstr "Meine Bestellungen"
 
-#: menu.py:11
-#: views/web.py:38
+#: menu.py:11 views/web.py:38
 msgid "Old Orders"
 msgstr "Alte Bestellungen"
 
-#: menu.py:12
-#: views/web.py:192
+#: menu.py:12 views/web.py:191
 msgid "Add new Supplier"
 msgstr "Neuer Lieferant"
 
-#: menu.py:13
-#: views/delivery.py:42
+#: menu.py:13 views/delivery.py:42
 msgid "Delivery"
 msgstr "Wareneingang"
 
-#: menu.py:14
-#: views/web.py:210
-#: views/web.py:229
+#: menu.py:14 views/web.py:209 views/web.py:228
 msgid "Manage Orders"
 msgstr "Bestellungen verwalten"
 
@@ -208,42 +167,32 @@ msgstr "Artikel"
 msgid "Short Name"
 msgstr "Kürzel"
 
-#: models.py:76
-#: models.py:150
+#: models.py:76 models.py:150
 msgid "Cost"
 msgstr "Kostenstelle"
 
-#: models.py:77
-#: models.py:89
-#: templates/orders/orderday.html:45
+#: models.py:77 models.py:89 templates/orders/orderday.html:45
 msgid "Costs"
 msgstr "Kostenstellen"
 
-#: models.py:80
-#: templates/orders/manage_order.html:77
+#: models.py:80 templates/orders/manage_order.html:77
 msgid "New"
 msgstr "Neu"
 
-#: models.py:80
-#: templates/orders/manage_order.html:85
+#: models.py:80 templates/orders/manage_order.html:85
 msgid "Accepted"
 msgstr "Akzeptiert"
 
-#: models.py:81
-#: templates/orders/manage_order.html:81
+#: models.py:81 templates/orders/manage_order.html:81
 msgid "Rejected"
 msgstr "Zurückgewiesen"
 
-#: models.py:81
-#: models.py:99
-#: templates/orders/delivery.html:9
-#: templates/orders/delivery.html.py:46
-#: templates/orders/myorders.html:11
+#: models.py:81 models.py:99 templates/orders/delivery.html:9
+#: templates/orders/delivery.html.py:46 templates/orders/myorders.html:11
 msgid "Ordered"
 msgstr "Bestellt"
 
-#: models.py:82
-#: templates/orders/delivery.html:15
+#: models.py:82 templates/orders/delivery.html:15
 msgid "Delivered"
 msgstr "Geliefert"
 
@@ -251,8 +200,7 @@ msgstr "Geliefert"
 msgid "Users"
 msgstr "Benutzer"
 
-#: models.py:92
-#: templates/orders/orderday.html:14
+#: models.py:92 templates/orders/orderday.html:14
 msgid "Added"
 msgstr "Hinzugefügt"
 
@@ -264,16 +212,12 @@ msgstr "Für Prüfung"
 msgid "For Repair"
 msgstr "Für Reparatur"
 
-#: models.py:97
-#: templates/orders/manage_order.html:29
-#: templates/orders/myorders.html:17
-#: templates/orders/orderday.html:21
+#: models.py:97 templates/orders/manage_order.html:29
+#: templates/orders/myorders.html:17 templates/orders/orderday.html:21
 msgid "State"
 msgstr "Status"
 
-#: models.py:123
-#: models.py:133
-#: models.py:151
+#: models.py:123 models.py:133 models.py:151
 msgid "Order"
 msgstr "Bestellung"
 
@@ -321,8 +265,7 @@ msgstr "PDF-Datei"
 msgid "Company Name"
 msgstr "Firmenname"
 
-#: models.py:172
-#: templates/orders/list_printouts.html:15
+#: models.py:172 templates/orders/list_printouts.html:15
 msgid "Generated"
 msgstr "Generiert"
 
@@ -330,8 +273,7 @@ msgstr "Generiert"
 msgid "Printout"
 msgstr "Ausdruck"
 
-#: models.py:179
-#: views/pdf.py:144
+#: models.py:179 views/pdf.py:144
 msgid "Printouts"
 msgstr "Ausdrucke"
 
@@ -343,8 +285,7 @@ msgstr "Neuer Bestelltag"
 msgid "Orderdays"
 msgstr "Bestelltage"
 
-#: templates/orders/add_oday.html:13
-#: templates/orders/manage_orders.html:63
+#: templates/orders/add_oday.html:13 templates/orders/manage_orders.html:63
 #: templates/orders/manage_orders.html:68
 #: templates/orders/new_supplier.html:17
 msgid "Save"
@@ -376,31 +317,25 @@ msgstr "Ja"
 msgid "No"
 msgstr "Nein"
 
-#: templates/orders/delete.html:14
-#: templates/orders/select_article.html:22
+#: templates/orders/delete.html:14 templates/orders/select_article.html:22
 #: templates/orders/select_article.html:27
 msgid "Next"
 msgstr "Weiter"
 
-#: templates/orders/delivery.html:6
-#: views/web.py:60
+#: templates/orders/delivery.html:6 views/web.py:60
 msgid "Open Orders"
 msgstr "Offene Bestellungen"
 
-#: templates/orders/delivery.html:11
-#: templates/orders/delivery.html.py:48
-#: templates/orders/manage_order.html:24
-#: templates/orders/old_orders.html:12
+#: templates/orders/delivery.html:11 templates/orders/delivery.html.py:48
+#: templates/orders/manage_order.html:24 templates/orders/old_orders.html:12
 msgid "Art. ID"
 msgstr "Art.-Nr."
 
-#: templates/orders/delivery.html:14
-#: templates/orders/delivery.html.py:51
+#: templates/orders/delivery.html:14 templates/orders/delivery.html.py:51
 msgid "Deliveries"
 msgstr "Lieferungen"
 
-#: templates/orders/delivery.html:16
-#: templates/orders/delivery.html.py:53
+#: templates/orders/delivery.html:16 templates/orders/delivery.html.py:53
 #: templates/orders/manage_order.html:28
 msgid "Orderer"
 msgstr "Besteller"
@@ -409,8 +344,7 @@ msgstr "Besteller"
 msgid "Missing"
 msgstr "Ausstehend"
 
-#: templates/orders/delivery.html:34
-#: templates/orders/old_orders.html:41
+#: templates/orders/delivery.html:34 templates/orders/old_orders.html:43
 #: templates/orders/controlling/bycost.html:27
 msgid "All"
 msgstr "Gesamt"
@@ -427,8 +361,7 @@ msgstr "Durchschn. Zeit bis Lieferung"
 msgid "days"
 msgstr "Tage"
 
-#: templates/orders/delivery.html:76
-#: templates/orders/manage_order.html:105
+#: templates/orders/delivery.html:76 templates/orders/manage_order.html:105
 msgid "Changes"
 msgstr "Änderungen"
 
@@ -448,8 +381,7 @@ msgstr "Zuständiger Besteller"
 msgid "Open orders"
 msgstr "Offene Bestellungen"
 
-#: templates/orders/index.html:15
-#: templates/orders/list_printouts.html:23
+#: templates/orders/index.html:15 templates/orders/list_printouts.html:23
 msgid "No order day found."
 msgstr "Kein Bestelltag gefunden."
 
@@ -457,10 +389,8 @@ msgstr "Kein Bestelltag gefunden."
 msgid "Printouts by day"
 msgstr "Ausdrucke nach Bestelltag"
 
-#: templates/orders/list_printouts.html:9
-#: templates/orders/manage_order.html:8
-#: templates/orders/manage_order.html:57
-#: templates/orders/orderday.html:8
+#: templates/orders/list_printouts.html:9 templates/orders/manage_order.html:8
+#: templates/orders/manage_order.html:57 templates/orders/orderday.html:8
 msgid "Sum"
 msgstr "Summe"
 
@@ -480,21 +410,17 @@ msgstr "Alle Änderungen werden automatisch gespeichert."
 msgid "Generate printouts"
 msgstr "Ausdrucke (PDF) generieren"
 
-#: templates/orders/manage_order.html:30
-#: templates/orders/manage_order.html:94
-#: templates/orders/manage_order.html:95
-#: templates/orders/orderday.html:58
+#: templates/orders/manage_order.html:30 templates/orders/manage_order.html:94
+#: templates/orders/manage_order.html:95 templates/orders/orderday.html:58
 #: templates/orders/orderday.html.py:59
 msgid "Delete"
 msgstr "Löschen"
 
-#: templates/orders/manage_order.html:44
-#: templates/orders/manage_order.html:51
+#: templates/orders/manage_order.html:44 templates/orders/manage_order.html:51
 msgid "Only correct typos here!"
 msgstr "Bitte nur Schreibfehler hier korrigieren!"
 
-#: templates/orders/manage_order.html:97
-#: templates/orders/orderday.html:63
+#: templates/orders/manage_order.html:97 templates/orders/orderday.html:63
 msgid "Not possible"
 msgstr "Nicht möglich"
 
@@ -510,13 +436,11 @@ msgstr "Bitte wählen Sie den Bestelltag zum bearbeiten aus"
 msgid "Select"
 msgstr "Auswählen"
 
-#: templates/orders/manage_orders.html:22
-#: views/web.py:257
+#: templates/orders/manage_orders.html:22 views/web.py:256
 msgid "Add new orderday"
 msgstr "Neuen Bestelltag hinzufügen"
 
-#: templates/orders/manage_orders.html:23
-#: views/web.py:271
+#: templates/orders/manage_orders.html:23 views/web.py:270
 msgid "List of all printouts"
 msgstr "Liste aller Ausdrucke"
 
@@ -532,8 +456,7 @@ msgstr "Bestellung machen"
 msgid "Accept / Reject orders"
 msgstr "Bestellungen akzeptieren / zurückweisen"
 
-#: templates/orders/myorders.html:6
-#: templates/orders/orderday.html:6
+#: templates/orders/myorders.html:6 templates/orders/orderday.html:6
 msgid "Orders for"
 msgstr "Bestellungen für"
 
@@ -553,13 +476,11 @@ msgstr "Artikelnummer"
 msgid "Single Price"
 msgstr "Einzelpreis"
 
-#: templates/orders/myorders.html:38
-#: templates/orders/old_orders.html:30
+#: templates/orders/myorders.html:38 templates/orders/old_orders.html:32
 msgid "ReOrder"
 msgstr "Neu bestellen"
 
-#: templates/orders/myorders.html:57
-#: templates/orders/old_orders.html:50
+#: templates/orders/myorders.html:57 templates/orders/old_orders.html:52
 #: templates/orders/orderday.html:102
 msgid "No orders found."
 msgstr "Keine Bestellungen gefunden."
@@ -580,7 +501,11 @@ msgstr "Artikelname"
 msgid "Last Orderer"
 msgstr "Letzte(r) Besteller"
 
-#: templates/orders/order.html:28
+#: templates/orders/old_orders.html:17
+msgid "Last Order"
+msgstr "Letzte Bestellung"
+
+#: templates/orders/order.html:32
 msgid "Klick to enter message."
 msgstr "Klicken, um eine Nachricht einzugeben."
 
@@ -612,8 +537,7 @@ msgstr "Dieser Vorgang kann einige Zeit dauern!"
 msgid "Fax printouts"
 msgstr "FAX-Ausdrucke"
 
-#: templates/orders/printouts.html:12
-#: templates/orders/printouts.html.py:19
+#: templates/orders/printouts.html:12 templates/orders/printouts.html.py:19
 msgid "Generate PDF"
 msgstr "Generiere PDF"
 
@@ -691,59 +615,56 @@ msgstr "Es wurde nichts gelöscht. Benutzerabbruch."
 msgid "Delete Order"
 msgstr "Bestellung löschen"
 
-#: views/web.py:126
-#, python-format
-msgid "Your order %s was saved."
-msgstr "Ihre Bestellung %s wurde gespeichert."
-
-#: views/web.py:128
-msgid "Please fill the required fields."
-msgstr "Bitte füllen Sie die Pflichtfelder aus."
-
-#: views/web.py:135
+#: views/web.py:134
 msgid "Sum of costs must be 100!"
 msgstr "Die Summe der Kostenstellen muss 100 ergeben!"
 
-#: views/web.py:136
+#: views/web.py:135
 #, python-format
 msgid "Price in %s."
 msgstr "Preis in %s."
 
-#: views/web.py:177
+#: views/web.py:176
 #, python-format
 msgid "Company %s already exists."
 msgstr "Firma %s existiert schon."
 
-#: views/web.py:187
+#: views/web.py:186
 #, python-format
 msgid "New company %s saved."
 msgstr "Neue Firma %s gespeichert."
 
-#: views/web.py:189
+#: views/web.py:188
 msgid "Please correct the wrong fields."
 msgstr "Bitte korrigieren Sie die falschen Felder."
 
-#: views/web.py:202
+#: views/web.py:201
 #, python-format
 msgid "%s selected."
 msgstr "%s ausgewählt."
 
-#: views/web.py:244
+#: views/web.py:243
 msgid "The user you specified is not valid."
 msgstr "Der angegebene Benutzer ist nicht gültig."
 
-#: views/web.py:249
+#: views/web.py:248
 #, python-format
 msgid "New orderday %s added."
 msgstr "Neuer Bestelltag %s hinzugefügt."
 
-#: views/web.py:252
+#: views/web.py:251
 msgid "Please correct the form."
 msgstr "Bitte korrigieren Sie das Formular."
 
-#: views/web.py:278
+#: views/web.py:277
 msgid "Sums by Cost"
 msgstr "Summen nach Kostenstellen"
+
+#~ msgid "Your order %s was saved."
+#~ msgstr "Ihre Bestellung %s wurde gespeichert."
+
+#~ msgid "Please fill the required fields."
+#~ msgstr "Bitte füllen Sie die Pflichtfelder aus."
 
 #~ msgid "Count for %(name)s was changed from %(old)d to %(count)d."
 #~ msgstr "Die Anzahl für %(name)s wurde von %(old)d auf %(count)d geändert."
