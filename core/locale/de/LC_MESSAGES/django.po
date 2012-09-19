@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ozone 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-18 13:44+0200\n"
+"POT-Creation-Date: 2012-09-19 09:09+0200\n"
 "PO-Revision-Date: 2012-09-13 15:14+0100\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <weimann@bbz-chemie.de>\n"
@@ -114,44 +114,21 @@ msgstr "Kurs"
 msgid "School days"
 msgstr "Schultage"
 
-#: json_views.py:20
-#, python-format
-msgid "Presence updated with %(entry)s (%(disp)s)."
-msgstr "Anwesenheit aktualisiert mit %(entry)s (%(disp)s)."
-
-#: json_views.py:24
-msgid "Presence set to unknown!"
-msgstr "Anwesenheit auf unbekannt (leer) gesetzt!"
-
-#: json_views.py:28
-#, python-format
-msgid "Lateness %d minutes deleted!"
-msgstr "%d Min. Verspätung gelöscht!"
-
-#: json_views.py:32
-#, python-format
-msgid "Lateness set to %d minutes."
-msgstr "Verspätung auf %d Min. gesetzt."
-
-#: json_views.py:37
-msgid "Nothing changed."
-msgstr "Keine Änderungen."
-
 #: menu.py:17
 msgid "Core"
 msgstr "Hauptmenü"
 
-#: menu.py:18 models.py:143 views.py:200 templates/companies/list_all.html:9
-#: templates/presence/generate_pdf.html:34
+#: menu.py:18 models.py:143 templates/companies/list_all.html:9
+#: templates/presence/generate_pdf.html:34 views/web.py:175
 msgid "Companies"
 msgstr "Firmen"
 
-#: menu.py:19 models.py:368 views.py:263 templates/birthdays.html:30
-#: templates/students/list_all.html:5
+#: menu.py:19 models.py:368 templates/birthdays.html:30
+#: templates/students/list_all.html:5 views/web.py:238
 msgid "Students"
 msgstr "Azubis"
 
-#: menu.py:20 models.py:279 views.py:292
+#: menu.py:20 models.py:279 views/web.py:267
 msgid "Groups"
 msgstr "Gruppen"
 
@@ -171,7 +148,7 @@ msgstr "Extra"
 msgid "Coming Birthdays"
 msgstr "Nächste Geburtstage"
 
-#: menu.py:27 views.py:93
+#: menu.py:27 views/web.py:68
 msgid "Internal Phonelist"
 msgstr "Interne Telefonliste"
 
@@ -553,14 +530,6 @@ msgstr "Ausdruck"
 msgid "Printouts"
 msgstr "Ausdrucke"
 
-#: pdf_views.py:115
-msgid "Please correct the required fields."
-msgstr "Bitte korrigieren Sie die fehlerhaften Felder."
-
-#: pdf_views.py:118
-msgid "Presence PDF-Generation"
-msgstr "Anwesenheit PDF-Erzeugung"
-
 #: utils.py:53
 msgid "An internal server error occured."
 msgstr "Der Server hat einen internen Fehler."
@@ -568,133 +537,6 @@ msgstr "Der Server hat einen internen Fehler."
 #: utils.py:54
 msgid "Ozone Error"
 msgstr "Ozone Software Fehler"
-
-#: views.py:52
-msgid "All Groups"
-msgstr "Alle Gruppen"
-
-#: views.py:72
-msgid "Ozone Home"
-msgstr "Ozone Startseite"
-
-#: views.py:82
-msgid "All changes saved."
-msgstr "Alle Änderungen gespeichert."
-
-#: views.py:85 templates/profile.html:5
-msgid "My Profile"
-msgstr "Mein Profil"
-
-#: views.py:106
-msgid "The News were added."
-msgstr "Die News wurden hinzugefügt."
-
-#: views.py:108
-msgid "Please correct the wrong fields."
-msgstr "Bitte korrigieren Sie die fehlerhaften Felder."
-
-#: views.py:111
-msgid "Add News"
-msgstr "News hinzufügen"
-
-#: views.py:128
-msgid "New note saved."
-msgstr "Neue Bemerkung gespeichert."
-
-#: views.py:131
-msgid "Please enter subject and text."
-msgstr "Bitte Betreff und Text eingeben."
-
-#: views.py:134 templates/companies/details.html:47
-msgid "Add Note"
-msgstr "Bemerkung hinzufügen"
-
-#: views.py:150
-msgid "Login accepted."
-msgstr "Anmeldedaten akzeptiert."
-
-#: views.py:153
-msgid "Account is disabled."
-msgstr "Der Account ist deaktiviert."
-
-#: views.py:155
-msgid "Username and/or password incorrect."
-msgstr "Benutzername und/oder Passwort sind falsch."
-
-#: views.py:160
-msgid "Login Page"
-msgstr "Anmeldeseite"
-
-#: views.py:166
-msgid "Logged out."
-msgstr "Abgemeldet."
-
-#: views.py:175
-#, python-format
-msgid "Details: %s"
-msgstr "Details: %s"
-
-#: views.py:190 views.py:244
-msgid "Invalid search query."
-msgstr "Ungültige Suchanfrage."
-
-#: views.py:222
-msgid "All Companies"
-msgstr "Alle Firmen"
-
-#: views.py:263
-msgid "Students Archive"
-msgstr "Azubi-Archiv"
-
-#: views.py:283
-msgid "List of all students"
-msgstr "Liste aller Azubis"
-
-#: views.py:301 views.py:336
-msgid "Group ID must be an integer."
-msgstr "Gruppen-ID muss eine Zahl sein."
-
-#: views.py:306 views.py:341
-#, python-format
-msgid "Group with ID %d does not exist."
-msgstr "Gruppen-ID %d existiert nicht."
-
-#: views.py:308
-msgid "Group Detail"
-msgstr "Details Gruppe"
-
-#: views.py:322
-msgid "Group Overview"
-msgstr "Überblick Gruppen"
-
-#: views.py:353
-msgid "End date before start date."
-msgstr "Das Enddatum liegt vor dem Anfangsdatum."
-
-#: views.py:361
-msgid "Presence for Group"
-msgstr "Anwesenheiten für Gruppe"
-
-#: views.py:374
-msgid "Presence for Student"
-msgstr "Anwesenheiten für Azubi"
-
-#: views.py:387
-#, python-format
-msgid "Presence %s"
-msgstr "Anwesenheit %s"
-
-#: views.py:412
-msgid "Next Birthdays"
-msgstr "Nächste Geburtstage"
-
-#: views.py:423
-msgid "PIL is not installed."
-msgstr "PIL ist nicht installiert."
-
-#: views.py:430
-msgid "Unsupported barcode format."
-msgstr "Nicht unterstütztes Strichcode-Format."
 
 #: templates/birthdays.html:6
 #, python-format
@@ -785,6 +627,10 @@ msgstr "Telefonliste"
 msgid "Private"
 msgstr "Privat"
 
+#: templates/profile.html:5 views/web.py:60
+msgid "My Profile"
+msgstr "Mein Profil"
+
 #: templates/profile.html:6
 msgid "Personal data"
 msgstr "Persönliche Daten"
@@ -838,6 +684,10 @@ msgstr "Jahre"
 #: templates/companies/details.html:36
 msgid "No"
 msgstr "Nein"
+
+#: templates/companies/details.html:47 views/web.py:109
+msgid "Add Note"
+msgstr "Bemerkung hinzufügen"
 
 #: templates/companies/details.html:57
 msgid "No contacts defined."
@@ -1083,6 +933,133 @@ msgstr "Keine Azubis gefunden."
 #: templates/students/list_all.html:38
 msgid "No students found"
 msgstr "Keine Azubis gefunden."
+
+#: views/helper.py:28
+msgid "All Groups"
+msgstr "Alle Gruppen"
+
+#: views/pdf.py:119
+msgid "Presence PDF-Generation"
+msgstr "Anwesenheit PDF-Erzeugung"
+
+#: views/web.py:47
+msgid "Ozone Home"
+msgstr "Ozone Startseite"
+
+#: views/web.py:86
+msgid "Add News"
+msgstr "News hinzufügen"
+
+#: views/web.py:135
+msgid "Login Page"
+msgstr "Anmeldeseite"
+
+#: views/web.py:150
+#, python-format
+msgid "Details: %s"
+msgstr "Details: %s"
+
+#: views/web.py:197
+msgid "All Companies"
+msgstr "Alle Firmen"
+
+#: views/web.py:238
+msgid "Students Archive"
+msgstr "Azubi-Archiv"
+
+#: views/web.py:258
+msgid "List of all students"
+msgstr "Liste aller Azubis"
+
+#: views/web.py:283
+msgid "Group Detail"
+msgstr "Details Gruppe"
+
+#: views/web.py:297
+msgid "Group Overview"
+msgstr "Überblick Gruppen"
+
+#: views/web.py:336
+msgid "Presence for Group"
+msgstr "Anwesenheiten für Gruppe"
+
+#: views/web.py:349
+msgid "Presence for Student"
+msgstr "Anwesenheiten für Azubi"
+
+#: views/web.py:362
+#, python-format
+msgid "Presence %s"
+msgstr "Anwesenheit %s"
+
+#: views/web.py:387
+msgid "Next Birthdays"
+msgstr "Nächste Geburtstage"
+
+#: views/web.py:398
+msgid "PIL is not installed."
+msgstr "PIL ist nicht installiert."
+
+#: views/web.py:405
+msgid "Unsupported barcode format."
+msgstr "Nicht unterstütztes Strichcode-Format."
+
+#~ msgid "Presence updated with %(entry)s (%(disp)s)."
+#~ msgstr "Anwesenheit aktualisiert mit %(entry)s (%(disp)s)."
+
+#~ msgid "Presence set to unknown!"
+#~ msgstr "Anwesenheit auf unbekannt (leer) gesetzt!"
+
+#~ msgid "Lateness %d minutes deleted!"
+#~ msgstr "%d Min. Verspätung gelöscht!"
+
+#~ msgid "Lateness set to %d minutes."
+#~ msgstr "Verspätung auf %d Min. gesetzt."
+
+#~ msgid "Nothing changed."
+#~ msgstr "Keine Änderungen."
+
+#~ msgid "Please correct the required fields."
+#~ msgstr "Bitte korrigieren Sie die fehlerhaften Felder."
+
+#~ msgid "All changes saved."
+#~ msgstr "Alle Änderungen gespeichert."
+
+#~ msgid "The News were added."
+#~ msgstr "Die News wurden hinzugefügt."
+
+#~ msgid "Please correct the wrong fields."
+#~ msgstr "Bitte korrigieren Sie die fehlerhaften Felder."
+
+#~ msgid "New note saved."
+#~ msgstr "Neue Bemerkung gespeichert."
+
+#~ msgid "Please enter subject and text."
+#~ msgstr "Bitte Betreff und Text eingeben."
+
+#~ msgid "Login accepted."
+#~ msgstr "Anmeldedaten akzeptiert."
+
+#~ msgid "Account is disabled."
+#~ msgstr "Der Account ist deaktiviert."
+
+#~ msgid "Username and/or password incorrect."
+#~ msgstr "Benutzername und/oder Passwort sind falsch."
+
+#~ msgid "Logged out."
+#~ msgstr "Abgemeldet."
+
+#~ msgid "Invalid search query."
+#~ msgstr "Ungültige Suchanfrage."
+
+#~ msgid "Group ID must be an integer."
+#~ msgstr "Gruppen-ID muss eine Zahl sein."
+
+#~ msgid "Group with ID %d does not exist."
+#~ msgstr "Gruppen-ID %d existiert nicht."
+
+#~ msgid "End date before start date."
+#~ msgstr "Das Enddatum liegt vor dem Anfangsdatum."
 
 #~ msgid "PDF generation is not installed."
 #~ msgstr "PDF Erzeugung ist nicht installiert."
