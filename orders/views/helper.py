@@ -14,7 +14,8 @@ def get_order_for_every_article():
     for art in Article.objects.all().order_by('name'):
         try:
             order = Order.objects.select_related().filter(
-                article=art).latest('added')
+                article=art, state__in=[u'ordered', u'delivered']
+                ).latest('added')
             order.userlist = [x.username for x in order.users.all()]
             orders.append(order)
         except Order.DoesNotExist:

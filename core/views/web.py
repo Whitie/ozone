@@ -30,6 +30,7 @@ except ImportError:
 
 # Create your views here.
 
+
 def index(req):
     if req.user.is_authenticated():
         news_list = News.objects.all()
