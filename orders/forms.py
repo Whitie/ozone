@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from datetime import date
-
 from django import forms
 from django.contrib.auth.models import User, AnonymousUser
 from django.utils.translation import ugettext_lazy as _
@@ -21,7 +19,8 @@ def get_user(uid):
 
 
 class OrderDayForm(forms.Form):
-    day = forms.DateField(label=_(u'Next Orderday'), input_formats=DATE_FORMATS,
+    day = forms.DateField(label=_(u'Next Orderday'),
+        input_formats=DATE_FORMATS,
         help_text=_(u'Use this format: dd.mm.yyyy'))
     user = forms.TypedChoiceField(label=_(u'Responsible User'),
         coerce=get_user, empty_value=AnonymousUser())
@@ -35,12 +34,13 @@ class OrderOldForm(forms.Form):
 class OrderForm(forms.Form):
     count = _wid.IntegerField5(label=_(u'Count'))
     art_name = forms.CharField(label=_(u'Article'), max_length=100)
-    art_supplier = forms.ChoiceField(label=_(u'Supplier'))
+    art_supplier_name = forms.CharField(label=_(u'Supplier'), max_length=100)
+    art_supplier_id = forms.IntegerField(widget=forms.HiddenInput)
     art_id = forms.CharField(label=_(u'Identifier'), max_length=50,
         required=False)
     art_q = forms.CharField(label=_(u'Quantity'), max_length=20)
     art_price = forms.CharField(label=_(u'Price'), required=False)
-    memo = forms.CharField(label=_(u'Memo'), widget=forms.Textarea(),
+    memo = forms.CharField(label=_(u'Memo'), widget=forms.Textarea,
         required=False)
     oday = forms.ChoiceField(label=_(u'Order Day'))
     exam = forms.BooleanField(label=_(u'Exam'), required=False)

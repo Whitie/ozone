@@ -38,6 +38,7 @@ urlpatterns += patterns('orders.views.ajax',
         name='orders-api-repr'),
     url(r'^api/change_order/$', 'change_order', name='orders-api-change'),
     url(r'^api/delivery/$', 'update_delivery', name='orders-api-delivery'),
+    url(r'^api/suppliers/$', 'get_suppliers', name='orders-api-suppliers'),
 )
 
 urlpatterns += patterns('orders.views.pdf',

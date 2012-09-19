@@ -42,15 +42,23 @@ def get_articles(req):
 
 
 @json_view
+def get_suppliers(req):
+    term = req.GET.get('term')
+    sup = [{'value': x.id, 'label': x.name} for x in Company.objects.filter(
+        name__icontains=term).order_by('name')]
+    return sup
+
+
+@json_view
 def api_article(req, article_id=0):
     article_id = int(article_id)
     if not article_id:
         return {'count': 1}
     oday = h.get_next_odays()[0]
     a = Article.objects.get(pk=article_id)
-    data = dict(art_name=a.name, art_supplier=a.supplier.id,
+    data = dict(art_name=a.name, art_supplier_id=a.supplier.id,
         art_id=a.ident, art_q=a.quantity, art_price=float(a.price),
-        count=1, oday=oday.id)
+        count=1, oday=oday.id, art_supplier_name=a.supplier.short_name)
     return data
 
 

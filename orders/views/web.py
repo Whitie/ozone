@@ -96,7 +96,6 @@ def order(req, article_id=0):
         choice_filter = {'day__gt': date.today()}
     if req.method == 'POST':
         form = OrderForm(req.POST)
-        form.fields['art_supplier'].choices = h.get_supplier_choices()
         form.fields['oday'].choices = h.get_oday_choices(choice_filter)
         if form.is_valid():
             costs = h.get_costs(req.POST)
@@ -107,7 +106,7 @@ def order(req, article_id=0):
             if created:
                 art.quantity = form.cleaned_data['art_q']
                 art.supplier = Company.objects.get(
-                    id=int(form.cleaned_data['art_supplier']))
+                    id=form.cleaned_data['art_supplier_id'])
                 art.save()
             order = Order.objects.create(count=form.cleaned_data['count'],
                 article=art,
@@ -123,12 +122,12 @@ def order(req, article_id=0):
             order.for_repair = form.cleaned_data['repair']
             order.users.add(req.user)
             order.save()
-            messages.success(req, _(u'Your order %s was saved.' % order))
+            messages.success(req, u'Ihre Bestellung %s wurde gespeichert.'
+                             % order)
             return redirect('orders-detail', order_id=order.order_day.id)
-        messages.error(req, _(u'Please fill the required fields.'))
+        messages.error(req, u'Bitte füllen Sie die benötigten Felder aus.')
     else:
         form = OrderForm()
-        form.fields['art_supplier'].choices = h.get_supplier_choices()
         form.fields['oday'].choices = h.get_oday_choices(choice_filter)
     costs = Cost.objects.all().order_by('ident')
     ctx = dict(page_title=_(u'Orders'), form=form, menus=menus, costs=costs,

@@ -5,14 +5,18 @@
 <form method="post" action="{% url orders-order %}"
     onsubmit="return check_costs();">
 {% csrf_token %}
+{{ form.art_supplier_id }}
 <table style="border:1px solid blue;margin:5px auto;">
 <tr>
     <th>{{ form.count.label_tag }}:</th>
     <td>{{ form.count }}{{ form.count.errors }}</td>
     <th>{{ form.art_name.label_tag }}:</th>
     <td>{{ form.art_name }}{{ form.art_name.errors }}</td>
-    <th>{{ form.art_supplier.label_tag }}:</th>
-    <td>{{ form.art_supplier }}{{ form.art_supplier.errors }}</td>
+    <th>{{ form.art_supplier_name.label_tag }}:</th>
+    <td>{{ form.art_supplier_name }}
+
+        {{ form.art_supplier_name.errors }}
+    </td>
 </tr>
 <tr>
     <th>{{ form.art_id.label_tag }}:</th>
@@ -63,16 +67,29 @@
 </form>
 
 <script type="text/javascript">
-$(document).ready(function() {
+$(function() {
     $.getJSON('{% url orders-api-article article_id %}', function(data) {
         $.each(data, function(key, val) {
             $("#id_" + key).val(val);
         });
     });
 });
+$(function() {
+    $('#id_art_supplier_name').autocomplete({
+        minLength: 1,
+        source: '{% url orders-api-suppliers %}',
+        select: function(event, ui) {
+            $('#id_art_supplier_id').val(ui.item.value);
+            $('#id_art_supplier_name').val(ui.item.label);
+            return false;
+            }
+        });
+});
+
 $('#memo_cell').click(function() {
     $('#memo_field').toggle();
 });
+
 function get_sum() {
     var sum = 0;
     $(".costs").each(function(i) {
