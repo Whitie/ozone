@@ -45,7 +45,7 @@ def get_articles(req):
 def get_suppliers(req):
     term = req.GET.get('term')
     sup = [{'value': x.id, 'label': x.name} for x in Company.objects.filter(
-        name__icontains=term).order_by('name')]
+        name__icontains=term, rate=True).order_by('name')]
     return sup
 
 
