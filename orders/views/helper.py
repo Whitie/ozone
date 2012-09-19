@@ -12,11 +12,13 @@ from orders.models import OrderDay, Cost, Order, Article
 def get_order_for_every_article():
     orders = []
     for art in Article.objects.all().order_by('name'):
+        cond = {'article': art, 'state__in': [u'ordered', u'delivered']}
         try:
-            order = Order.objects.select_related().filter(
-                article=art, state__in=[u'ordered', u'delivered']
+            order = Order.objects.select_related().filter(**cond
                 ).latest('added')
             order.userlist = [x.username for x in order.users.all()]
+            order.olist = [x.ordered.strftime('%d.%m.%Y') for x in
+                Order.objects.filter(**cond).order_by('-ordered')]
             orders.append(order)
         except Order.DoesNotExist:
             pass
