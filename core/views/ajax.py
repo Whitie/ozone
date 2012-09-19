@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from django.utils.translation import ugettext_lazy as _
-from django.views.decorators.http import require_POST
-
 from core.utils import json_rpc
 from core.models import PresenceDay
 

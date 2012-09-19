@@ -23,7 +23,8 @@ from core.forms import PresenceForm
 
 
 PATH = os.path.dirname(os.path.abspath(__file__))
-TEMPLATE_PATH = os.path.join(PATH, 'latex')
+TEMPLATE_PATH = os.path.normpath(
+    os.path.join(PATH, '..', 'templates', 'latex'))
 
 
 def iter_days(start, end):

@@ -3,7 +3,7 @@
 from django.conf.urls.defaults import *
 
 
-urlpatterns = patterns('core.views',
+urlpatterns = patterns('core.views.web',
     # Common views
     url(r'^$', 'index', name='core-index'),
     url(r'^add_news/$', 'add_news', name='core-add-news'),
@@ -50,7 +50,7 @@ urlpatterns = patterns('core.views',
 )
 
 # JSON API
-urlpatterns += patterns('core.json_views',
+urlpatterns += patterns('core.views.ajax',
     url(r'^api/presence/update/$', 'update_presence',
         name='core-api-presence-update'),
     url(r'^api/presence/update_day/$', 'update_day',
@@ -58,7 +58,7 @@ urlpatterns += patterns('core.json_views',
 )
 
 # PDF generation
-urlpatterns += patterns('core.pdf_views',
+urlpatterns += patterns('core.views.pdf',
     url(r'^pdf/test/$', 'pdf', name='core-pdfgen'),
     url(r'^pdf/presence/clean/(?P<gid>\d+)/'
         r'(?P<year>\d{4})/(?P<month>\d{1,2})/$', 'generate_presence_clean',

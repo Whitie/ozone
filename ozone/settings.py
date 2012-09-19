@@ -10,7 +10,7 @@ sys.path.insert(0, EXT_DIR)
 
 # Django settings for ozone project.
 
-VERSION = '1.5.3'
+VERSION = '1.6'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -275,8 +275,8 @@ AD_CREATE_GROUPS = True
 
 # Don't query AD again for x seconds (default: 8 hours)
 # Set to 0 for no cache
-#AD_CACHE_TIME = 8 * 60 * 60
-AD_CACHE_TIME = 0
+AD_CACHE_TIME = 8 * 60 * 60
+#AD_CACHE_TIME = 0
 
 ###############################################################################
 

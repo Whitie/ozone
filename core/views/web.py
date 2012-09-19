@@ -2,7 +2,6 @@
 
 import string
 
-from calendar import monthrange
 from datetime import datetime, date, timedelta
 
 from django.http import HttpResponse
@@ -12,45 +11,21 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Q
 
 from core import utils
 from core.models import (News, Company, Student, StudentGroup, Contact, Note,
-    CompanyRating, PresenceDay, UserProfile, PRESENCE_CHOICES)
+    UserProfile, PRESENCE_CHOICES)
 from core.forms import (NewsForm, SearchForm, StudentSearchForm, NoteForm,
-                        CompanyRatingForm, ProfileForm)
+                        ProfileForm)
+from core.views import helper as h
 from core.menu import menus
 from barcode.codex import Code39
 try:
     from barcode.writer import ImageWriter
 except ImportError:
     ImageWriter = None
-
-
-# Helper
-
-def get_presence(students, start, end):
-    l = []
-    dt = end - start
-    for s in students:
-        tmp = []
-        for i in range(dt.days + 1):
-            d = start + timedelta(days=i)
-            if d.weekday() not in (5, 6):
-                day, created = PresenceDay.objects.get_or_create(student=s,
-                    date=d)
-                if created:
-                    day.save()
-                tmp.append(day)
-        l.append((s, tmp))
-    return l
-
-
-def get_studentgroups():
-    return [(0, _(u'All Groups'))] + [(x.id, x.name()) for x in
-                                      StudentGroup.objects.all()]
 
 
 # Create your views here.
@@ -229,7 +204,7 @@ def list_all_companies(req, only_with_students=False):
 def list_students(req, startchar='', archive=False):
     if req.method == 'POST':
         form = StudentSearchForm(req.POST)
-        form.fields['group'].choices = get_studentgroups()
+        form.fields['group'].choices = h.get_studentgroups()
         if form.is_valid():
             s = form.cleaned_data['search']
             q = (Q(lastname__istartswith=s) | Q(company__name__icontains=s) |
@@ -244,7 +219,7 @@ def list_students(req, startchar='', archive=False):
             messages.error(req, u'Ungültige Suche.')
     else:
         form = StudentSearchForm()
-        form.fields['group'].choices = get_studentgroups()
+        form.fields['group'].choices = h.get_studentgroups()
         if not startchar:
             students = Student.objects.select_related().all()
             for c in string.ascii_uppercase:
@@ -356,7 +331,7 @@ def presence_for_group(req, gid):
     req.session['presence_end'] = end
     dt = end - start
     _students = group.students.all().order_by('company__name', 'lastname')
-    students = get_presence(_students, start, end)
+    students = h.get_presence(_students, start, end)
     days = (start + timedelta(days=x) for x in xrange(dt.days + 1))
     ctx = dict(page_title=_(u'Presence for Group'), group=group,
         students=students, menus=menus, start=start, end=end,
@@ -370,7 +345,7 @@ def presence_edit(req, student_id):
     _student = Student.objects.select_related().get(id=int(student_id))
     start = req.session.get('presence_start', date.today())
     end = req.session.get('presence_end', date.today())
-    student, days = get_presence([_student], start, end)[0]
+    student, days = h.get_presence([_student], start, end)[0]
     ctx = dict(page_title=_(u'Presence for Student'), menus=menus,
         student=student, days=days, start=start, end=end,
         choices=PRESENCE_CHOICES)
