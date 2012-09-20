@@ -35,7 +35,7 @@ class CompanyAdmin(admin.ModelAdmin):
     list_display = ('name', 'short_name', 'phone', 'fax', 'customer_number',
                     'student_count')
     list_display_links = ('name', 'short_name')
-    list_editable = ('phone', 'fax')
+    list_editable = ('phone', 'fax', 'customer_number')
     list_filter = ('cooperations__full', 'cooperations__job', 'rate')
     ordering = ('name',)
     save_on_top = True
@@ -71,11 +71,11 @@ class CompanyRatingAdmin(admin.ModelAdmin):
 
 
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ('lastname', 'firstname', 'group', 'company', 'birthdate',
-                    'phone', 'email', 'finished')
+    list_display = ('lastname', 'firstname', 'group', 'company',
+                    'birthdate', 'phone', 'email', 'finished')
     list_display_links = ('lastname',)
     list_editable = ('phone', 'email', 'finished')
-    list_filter = ('group', 'company', 'finished', 'group__school_nr')
+    list_filter = ('group', 'company', 'finished')
     save_on_top = True
     search_fields = ('lastname', 'company__name', 'group__job_short',
                      'barcode', 'group__school_nr')
@@ -98,9 +98,32 @@ class StudentGroupAdmin(admin.ModelAdmin):
 
 
 class MemoAdmin(admin.ModelAdmin):
-    list_display = ('created_by', '__unicode__')
-    list_display_links = ('created_by',)
+    list_display = ('student', 'text', 'created_by', 'created')
+    list_display_links = ('student',)
+    list_filter = ('student__group', 'created_by', 'created')
     search_fields = ('created_by__last_name', 'student__lastname')
+    ordering = ('-created', 'student__group')
+    exclude = ('created_by',)
+
+    def save_model(self, req, obj, form, change):
+        obj.created_by = req.user
+        obj.save()
+
+
+class NoteAdmin(admin.ModelAdmin):
+    list_display = ('get_contact', 'subject', 'text', 'user', 'date')
+    list_display_links = ('get_contact',)
+    list_filter = ('user', 'date')
+    search_fields = ('user__last_name', 'contact__lastname',
+                     'contact__company__name', 'subject')
+    exclude = ('user',)
+
+    def get_contact(self, obj):
+        return u'%s (%s)' % (obj.contact, obj.contact.company.short_name)
+
+    def save_model(self, req, obj, form, change):
+        obj.user = req.user
+        obj.save()
 
 
 class NewsAdmin(admin.ModelAdmin):
@@ -152,8 +175,20 @@ class PresencePrintoutAdmin(admin.ModelAdmin):
     ordering = ('date', 'company__name', 'group__job')
 
 
+class PartAdmin(admin.ModelAdmin):
+    list_display = ('name', 'get_users', 'description')
+    list_display_links = ('name',)
+    search_fields = ('name',)
+    ordering = ('name',)
+
+    @named(_(u'User'))
+    def get_users(self, obj):
+        users = [unicode(x) for x in obj.profiles.all()]
+        return u', '.join(users)
+
+
 admin.site.register(News, NewsAdmin)
-admin.site.register(Part)
+admin.site.register(Part, PartAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(Company, CompanyAdmin)
@@ -163,5 +198,5 @@ admin.site.register(Student, StudentAdmin)
 admin.site.register(StudentGroup, StudentGroupAdmin)
 admin.site.register(Memo, MemoAdmin)
 admin.site.register(PresenceDay, PresenceDayAdmin)
-admin.site.register(Note)
+admin.site.register(Note, NoteAdmin)
 admin.site.register(PresencePrintout, PresencePrintoutAdmin)

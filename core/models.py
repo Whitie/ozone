@@ -43,7 +43,7 @@ class UserProfile(CommonInfo):
     birthdate = models.DateField(_(u'Birthdate'), null=True, blank=True)
     mobile = models.CharField(_(u'Mobile'), max_length=30, blank=True)
     part = models.ForeignKey(Part, verbose_name=_(u'Part'), blank=True,
-        null=True)
+        null=True, related_name='profiles')
     subjects = models.CharField(_(u'Subjects'), max_length=150, blank=True,
         help_text=_(u'Separate two or more subjects with a comma.'))
     can_login = models.BooleanField(_(u'Can Login'), default=True)
