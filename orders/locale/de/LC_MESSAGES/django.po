@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0beta1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-19 13:59+0200\n"
+"POT-Creation-Date: 2012-09-20 08:52+0200\n"
 "PO-Revision-Date: 2012-09-19 09:02+0100\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,7 +38,8 @@ msgstr "Artikel"
 
 #: forms.py:35 models.py:86 models.py:135 templates/orders/delivery.html:13
 #: templates/orders/delivery.html.py:50 templates/orders/manage_order.html:22
-#: templates/orders/myorders.html:12 templates/orders/orderday.html:15
+#: templates/orders/myorders.html:12 templates/orders/old_orders.html:37
+#: templates/orders/orderday.html:15
 msgid "Count"
 msgstr "Anzahl"
 
@@ -106,6 +107,7 @@ msgid "Homepage"
 msgstr "Homepage"
 
 #: menu.py:8 models.py:124 templates/orders/list_printouts.html:8
+#: templates/orders/old_orders.html:36
 #: templates/orders/controlling/bycost.html:28 views/web.py:31
 #: views/web.py:133 views/web.py:149
 msgid "Orders"
@@ -189,6 +191,7 @@ msgstr "Zurückgewiesen"
 
 #: models.py:81 models.py:99 templates/orders/delivery.html:9
 #: templates/orders/delivery.html.py:46 templates/orders/myorders.html:11
+#: templates/orders/old_orders.html:33
 msgid "Ordered"
 msgstr "Bestellt"
 
@@ -344,7 +347,7 @@ msgstr "Besteller"
 msgid "Missing"
 msgstr "Ausstehend"
 
-#: templates/orders/delivery.html:34 templates/orders/old_orders.html:43
+#: templates/orders/delivery.html:34 templates/orders/old_orders.html:52
 #: templates/orders/controlling/bycost.html:27
 msgid "All"
 msgstr "Gesamt"
@@ -476,11 +479,11 @@ msgstr "Artikelnummer"
 msgid "Single Price"
 msgstr "Einzelpreis"
 
-#: templates/orders/myorders.html:38 templates/orders/old_orders.html:32
+#: templates/orders/myorders.html:38 templates/orders/old_orders.html:40
 msgid "ReOrder"
 msgstr "Neu bestellen"
 
-#: templates/orders/myorders.html:57 templates/orders/old_orders.html:52
+#: templates/orders/myorders.html:57 templates/orders/old_orders.html:62
 #: templates/orders/orderday.html:102
 msgid "No orders found."
 msgstr "Keine Bestellungen gefunden."
@@ -504,6 +507,14 @@ msgstr "Letzte(r) Besteller"
 #: templates/orders/old_orders.html:17
 msgid "Last Order"
 msgstr "Letzte Bestellung"
+
+#: templates/orders/old_orders.html:18
+msgid "Sums"
+msgstr ""
+
+#: templates/orders/old_orders.html:29
+msgid "Sum of all orders"
+msgstr ""
 
 #: templates/orders/order.html:32
 msgid "Klick to enter message."

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ozone 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-19 13:59+0200\n"
+"POT-Creation-Date: 2012-09-20 08:52+0200\n"
 "PO-Revision-Date: 2012-09-13 15:14+0100\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <weimann@bbz-chemie.de>\n"
@@ -22,10 +22,15 @@ msgstr ""
 msgid "Student(s)"
 msgstr "Azubi(s)"
 
-#: admin.py:125 models.py:122 models.py:171 models.py:306
+#: admin.py:148 models.py:122 models.py:171 models.py:306
 #: templates/companies/details.html:44 templates/students/details.html:19
 msgid "Email"
 msgstr "Email"
+
+#: admin.py:184 models.py:40 models.py:196 models.py:212
+#: templates/menu.html:17
+msgid "User"
+msgstr "Benutzer"
 
 #: forms.py:12
 msgid "Mon"
@@ -204,10 +209,6 @@ msgstr "Abteilung"
 #: models.py:36
 msgid "Parts"
 msgstr "Abteilungen"
-
-#: models.py:40 models.py:196 models.py:212 templates/menu.html:17
-msgid "User"
-msgstr "Benutzer"
 
 #: models.py:41 models.py:166
 msgid "Name Prefix"
