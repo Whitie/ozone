@@ -6,9 +6,9 @@
 <div style="text-align:center;">
     <p>{% trans "The first call of a list can take some time!" %}</p>
 </div>
-<div id="beta">
-Achtung, Anwesenheiten sind im Test. Bitte noch nicht benutzen!
-</div>
+
+{% include "beta.html" %}
+
 {% for n, gr in groups %}
 <h3>{{ n }} (<a href="{% url core-presence-printouts n %}">{% trans "Old lists" %}</a>)</h3>
 <ul>
