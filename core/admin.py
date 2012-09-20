@@ -33,9 +33,9 @@ class CooperationContractInline(admin.StackedInline):
 class CompanyAdmin(admin.ModelAdmin):
     inlines = (ContactInline, CooperationContractInline)
     list_display = ('name', 'short_name', 'phone', 'fax', 'customer_number',
-                    'student_count')
+                    'student_count', 'rate')
     list_display_links = ('name', 'short_name')
-    list_editable = ('phone', 'fax', 'customer_number')
+    list_editable = ('phone', 'fax', 'customer_number', 'rate')
     list_filter = ('cooperations__full', 'cooperations__job', 'rate')
     ordering = ('name',)
     save_on_top = True
