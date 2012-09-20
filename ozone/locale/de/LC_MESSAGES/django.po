@@ -3,13 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0beta1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-09-20 08:53+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2012-09-20 08:47+0100\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: de\n"
@@ -40,13 +39,11 @@ msgstr "Interner Server Fehler"
 
 #: base_templates/500.html:8
 msgid "Full information about the error was mailed to the admin."
-msgstr ""
-"Die kompletten Informationen über diesen Fehler wurden an den Administrator "
-"geschickt."
+msgstr "Die kompletten Informationen über diesen Fehler wurden an den Administrator geschickt."
 
 #: base_templates/beta.html:4
 msgid "Attention, this function must be tested. Please do not use it yet!"
-msgstr ""
+msgstr "Achtung, diese Funktion befindet sich im Test. Bitte noch nicht benutzen!"
 
 #: base_templates/layout.html:14
 msgid "Home"
@@ -71,3 +68,4 @@ msgstr "Hier klicken, um zur Startseite zu gelangen."
 #: base_templates/admin/base_site.html:9
 msgid "Ozone administration"
 msgstr "Ozone Administration"
+
