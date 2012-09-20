@@ -17,8 +17,13 @@ def get_order_for_every_article():
             order = Order.objects.select_related().filter(**cond
                 ).latest('added')
             order.userlist = [x.username for x in order.users.all()]
-            order.olist = [x.ordered.strftime('%d.%m.%Y') for x in
-                Order.objects.filter(**cond).order_by('-ordered')]
+            order.counts = 0
+            order.sums = 0
+            order.olist = []
+            for o in Order.objects.filter(**cond).order_by('-ordered'):
+                order.counts += o.count
+                order.sums += o.price()
+                order.olist.append(o.ordered)
             orders.append(order)
         except Order.DoesNotExist:
             pass
