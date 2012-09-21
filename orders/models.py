@@ -124,6 +124,7 @@ class Order(models.Model):
         verbose_name_plural = _(u'Orders')
         permissions = (
             ('can_order', u'Can make orders'),
+            ('extra_order', u'Can order without order day'),
             ('can_change_orderstate', u'Can change the state of orders'),
             ('controlling', u'View statistics for orders'),
         )

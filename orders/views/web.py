@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 from core.utils import any_permission_required
 from core.models import Company
 from orders.forms import (OrderOldForm, OrderForm, ShortSupplierForm,
-                          OrderDayForm)
+                          OrderDayForm, BaseOrderForm)
 from orders.models import OrderDay, Order, Article, Cost, CostOrder
 from orders.views import helper as h
 from orders.menu import menus
@@ -130,9 +130,9 @@ def order(req, article_id=0):
         form = OrderForm()
         form.fields['oday'].choices = h.get_oday_choices(choice_filter)
     costs = Cost.objects.all().order_by('ident')
-    ctx = dict(page_title=_(u'Orders'), form=form, menus=menus, costs=costs,
+    ctx = dict(page_title=_(u'Order'), form=form, menus=menus, costs=costs,
         article_id=article_id, costs_msg=_(u'Sum of costs must be 100!'),
-        cur_msg=_(u'Price in %s.' % settings.CURRENCY[0]))
+        cur_msg=_(u'Price in %s.' % settings.CURRENCY[0]), extra=False)
     return render(req, 'orders/order.html', ctx)
 
 
@@ -190,6 +190,56 @@ def add_supplier(req):
         form = ShortSupplierForm()
     ctx = dict(page_title=_(u'Add new Supplier'), menus=menus, form=form)
     return render(req, 'orders/new_supplier.html', ctx)
+
+
+@any_permission_required(['orders.can_order', 'orders.extra_order'],
+                         raise_exception=True)
+def make_extra_order(req, article_id=0):
+    _orders = req.session.get('extra_orders', [])
+    oday_id = req.session.get('oday_id', None)
+    if req.method == 'POST':
+        form = BaseOrderForm(req.POST)
+        if form.is_valid():
+            oday, created = OrderDay.objects.get_or_create(day=date.today(),
+                user=req.user)
+            if created:
+                oday.save()
+            req.session['oday_id'] = oday.id
+            art, created = Article.objects.get_or_create(
+                name=form.cleaned_data['art_name'],
+                ident=form.cleaned_data['art_id'],
+                price=h.get_price(form.cleaned_data['art_price']))
+            if created:
+                art.quantity = form.cleaned_data['art_q']
+                art.supplier = Company.objects.get(
+                    id=form.cleaned_data['art_supplier_id'])
+                art.save()
+            order = Order.objects.create(count=form.cleaned_data['count'],
+                article=art, order_day=oday)
+            order.save()
+            cost = Cost.objects.get(ident=4100)
+            co = CostOrder.objects.create(percent=100, order=order,
+                cost=cost)
+            co.save()
+            order.memo = form.cleaned_data['memo']
+            order.for_test = form.cleaned_data['exam']
+            order.for_repair = form.cleaned_data['repair']
+            order.users.add(req.user)
+            order.state = u'accepted'
+            order.save()
+            _orders.append(order.id)
+            req.session['extra_orders'] = _orders
+            messages.success(req, u'Ihre Bestellung %s wurde gespeichert.'
+                             % order)
+            return redirect('orders-extra-order')
+        messages.error(req, u'Bitte füllen Sie die benötigten Felder aus.')
+    else:
+        form = BaseOrderForm()
+    orders = Order.objects.select_related().filter(id__in=_orders).order_by(
+        'article__name')
+    ctx = dict(page_title=_(u'Extra Order'), form=form, menus=menus,
+        article_id=article_id, extra=True, orders=orders, oday_id=oday_id)
+    return render(req, 'orders/extra_order.html', ctx)
 
 
 @any_permission_required(['orders.can_order', 'orders.can_change_orderstate'],

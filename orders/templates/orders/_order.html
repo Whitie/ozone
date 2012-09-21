@@ -1,0 +1,78 @@
+{% extends "index.html" %}
+{% load i18n %}
+
+{% block content %}
+{% block formtag %}{% endblock %}
+{% csrf_token %}
+{{ form.art_supplier_id }}
+<table style="border:1px solid blue;margin:5px auto;">
+<tr>
+    <th>{{ form.count.label_tag }}:</th>
+    <td>{{ form.count }}{{ form.count.errors }}</td>
+    <th>{{ form.art_name.label_tag }}:</th>
+    <td>{{ form.art_name }}{{ form.art_name.errors }}</td>
+    <th>{{ form.art_supplier_name.label_tag }}:</th>
+    <td>{{ form.art_supplier_name }}
+
+        {{ form.art_supplier_name.errors }}
+    </td>
+</tr>
+<tr>
+    <th>{{ form.art_id.label_tag }}:</th>
+    <td>{{ form.art_id }}{{ form.art_id.errors }}</td>
+    <th>{{ form.art_q.label_tag }}:</th>
+    <td>{{ form.art_q }}{{ form.art_q.errors }}</td>
+    <th title="{{ cur_msg }}">{{ form.art_price.label_tag }}:</th>
+    <td>{{ form.art_price }}{{ CURRENCY_SYM }}{{ form.art_price.errors }}</td>
+</tr>
+<tr>
+    {% if extra %}<th></th><td></td>{% else %}
+    <th>{{ form.oday.label_tag }}:</th>
+    <td>{{ form.oday }}{{ form.oday.errors }}</td>
+    {% endif %}
+    <th title="{% trans "Klick to enter message." %}" id="memo_cell">
+        {% trans "Memo" %}
+    </th>
+    <td><span style="display:none;position:absolute;z-index:3;" id="memo_field">
+        {{ form.memo }}</span>
+    </td>
+    <th></th>
+    <td></td>
+</tr>
+<tr>
+    <th>{{ form.exam.label_tag }}:</th>
+    <td>{{ form.exam }}{{ form.exam.errors }}</td>
+    <th>{{ form.repair.label_tag }}:</th>
+    <td>{{ form.repair }}{{ form.repair.errors }}</td>
+    <th></th>
+    <td></td>
+</tr>
+</table>
+{% block formextra %}{% endblock %}
+
+<script type="text/javascript">
+$(function() {
+    $.getJSON('{% url orders-api-article article_id %}', function(data) {
+        $.each(data, function(key, val) {
+            $("#id_" + key).val(val);
+        });
+    });
+});
+$(function() {
+    $('#id_art_supplier_name').autocomplete({
+        minLength: 1,
+        source: '{% url orders-api-suppliers %}',
+        select: function(event, ui) {
+            $('#id_art_supplier_id').val(ui.item.value);
+            $('#id_art_supplier_name').val(ui.item.label);
+            return false;
+            }
+        });
+});
+
+$('#memo_cell').click(function() {
+    $('#memo_field').toggle();
+});
+</script>
+{% block jsextra %}{% endblock %}
+{% endblock %}

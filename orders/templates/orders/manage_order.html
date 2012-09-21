@@ -12,6 +12,7 @@
 <form action="{% url orders-genpdf %}" method="post">
 {% csrf_token %}
 <input type="hidden" name="oday_id" value="{{ oday.id }}" />
+<input type="hidden" name="header" value="Chemikalien und Ausbildungsmittel" />
 <p><input type="submit" value="{% trans "Generate printouts" %}" /></p>
 </form>
 {% endif %}

@@ -22,7 +22,8 @@
 
 <script type="text/javascript">
 function generate_external(oday_id, cid) {
-    var container = {'oday_id': oday_id, 'supplier_id': cid};
+    var container = {'oday_id': oday_id, 'supplier_id': cid,
+                     'header': '{{ header }}'};
     $('#but_'+cid).attr('disabled', 'disabled');
     $.post(
         '{% url orders-api-pdf %}',

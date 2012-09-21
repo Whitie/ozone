@@ -1,0 +1,27 @@
+{% extends "orders/_order.html" %}
+{% load i18n %}
+
+{% block formtag %}
+<form method="post" action="{% url orders-extra-order %}">
+{% endblock %}
+{% block formextra %}
+<div style="margin:5px auto;width:10%;text-align:center;">
+<input type="submit" value="{% trans "Order now" %}" />
+</div>
+</form>
+
+{% if orders %}
+<ul>
+    {% for o in orders %}
+    <li>{{ o }}, {{ o.article.supplier }}</li>
+    {% endfor %}
+</ul>
+<form action="{% url orders-genpdf %}" method="post">
+{% csrf_token %}
+<input type="hidden" name="oday_id" value="{{ oday_id }}" />
+<input type="hidden" name="header" value="Haustechnik" />
+<p><input type="submit" value="{% trans "Generate printouts" %}" /></p>
+</form>
+{% endif %}
+
+{% endblock %}

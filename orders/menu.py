@@ -10,6 +10,7 @@ order_menu = Menu(_(u'Orders'),
     ('orders-myorders', _(u'My Orders')),
     ('orders-old', _(u'Old Orders')),
     ('orders-add-supplier', _(u'Add new Supplier')),
+    ('orders-extra-order', _(u'Extra Order')),
     ('orders-delivery', _(u'Delivery')),
     ('orders-manage', _(u'Manage Orders')),
 )

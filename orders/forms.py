@@ -31,7 +31,7 @@ class OrderOldForm(forms.Form):
     article_id = forms.IntegerField(widget=forms.HiddenInput)
 
 
-class OrderForm(forms.Form):
+class BaseOrderForm(forms.Form):
     count = _wid.IntegerField5(label=_(u'Count'))
     art_name = forms.CharField(label=_(u'Article'), max_length=100)
     art_supplier_name = forms.CharField(label=_(u'Supplier'), max_length=100)
@@ -42,9 +42,12 @@ class OrderForm(forms.Form):
     art_price = forms.CharField(label=_(u'Price'), required=False)
     memo = forms.CharField(label=_(u'Memo'), widget=forms.Textarea,
         required=False)
-    oday = forms.ChoiceField(label=_(u'Order Day'))
     exam = forms.BooleanField(label=_(u'Exam'), required=False)
     repair = forms.BooleanField(label=_(u'Repair'), required=False)
+
+
+class OrderForm(BaseOrderForm):
+    oday = forms.ChoiceField(label=_(u'Order Day'))
 
 
 class ShortSupplierForm(forms.Form):

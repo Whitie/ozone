@@ -104,6 +104,7 @@ def generate_internal(_ctx):
     orders = get_orders(ctx['oday'])
     ctx['costs'] = Cost.objects.all()
     sums = {}
+    allsum = 0
     for supp in orders:
         sup_id = supp[0].article.supplier.id
         sums[sup_id] = 0
@@ -115,6 +116,7 @@ def generate_internal(_ctx):
                 o.save()
             o.userlist = [x.username for x in o.users.all()]
             sums[sup_id] += o.count * o.article.price
+            allsum += o.count * o.article.price
             o._costs = []
             costs = list(o.costs.all())
             for c in Cost.objects.all():
@@ -124,6 +126,7 @@ def generate_internal(_ctx):
                 else:
                     o._costs.append(u'')
     ctx['sums'] = sums
+    ctx['allsum'] = allsum
     ctx['orders'] = orders
     ctx['tbl'] = u'c' * Cost.objects.all().count()
     return make_latex(ctx, 'order.tex')
@@ -133,6 +136,7 @@ def generate_internal(_ctx):
 @permission_required('orders.can_order')
 def generate_pdf(req):
     oday_id = int(req.POST.get('oday_id'))
+    header = req.POST.get('header', u'')
     oday = OrderDay.objects.get(id=oday_id)
     orders = get_orders(oday)
     supplier = []
@@ -141,8 +145,10 @@ def generate_pdf(req):
             state__in=[u'accepted', u'ordered']).count()
         supplier.append(s)
     supplier_ids = [x[0].article.supplier.id for x in orders]
+    req.session['extra_orders'] = []
+    req.session['oday_id'] = None
     ctx = dict(page_title=_(u'Printouts'), menus=menus, oday=oday,
-        ids=supplier_ids, supplier=supplier)
+        ids=supplier_ids, supplier=supplier, header=header)
     return render(req, 'orders/printouts.html', ctx)
 
 
@@ -151,9 +157,10 @@ def generate_pdf(req):
 def generate_one_pdf(req, data):
     oday_id = data.get('oday_id')
     supplier_id = data.get('supplier_id', None)
+    header = data.get('header', u'')
     oday = OrderDay.objects.get(id=oday_id)
     s = latex.get_latex_settings()
-    ctx = dict(s=s, oday=oday, user=req.user)
+    ctx = dict(s=s, oday=oday, user=req.user, header=header)
     if supplier_id is not None:
         supplier = Company.objects.get(id=supplier_id)
         printout, filename = generate_external(supplier, ctx)

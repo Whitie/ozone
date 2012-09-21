@@ -27,7 +27,7 @@
 
 (% for os in orders %)
 \begin{center}
-\textbf{BESTELLSCHEIN Chemikalien und Ausbildungsmittel}\\
+\textbf{BESTELLSCHEIN (( header ))}\\
 \textbf{Lieferant:} (( os[0].article.supplier.name|te ))
 {
 \small
@@ -48,4 +48,10 @@ Pos. & \rotatebox{90}{Anzahl} & \rotatebox{90}{Einheit} & Artikel & Art.-Nr. & \
 \newpage
 (% endif %)
 (% endfor %)
+
+\newpage
+\begin{center}
+\textbf{Gesamtsumme für Bestelltag (( oday )): \EUR{(( "%.2f"|format(allsum) ))}}
+\end{center}
+
 \end{document}
