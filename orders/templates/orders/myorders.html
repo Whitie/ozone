@@ -34,8 +34,11 @@
             <td title="{{ o.get_state_display }}" style="text-align:center;">
                 <img src="{{ o.state_icon }}" alt="{{ o.state }}" />
             </td>
-            <td><a href="{% url orders-order o.article.id %}">
-                {% trans "ReOrder" %}</a></td>
+            <td><a href="{% url orders-order o.article.id %}">{% trans "ReOrder" %}</a>
+                {% if perms.orders.extra_order %}
+                <a href="{% url orders-extra-order o.article.id %}">{% trans "Now" %}</a>
+                {% endif %}
+            </td>
         </tr>
         {% endfor %}
     </tbody>
