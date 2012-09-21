@@ -17,7 +17,7 @@
 
 <p>{% trans "Set presence for all" %}:
     <select size="1" id="p_all_day">
-        {% for d in days %}<option value="{{ d|date:"Y-m-d" }}">{{ d|date:"d.m." }}</option>{% endfor %}
+        {% for d in days %}<option value="{{ d|date:"Y-m-d" }}"{% if d == today %} selected="selected"{% endif %}>{{ d|date:"d.m." }}</option>{% endfor %}
     </select>
     <select id="p_all" size="1">
         {% for e in choices %}<option value="{{ e }}"{% if e == "*" %} selected="selected"{% endif %}>{{ e }}</option>{% endfor %}
