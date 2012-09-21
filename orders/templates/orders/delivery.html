@@ -78,6 +78,14 @@
 </ul>
 </div>
 
+<div id="count-error" title="{% trans "Error" %}" style="display:none;">
+    <p class="ui-state-error">
+        <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 50px 0;"></span>
+        {% trans "Your delivery count is higher than your order count!" %}<br />
+        {% trans "Maximum count that can be delivered is" %}: <strong id="count-missing"></strong>
+    </p>
+</div>
+
 <script>
 $(document).ready(function() {
   var oTable = $('.dataTable').dataTable({
@@ -107,7 +115,25 @@ function update_delivery(oid, count) {
 
 function delivery(oid) {
     var delivered = parseInt($('#count_'+oid).val());
-    update_delivery(oid, delivered);
+    var missing = parseInt($('#missing_'+oid).val());
+    if (delivered > missing) {
+        $('#count-missing').text(missing);
+        $('#count-error').dialog({
+            modal: true,
+            resizable: false,
+            buttons: {
+                Ok: function() {
+                    $(this).dialog('close');
+                    $('#count_'+oid).val('');
+                }
+            },
+            close: function(event, ui) {
+                $('#count_'+oid).val('');
+            }
+        });
+    } else {
+        update_delivery(oid, delivered);
+    }
 }
 
 function delivery_all(oid) {

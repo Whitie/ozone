@@ -117,7 +117,7 @@ class Order(models.Model):
     def is_complete(self):
         delivered = sum([x.count for x in
                          self.deliveries.all()])
-        return delivered == self.count
+        return delivered >= self.count
 
     class Meta:
         verbose_name = _(u'Order')
