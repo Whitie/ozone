@@ -173,7 +173,7 @@ def add_supplier(req):
             c, created = Company.objects.get_or_create(
                 name=form.cleaned_data['name'])
             if not created:
-                messages.error(req, _(u'Company %s already exists.' % c.name))
+                messages.error(req, u'Lieferant %s existiert bereits.' % c.name)
                 return redirect('orders-index')
             c.short_name = form.cleaned_data['name'].upper()
             c.customer_number = form.cleaned_data['customer_number']
@@ -183,9 +183,9 @@ def add_supplier(req):
             c.web = form.cleaned_data['web']
             c.rating_users.add(req.user)
             c.save()
-            messages.success(req, _(u'New company %s saved.' % c.name))
+            messages.success(req, u'Neuer Lieferant %s gespeichert.' % c.name)
             return redirect('orders-index')
-        messages.error(req, _(u'Please correct the wrong fields.'))
+        messages.error(req, u'Bitte korrigieren Sie die falschen Felder.')
     else:
         form = ShortSupplierForm()
     ctx = dict(page_title=_(u'Add new Supplier'), menus=menus, form=form)
