@@ -117,8 +117,10 @@ def do_login(req):
         next_page = req.POST.get('next', '/')
         form = AuthenticationForm(req, req.POST)
         if form.is_valid():
-            user = authenticate(username=form.cleaned_data['username'],
-                                password=form.cleaned_data['password'])
+            user = authenticate(
+                username=form.cleaned_data['username'].lower(),
+                password=form.cleaned_data['password']
+            )
             if user is not None:
                 p = user.get_profile()
                 if user.is_active and p.can_login:
