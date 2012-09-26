@@ -175,7 +175,7 @@ def add_supplier(req):
             if not created:
                 messages.error(req, u'Lieferant %s existiert bereits.' % c.name)
                 return redirect('orders-index')
-            c.short_name = form.cleaned_data['name'].upper()
+            #c.short_name = form.cleaned_data['name'].upper()
             c.customer_number = form.cleaned_data['customer_number']
             c.phone = form.cleaned_data['phone']
             c.fax = form.cleaned_data['fax']
