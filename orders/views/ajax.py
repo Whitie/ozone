@@ -90,25 +90,30 @@ def add_representative(req):
 @require_POST
 @json_rpc
 def change_order(req, data):
-    order_id = data['order_id']
-    count = data['count']
-    state = data['state']
-    art_name = data['art_name']
-    art_ident = data['art_ident']
-    price = Decimal(data['price'].replace(u',', u'.'))
-    order = Order.objects.get(id=order_id)
-    supplier = Company.objects.get(id=data['supp_id'])
-    article = order.article
-    article.name = art_name
-    article.ident = art_ident
-    article.price = price
-    article.supplier = supplier
-    article.save()
-    order.count = count
-    order.state = state
-    order.save()
-    msg = (u'Alle Änderungen an Bestellung: %(name)s (ID: %(id)d) '
-           u'gespeichert.' % {'name': article.name, 'id': order_id})
+    try:
+        print data
+        order_id = data['order_id']
+        count = data['count']
+        state = data['state']
+        art_name = data['art_name']
+        art_ident = data['art_ident']
+        price = Decimal(data['price'].replace(u',', u'.'))
+        order = Order.objects.get(id=order_id)
+        supplier = Company.objects.get(id=data['supp_id'])
+        article = order.article
+        article.name = art_name
+        article.ident = art_ident
+        article.price = price
+        article.supplier = supplier
+        article.save()
+        order.count = count
+        order.state = state
+        order.save()
+        msg = (u'Alle Änderungen an Bestellung: %(name)s (ID: %(id)d) '
+               u'gespeichert.' % {'name': article.name, 'id': order_id})
+    except Exception as e:
+        msg = e
+        print e
     return {'msg': msg}
 
 
