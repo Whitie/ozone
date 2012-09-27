@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from calendar import monthrange
+from collections import defaultdict
 from datetime import date, timedelta
 from decimal import Decimal
 
@@ -86,3 +87,18 @@ def get_dates():
         start = date(year, month - 1, 1)
         end = date(year, month - 1, monthrange(year, month - 1)[1])
     return start, end
+
+
+def calculate_ratings(companies):
+    for c in companies:
+        whole_ratings = defaultdict(int)
+        collected = []
+        for r in c.ratings.all():
+            whole_ratings[r.rating] += 1
+            collected.extend(r.as_list())
+        tmp = [u'%dx %s' % (x, y) for x, y in sorted(whole_ratings.items(),
+            key=lambda x: x[1])]
+        c.whole_ratings = u', '.join(tmp)
+        c.min_rating = min(collected)
+        c.average = c.calculate_rating()[1]
+    return companies

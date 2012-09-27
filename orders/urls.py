@@ -24,6 +24,8 @@ urlpatterns = patterns('orders.views.web',
 
     # Company Rating
     url(r'^rating/$', 'company_rating', name='orders-rating'),
+    url(r'^rating/summary/$', 'company_rating_summary',
+        name='orders-rating-summary'),
 
     # Controlling
     url(r'^controlling/by_cost/$', 'ctrl_by_cost', name='orders-ctrl-bycost'),

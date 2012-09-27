@@ -21,6 +21,7 @@ controlling_menu = Menu(_(u'Controlling'),
 
 rating_menu = Menu(_(u'Company Rating'),
     ('orders-rating', _(u'Rate')),
+    ('orders-rating-summary', _(u'Summary')),
 )
 
 menus = [order_menu, rating_menu, controlling_menu]

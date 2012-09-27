@@ -353,6 +353,16 @@ def company_rating(req):
     return render(req, 'orders/ratings/rate.html', ctx)
 
 
+@login_required
+def company_rating_summary(req):
+    companies = Company.objects.select_related().filter(rate=True
+        ).order_by('name')
+    companies = h.calculate_ratings(companies)
+    ctx = dict(page_title=_(u'Company Rating Summary'), menus=menus,
+        companies=companies)
+    return render(req, 'orders/ratings/summary.html', ctx)
+
+
 @permission_required('orders.controlling', raise_exception=True)
 def ctrl_by_cost(req):
     ctx = dict(page_title=_(u'Sums by Cost'), menus=menus, costs=[],
