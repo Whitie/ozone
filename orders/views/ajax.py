@@ -103,11 +103,20 @@ def change_order(req, data):
     article.supplier = supplier
     article.save()
     order.count = data['count']
-    if 'state' in data:
-        order.state = data['state']
     order.save()
     msg = (u'Alle Änderungen an Bestellung: %(name)s (ID: %(id)d) '
            u'gespeichert.' % {'name': article.name, 'id': order.id})
+    return {'msg': msg}
+
+
+@require_POST
+@json_rpc
+def update_state(req, data):
+    order = Order.objects.select_related().get(id=data['order_id'])
+    order.state = data['state']
+    order.save()
+    msg = (u'Status für %(art)s auf %(state)s gesetzt.' %
+           {'art': order.article.name, 'state': order.state})
     return {'msg': msg}
 
 

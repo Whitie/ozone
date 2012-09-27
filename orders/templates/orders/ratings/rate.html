@@ -1,0 +1,113 @@
+{% extends "index.html" %}
+{% load i18n %}
+
+{% block content %}
+<style type="text/css">
+#legend {
+    display: none;
+    position: fixed;
+    top: 250px;
+    right: 30px;
+    width: 250px;
+    height: 150px;
+    z-index: 3;
+    background-color: transparent;
+    color: blue;
+    border: 2px solid green;
+    padding:0px 5px;
+}
+.opener {
+    border: 1px solid green;
+    padding: 5px;
+    background-color: yellow;
+}
+</style>
+
+<h2 class="headline">{% trans "Companies to rate" %}</h2>
+
+{% include "beta.html" %}
+
+{% for c in companies %}
+<h3 class="company" title="{% trans "Click to rate" %}">
+{{ forloop.counter }}) {{ c.name }} ({% trans "Ratings" %}: {{ c.ratings.count }})
+</h3>
+<div class="ratingform">
+{% if c.average %}
+{% trans "Average ratings" %}: {{ c.rating }} ({{ c.average|floatformat:1 }})
+{% endif %}
+<form action="{% url orders-rating %}" method="post">
+{% csrf_token %}
+<input type="hidden" name="company_id" value="{{ c.id }}" />
+<table style="border:2px solid green;">
+{{ form.as_table }}
+<tr>
+    <th class="opener">{% trans "Help" %}</th>
+    <td><input type="submit" value="{% trans "Save" %}" /></td>
+</tr>
+</table>
+</form>
+</div>
+<p>{% trans "Raters" %}: {% for u in c.rating_users.all %}{{ u }} {% endfor %}</p>
+{% if c.last_ratings %}
+<p>{% trans "Your last ratings" %}:
+    {% for r in c.last_ratings %}
+    <span title="{{ r.note|default:"-" }}" style="background-color:{% cycle "lightblue" "lightcyan" %};">
+        {{ r.rated|date:"SHORT_DATE_FORMAT" }}: {{ r.rating }}
+    </span>
+    {% endfor %}
+</p>
+{% endif %}
+{% endfor %}
+
+<div id="legend">
+    <h3>{% trans "Possible Ratings" %}: 0 - 4</h3>
+    <ul>
+        <li>4 - {% trans "very good" %}</li>
+        <li>3 - {% trans "good" %}</li>
+        <li>2 - {% trans "average" %}</li>
+        <li>1 - {% trans "bad" %}</li>
+        <li>0 - {% trans "very bad" %}</li>
+    </ul>
+</div>
+
+<div id="help-dialog" title="{% trans "Company Rating Help" %}">
+<p>Das bbz Chemie unterscheidet im Ergebnis der Bewertung (Auswahl) von
+    Lieferanten 4 Gruppen:</p>
+<ul>
+    <li><strong>(A)</strong> Zugelassene Lieferanten (Durchschnittliche
+        Bewertung &ge; 3 und keine Bewertung &le; 1, Auswahlkriterium ist
+        primär der Preis und dann die Lieferzeit der Ware)</li>
+    <li><strong>(B)</strong> Lieferanten mit besonderem Status (Lieferanten,
+        die nur für bestimmte Waren nutzbar sind)</li>
+    <li><strong>(C)</strong> Gesperrte Lieferanten (Durchschnittliche
+        Bewertung &lt; 2, vor der Zusammenarbeit mit diesen Lieferanten ist
+        in jedem Fall die Entscheidung der Leitung einzuholen)</li>
+    <li><strong>(D)</strong> Lieferanten in der Bewertung (neue Lieferanten
+        oder Lieferanten, bei denen Probleme aufgetreten sind)</li>
+</ul>
+<p>Für Lieferanten der Gruppen B und C erfolgt, falls es notwendig ist, eine
+    Begründung für die Einstufung und die Festsetzung des Termins für eine
+    Neubeurteilung.</p>
+</div>
+
+<script type="text/javascript">
+$(function() {
+  $(".ratingform").hide();
+  $(".company").click(function() {
+    $('#legend').toggle('slow');
+    $(this).next(".ratingform").slideToggle("slow");
+    return true;
+  });
+});
+$(function() {
+    $('#help-dialog').dialog({
+        'autoOpen': false,
+        'width': 500
+    });
+    $('.opener').click(function() {
+        $('#help-dialog').dialog('open');
+        return false;
+    });
+});
+</script>
+{% endblock %}

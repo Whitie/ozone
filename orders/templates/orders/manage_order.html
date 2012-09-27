@@ -67,6 +67,7 @@
                 <select id="supp_{{ forloop.counter }}" size="1" onchange="update_row({{ forloop.counter }});">
                 {% for id, name in suppliers %}<option value="{{ id }}"{% if o.article.supplier.id == id %} selected="selected"{% endif %} />{{ name }}</option>{% endfor %}
                 </select>
+                <span style="display:none;">{{ o.article.supplier.short_name }}</span>
                 {% else %}{{ o.article.supplier.short_name }}{% endif %}
                 {% if o.memo %}<a href="" title="{{ o.memo }}"><img src="{% static "img/info.png" %}" alt="INFO" /></a>{% endif %}
             </td>
@@ -75,15 +76,15 @@
             <td>
                 <input type="radio" name="state_{{ forloop.counter }}" value="new"
                     {% if o.state == 'new' %} checked="checked"{% endif %}
-                    onchange="update_row({{ forloop.counter }});" />
+                    onchange="update_state({{ forloop.counter }});" />
                     {% trans "New" %}<br />
                 <input type="radio" name="state_{{ forloop.counter }}" value="rejected"
                     {% if o.state == 'rejected' %} checked="checked"{% endif %}
-                    onchange="update_row({{ forloop.counter }});" />
+                    onchange="update_state({{ forloop.counter }});" />
                     {% trans "Rejected" %}<br />
                 <input type="radio" name="state_{{ forloop.counter }}" value="accepted"
                     {% if o.state == 'accepted' %} checked="checked"{% endif %}
-                    onchange="update_row({{ forloop.counter }});" />
+                    onchange="update_state({{ forloop.counter }});" />
                     {% trans "Accepted" %}<br />
             {% else %}
             <td title="{{ o.get_state_display }}" style="text-align:center;">
@@ -128,15 +129,25 @@ function update_row(row) {
     var art_name = $('#row_'+row+' > td > :input[name="art_name"]').val();
     var art_ident = $('#row_'+row+' > td > :input[name="art_ident"]').val();
     var price = $('#row_'+row+' > td > :input[name="art_price"]').val();
-    var state = $('#row_'+row+' > td > :input[name^="state"]:checked').val();
     var supp_id = $('#supp_'+row+' :selected').val();
     data = {'order_id': parseInt(oid), 'count': parseInt(count),
             'art_name': art_name, 'art_ident': art_ident, 'price': price,
-            'state': state, 'supp_id': parseInt(supp_id)};
+            'supp_id': parseInt(supp_id)};
     $.post('{% url orders-api-change %}', {'_JSON_': JSON.stringify(data)},
         function(data) {
             $('#upd_messages').show('slow');
             $('#upd_messages > ul').prepend('<li>'+data['msg']+'</li>');
+        });
+}
+
+function update_state(row) {
+    var oid = $('#row_'+row+' > td > :input[name="order_id"]').val();
+    var state = $('#row_'+row+' > td > :input[name^="state"]:checked').val();
+    post_data = {'order_id': parseInt(oid), 'state': state};
+    $.post('{% url orders-api-state %}', {'_JSON_': JSON.stringify(post_data)},
+        function(ret_data) {
+            $('#upd_messages').show('slow');
+            $('#upd_messages > ul').prepend('<li>'+ret_data['msg']+'</li>');
         });
 }
 </script>

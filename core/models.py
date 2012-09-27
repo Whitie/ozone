@@ -105,10 +105,10 @@ class News(models.Model):
 
 
 RATING_CHOICES = (
-    (u'A', _(u'useable')),
-    (u'B', _(u'useable with restrictions')),
-    (u'C', _(u'not useable')),
-    (u'D', _(u'more ratings needed')),
+    (u'A', _(u'A) useable')),
+    (u'B', _(u'B) useable with restrictions')),
+    (u'C', _(u'C) not useable')),
+    (u'D', _(u'D) more ratings needed')),
 )
 
 
@@ -137,6 +137,24 @@ class Company(CommonInfo):
 
     def has_students(self):
         return bool(self.students.count())
+
+    def calculate_rating(self):
+        tmp = 0
+        _all = []
+        num = self.ratings.all().count()
+        for r in self.ratings.all():
+            tmp += r.average()
+            _all.extend(r.as_list())
+        try:
+            rating = tmp / float(num)
+        except ZeroDivisionError:
+            return (u'D', 0.0)
+        if rating >= 3 and min(_all) > 1:
+            return (u'A', rating)
+        elif rating < 2:
+            return (u'C', rating)
+        else:
+            return (u'D', rating)
 
     class Meta:
         verbose_name = _(u'Company')
@@ -231,22 +249,18 @@ class CompanyRating(models.Model):
         return [self.good_quality, self.delivery_time, self.quality,
             self.price, self.service, self.attainability, self.documentation]
 
-    def calculate(self):
-        ratings = self.as_list()
-        average = sum(ratings) / 7.0
-        if average >= 3 and min(ratings) > 1:
-            return u'A'
-        elif average < 2:
-            return u'C'
-        else:
-            return u'D'
+    def average(self):
+        return sum(self.as_list()) / 7.0
 
     class Meta:
         verbose_name = _(u'Company Rating')
         verbose_name_plural = _(u'Company Ratings')
+        permissions = (
+            ('summarize', 'Summarize company ratings'),
+        )
 
 
-SUFFIX_CHOICES = ((u'a', u'a'), (u'b', u'b'), (u'c', u'c'))
+SUFFIX_CHOICES = ((u'a', u'a'), (u'b', u'b'), (u'c', u'c'), (u'd', u'd'))
 
 
 class StudentGroup(models.Model):

@@ -12,7 +12,8 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 
 from core.utils import any_permission_required
-from core.models import Company
+from core.models import Company, CompanyRating
+from core.forms import CompanyRatingForm
 from orders.forms import (OrderOldForm, OrderForm, ShortSupplierForm,
                           OrderDayForm, BaseOrderForm)
 from orders.models import OrderDay, Order, Article, Cost, CostOrder
@@ -173,9 +174,9 @@ def add_supplier(req):
             c, created = Company.objects.get_or_create(
                 name=form.cleaned_data['name'])
             if not created:
-                messages.error(req, u'Lieferant %s existiert bereits.' % c.name)
+                messages.error(req, u'Lieferant %s existiert bereits.' %
+                               c.name)
                 return redirect('orders-index')
-            #c.short_name = form.cleaned_data['name'].upper()
             c.customer_number = form.cleaned_data['customer_number']
             c.phone = form.cleaned_data['phone']
             c.fax = form.cleaned_data['fax']
@@ -187,7 +188,7 @@ def add_supplier(req):
             return redirect('orders-index')
         messages.error(req, u'Bitte korrigieren Sie die falschen Felder.')
     else:
-        form = ShortSupplierForm()
+        form = ShortSupplierForm(initial={'web': 'http://'})
     ctx = dict(page_title=_(u'Add new Supplier'), menus=menus, form=form)
     return render(req, 'orders/new_supplier.html', ctx)
 
@@ -320,6 +321,36 @@ def list_printouts(req):
     ctx = dict(page_title=_(u'List of all printouts'), menus=menus,
         odays=odays)
     return render(req, 'orders/list_printouts.html', ctx)
+
+
+@login_required
+def company_rating(req):
+    average = None
+    if req.method == 'POST':
+        cid = int(req.POST.get('company_id'))
+        form = CompanyRatingForm(req.POST, auto_id=False)
+        if form.is_valid():
+            company = Company.objects.get(id=cid)
+            rating = CompanyRating.objects.create(company=company,
+                user=req.user, **form.cleaned_data)
+            rating.save()
+            if form.cleaned_data['note']:
+                company.rating_note = form.cleaned_data['note']
+            r, average = company.calculate_rating()
+            company.rating = r
+            company.save()
+            messages.success(req, u'Bewertung wurde gespeichert.')
+        else:
+            messages.error(req, u'Bitte füllen Sie alle Pflichtfelder aus!')
+    form = CompanyRatingForm(auto_id=False)
+    companies = Company.objects.filter(rating_users=req.user)
+    for c in companies:
+        c.last_ratings = CompanyRating.objects.filter(user=req.user,
+            company=c).order_by('-rated')
+        c.average = c.calculate_rating()[1]
+    ctx = dict(page_title=_(u'Company Rating'), menus=menus,
+        companies=companies, form=form)
+    return render(req, 'orders/ratings/rate.html', ctx)
 
 
 @permission_required('orders.controlling', raise_exception=True)
