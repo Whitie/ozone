@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0beta1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-21 11:05+0200\n"
+"POT-Creation-Date: 2012-09-27 14:32+0200\n"
 "PO-Revision-Date: 2012-09-20 08:46+0100\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -108,8 +108,8 @@ msgstr "Homepage"
 
 #: menu.py:8 models.py:124 templates/orders/list_printouts.html:8
 #: templates/orders/old_orders.html:36
-#: templates/orders/controlling/bycost.html:28 views/web.py:31
-#: views/web.py:149
+#: templates/orders/controlling/bycost.html:28 views/web.py:32
+#: views/web.py:150
 msgid "Orders"
 msgstr "Bestellungen"
 
@@ -118,19 +118,19 @@ msgstr "Bestellungen"
 msgid "Order now"
 msgstr "Jetzt bestellen"
 
-#: menu.py:10 views/web.py:164
+#: menu.py:10 views/web.py:165
 msgid "My Orders"
 msgstr "Meine Bestellungen"
 
-#: menu.py:11 views/web.py:38
+#: menu.py:11 views/web.py:39
 msgid "Old Orders"
 msgstr "Alte Bestellungen"
 
-#: menu.py:12 views/web.py:191
+#: menu.py:12 views/web.py:192
 msgid "Add new Supplier"
 msgstr "Neuer Lieferant"
 
-#: menu.py:13 views/web.py:240
+#: menu.py:13 views/web.py:241
 msgid "Extra Order"
 msgstr "Haustechnik"
 
@@ -138,7 +138,7 @@ msgstr "Haustechnik"
 msgid "Delivery"
 msgstr "Wareneingang"
 
-#: menu.py:15 views/web.py:259 views/web.py:278
+#: menu.py:15 views/web.py:260 views/web.py:279
 msgid "Manage Orders"
 msgstr "Bestellungen verwalten"
 
@@ -149,6 +149,15 @@ msgstr "Controlling"
 #: menu.py:19
 msgid "By Cost"
 msgstr "Nach Kostenstelle"
+
+#: menu.py:22 views/web.py:351
+#, fuzzy
+msgid "Company Rating"
+msgstr "Firmenname"
+
+#: menu.py:23
+msgid "Rate"
+msgstr ""
 
 #: models.py:19
 msgid "Day"
@@ -182,15 +191,15 @@ msgstr "Kostenstelle"
 msgid "Costs"
 msgstr "Kostenstellen"
 
-#: models.py:80 templates/orders/manage_order.html:78
+#: models.py:80 templates/orders/manage_order.html:80
 msgid "New"
 msgstr "Neu"
 
-#: models.py:80 templates/orders/manage_order.html:86
+#: models.py:80 templates/orders/manage_order.html:88
 msgid "Accepted"
 msgstr "Akzeptiert"
 
-#: models.py:81 templates/orders/manage_order.html:82
+#: models.py:81 templates/orders/manage_order.html:84
 msgid "Rejected"
 msgstr "Zurückgewiesen"
 
@@ -225,7 +234,7 @@ msgstr "Für Reparatur"
 msgid "State"
 msgstr "Status"
 
-#: models.py:123 models.py:134 models.py:152 views/web.py:133
+#: models.py:123 models.py:134 models.py:152 views/web.py:134
 msgid "Order"
 msgstr "Bestellung"
 
@@ -299,7 +308,7 @@ msgstr "Bestelltage"
 
 #: templates/orders/add_oday.html:13 templates/orders/manage_orders.html:63
 #: templates/orders/manage_orders.html:68
-#: templates/orders/new_supplier.html:17
+#: templates/orders/new_supplier.html:17 templates/orders/ratings/rate.html:45
 msgid "Save"
 msgstr "Speichern"
 
@@ -334,7 +343,7 @@ msgstr "Nein"
 msgid "Next"
 msgstr "Weiter"
 
-#: templates/orders/delivery.html:6 views/web.py:60
+#: templates/orders/delivery.html:6 views/web.py:61
 msgid "Open Orders"
 msgstr "Offene Bestellungen"
 
@@ -373,7 +382,7 @@ msgstr "Durchschn. Zeit bis Lieferung"
 msgid "days"
 msgstr "Tage"
 
-#: templates/orders/delivery.html:76 templates/orders/manage_order.html:106
+#: templates/orders/delivery.html:76 templates/orders/manage_order.html:108
 msgid "Changes"
 msgstr "Änderungen"
 
@@ -434,8 +443,8 @@ msgstr "Bestellungen bearbeiten für"
 msgid "All changes will be saved automatically."
 msgstr "Alle Änderungen werden automatisch gespeichert."
 
-#: templates/orders/manage_order.html:31 templates/orders/manage_order.html:95
-#: templates/orders/manage_order.html:96 templates/orders/orderday.html:58
+#: templates/orders/manage_order.html:31 templates/orders/manage_order.html:97
+#: templates/orders/manage_order.html:98 templates/orders/orderday.html:58
 #: templates/orders/orderday.html.py:59
 msgid "Delete"
 msgstr "Löschen"
@@ -444,7 +453,7 @@ msgstr "Löschen"
 msgid "Only correct typos here!"
 msgstr "Bitte nur Schreibfehler hier korrigieren!"
 
-#: templates/orders/manage_order.html:98 templates/orders/orderday.html:63
+#: templates/orders/manage_order.html:100 templates/orders/orderday.html:63
 msgid "Not possible"
 msgstr "Nicht möglich"
 
@@ -460,11 +469,11 @@ msgstr "Bitte wählen Sie den Bestelltag zum bearbeiten aus"
 msgid "Select"
 msgstr "Auswählen"
 
-#: templates/orders/manage_orders.html:22 views/web.py:306
+#: templates/orders/manage_orders.html:22 views/web.py:307
 msgid "Add new orderday"
 msgstr "Neuen Bestelltag hinzufügen"
 
-#: templates/orders/manage_orders.html:23 views/web.py:320
+#: templates/orders/manage_orders.html:23 views/web.py:321
 msgid "List of all printouts"
 msgstr "Liste aller Ausdrucke"
 
@@ -626,71 +635,125 @@ msgstr "Gewichtet"
 msgid "No orders found in this period."
 msgstr "Keine Bestellungen in dieser Zeitspanne gefunden."
 
-#: views/web.py:61
+#: templates/orders/ratings/rate.html:26
+#, fuzzy
+msgid "Companies to rate"
+msgstr "Firmenname"
+
+#: templates/orders/ratings/rate.html:31
+#, fuzzy
+msgid "Click to rate"
+msgstr "Klicken, um eine Nachricht einzugeben."
+
+#: templates/orders/ratings/rate.html:32
+msgid "Ratings"
+msgstr ""
+
+#: templates/orders/ratings/rate.html:36
+msgid "Average ratings"
+msgstr ""
+
+#: templates/orders/ratings/rate.html:44
+msgid "Help"
+msgstr ""
+
+#: templates/orders/ratings/rate.html:50
+msgid "Raters"
+msgstr ""
+
+#: templates/orders/ratings/rate.html:52
+msgid "Your last ratings"
+msgstr ""
+
+#: templates/orders/ratings/rate.html:63
+msgid "Possible Ratings"
+msgstr ""
+
+#: templates/orders/ratings/rate.html:65
+msgid "very good"
+msgstr ""
+
+#: templates/orders/ratings/rate.html:66
+msgid "good"
+msgstr ""
+
+#: templates/orders/ratings/rate.html:67
+msgid "average"
+msgstr ""
+
+#: templates/orders/ratings/rate.html:68
+msgid "bad"
+msgstr ""
+
+#: templates/orders/ratings/rate.html:69
+msgid "very bad"
+msgstr ""
+
+#: templates/orders/ratings/rate.html:73
+#, fuzzy
+msgid "Company Rating Help"
+msgstr "Firmenname"
+
+#: views/web.py:62
 msgid "Count was not changed. Aborting."
 msgstr "Anzahl wurde nicht geändert. Abbruch."
 
-#: views/web.py:78
+#: views/web.py:79
 msgid "Cannot delete foreign order!"
 msgstr "Fremde Bestellungen können nicht gelöscht werden!"
 
-#: views/web.py:82
+#: views/web.py:83
 #, python-format
 msgid "Order (ID: %s) deleted."
 msgstr "Bestellung (ID: %s) gelöscht."
 
-#: views/web.py:84
+#: views/web.py:85
 msgid "Nothing deleted. Cancelled by user."
 msgstr "Es wurde nichts gelöscht. Benutzerabbruch."
 
-#: views/web.py:86
+#: views/web.py:87
 msgid "Delete Order"
 msgstr "Bestellung löschen"
 
-#: views/web.py:134
+#: views/web.py:135
 msgid "Sum of costs must be 100!"
 msgstr "Die Summe der Kostenstellen muss 100 ergeben!"
 
-#: views/web.py:135
+#: views/web.py:136
 #, python-format
 msgid "Price in %s."
 msgstr "Preis in %s."
 
-#: views/web.py:176
-#, python-format
-msgid "Company %s already exists."
-msgstr "Firma %s existiert schon."
-
-#: views/web.py:186
-#, python-format
-msgid "New company %s saved."
-msgstr "Neue Firma %s gespeichert."
-
-#: views/web.py:188
-msgid "Please correct the wrong fields."
-msgstr "Bitte korrigieren Sie die falschen Felder."
-
-#: views/web.py:251
+#: views/web.py:252
 #, python-format
 msgid "%s selected."
 msgstr "%s ausgewählt."
 
-#: views/web.py:293
+#: views/web.py:294
 msgid "The user you specified is not valid."
 msgstr "Der angegebene Benutzer ist nicht gültig."
 
-#: views/web.py:298
+#: views/web.py:299
 #, python-format
 msgid "New orderday %s added."
 msgstr "Neuer Bestelltag %s hinzugefügt."
 
-#: views/web.py:301
+#: views/web.py:302
 msgid "Please correct the form."
 msgstr "Bitte korrigieren Sie das Formular."
 
-#: views/web.py:327
+#: views/web.py:358
 msgid "Sums by Cost"
 msgstr "Summen nach Kostenstellen"
+
+#~ msgid "Company %s already exists."
+#~ msgstr "Firma %s existiert schon."
+
+#~ msgid "New company %s saved."
+#~ msgstr "Neue Firma %s gespeichert."
+
+#~ msgid "Please correct the wrong fields."
+#~ msgstr "Bitte korrigieren Sie die falschen Felder."
 
 #~ msgid "Your order %s was saved."
 #~ msgstr "Ihre Bestellung %s wurde gespeichert."
