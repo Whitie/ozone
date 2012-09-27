@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
 from core.models import News, RATING_CHOICES, UserProfile
-from core.html5_widgets import SearchInput5, IntegerField5
+from core.html5_widgets import SearchInput5
 
 
 DAYS = ((_(u'Mon'), _(u'Mon')), (_(u'Tue'), _(u'Tue')), (_(u'Wed'), _(u'Wed')),
@@ -45,20 +45,24 @@ class NoteForm(forms.Form):
     text = forms.CharField(label=_(u'Text'), widget=forms.Textarea)
 
 
+RATINGS = ((0, '0'), (1, '1'), (2, '2'), (3, '3'), (4, '4'))
+
+
 class CompanyRatingForm(forms.Form):
-    good_quality = IntegerField5(label=_(u'Good Quality'), min_value=0,
-        max_value=4, step=1)
-    delivery_time = IntegerField5(label=_(u'Delivery Time'), min_value=0,
-        max_value=4, step=1)
-    quality = IntegerField5(label=_(u'Quality'), min_value=0, max_value=4,
-        step=1)
-    price = IntegerField5(label=_(u'Price'), min_value=0, max_value=4, step=1)
-    service = IntegerField5(label=_(u'Service'), min_value=0, max_value=4,
-        step=1)
-    attainability = IntegerField5(label=_(u'Attainability'), min_value=0,
-        max_value=4, step=1)
-    documentation = IntegerField5(label=_(u'Documentation'), min_value=0,
-        max_value=4, step=1)
+    good_quality = forms.TypedChoiceField(label=_(u'Good Quality'),
+        coerce=int, choices=RATINGS)
+    delivery_time = forms.TypedChoiceField(label=_(u'Delivery Time'),
+        coerce=int, choices=RATINGS)
+    quality = forms.TypedChoiceField(label=_(u'Quality'),
+        coerce=int, choices=RATINGS)
+    price = forms.TypedChoiceField(label=_(u'Price'),
+        coerce=int, choices=RATINGS)
+    service = forms.TypedChoiceField(label=_(u'Service'),
+        coerce=int, choices=RATINGS)
+    attainability = forms.TypedChoiceField(label=_(u'Attainability'),
+        coerce=int, choices=RATINGS)
+    documentation = forms.TypedChoiceField(label=_(u'Documentation'),
+        coerce=int, choices=RATINGS)
     rating = forms.ChoiceField(label=_(u'Rating'), choices=RATING_CHOICES)
     note = forms.CharField(label=_(u'Note'), widget=forms.Textarea,
         required=False, help_text=_(u'This field is required if you rate '
