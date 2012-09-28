@@ -93,12 +93,17 @@ def calculate_ratings(companies):
     for c in companies:
         whole_ratings = defaultdict(int)
         collected = []
+        notes = []
         for r in c.ratings.all():
             whole_ratings[r.rating] += 1
             collected.extend(r.as_list())
-        tmp = [u'%dx %s' % (x, y) for x, y in sorted(whole_ratings.items(),
-            key=lambda x: x[1])]
+            if r.note:
+                notes.append(r.note)
+        sratings = sorted(whole_ratings.items(), key=lambda x: x[1])
+        tmp = [u'%dx %s' % (y, x) for x, y in sratings]
         c.whole_ratings = u', '.join(tmp)
         c.min_rating = min(collected)
-        c.average = c.calculate_rating()[1]
+        c.calculated, c.average = c.calculate_rating()
+        c.raterlist = [x.last_name for x in c.rating_users.all()]
+        c.rating_notes = notes
     return companies

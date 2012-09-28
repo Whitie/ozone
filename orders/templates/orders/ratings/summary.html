@@ -1,0 +1,86 @@
+{% extends "index.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block content %}
+<style type="text/css">
+.rating {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+}
+.A { background-color: green; }
+.B { background-color: yellow; }
+.C { background-color: red; }
+</style>
+
+<h2 class="headline">{% trans "Company Rating" %} - {{ today|date:"F Y" }}</h2>
+<div id="update_message"></div>
+{% if perms.core.summarize %}
+<input type="button" value="{% trans "Generate Printout" %}" onclick="rating_pdf();" />
+<span id="pdf_printout"></span>
+{% endif %}
+
+<table class="dataTable">
+    <thead>
+        <tr>
+            <th>{% trans "Supplier" %}</th>
+            <th>{% trans "Raters" %}</th>
+            <th>{% trans "Rating" %}</th>
+            <th>{% trans "Calculated" %}</th>
+            <th>{% trans "Average Rating" %}</th>
+            <th>{% trans "Min. Rating" %}</th>
+            <th>{% trans "Restriction" %}</th>
+            <th>{% trans "Notes" %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in companies %}
+        <tr>
+            <td title="{{ c.short_name }}">{% if perms.core.summarize %}
+                <a href="{% url orders-rate c.id %}">{{ c.name }}</a>{% else %}{{ c.name }}{% endif %}
+            </td>
+            <td>{{ c.raterlist|join:", " }}</td>
+            <td title="{% trans "All ratings" %}: {{ c.whole_ratings }}">
+                <span class="rating {{ c.rating }}">{{ c.rating }} ({{ c.ratings.count }})</span>
+            </td>
+            <td style="text-align:center;" title="{% trans "Click here to take the calculated rating." %}">
+                <span onclick="take_rating({{ c.id }}, '{{ c.calculated }}');">{{ c.calculated }}</span>
+            </td>
+            <td style="text-align:center;">{{ c.average|floatformat:2 }}</td>
+            <td style="text-align:center;">{{ c.min_rating }}</td>
+            <td><small>{{ c.rating_note }}</small></td>
+            <td><small>{{ c.rating_notes|join:"<br />" }}</small></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+$(document).ready(function() {
+  var oTable = $('.dataTable').dataTable({
+    "bJQueryUI": true,
+    "bPaginate": true,
+    "oLanguage": {
+      "sUrl": "{% static "i18n/de_DE.txt" %}"
+    }
+  });
+});
+function rating_pdf() {
+    $.post('{% url orders-pdf-rating-printout %}', function(ret_data) {
+        $('#pdf_printout').text(ret_data['msg']);
+    });
+}
+function take_rating(cid, rating) {
+    var post_data = {'company_id': parseInt(cid), 'rating': rating};
+    $.post('{% url orders-api-takerating %}',
+        {'_JSON_': JSON.stringify(post_data)},
+        function(data) {
+            $('#update_message').text(data['msg']).toggle('slow');
+            setTimeout(function() {
+                $('#update_message').text('').toggle('slow');
+            }, 5000);
+        });
+}
+</script>
+{% endblock %}

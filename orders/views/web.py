@@ -334,11 +334,7 @@ def company_rating(req):
             rating = CompanyRating.objects.create(company=company,
                 user=req.user, **form.cleaned_data)
             rating.save()
-            if form.cleaned_data['note']:
-                company.rating_note = form.cleaned_data['note']
             r, average = company.calculate_rating()
-            company.rating = r
-            company.save()
             messages.success(req, u'Bewertung wurde gespeichert.')
         else:
             messages.error(req, u'Bitte füllen Sie alle Pflichtfelder aus!')
@@ -353,13 +349,18 @@ def company_rating(req):
     return render(req, 'orders/ratings/rate.html', ctx)
 
 
+@permission_required('core.summarize', raise_exception=True)
+def rate_company(req, company_id):
+    print company_id
+
+
 @login_required
 def company_rating_summary(req):
     companies = Company.objects.select_related().filter(rate=True
         ).order_by('name')
     companies = h.calculate_ratings(companies)
     ctx = dict(page_title=_(u'Company Rating Summary'), menus=menus,
-        companies=companies)
+        companies=companies, today=date.today())
     return render(req, 'orders/ratings/summary.html', ctx)
 
 

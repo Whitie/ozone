@@ -26,6 +26,7 @@ urlpatterns = patterns('orders.views.web',
     url(r'^rating/$', 'company_rating', name='orders-rating'),
     url(r'^rating/summary/$', 'company_rating_summary',
         name='orders-rating-summary'),
+    url(r'^rate/(?P<company_id>\d+)/$', 'rate_company', name='orders-rate'),
 
     # Controlling
     url(r'^controlling/by_cost/$', 'ctrl_by_cost', name='orders-ctrl-bycost'),
@@ -48,6 +49,8 @@ urlpatterns += patterns('orders.views.ajax',
     url(r'^api/update_state/$', 'update_state', name='orders-api-state'),
     url(r'^api/delivery/$', 'update_delivery', name='orders-api-delivery'),
     url(r'^api/suppliers/$', 'get_suppliers', name='orders-api-suppliers'),
+    url(r'^api/rating/take/$', 'take_calculated_rating',
+        name='orders-api-takerating'),
 )
 
 urlpatterns += patterns('orders.views.pdf',
@@ -55,4 +58,6 @@ urlpatterns += patterns('orders.views.pdf',
 
     # api
     url(r'^api/generate_pdf/$', 'generate_one_pdf', name='orders-api-pdf'),
+    url(r'^api/ratings/printout/$', 'generate_ratings_pdf',
+        name='orders-pdf-rating-printout'),
 )

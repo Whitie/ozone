@@ -13,7 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from core import latex
 from core.utils import json_rpc
-from core.models import Company
+from core.models import Company, PDFPrintout
 from orders.models import Order, OrderDay, Printout, Cost, CostOrder
 from orders.menu import menus
 
@@ -170,3 +170,9 @@ def generate_one_pdf(req, data):
         printout, filename = generate_internal(ctx)
         return dict(size=printout.pdf.size, filename=filename,
             url=printout.pdf.url)
+
+
+@require_POST
+@json_rpc
+def generate_ratings_pdf(req, data=None):
+    return {'msg': u'Test'}
