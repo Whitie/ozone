@@ -5,6 +5,7 @@ from django.contrib.auth.models import User, AnonymousUser
 from django.utils.translation import ugettext_lazy as _
 
 from core import html5_widgets as _wid
+from core.models import Company
 
 
 DATE_FORMATS = ['%d.%m.%Y', '%d.%m.%y', '%d/%m/%Y', '%d/%m/%y']
@@ -58,3 +59,12 @@ class ShortSupplierForm(forms.Form):
     fax = forms.CharField(label=_(u'Fax'), max_length=30, required=False)
     email = forms.EmailField(label=_(u'Email'), required=False)
     web = forms.URLField(label=_(u'Homepage'), required=False)
+
+
+USER_CHOICES = ((x.id, x.last_name) for x in User.objects.all())
+
+
+class SummarizeForm(forms.ModelForm):
+    class Meta:
+        model = Company
+        fields = ('rating', 'rating_note', 'rating_users')

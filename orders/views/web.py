@@ -15,7 +15,7 @@ from core.utils import any_permission_required
 from core.models import Company, CompanyRating
 from core.forms import CompanyRatingForm
 from orders.forms import (OrderOldForm, OrderForm, ShortSupplierForm,
-                          OrderDayForm, BaseOrderForm)
+                          OrderDayForm, BaseOrderForm, SummarizeForm)
 from orders.models import OrderDay, Order, Article, Cost, CostOrder
 from orders.views import helper as h
 from orders.menu import menus
@@ -351,7 +351,25 @@ def company_rating(req):
 
 @permission_required('core.summarize', raise_exception=True)
 def rate_company(req, company_id):
-    print company_id
+    company = Company.objects.get(id=int(company_id))
+    if req.method == 'POST':
+        if 'rate' in req.POST:
+            sum_form = SummarizeForm(req.POST, instance=company)
+            sum_form.save()
+            messages.success(req, u'Gesamtbewertung gespeichert.')
+        else:
+            form = CompanyRatingForm(req.POST)
+            if form.is_valid():
+                rating = CompanyRating.objects.create(company=company,
+                    user=req.user, **form.cleaned_data)
+                rating.save()
+                messages.success(req, u'Bewertung wurde gespeichert.')
+    sum_form = SummarizeForm(instance=company)
+    form = CompanyRatingForm()
+    company = h.calculate_ratings([company])[0]
+    ctx = dict(page_title=_(u'Edit Rating'), menus=menus, company=company,
+        form=form, sum_form=sum_form)
+    return render(req, 'orders/ratings/edit.html', ctx)
 
 
 @login_required
