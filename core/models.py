@@ -465,3 +465,19 @@ class PresencePrintout(models.Model):
         verbose_name = _(u'Printout')
         verbose_name_plural = _(u'Printouts')
         ordering = ['-date', 'company__name']
+
+
+class PDFPrintout(models.Model):
+    """Class for general printouts without any relations."""
+
+    category = models.CharField(_(u'Type'), max_length=20)
+    pdf = models.FileField(_(u'PDF-File'), upload_to='printouts/%Y/%m')
+    generated = models.DateTimeField(_(u'Generated'), auto_now=True)
+
+    def __unicode__(self):
+        return u'{0} - {1}'.format(self.category, self.date.strftime('%B %Y'))
+
+    class Meta:
+        verbose_name = _(u'General Printout')
+        verbose_name_plural = _(u'General Printouts')
+        ordering = ['-generated']
