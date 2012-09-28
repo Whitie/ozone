@@ -42,11 +42,17 @@
             </td>
             <td>{{ c.raterlist|join:", " }}</td>
             <td title="{% trans "All ratings" %}: {{ c.whole_ratings }}">
-                <span class="rating {{ c.rating }}">{{ c.rating }} ({{ c.ratings.count }})</span>
+                <span class="rating {{ c.rating }}">
+                    {{ c.rating }} ({{ c.ratings.count }})
+                </span>
             </td>
+            {% if perms.core.summarize %}
             <td style="text-align:center;" title="{% trans "Click here to take the calculated rating." %}">
                 <span onclick="take_rating({{ c.id }}, '{{ c.calculated }}');">{{ c.calculated }}</span>
             </td>
+            {% else %}
+            <td style="text-align:center;">{{ c.calculated }}</td>
+            {% endif %}
             <td style="text-align:center;">{{ c.average|floatformat:2 }}</td>
             <td style="text-align:center;">{{ c.min_rating }}</td>
             <td><small>{{ c.rating_note }}</small></td>
