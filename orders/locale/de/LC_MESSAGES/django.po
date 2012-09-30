@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0beta1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-27 21:34+0200\n"
-"PO-Revision-Date: 2012-09-27 21:35+0100\n"
+"POT-Creation-Date: 2012-09-30 11:08+0200\n"
+"PO-Revision-Date: 2012-09-30 11:18+0100\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: de\n"
@@ -17,92 +17,92 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: forms.py:22
+#: forms.py:23
 msgid "Next Orderday"
 msgstr "Nächster Bestelltag"
 
-#: forms.py:24
+#: forms.py:25
 msgid "Use this format: dd.mm.yyyy"
 msgstr "Benutzen Sie dieses Format: TT.MM.JJJJ"
 
-#: forms.py:25 models.py:21
+#: forms.py:26 models.py:21
 msgid "Responsible User"
 msgstr "Zuständiger Besteller"
 
-#: forms.py:30 forms.py:36 models.py:63 models.py:87
+#: forms.py:31 forms.py:37 models.py:63 models.py:87
 #: templates/orders/delivery.html:10 templates/orders/delivery.html.py:47
 #: templates/orders/manage_order.html:24 templates/orders/myorders.html:13
 #: templates/orders/orderday.html:16
 msgid "Article"
 msgstr "Artikel"
 
-#: forms.py:35 models.py:86 models.py:136 templates/orders/delivery.html:13
+#: forms.py:36 models.py:86 models.py:136 templates/orders/delivery.html:13
 #: templates/orders/delivery.html.py:50 templates/orders/manage_order.html:23
 #: templates/orders/myorders.html:12 templates/orders/old_orders.html:37
 #: templates/orders/orderday.html:15
 msgid "Count"
 msgstr "Anzahl"
 
-#: forms.py:37 models.py:39 templates/orders/delivery.html:12
+#: forms.py:38 models.py:39 templates/orders/delivery.html:12
 #: templates/orders/delivery.html.py:49 templates/orders/manage_order.html:28
 #: templates/orders/myorders.html:16 templates/orders/old_orders.html:13
-#: templates/orders/orderday.html:19
+#: templates/orders/orderday.html:19 templates/orders/ratings/summary.html:27
 msgid "Supplier"
 msgstr "Lieferant"
 
-#: forms.py:39 models.py:41 models.py:68
+#: forms.py:40 models.py:41 models.py:68
 msgid "Identifier"
 msgstr "Artikelnummer"
 
-#: forms.py:41 models.py:44 templates/orders/manage_order.html:26
+#: forms.py:42 models.py:44 templates/orders/manage_order.html:26
 #: templates/orders/myorders.html:14 templates/orders/old_orders.html:14
 #: templates/orders/orderday.html:17
 msgid "Quantity"
 msgstr "Einheit"
 
-#: forms.py:42 models.py:45 templates/orders/manage_order.html:27
+#: forms.py:43 models.py:45 templates/orders/manage_order.html:27
 #: templates/orders/myorders.html:15 templates/orders/old_orders.html:15
 #: templates/orders/orderday.html:18
 msgid "Price"
 msgstr "Preis"
 
-#: forms.py:43 models.py:91 templates/orders/_order.html:34
+#: forms.py:44 models.py:91 templates/orders/_order.html:34
 msgid "Memo"
 msgstr "Memo"
 
-#: forms.py:45
+#: forms.py:46
 msgid "Exam"
 msgstr "Prüfung"
 
-#: forms.py:46
+#: forms.py:47
 msgid "Repair"
 msgstr "Reparatur"
 
-#: forms.py:50 models.py:33 models.py:93 models.py:166
+#: forms.py:51 models.py:33 models.py:93 models.py:166
 msgid "Order Day"
 msgstr "Bestelltag"
 
-#: forms.py:54 models.py:38 models.py:70
+#: forms.py:55 models.py:38 models.py:70
 msgid "Name"
 msgstr "Name"
 
-#: forms.py:55
+#: forms.py:56
 msgid "Customer Number"
 msgstr "Kundennummer"
 
-#: forms.py:57
+#: forms.py:58
 msgid "Phone"
 msgstr "Telefon"
 
-#: forms.py:58
+#: forms.py:59
 msgid "Fax"
 msgstr "Fax"
 
-#: forms.py:59
+#: forms.py:60
 msgid "Email"
 msgstr "Email"
 
-#: forms.py:60
+#: forms.py:61
 msgid "Homepage"
 msgstr "Homepage"
 
@@ -150,7 +150,7 @@ msgstr "Controlling"
 msgid "By Cost"
 msgstr "Nach Kostenstelle"
 
-#: menu.py:22 views/web.py:351
+#: menu.py:22 templates/orders/ratings/summary.html:17 views/web.py:347
 msgid "Company Rating"
 msgstr "Lieferantenbewertung"
 
@@ -293,7 +293,7 @@ msgstr "Generiert"
 msgid "Printout"
 msgstr "Ausdruck"
 
-#: models.py:180 views/pdf.py:150
+#: models.py:180 views/pdf.py:151
 msgid "Printouts"
 msgstr "Ausdrucke"
 
@@ -311,7 +311,8 @@ msgstr "Bestelltage"
 
 #: templates/orders/add_oday.html:13 templates/orders/manage_orders.html:63
 #: templates/orders/manage_orders.html:68
-#: templates/orders/new_supplier.html:17 templates/orders/ratings/rate.html:45
+#: templates/orders/new_supplier.html:17 templates/orders/ratings/edit.html:17
+#: templates/orders/ratings/edit.html:32 templates/orders/ratings/rate.html:24
 msgid "Save"
 msgstr "Speichern"
 
@@ -638,61 +639,129 @@ msgstr "Gewichtet"
 msgid "No orders found in this period."
 msgstr "Keine Bestellungen in dieser Zeitspanne gefunden."
 
-#: templates/orders/ratings/rate.html:26
-msgid "Companies to rate"
-msgstr "Lieferanten zum Bewerten"
+#: templates/orders/ratings/edit.html:5 views/web.py:370
+msgid "Edit Rating"
+msgstr "Bewertung bearbeiten"
 
-#: templates/orders/ratings/rate.html:31
-msgid "Click to rate"
-msgstr "Klicken, um eine Bewertung zu machen"
+#: templates/orders/ratings/edit.html:9
+msgid "Add Rating"
+msgstr "Bewertung hinzufügen"
 
-#: templates/orders/ratings/rate.html:32
-msgid "Ratings"
-msgstr "Bewertungen"
-
-#: templates/orders/ratings/rate.html:36
-msgid "Average ratings"
-msgstr "Durchschnittliche Bewertung"
-
-#: templates/orders/ratings/rate.html:44
+#: templates/orders/ratings/edit.html:16 templates/orders/ratings/edit.html:31
+#: templates/orders/ratings/rate.html:23
 msgid "Help"
 msgstr "Hilfe"
 
-#: templates/orders/ratings/rate.html:50
+#: templates/orders/ratings/edit.html:23
+msgid "Rating Summary"
+msgstr "Gesamtbewertung"
+
+#: templates/orders/ratings/edit.html:38
+msgid "Back"
+msgstr "Zurück"
+
+#: templates/orders/ratings/edit.html:42
+msgid "Rater"
+msgstr "Bewerter"
+
+#: templates/orders/ratings/edit.html:43 templates/orders/ratings/rate.html:11
+msgid "Ratings"
+msgstr "Bewertungen"
+
+#: templates/orders/ratings/edit.html:44
+#: templates/orders/ratings/summary.html:29
+msgid "Rating"
+msgstr "Bewertung"
+
+#: templates/orders/ratings/edit.html:45
+msgid "Calculated Rating"
+msgstr "Berechnete Bewertung"
+
+#: templates/orders/ratings/edit.html:46
+#: templates/orders/ratings/summary.html:31
+msgid "Average Rating"
+msgstr "Durchschnittliche Bewertung"
+
+#: templates/orders/ratings/edit.html:47
+#: templates/orders/ratings/summary.html:32
+msgid "Min. Rating"
+msgstr "Mindestbewertung"
+
+#: templates/orders/ratings/edit.html:48
+#: templates/orders/ratings/summary.html:33
+msgid "Restriction"
+msgstr "Einschränkungen"
+
+#: templates/orders/ratings/edit.html:49
+#: templates/orders/ratings/summary.html:34
+msgid "Notes"
+msgstr "Bemerkungen"
+
+#: templates/orders/ratings/help_dlg.html:3
+msgid "Company Rating Help"
+msgstr "Lieferantenbewertung Hilfe"
+
+#: templates/orders/ratings/rate.html:5
+msgid "Companies to rate"
+msgstr "Lieferanten zum Bewerten"
+
+#: templates/orders/ratings/rate.html:10
+msgid "Click to rate"
+msgstr "Klicken, um eine Bewertung zu machen"
+
+#: templates/orders/ratings/rate.html:15
+msgid "Average ratings"
+msgstr "Durchschnittliche Bewertung"
+
+#: templates/orders/ratings/rate.html:29
+#: templates/orders/ratings/summary.html:28
 msgid "Raters"
 msgstr "Bewerter"
 
-#: templates/orders/ratings/rate.html:52
+#: templates/orders/ratings/rate.html:31
 msgid "Your last ratings"
 msgstr "Ihre letzten Bewertungen"
 
-#: templates/orders/ratings/rate.html:63
+#: templates/orders/ratings/rate.html:42
 msgid "Possible Ratings"
 msgstr "Mögliche Bewertungen"
 
-#: templates/orders/ratings/rate.html:65
+#: templates/orders/ratings/rate.html:44
 msgid "very good"
 msgstr "sehr gut"
 
-#: templates/orders/ratings/rate.html:66
+#: templates/orders/ratings/rate.html:45
 msgid "good"
 msgstr "gut"
 
-#: templates/orders/ratings/rate.html:67
+#: templates/orders/ratings/rate.html:46
 msgid "average"
 msgstr "befriedigend"
 
-#: templates/orders/ratings/rate.html:68
+#: templates/orders/ratings/rate.html:47
 msgid "bad"
 msgstr "schlecht"
 
-#: templates/orders/ratings/rate.html:69
+#: templates/orders/ratings/rate.html:48
 msgid "very bad"
 msgstr "sehr schlecht"
 
-#: templates/orders/ratings/rate.html:73
-msgid "Company Rating Help"
-msgstr "Lieferantenbewertung Hilfe"
+#: templates/orders/ratings/summary.html:20
+msgid "Generate Printout"
+msgstr "Ausdrucke (PDF) generieren"
+
+#: templates/orders/ratings/summary.html:30
+msgid "Calculated"
+msgstr "Berechnet"
+
+#: templates/orders/ratings/summary.html:44
+msgid "All ratings"
+msgstr "Alle Bewertungen"
+
+#: templates/orders/ratings/summary.html:50
+msgid "Click here to take the calculated rating."
+msgstr ""
+"Hier klicken, um berechnete Bewertung als Gesamtbewertung zu übernehmen."
 
 #: views/web.py:62
 msgid "Count was not changed. Aborting."
@@ -742,11 +811,11 @@ msgstr "Neuer Bestelltag %s hinzugefügt."
 msgid "Please correct the form."
 msgstr "Bitte korrigieren Sie das Formular."
 
-#: views/web.py:361
+#: views/web.py:380
 msgid "Company Rating Summary"
 msgstr "Lieferantenbewertung - Zusammenfassung"
 
-#: views/web.py:368
+#: views/web.py:387
 msgid "Sums by Cost"
 msgstr "Summen nach Kostenstellen"
 

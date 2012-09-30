@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ozone 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-27 21:34+0200\n"
-"PO-Revision-Date: 2012-09-27 14:22+0100\n"
+"POT-Creation-Date: 2012-09-30 11:08+0200\n"
+"PO-Revision-Date: 2012-09-30 11:10+0100\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <weimann@bbz-chemie.de>\n"
 "Language: de\n"
@@ -515,11 +515,11 @@ msgstr "Entschuldigt"
 msgid "Presence"
 msgstr "Anwesenheit"
 
-#: models.py:454
+#: models.py:454 models.py:474
 msgid "PDF-File"
 msgstr "PDF-Datei"
 
-#: models.py:458
+#: models.py:458 models.py:475
 msgid "Generated"
 msgstr "Erstellt"
 
@@ -530,6 +530,18 @@ msgstr "Ausdruck"
 #: models.py:466
 msgid "Printouts"
 msgstr "Ausdrucke"
+
+#: models.py:473
+msgid "Category"
+msgstr "Kategorie"
+
+#: models.py:481
+msgid "General Printout"
+msgstr "Allgemeiner Ausdruck"
+
+#: models.py:482
+msgid "General Printouts"
+msgstr "Allgemeine Ausdrucke"
 
 #: utils.py:53
 msgid "An internal server error occured."
@@ -619,6 +631,10 @@ msgstr "Abmelden"
 #: templates/menu.html:29
 msgid "Admin"
 msgstr "Administration"
+
+#: templates/menu.html:37
+msgid "Help"
+msgstr "Hilfe"
 
 #: templates/phonelist.html:6
 msgid "Phonelist"
