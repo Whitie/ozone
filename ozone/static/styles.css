@@ -140,6 +140,12 @@ small {
     -ms-transform: rotate(-90deg);
 }
 
+.opener {
+    border: 1px solid green;
+    padding: 5px;
+    background-color: yellow;
+}
+
 #update_message {
     display: none;
     width: 50%;
@@ -164,4 +170,32 @@ small {
     color: green;
     border: 2px solid green;
     padding:0px 5px;
+}
+
+/* Special styles used in a few views.
+   Maybe find a better solution for this in the future. */
+#legend {
+    display: none;
+    position: fixed;
+    top: 300px;
+    right: 30px;
+    width: 250px;
+    height: 150px;
+    z-index: 3;
+    background-color: transparent;
+    color: blue;
+    border: 2px solid green;
+    padding:0px 5px;
+}
+
+#summary {
+    position: fixed;
+    top: 300px;
+    right: 30px;
+    width: 30%;
+    z-index: 3;
+    background-color: transparent;
+    color: blue;
+    border: 2px solid green;
+    padding: 0px 5px;
 }
