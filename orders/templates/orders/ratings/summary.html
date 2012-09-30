@@ -9,7 +9,7 @@
     text-align: center;
     font-weight: bold;
 }
-.A { background-color: green; }
+.A { background-color: lime; }
 .B { background-color: yellow; }
 .C { background-color: red; }
 </style>
@@ -74,7 +74,9 @@ $(document).ready(function() {
 });
 function rating_pdf() {
     $.post('{% url orders-pdf-rating-printout %}', function(ret_data) {
-        $('#pdf_printout').text(ret_data['msg']);
+        var s = '<a href="'+ret_data['url']+'">'+ret_data['filename']
+               +' ('+ret_data['size']+' Bytes)</a>';
+        $('#pdf_printout').append(s);
     });
 }
 function take_rating(cid, rating) {

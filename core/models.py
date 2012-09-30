@@ -470,7 +470,7 @@ class PresencePrintout(models.Model):
 class PDFPrintout(models.Model):
     """Class for general printouts without any relations."""
 
-    category = models.CharField(_(u'Type'), max_length=20)
+    category = models.CharField(_(u'Category'), max_length=20)
     pdf = models.FileField(_(u'PDF-File'), upload_to='printouts/%Y/%m')
     generated = models.DateTimeField(_(u'Generated'), auto_now=True)
 

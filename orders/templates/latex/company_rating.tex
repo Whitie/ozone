@@ -1,0 +1,53 @@
+\documentclass[a4paper,paper=landscape]{scrartcl}
+
+\usepackage[landscape,left=10mm,right=10mm,top=25mm]{geometry}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[scaled]{uarial}
+\usepackage{graphicx}
+\usepackage{graphics}
+\usepackage{longtable}
+\usepackage{lastpage}
+\usepackage[automark]{scrpage2}
+\usepackage{color}
+\usepackage{colortbl}
+
+\pagestyle{scrheadings}
+
+% Farben für Bewertung
+\definecolor{A}{rgb}{0.0,1.0,0.0} % hellgrün
+\definecolor{B}{rgb}{1.0,1.0,0.0} % gelb
+\definecolor{C}{rgb}{1.0,0.0,0.0} % rot
+\definecolor{D}{rgb}{1.0,1.0,1.0} % weiß
+
+\ihead[]{bbz Chemie}
+\chead[]{Verantwortlicher: (( user.get_profile() ))}
+\ohead[]{\today}
+
+\ifoot[]{}
+\cfoot[]{Seite \thepage{} von \pageref{LastPage}}
+\ofoot[]{QMB\\Maxi Melis}
+
+\begin{document}
+\sffamily
+
+\begin{center}
+\textbf{Lieferantenbewertung (( for_date|te ))}
+
+{
+\small
+\begin{longtable}{|c|p{6cm}|p{6cm}|c|p{4cm}|p{4cm}|}
+\hline
+Pos. & Lieferant & Bewerter & Bewertung & Einschränkungen & Bemerkungen\\
+\hline
+(% for c in companies %)
+(( loop.index )) & (( c.name|te )) & (( c.raterlist|join(', ')|te )) & \cellcolor{(( c.rating ))}\textbf{(( c.rating ))} & (( c.rating_note|te )) & (( c.rating_notes|join(', ')|te ))\\
+\hline
+(% endfor %)
+\end{longtable}
+}
+
+\end{center}
+
+\end{document}

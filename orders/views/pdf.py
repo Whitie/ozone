@@ -15,6 +15,7 @@ from core import latex
 from core.utils import json_rpc
 from core.models import Company, PDFPrintout
 from orders.models import Order, OrderDay, Printout, Cost, CostOrder
+from orders.views import helper as h
 from orders.menu import menus
 
 
@@ -175,4 +176,27 @@ def generate_one_pdf(req, data):
 @require_POST
 @json_rpc
 def generate_ratings_pdf(req, data=None):
-    return {'msg': u'Test'}
+    companies = Company.objects.select_related().filter(rate=True
+        ).order_by('name')
+    companies = h.calculate_ratings(companies)
+    today = date.today()
+    ctx = dict(user=req.user, companies=companies,
+        for_date=unicode(today.strftime('%B %Y'), 'utf-8'))
+    env = latex.get_latex_env(TEMPLATE_PATH)
+    s = latex.get_latex_settings()
+    tpl = env.get_template('company_rating.tex')
+    filename = os.path.join(s['build_dir'], 'Company_Rating.tex')
+    clean_file(filename)
+    with codecs.open(filename, 'w', encoding='utf-8') as fp:
+        fp.write(tpl.render(**ctx))
+    pdfname, r1, r2 = latex.render_latex_to_pdf(filename)
+    pdf = os.path.split(pdfname)[1]
+    printout, created = PDFPrintout.objects.get_or_create(
+        category=u'Lieferantenbewertung', generated__month=today.month,
+        generated__year=today.year)
+    with open(pdfname, 'rb') as fp:
+        content = ContentFile(fp.read())
+    printout.pdf.save(pdf, content)
+    printout.save()
+    return dict(size=printout.pdf.size, filename=pdf,
+        url=printout.pdf.url)
