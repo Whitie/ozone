@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from datetime import date, timedelta
+import traceback
 
+from datetime import date, datetime
+
+from django.core.mail import send_mail
 from django.utils import simplejson
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -56,6 +59,10 @@ def error(req, msg=''):
 
 
 def internal_server_error(req):
+    d = datetime.now()
+    msg = u'%s:\n\n%s' % (d.strftime('%c'), traceback.format_exc())
+    send_mail(u'Ozone Serverfehler', msg, 'dms@bbz-chemie.de',
+        ['weimann@bbz-chemie.de', 'weimann.th@gmail.com'])
     return render(req, '500.html')
 
 
