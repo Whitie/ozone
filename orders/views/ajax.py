@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from decimal import Decimal
+from smtplib import SMTPException
 
+from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Permission
+from django.template import Context
+from django.template.loader import get_template
 
 from core.utils import json_view, json_rpc
 from core.models import Company
@@ -156,3 +160,20 @@ def take_calculated_rating(req, data):
     company.rating = data['rating']
     company.save()
     return {'msg': u'Bewertung gespeichert.'}
+
+
+@require_POST
+@json_rpc
+def send_memory_mail(req, data):
+    msg = []
+    for uid in data['uids']:
+        u = h.get_company_data_for_rating_user(User.objects.get(id=uid))
+        t = get_template('orders/mail/company_rating.txt')
+        body = t.render(Context({'user': u}))
+        try:
+            send_mail(u'Lieferantenbewertung', body, 'dms@bbz-chemie.de',
+                [u.email], fail_silently=False)
+            msg.append(u'Mail an %s gesendet.' % u.email)
+        except SMTPException:
+            msg.append(u'Mail an %s konnte nicht gesendet werden.' % u.email)
+    return {'msg': u' '.join(msg)}

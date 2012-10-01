@@ -6,7 +6,7 @@ from datetime import date, timedelta
 from decimal import Decimal
 
 from django.contrib.auth.models import User
-from core.models import Company
+from core.models import Company, CompanyRating
 from orders.models import OrderDay, Cost, Order, Article
 
 
@@ -110,3 +110,17 @@ def calculate_ratings(companies):
         c.raterlist = [x.last_name for x in c.rating_users.all()]
         c.rating_notes = notes
     return companies
+
+
+def get_company_data_for_rating_user(user):
+    companies = Company.objects.filter(rating_users=user, rate=True)
+    if companies:
+        for c in companies:
+            try:
+                r = CompanyRating.objects.filter(company=c, user=user
+                    ).latest('rated')
+                c.last_rate = r.rated
+            except CompanyRating.DoesNotExist:
+                c.last_rate = None
+        user.to_rate = companies
+    return user

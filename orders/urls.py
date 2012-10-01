@@ -27,6 +27,7 @@ urlpatterns = patterns('orders.views.web',
     url(r'^rating/summary/$', 'company_rating_summary',
         name='orders-rating-summary'),
     url(r'^rate/(?P<company_id>\d+)/$', 'rate_company', name='orders-rate'),
+    url(r'^rating/manage/$', 'manage_ratings', name='orders-rating-manage'),
 
     # Controlling
     url(r'^controlling/by_cost/$', 'ctrl_by_cost', name='orders-ctrl-bycost'),
@@ -51,6 +52,7 @@ urlpatterns += patterns('orders.views.ajax',
     url(r'^api/suppliers/$', 'get_suppliers', name='orders-api-suppliers'),
     url(r'^api/rating/take/$', 'take_calculated_rating',
         name='orders-api-takerating'),
+    url(r'^api/rating/sendmail/$', 'send_memory_mail', name='orders-api-mail'),
 )
 
 urlpatterns += patterns('orders.views.pdf',

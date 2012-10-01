@@ -1,0 +1,39 @@
+{% extends "index.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block content %}
+<h2 class="headline">{% trans "Users - Companys" %}</h2>
+
+{% include "beta.html" %}
+
+<ul>
+    {% for u in users %}
+    <li>{% trans "User" %}: {{ u.get_profile }}
+        <input type="button" value="{% trans "Send memory mail" %}" onclick="send_mail([{{ u.id }}]);" />
+        <ul>{% trans "Companies to rate" %}:
+            {% for c in u.to_rate %}
+            <li>{{ c.name }} ({% if c.last_rate %}{% trans "Last Rating" %}:
+                {{ c.last_rate|date:"SHORT_DATE_FORMAT" }}{% else %}
+                {% trans "Not rated yet!" %}{% endif %})</li>
+            {% endfor %}
+        </ul>
+    </li>
+    {% endfor %}
+</ul>
+
+<p>
+    <input type="button" value="{% trans "Send memory mail to all" %}" onclick="send_mail([{{ uids|join:", " }}]);" />
+</p>
+
+<script type="text/javascript">
+function send_mail(uids) {
+    post_data = {'uids': uids};
+    $.post('{% url orders-api-mail %}', {'_JSON_': JSON.stringify(post_data)},
+        function(ret_data) {
+            alert(ret_data['msg']);
+        }
+    );
+}
+</script>
+{% endblock %}

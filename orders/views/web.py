@@ -382,6 +382,16 @@ def company_rating_summary(req):
     return render(req, 'orders/ratings/summary.html', ctx)
 
 
+@permission_required('core.summarize', raise_exception=True)
+def manage_ratings(req):
+    users = []
+    for u in User.objects.exclude(username='admin').order_by('last_name'):
+        users.append(h.get_company_data_for_rating_user(u))
+    ctx = dict(page_title=_(u'Manage Ratings'), menus=menus, users=users,
+        uids=[x.id for x in users])
+    return render(req, 'orders/ratings/manage.html', ctx)
+
+
 @permission_required('orders.controlling', raise_exception=True)
 def ctrl_by_cost(req):
     ctx = dict(page_title=_(u'Sums by Cost'), menus=menus, costs=[],
