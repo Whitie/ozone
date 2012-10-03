@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ozone 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-30 11:08+0200\n"
-"PO-Revision-Date: 2012-09-30 11:10+0100\n"
+"POT-Creation-Date: 2012-10-03 22:30+0200\n"
+"PO-Revision-Date: 2012-10-03 22:32+0100\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <weimann@bbz-chemie.de>\n"
 "Language: de\n"
@@ -543,11 +543,11 @@ msgstr "Allgemeiner Ausdruck"
 msgid "General Printouts"
 msgstr "Allgemeine Ausdrucke"
 
-#: utils.py:53
+#: utils.py:56
 msgid "An internal server error occured."
 msgstr "Der Server hat einen internen Fehler."
 
-#: utils.py:54
+#: utils.py:57
 msgid "Ozone Error"
 msgstr "Ozone Software Fehler"
 

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0beta1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-30 11:08+0200\n"
-"PO-Revision-Date: 2012-09-30 11:18+0100\n"
+"POT-Creation-Date: 2012-10-03 22:30+0200\n"
+"PO-Revision-Date: 2012-10-03 22:34+0100\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: de\n"
@@ -162,6 +162,10 @@ msgstr "Bewerten"
 msgid "Summary"
 msgstr "Zusammenfassung"
 
+#: menu.py:25
+msgid "Manage"
+msgstr "Verwalten"
+
 #: models.py:19
 msgid "Day"
 msgstr "Tag"
@@ -245,7 +249,7 @@ msgstr "Bestellung"
 msgid "Date"
 msgstr "Datum"
 
-#: models.py:138
+#: models.py:138 templates/orders/ratings/manage.html:12
 msgid "User"
 msgstr "Benutzer"
 
@@ -701,9 +705,30 @@ msgstr "Bemerkungen"
 msgid "Company Rating Help"
 msgstr "Lieferantenbewertung Hilfe"
 
+#: templates/orders/ratings/manage.html:6
+msgid "Users - Companys"
+msgstr "Benutzer - Lieferanten"
+
+#: templates/orders/ratings/manage.html:13
+msgid "Send memory mail"
+msgstr "Erinnerungsmail senden"
+
+#: templates/orders/ratings/manage.html:14
 #: templates/orders/ratings/rate.html:5
 msgid "Companies to rate"
 msgstr "Lieferanten zum Bewerten"
+
+#: templates/orders/ratings/manage.html:16
+msgid "Last Rating"
+msgstr "Letzte Bewertung"
+
+#: templates/orders/ratings/manage.html:18
+msgid "Not rated yet!"
+msgstr "Noch nicht bewertet!"
+
+#: templates/orders/ratings/manage.html:26
+msgid "Send memory mail to all"
+msgstr "Erinnerungsmail an alle senden"
 
 #: templates/orders/ratings/rate.html:10
 msgid "Click to rate"
@@ -815,7 +840,11 @@ msgstr "Bitte korrigieren Sie das Formular."
 msgid "Company Rating Summary"
 msgstr "Lieferantenbewertung - Zusammenfassung"
 
-#: views/web.py:387
+#: views/web.py:390
+msgid "Manage Ratings"
+msgstr "Bewertungen verwalten"
+
+#: views/web.py:397
 msgid "Sums by Cost"
 msgstr "Summen nach Kostenstellen"
 
