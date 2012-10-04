@@ -386,7 +386,9 @@ def company_rating_summary(req):
 def manage_ratings(req):
     users = []
     for u in User.objects.exclude(username='admin').order_by('last_name'):
-        users.append(h.get_company_data_for_rating_user(u))
+        u = h.get_company_data_for_rating_user(u)
+        if hasattr(u, 'to_rate'):
+            users.append(u)
     ctx = dict(page_title=_(u'Manage Ratings'), menus=menus, users=users,
         uids=[x.id for x in users])
     return render(req, 'orders/ratings/manage.html', ctx)
