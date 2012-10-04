@@ -20,6 +20,7 @@
 \definecolor{B}{rgb}{1.0,1.0,0.0} % gelb
 \definecolor{C}{rgb}{1.0,0.0,0.0} % rot
 \definecolor{D}{rgb}{1.0,1.0,1.0} % weiß
+\definecolor{restrict}{rgb}{1.0,1.0,0.8}
 
 \ihead[]{bbz Chemie}
 \chead[]{Verantwortlicher: (( user.get_profile() ))}
@@ -37,12 +38,12 @@
 
 {
 \small
-\begin{longtable}{|c|p{6cm}|p{6cm}|c|p{4cm}|p{4cm}|}
+\begin{longtable}{|c|p{6cm}|p{4cm}|c|p{4cm}|p{6cm}|}
 \hline
 Pos. & Lieferant & Bewerter & Bewertung & Einschränkungen & Bemerkungen\\
 \hline
 (% for c in companies %)
-(( loop.index )) & (( c.name|te )) & (( c.raterlist|join(', ')|te )) & \cellcolor{(( c.rating ))}\textbf{(( c.rating ))} & (( c.rating_note|te )) & (( c.rating_notes|join(', ')|te ))\\
+(( loop.index )) & (( c.name|te )) & (( c.raterlist|join(', ')|te )) & \cellcolor{(( c.rating ))}\textbf{(( c.rating ))} & \cellcolor{restrict}(( c.rating_note|te )) & (( c.rating_notes|join(', ')|te ))\\
 \hline
 (% endfor %)
 \end{longtable}
