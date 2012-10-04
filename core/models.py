@@ -459,7 +459,7 @@ class PresencePrintout(models.Model):
 
     def __unicode__(self):
         return u'{0} {1}'.format(self.company.short_name,
-            self.date.strftime('%B %Y'))
+            self.date.strftime('%Y/%m'))
 
     class Meta:
         verbose_name = _(u'Printout')
@@ -475,7 +475,8 @@ class PDFPrintout(models.Model):
     generated = models.DateTimeField(_(u'Generated'), auto_now=True)
 
     def __unicode__(self):
-        return u'{0} - {1}'.format(self.category, self.date.strftime('%B %Y'))
+        return u'{0} - {1}'.format(self.category,
+                                   self.generated.strftime('%Y/%m'))
 
     class Meta:
         verbose_name = _(u'General Printout')

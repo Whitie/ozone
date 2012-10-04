@@ -3,10 +3,16 @@
 {% load staticfiles %}
 
 {% block content %}
-<h2 class="headline">{% trans "Users - Companys" %}</h2>
-
+<style type="text/css">
+.rating { font-weight: bold; }
+.A { color: green; }
+.B { color: yellow; }
+.C { color: red; }
+</style>
 {% include "beta.html" %}
 
+<div id="left" style="width:45%;float:left;clear:right;">
+<h3 class="headline">{% trans "Users - Companies" %}</h3>
 <ul>
     {% for u in users %}
     <li>{% trans "User" %}: {{ u.get_profile }}
@@ -21,8 +27,27 @@
     </li>
     {% endfor %}
 </ul>
+</div>
 
-<p>
+<div id="middle" style="width:29%;float:left;margin-left:5px;">
+<h3 class="headline">{% trans "Ratings - Companies" %}</h3>
+<ul>
+    {% for c in companies %}
+    <li class="rating {{ c.rating }}" title="{{ c.rating_note|default:"-" }}">{{ c.rating }}: {{ c.name }}</li>
+    {% endfor %}
+</ul>
+</div>
+
+<div id="right" style="width:24%;float:right;">
+<h3 class="headline">{% trans "Stored Ratings" %}</h3>
+<ul>
+    {% for r in old_ratings %}
+    <li><a href="{{ r.pdf.url }}">{{ r.category }} {{ r.generated|date:"Y/m" }}</a></li>
+    {% endfor %}
+</ul>
+</div>
+
+<p style="clear:both;padding-top:20px;">
     <input type="button" value="{% trans "Send memory mail to all" %}" onclick="send_mail([{{ uids|join:", " }}]);" />
 </p>
 

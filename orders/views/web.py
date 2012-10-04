@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 
 from core.utils import any_permission_required
-from core.models import Company, CompanyRating
+from core.models import Company, CompanyRating, PDFPrintout
 from core.forms import CompanyRatingForm
 from orders.forms import (OrderOldForm, OrderForm, ShortSupplierForm,
                           OrderDayForm, BaseOrderForm, SummarizeForm)
@@ -389,8 +389,12 @@ def manage_ratings(req):
         u = h.get_company_data_for_rating_user(u)
         if hasattr(u, 'to_rate'):
             users.append(u)
+    old_ratings = PDFPrintout.objects.filter(
+        category=u'Lieferantenbewertung').order_by('-generated')
+    companies = Company.objects.filter(rate=True).order_by('rating')
     ctx = dict(page_title=_(u'Manage Ratings'), menus=menus, users=users,
-        uids=[x.id for x in users])
+        uids=[x.id for x in users], old_ratings=old_ratings,
+        companies=companies)
     return render(req, 'orders/ratings/manage.html', ctx)
 
 
