@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0beta1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-03 22:30+0200\n"
+"POT-Creation-Date: 2012-10-04 10:32+0200\n"
 "PO-Revision-Date: 2012-10-03 22:34+0100\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -249,7 +249,7 @@ msgstr "Bestellung"
 msgid "Date"
 msgstr "Datum"
 
-#: models.py:138 templates/orders/ratings/manage.html:12
+#: models.py:138 templates/orders/ratings/manage.html:18
 msgid "User"
 msgstr "Benutzer"
 
@@ -705,28 +705,36 @@ msgstr "Bemerkungen"
 msgid "Company Rating Help"
 msgstr "Lieferantenbewertung Hilfe"
 
-#: templates/orders/ratings/manage.html:6
-msgid "Users - Companys"
+#: templates/orders/ratings/manage.html:15
+msgid "Users - Companies"
 msgstr "Benutzer - Lieferanten"
 
-#: templates/orders/ratings/manage.html:13
+#: templates/orders/ratings/manage.html:19
 msgid "Send memory mail"
 msgstr "Erinnerungsmail senden"
 
-#: templates/orders/ratings/manage.html:14
+#: templates/orders/ratings/manage.html:20
 #: templates/orders/ratings/rate.html:5
 msgid "Companies to rate"
 msgstr "Lieferanten zum Bewerten"
 
-#: templates/orders/ratings/manage.html:16
+#: templates/orders/ratings/manage.html:22
 msgid "Last Rating"
 msgstr "Letzte Bewertung"
 
-#: templates/orders/ratings/manage.html:18
+#: templates/orders/ratings/manage.html:24
 msgid "Not rated yet!"
 msgstr "Noch nicht bewertet!"
 
-#: templates/orders/ratings/manage.html:26
+#: templates/orders/ratings/manage.html:33
+msgid "Ratings - Companies"
+msgstr "Bewertungen - Lieferanten"
+
+#: templates/orders/ratings/manage.html:42
+msgid "Stored Ratings"
+msgstr "Gespeicherte Bewertungen"
+
+#: templates/orders/ratings/manage.html:51
 msgid "Send memory mail to all"
 msgstr "Erinnerungsmail an alle senden"
 
@@ -840,48 +848,12 @@ msgstr "Bitte korrigieren Sie das Formular."
 msgid "Company Rating Summary"
 msgstr "Lieferantenbewertung - Zusammenfassung"
 
-#: views/web.py:390
+#: views/web.py:395
 msgid "Manage Ratings"
 msgstr "Bewertungen verwalten"
 
-#: views/web.py:397
+#: views/web.py:403
 msgid "Sums by Cost"
 msgstr "Summen nach Kostenstellen"
 
-#~ msgid "Company %s already exists."
-#~ msgstr "Firma %s existiert schon."
 
-#~ msgid "New company %s saved."
-#~ msgstr "Neue Firma %s gespeichert."
-
-#~ msgid "Please correct the wrong fields."
-#~ msgstr "Bitte korrigieren Sie die falschen Felder."
-
-#~ msgid "Your order %s was saved."
-#~ msgstr "Ihre Bestellung %s wurde gespeichert."
-
-#~ msgid "Please fill the required fields."
-#~ msgstr "Bitte füllen Sie die Pflichtfelder aus."
-
-#~ msgid "Count for %(name)s was changed from %(old)d to %(count)d."
-#~ msgstr "Die Anzahl für %(name)s wurde von %(old)d auf %(count)d geändert."
-
-#~ msgid "%s added."
-#~ msgstr "%s hinzugefügt."
-
-#~ msgid "%s removed."
-#~ msgstr "%s entfernt."
-
-#~ msgid "[TEST] Order ID: %d"
-#~ msgstr "[TEST] Bestellung ID: %d"
-
-#~ msgid "All changes to order %(name)s (ID: %(id)d) saved."
-#~ msgstr ""
-#~ "Alle Änderungen an der Bestellung %(name)s (ID: %(id)d) wurden "
-#~ "gespeichert."
-
-#~ msgid "Row"
-#~ msgstr "Zeile"
-
-#~ msgid "Printout for"
-#~ msgstr "Ausdrucke für"
