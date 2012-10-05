@@ -1,0 +1,14 @@
+{% extends "index.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block content %}
+<h2 class="headline">{% trans "Media for Entry ID" %}: {{ entry.id }}</h2>
+<p>{% if entry.event %}{{ entry.event }}: {% endif %}{{ entry.text }}</p>
+<p>{% trans "By" %}: {{ entry.created_by.get_profile }}</p>
+{% for m in entry.media.all %}
+<h3>{{ m.media.name }} ({{ m.media.size }} Bytes)</h3>
+{{ m.get_html_tag }}
+{% endfor %}
+
+{% endblock %}

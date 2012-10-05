@@ -22,6 +22,12 @@ core_menu = Menu(_(u'Core'),
     ('core-students-archive', _(u'Archive')),
 )
 
+journal_menu = Menu(_(u'Journals'),
+    ('core-myentries', _(u'My Entries')),
+    ('core-add-journal', _(u'Add new Journal')),
+    ('core-journals', _(u'Manage Journals')),
+)
+
 extra_menu = Menu(_(u'Extra'),
     ('core-birthdays', _(u'Coming Birthdays')),
     ('core-phonelist', _(u'Internal Phonelist')),
@@ -32,4 +38,4 @@ news_menu = Menu(_(u'News'),
     ('core-add-news', _(u'Write News')),
 )
 
-menus = [core_menu, extra_menu, news_menu]
+menus = [core_menu, journal_menu, extra_menu, news_menu]

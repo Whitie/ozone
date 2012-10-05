@@ -3,11 +3,13 @@
 import json
 
 from datetime import date
+from mimetypes import guess_type
 
 from django.db import models
-#from django.conf import settings
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from django.utils.safestring import mark_safe
 
 from audit_log.models.managers import AuditLog
 from core.utils import named
@@ -383,6 +385,7 @@ class Student(CommonInfo):
         ordering = ['company__name', 'lastname']
 
 
+# deprecated (will be removed in 2.0)
 class Memo(models.Model):
     student = models.ForeignKey(Student, verbose_name=_(u'Student'),
         related_name='memos')
@@ -395,13 +398,104 @@ class Memo(models.Model):
             dots = u'...'
         else:
             dots = u''
-        return u'[{0}] {1}: {2}{3}'.format(self.created.strftime('%x'),
-                                           self.student, self.text[:40], dots)
+        return u'[{0}] {1}: {2}{3}'.format(
+            self.created.strftime(settings.DEFAULT_DATETIME_FORMAT),
+            self.student, self.text[:40], dots)
 
     class Meta:
         verbose_name = _(u'Memo')
         verbose_name_plural = _(u'Memos')
         ordering = ['student__lastname']
+
+
+class PedagogicJournal(models.Model):
+    group = models.OneToOneField(StudentGroup, verbose_name=_(u'Group'),
+        related_name='journal')
+    instructors = models.ManyToManyField(User, verbose_name=_(u'Instructors'),
+        related_name='journals')
+    created = models.DateField(_(u'Created'), auto_now_add=True)
+
+    def __unicode__(self):
+        return self.group.name()
+
+    def is_writeable(self):
+        return not self.group.finished()
+
+    class Meta:
+        verbose_name = _(u'Pedagogic Journal')
+        verbose_name_plural = _(u'Pedagogic Journals')
+        ordering = ['group__job_short']
+        permissions = (
+            ('read', u'Read all journals'),
+        )
+
+
+class JournalEntry(models.Model):
+    journal = models.ForeignKey(PedagogicJournal, verbose_name=_(u'Journal'),
+        related_name='entries')
+    student = models.ForeignKey(Student, verbose_name=_(u'Student'),
+        related_name='journal_entries')
+    event = models.CharField(_(u'Event'), max_length=50, blank=True)
+    text = models.TextField(_(u'Text'))
+    created = models.DateTimeField(_(u'Created'), auto_now_add=True)
+    created_by = models.ForeignKey(User, verbose_name=_(u'Created by'),
+        related_name='journal_entries', editable=False)
+    last_edit = models.DateTimeField(_(u'Last edit'), auto_now=True)
+
+    def __unicode__(self):
+        if len(self.text) > 40:
+            dots = u'...'
+        else:
+            dots = u''
+        return u'[{0}] {1}{2}'.format(self.student, self.text[:40], dots)
+
+    @named(_(u'Event'))
+    def get_short_entry(self):
+        if self.event:
+            return self.event
+        return self.text
+
+    def has_media(self):
+        return bool(self.media.all().count())
+
+    class Meta:
+        verbose_name = _(u'Journal Entry')
+        verbose_name_plural = _(u'Journal Entries')
+        ordering = ['journal__group__job', 'student__lastname', '-created']
+
+
+MEDIA_TYPES_HTML = {
+    'image': u'<img src="{0}" alt="{1}" />',
+    'application': u'<a href="{0}">{1}</a>',
+    'video': (u'<video src="{0}" width="320" height="200" controls preload>'
+              u'{1}</video>'),
+    'audio': u'<audio src="{0}" controls preload>{1}</audio>'
+}
+
+
+class JournalMedia(models.Model):
+    entry = models.ForeignKey(JournalEntry, verbose_name=_(u'Journal Entry'),
+        related_name='media')
+    media_type = models.CharField(max_length=30, editable=False, blank=True)
+    media = models.FileField(_(u'Media'), upload_to='journals/%Y')
+
+    def __unicode__(self):
+        return u'{0} ({1})'.format(self.media.name, self.media_type)
+
+    def save(self, *args, **kwargs):
+        type_ = guess_type(self.media.url, strict=False)[0]
+        if type_ is None:
+            self.media_type = u'application/octet-stream'
+        else:
+            self.media_type = type_
+        super(JournalMedia, self).save(*args, **kwargs)
+
+    def get_html_tag(self):
+        for type_, tag in MEDIA_TYPES_HTML.iteritems():
+            if self.media_type.startswith(type_):
+                return mark_safe(tag.format(self.media.url, self.media.name))
+        tag = MEDIA_TYPES_HTML['application']
+        return mark_safe(tag.format(self.media.url, self.media.name))
 
 
 PRESENCE_CHOICES = (

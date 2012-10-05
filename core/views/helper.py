@@ -4,7 +4,7 @@ from datetime import timedelta
 
 from django.utils.translation import ugettext as _
 
-from core.models import StudentGroup, PresenceDay
+from core.models import StudentGroup, PresenceDay, Student
 
 
 def get_presence(students, start, end):
@@ -27,3 +27,8 @@ def get_presence(students, start, end):
 def get_studentgroups():
     return [(0, _(u'All Groups'))] + [(x.id, x.name()) for x in
                                       StudentGroup.objects.all()]
+
+
+def get_students_for_group(group):
+    return [(x.id, u'%s, %s' % (x.lastname, x.firstname)) for x in
+        Student.objects.filter(finished=False, group=group)]

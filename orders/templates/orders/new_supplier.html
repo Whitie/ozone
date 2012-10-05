@@ -3,7 +3,7 @@
 
 {% block content %}
 <h2 class="headline">{% trans "Enter supplier data" %}</h2>
-<form method="post" action="{% url orders-add-supplier %}">
+<form method="post" action="{% url orders-add-supplier %}" onsubmit="clean();">
 {% csrf_token %}
 <table style="border:1px solid blue;margin:5px auto;">
 {% for f in form %}
@@ -18,5 +18,15 @@
 </tr>
 </table>
 </form>
+
+<script type="text/javascript">
+function clean() {
+    var web = $('#id_web').val();
+    if (web == 'http://') {
+        $('#id_web').val('');
+    }
+    return true;
+}
+</script>
 
 {% endblock %}

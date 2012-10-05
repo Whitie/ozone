@@ -15,6 +15,9 @@
         <script type="text/javascript" src="{% static "jquery.dataTables.min.js" %}"></script>
         <script type="text/javascript" src="{% static "json2.js" %}"></script>
         <script type="text/javascript" src="{% static "csrf.js" %}"></script>
+        {% if include_media %}
+        <script type="text/javascript" src="{% static "html5media.js" %}"></script>
+        {% endif %}
         {% block head %}{% endblock %}
     </head>
     <body>

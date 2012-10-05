@@ -49,6 +49,19 @@ urlpatterns = patterns('core.views.web',
         name='barcode'),
 )
 
+# Journal
+urlpatterns += patterns('core.views.journal',
+    url(r'^journal/myentries/$', 'my_entries', name='core-myentries'),
+    url(r'^journal/$', 'list_journals', name='core-journals'),
+    url(r'^journal/media/(?P<entry_id>\d+)/$', 'show_media_for_entry',
+        name='core-entry-media'),
+    url(r'^journal/entry/add/(?P<gid>\d+)/$', 'add_entry',
+        name='core-add-entry'),
+    url(r'^journal/add/$', 'add_journal', name='core-add-journal'),
+    url(r'^journal/rights/(?P<jid>\d+)/$', 'edit_rights',
+        name='core-journal-rights'),
+)
+
 # JSON API
 urlpatterns += patterns('core.views.ajax',
     url(r'^api/presence/update/$', 'update_presence',

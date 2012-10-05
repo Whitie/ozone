@@ -1,0 +1,49 @@
+{% extends "index.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block content %}
+<h2 class="headline">{% trans "Entries" %}</h2>
+
+<table class="dataTable">
+    <thead>
+        <tr>
+            <th>{% trans "Group" %}</th>
+            <th>{% trans "Student" %}</th>
+            <th>{% trans "Date" %}</th>
+            <th>{% trans "Event" %}</th>
+            <th>{% trans "Entry" %}</th>
+            <th>{% trans "Media" %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for e in entries %}
+        <tr>
+            <td>{{ e.journal }}</td>
+            <td>{{ e.student.lastname }}, {{ e.student.firstname }}</td>
+            <td title="{% trans "Last Edit" %}: {{ e.last_edit|date:"SHORT_DATETIME_FORMAT" }}">
+                {{ e.created|date:"SHORT_DATETIME_FORMAT" }}
+            </td>
+            <td>{{ e.event|default:"-" }}</td>
+            <td>{{ e.text }}</td>
+            <td>
+                {% if e.has_media %}<a href="{% url core-entry-media e.id %}">{% trans "Show" %}</a>{% else %}-{% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+$(document).ready(function() {
+  var oTable = $('.dataTable').dataTable({
+    "bJQueryUI": true,
+    "bPaginate": true,
+    "bAutoWidth": true,
+    "oLanguage": {
+      "sUrl": "{% static "i18n/de_DE.txt" %}"
+    }
+  });
+});
+</script>
+{% endblock %}

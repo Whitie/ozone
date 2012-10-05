@@ -10,7 +10,7 @@ sys.path.insert(0, EXT_DIR)
 
 # Django settings for ozone project.
 
-VERSION = '1.8.4'
+VERSION = '1.9'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -63,6 +63,10 @@ USE_L10N = True
 
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
+
+# Dateformat to use (strftime notation)
+DEFAULT_DATE_FORMAT = '%d.%m.%Y'
+DEFAULT_DATETIME_FORMAT = '%d.%m.%Y %H:%M:%S'
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"

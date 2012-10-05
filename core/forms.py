@@ -5,7 +5,8 @@ from django.forms.widgets import CheckboxSelectMultiple
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
-from core.models import News, RATING_CHOICES, UserProfile
+from core.models import (News, RATING_CHOICES, UserProfile, PedagogicJournal,
+    Student)
 from core.html5_widgets import SearchInput5
 
 
@@ -16,6 +17,15 @@ DAYS = ((_(u'Mon'), _(u'Mon')), (_(u'Tue'), _(u'Tue')), (_(u'Wed'), _(u'Wed')),
 def get_user():
     return ((x.id, unicode(x.get_profile())) for x in
             User.objects.exclude(username='admin'))
+
+
+def get_student(sid):
+    return Student.objects.get(id=int(sid))
+
+
+class NewJournalForm(forms.ModelForm):
+    class Meta:
+        model = PedagogicJournal
 
 
 class NewsForm(forms.ModelForm):
@@ -75,3 +85,9 @@ class PresenceForm(forms.Form):
     course = forms.CharField(label=_(u'Course'), max_length=50, required=False)
     school_days = forms.MultipleChoiceField(label=_(u'School days'),
         choices=DAYS, required=False, widget=CheckboxSelectMultiple)
+
+
+class NewEntryForm(forms.Form):
+    student = forms.TypedChoiceField(label=_(u'Student'), coerce=get_student)
+    event = forms.CharField(label=_(u'Event'), max_length=50, required=False)
+    text = forms.TextField(label=_(u'Text'))

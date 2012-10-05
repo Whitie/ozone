@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from django.conf import settings
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
@@ -192,6 +193,44 @@ class PartAdmin(admin.ModelAdmin):
         return u', '.join(users)
 
 
+class PedagogicJournalAdmin(admin.ModelAdmin):
+    list_display = ('group', 'get_users', 'created')
+    list_display_links = ('group',)
+    list_filter = ('group',)
+    search_fields = ('group__job', 'group__job_short')
+
+    @named(_(u'Instructors'))
+    def get_users(self, obj):
+        users = [unicode(x.get_profile()) for x in obj.instructors.all()]
+        return u', '.join(users)
+
+
+class JournalEntryAdmin(admin.ModelAdmin):
+    list_display = ('journal', 'student', 'get_short_entry', 'created',
+                    'edited', 'created_by')
+    list_display_links = ('journal',)
+    list_filter = ('journal', 'student', 'created_by', 'created')
+    search_fields = ('student__lastname', 'created__last_name')
+
+    def save_model(self, req, obj, form, change):
+        if getattr(obj, 'created_by', None) is None:
+            obj.created_by = req.user
+        obj.save()
+
+    @named(_(u'Last Edit'))
+    def edited(self, obj):
+        if obj.created == obj.last_edit:
+            return u'-'
+        else:
+            return obj.last_edit.strftime(settings.DEFAULT_DATETIME_FORMAT)
+
+
+class JournalMediaAdmin(admin.ModelAdmin):
+    list_display = ('id', 'media_type', 'media')
+    list_display_links = ('id',)
+    list_filter = ('entry',)
+
+
 admin.site.register(News, NewsAdmin)
 admin.site.register(Part, PartAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
@@ -201,8 +240,11 @@ admin.site.register(CooperationContract, CooperationContractAdmin)
 admin.site.register(CompanyRating, CompanyRatingAdmin)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(StudentGroup, StudentGroupAdmin)
-admin.site.register(Memo, MemoAdmin)
+#admin.site.register(Memo, MemoAdmin)
 admin.site.register(PresenceDay, PresenceDayAdmin)
 admin.site.register(Note, NoteAdmin)
 admin.site.register(PresencePrintout, PresencePrintoutAdmin)
 admin.site.register(PDFPrintout)
+admin.site.register(PedagogicJournal, PedagogicJournalAdmin)
+admin.site.register(JournalEntry, JournalEntryAdmin)
+admin.site.register(JournalMedia, JournalMediaAdmin)
