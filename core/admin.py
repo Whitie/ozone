@@ -89,12 +89,17 @@ class StudentInline(admin.StackedInline):
 
 class StudentGroupAdmin(admin.ModelAdmin):
     inlines = (StudentInline,)
-    list_display = ('__unicode__', 'job', 'start_date', 'school_nr')
+    list_display = ('__unicode__', 'job', 'start_date', 'school_nr',
+                    'student_count')
     list_display_links = ('__unicode__', 'job')
     list_filter = ('job', 'school_nr')
     list_editable = ('school_nr',)
     save_on_top = True
     search_fields = ('job', 'job_short', 'school_nr')
+
+    @named(_(u'Student(s)'))
+    def student_count(self, obj):
+        return obj.students.filter(finished=False).count()
 
 
 class MemoAdmin(admin.ModelAdmin):
