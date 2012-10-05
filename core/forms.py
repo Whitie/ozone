@@ -90,4 +90,5 @@ class PresenceForm(forms.Form):
 class NewEntryForm(forms.Form):
     student = forms.TypedChoiceField(label=_(u'Student'), coerce=get_student)
     event = forms.CharField(label=_(u'Event'), max_length=50, required=False)
-    text = forms.TextField(label=_(u'Text'))
+    text = forms.CharField(label=_(u'Text'), widget=forms.Textarea)
+
