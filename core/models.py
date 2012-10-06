@@ -466,7 +466,7 @@ class JournalEntry(models.Model):
 
 
 MEDIA_TYPES_HTML = {
-    'image': u'<img src="{0}" alt="{1}" />',
+    'image': u'<img src="{0}" alt="{1}" width="800" />',
     'application': u'<a href="{0}">{1}</a>',
     'video': (u'<video src="{0}" width="320" height="200" controls preload>'
               u'{1}</video>'),

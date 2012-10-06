@@ -205,7 +205,14 @@ class PedagogicJournalAdmin(admin.ModelAdmin):
         return u', '.join(users)
 
 
+class JournalMediaInline(admin.TabularInline):
+    model = JournalMedia
+    max_num = 3
+    extra = 1
+
+
 class JournalEntryAdmin(admin.ModelAdmin):
+    inlines = [JournalMediaInline]
     list_display = ('journal', 'student', 'get_short_entry', 'created',
                     'edited', 'created_by')
     list_display_links = ('journal',)
