@@ -68,6 +68,8 @@ urlpatterns += patterns('core.views.ajax',
         name='core-api-presence-update'),
     url(r'^api/presence/update_day/$', 'update_day',
         name='core-api-presence-update-day'),
+    url(r'^api/journal/student_data/$', 'get_entries_for_student',
+        name='core-api-student-entries'),
 )
 
 # PDF generation

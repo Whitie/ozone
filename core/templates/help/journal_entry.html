@@ -1,0 +1,34 @@
+{% load i18n %}
+
+<div id="help-dialog" title="{% trans "Journal Entry Help" %}">
+<p>Das bbz Chemie unterscheidet im Ergebnis der Bewertung (Auswahl) von
+    Lieferanten 4 Gruppen:</p>
+<ul>
+    <li><strong>(A)</strong> Zugelassene Lieferanten (Durchschnittliche
+        Bewertung &ge; 3 und keine Bewertung &le; 1, Auswahlkriterium ist
+        primär der Preis und dann die Lieferzeit der Ware)</li>
+    <li><strong>(B)</strong> Lieferanten mit besonderem Status (Lieferanten,
+        die nur für bestimmte Waren nutzbar sind)</li>
+    <li><strong>(C)</strong> Gesperrte Lieferanten (Durchschnittliche
+        Bewertung &lt; 2, vor der Zusammenarbeit mit diesen Lieferanten ist
+        in jedem Fall die Entscheidung der Leitung einzuholen)</li>
+    <li><strong>(D)</strong> Lieferanten in der Bewertung (neue Lieferanten
+        oder Lieferanten, bei denen Probleme aufgetreten sind)</li>
+</ul>
+<p>Für Lieferanten der Gruppen B und C erfolgt, falls es notwendig ist, eine
+    Begründung für die Einstufung und die Festsetzung des Termins für eine
+    Neubeurteilung.</p>
+</div>
+
+<script type="text/javascript">
+$(function() {
+    $('#help-dialog').dialog({
+        'autoOpen': false,
+        'width': 500
+    });
+    $('.opener').click(function() {
+        $('#help-dialog').dialog('open');
+        return false;
+    });
+});
+</script>

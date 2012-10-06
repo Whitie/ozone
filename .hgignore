@@ -11,6 +11,7 @@ syntax: glob
 *.log
 log/*
 build/*
+ozone/media/*
 _latex_build/*.tex
 ozone/production_*
 ozone/local_*

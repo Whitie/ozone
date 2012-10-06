@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
+from django.conf import settings
+
 from core.utils import json_rpc
-from core.models import PresenceDay
+from core.models import PresenceDay, JournalEntry, Student
 
 
 @json_rpc
@@ -57,3 +59,26 @@ def update_day(req, data):
         pday.save()
     return {'instructor': unicode(pday.instructor.get_profile()),
             'updated': updated}
+
+
+@json_rpc
+def get_entries_for_student(req, data):
+    try:
+        student = Student.objects.get(id=data['student_id'])
+    except Student.DoesNotExist:
+        return {'has_data': False}
+    entries = JournalEntry.objects.select_related().filter(
+        student=student, journal__id=data['journal_id']).order_by('-created')
+    tmp = []
+    ret = dict(last=student.lastname, first=student.firstname)
+    for e in entries:
+        d = dict(inst=unicode(e.created_by.get_profile()))
+        if e.event:
+            d['txt'] = u'{0}: {1}'.format(e.event, e.text)
+        else:
+            d['txt'] = e.text
+        d['created'] = e.created.strftime(settings.DEFAULT_DATETIME_FORMAT)
+        tmp.append(d)
+    ret['entries'] = tmp
+    ret['has_data'] = bool(tmp)
+    return ret

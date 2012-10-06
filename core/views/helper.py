@@ -30,5 +30,5 @@ def get_studentgroups():
 
 
 def get_students_for_group(group):
-    return [(x.id, u'%s, %s' % (x.lastname, x.firstname)) for x in
-        Student.objects.filter(finished=False, group=group)]
+    return [(0, u'------')] + [(x.id, u'%s, %s' % (x.lastname, x.firstname))
+        for x in Student.objects.filter(finished=False, group=group)]

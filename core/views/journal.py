@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from core.models import (PedagogicJournal, JournalEntry)
+from core.models import (PedagogicJournal, JournalEntry, JournalMedia)
 from core.forms import NewJournalForm, NewEntryForm
 from core.views import helper as h
 from core.menu import menus
@@ -73,9 +73,25 @@ def add_entry(req, gid):
     journal = journals[0]
     if req.method == 'POST':
         form = NewEntryForm(req.POST)
+        form.fields['student'].choices = h.get_students_for_group(
+            journal.group)
+        jid = int(req.POST.get('journal_id'))
+        if form.is_valid():
+            entry = JournalEntry.objects.create(created_by=req.user,
+                journal=PedagogicJournal.objects.get(id=jid),
+                **form.cleaned_data)
+            entry.save()
+            for name, f in req.FILES.items():
+                media = JournalMedia.objects.create(entry=entry, media=f)
+                media.save()
+            messages.success(req, u'Neuer Eintrag wurde gespeichert.')
+            return redirect('core-add-entry', jid)
+        else:
+            messages.error(req, u'Bitte füllen Sie die Pflichtfelder aus.')
     else:
         form = NewEntryForm()
-    form.fields['student'].choices = h.get_students_for_group(journal.group)
+        form.fields['student'].choices = h.get_students_for_group(
+            journal.group)
     ctx = dict(page_title=_(u'Add Entry'), menus=menus, form=form,
         journal=journal)
     return render(req, 'journal/add_entry.html', ctx)

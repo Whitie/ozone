@@ -210,7 +210,7 @@ class JournalEntryAdmin(admin.ModelAdmin):
                     'edited', 'created_by')
     list_display_links = ('journal',)
     list_filter = ('journal', 'student', 'created_by', 'created')
-    search_fields = ('student__lastname', 'created__last_name')
+    search_fields = ('student__lastname', 'created_by__last_name')
 
     def save_model(self, req, obj, form, change):
         if getattr(obj, 'created_by', None) is None:

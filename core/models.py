@@ -439,7 +439,8 @@ class JournalEntry(models.Model):
     text = models.TextField(_(u'Text'))
     created = models.DateTimeField(_(u'Created'), auto_now_add=True)
     created_by = models.ForeignKey(User, verbose_name=_(u'Created by'),
-        related_name='journal_entries', editable=False)
+        related_name='journal_entries', editable=False, null=True,
+        blank=True)
     last_edit = models.DateTimeField(_(u'Last edit'), auto_now=True)
 
     def __unicode__(self):

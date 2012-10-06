@@ -2,6 +2,66 @@
 {% load i18n %}
 
 {% block content %}
+<div id="left" style="width:50%;float:left;clear:right;">
 <h2 class="headline">{% trans "New Entry" %}</h2>
+<form action="{% url core-add-entry journal.id %}" method="post" enctype="multipart/form-data">
+{% csrf_token %}
+<input type="hidden" name="journal_id" id="journal_id" value="{{ journal.id }}" />
+<table style="width:100%;">
+{{ form.as_table }}
+<tr>
+    <th>{% trans "Files" %}:</th>
+    <td><input type="file" name="media-0" />
+</tr>
+<tr>
+    <th></th>
+    <td><input type="file" name="media-1" />
+</tr>
+<tr>
+    <th></th>
+    <td><input type="file" name="media-2" />
+</tr>
+<tr>
+    <th class="opener">{% trans "Help" %}</th>
+    <td><input type="submit" value="{% trans "Save" %}" />
+</tr>
+</table>
+</form>
+</div>
 
+<div id="right" style="width:48%;float:right;">
+<h2 class="headline">{% trans "Entries for" %} <span id="student"></span></h2>
+<ul id="entry_list">
+</ul>
+</div>
+
+<p style="clear:both;padding-top:20px;"></p>
+
+{% include "help/journal_entry.html" %}
+
+<script type="text/javascript">
+$(function() {
+    $('#right > h2').hide();
+    $('#id_student').change(function() {
+        var sid = $('#id_student').val();
+        var jid = $('#journal_id').val();
+        post_data = {'student_id': sid, 'journal_id': jid};
+        $.post('{% url core-api-student-entries %}',
+            {'_JSON_': JSON.stringify(post_data)},
+            function(ret_data) {
+                $('#entry_list > li').remove();
+                if (ret_data['has_data'] == true) {
+                    $('#student').text(ret_data['last']+', '+ret_data['first']);
+                    $('#right > h2').show();
+                    $.each(ret_data['entries'], function(i, d) {
+                        var s = '<li>['+d['created']+'] '+d['txt']+'</li>';
+                        $('#entry_list').append(s);
+                    });
+                } else {
+                    $('#right > h2').hide();
+                }
+            });
+    });
+});
+</script>
 {% endblock %}
