@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0beta1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-06 12:37+0200\n"
+"POT-Creation-Date: 2012-10-07 11:57+0200\n"
 "PO-Revision-Date: 2012-10-03 22:34+0100\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -315,8 +315,8 @@ msgstr "Bestelltage"
 
 #: templates/orders/add_oday.html:13 templates/orders/manage_orders.html:63
 #: templates/orders/manage_orders.html:68
-#: templates/orders/new_supplier.html:17 templates/orders/ratings/edit.html:17
-#: templates/orders/ratings/edit.html:32 templates/orders/ratings/rate.html:24
+#: templates/orders/new_supplier.html:17 templates/orders/ratings/edit.html:18
+#: templates/orders/ratings/edit.html:33 templates/orders/ratings/rate.html:25
 msgid "Save"
 msgstr "Speichern"
 
@@ -643,67 +643,63 @@ msgstr "Gewichtet"
 msgid "No orders found in this period."
 msgstr "Keine Bestellungen in dieser Zeitspanne gefunden."
 
-#: templates/orders/ratings/edit.html:5 views/web.py:370
+#: templates/orders/ratings/edit.html:6 views/web.py:370
 msgid "Edit Rating"
 msgstr "Bewertung bearbeiten"
 
-#: templates/orders/ratings/edit.html:9
+#: templates/orders/ratings/edit.html:10
 msgid "Add Rating"
 msgstr "Bewertung hinzufügen"
 
-#: templates/orders/ratings/edit.html:16 templates/orders/ratings/edit.html:31
-#: templates/orders/ratings/rate.html:23
+#: templates/orders/ratings/edit.html:17 templates/orders/ratings/edit.html:32
+#: templates/orders/ratings/rate.html:24
 msgid "Help"
 msgstr "Hilfe"
 
-#: templates/orders/ratings/edit.html:23
+#: templates/orders/ratings/edit.html:24
 msgid "Rating Summary"
 msgstr "Gesamtbewertung"
 
-#: templates/orders/ratings/edit.html:38
+#: templates/orders/ratings/edit.html:39
 msgid "Back"
 msgstr "Zurück"
 
-#: templates/orders/ratings/edit.html:42
+#: templates/orders/ratings/edit.html:43
 msgid "Rater"
 msgstr "Bewerter"
 
-#: templates/orders/ratings/edit.html:43 templates/orders/ratings/rate.html:11
+#: templates/orders/ratings/edit.html:44 templates/orders/ratings/rate.html:12
 msgid "Ratings"
 msgstr "Bewertungen"
 
-#: templates/orders/ratings/edit.html:44
+#: templates/orders/ratings/edit.html:45
 #: templates/orders/ratings/summary.html:29
 msgid "Rating"
 msgstr "Bewertung"
 
-#: templates/orders/ratings/edit.html:45
+#: templates/orders/ratings/edit.html:46
 msgid "Calculated Rating"
 msgstr "Berechnete Bewertung"
 
-#: templates/orders/ratings/edit.html:46
+#: templates/orders/ratings/edit.html:47
 #: templates/orders/ratings/summary.html:31
 msgid "Average Rating"
 msgstr "Durchschnittliche Bewertung"
 
-#: templates/orders/ratings/edit.html:47
+#: templates/orders/ratings/edit.html:48
 #: templates/orders/ratings/summary.html:32
 msgid "Min. Rating"
 msgstr "Mindestbewertung"
 
-#: templates/orders/ratings/edit.html:48
+#: templates/orders/ratings/edit.html:49
 #: templates/orders/ratings/summary.html:33
 msgid "Restriction"
 msgstr "Einschränkungen"
 
-#: templates/orders/ratings/edit.html:49
+#: templates/orders/ratings/edit.html:50
 #: templates/orders/ratings/summary.html:34
 msgid "Notes"
 msgstr "Bemerkungen"
-
-#: templates/orders/ratings/help_dlg.html:3
-msgid "Company Rating Help"
-msgstr "Lieferantenbewertung Hilfe"
 
 #: templates/orders/ratings/manage.html:15
 msgid "Users - Companies"
@@ -714,7 +710,7 @@ msgid "Send memory mail"
 msgstr "Erinnerungsmail senden"
 
 #: templates/orders/ratings/manage.html:20
-#: templates/orders/ratings/rate.html:5
+#: templates/orders/ratings/rate.html:6
 msgid "Companies to rate"
 msgstr "Lieferanten zum Bewerten"
 
@@ -738,44 +734,44 @@ msgstr "Gespeicherte Bewertungen"
 msgid "Send memory mail to all"
 msgstr "Erinnerungsmail an alle senden"
 
-#: templates/orders/ratings/rate.html:10
+#: templates/orders/ratings/rate.html:11
 msgid "Click to rate"
 msgstr "Klicken, um eine Bewertung zu machen"
 
-#: templates/orders/ratings/rate.html:15
+#: templates/orders/ratings/rate.html:16
 msgid "Average ratings"
 msgstr "Durchschnittliche Bewertung"
 
-#: templates/orders/ratings/rate.html:29
+#: templates/orders/ratings/rate.html:30
 #: templates/orders/ratings/summary.html:28
 msgid "Raters"
 msgstr "Bewerter"
 
-#: templates/orders/ratings/rate.html:31
+#: templates/orders/ratings/rate.html:32
 msgid "Your last ratings"
 msgstr "Ihre letzten Bewertungen"
 
-#: templates/orders/ratings/rate.html:42
+#: templates/orders/ratings/rate.html:43
 msgid "Possible Ratings"
 msgstr "Mögliche Bewertungen"
 
-#: templates/orders/ratings/rate.html:44
+#: templates/orders/ratings/rate.html:45
 msgid "very good"
 msgstr "sehr gut"
 
-#: templates/orders/ratings/rate.html:45
+#: templates/orders/ratings/rate.html:46
 msgid "good"
 msgstr "gut"
 
-#: templates/orders/ratings/rate.html:46
+#: templates/orders/ratings/rate.html:47
 msgid "average"
 msgstr "befriedigend"
 
-#: templates/orders/ratings/rate.html:47
+#: templates/orders/ratings/rate.html:48
 msgid "bad"
 msgstr "schlecht"
 
-#: templates/orders/ratings/rate.html:48
+#: templates/orders/ratings/rate.html:49
 msgid "very bad"
 msgstr "sehr schlecht"
 
@@ -855,3 +851,6 @@ msgstr "Bewertungen verwalten"
 #: views/web.py:403
 msgid "Sums by Cost"
 msgstr "Summen nach Kostenstellen"
+
+#~ msgid "Company Rating Help"
+#~ msgstr "Lieferantenbewertung Hilfe"

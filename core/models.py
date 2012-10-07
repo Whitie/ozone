@@ -577,3 +577,33 @@ class PDFPrintout(models.Model):
         verbose_name = _(u'General Printout')
         verbose_name_plural = _(u'General Printouts')
         ordering = ['-generated']
+
+
+class InternalHelp(models.Model):
+    title = models.CharField(_(u'Title'), max_length=50,
+        help_text=_(u'Used for the title attribute of the help dialog.'))
+    ident = models.SlugField(_(u'Identifier'),
+        help_text=_(u'Help for the same topic in another language must '
+                    u'define exactly the same identifier.'))
+    lang = models.CharField(_(u'Language'), max_length=5,
+        help_text=_(u'Lookup is done via istartswith.'))
+    width = models.PositiveIntegerField(_(u'Dialog width'), default=500,
+        help_text=_(u'Width of the help dialog.'))
+    opener_class = models.CharField(_(u'Opener class'), max_length=15,
+        default=u'.opener', help_text=_(u'CSS class of the element which '
+            u'gets the click event to open the help dialog (jQuery notation).')
+    )
+    text = models.TextField(_(u'Text'), help_text=_(u'Main help text. You '
+        u'can use HTML here.'))
+
+    def __unicode__(self):
+        return u'[{0}] {1} ({2})'.format(self.lang, self.title, self.ident)
+
+    def save(self, *args, **kwargs):
+        self.lang = self.lang.lower()
+        super(InternalHelp, self).save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = _(u'Internal Help')
+        verbose_name_plural = _(u'Internal Helps')
+        ordering = ['ident', 'lang']

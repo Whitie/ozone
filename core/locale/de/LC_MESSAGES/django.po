@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Ozone 1.9\n"
+"Project-Id-Version: Ozone 1.10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-06 12:37+0200\n"
-"PO-Revision-Date: 2012-10-06 12:47+0100\n"
+"POT-Creation-Date: 2012-10-07 11:57+0200\n"
+"PO-Revision-Date: 2012-10-07 12:31+0100\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <weimann@bbz-chemie.de>\n"
 "Language: de\n"
@@ -72,7 +72,7 @@ msgid "Subject"
 msgstr "Betreff"
 
 #: forms.py:55 forms.py:93 models.py:92 models.py:218 models.py:392
-#: models.py:439
+#: models.py:439 models.py:596
 msgid "Text"
 msgstr "Text"
 
@@ -282,7 +282,7 @@ msgstr "Profil"
 msgid "Profiles"
 msgstr "Profile"
 
-#: models.py:91
+#: models.py:91 models.py:583
 msgid "Title"
 msgstr "Titel"
 
@@ -603,6 +603,64 @@ msgstr "Allgemeiner Ausdruck"
 msgid "General Printouts"
 msgstr "Allgemeine Ausdrucke"
 
+#: models.py:584
+msgid "Used for the title attribute of the help dialog."
+msgstr "Wird für das title Attribut des Hilfe-Dialogs benutzt."
+
+#: models.py:585
+msgid "Identifier"
+msgstr "Identifizierung"
+
+#: models.py:586
+msgid ""
+"Help for the same topic in another language must define exactly the same "
+"identifier."
+msgstr ""
+"Hilfe für das selbe Thema in einer anderen Sprache muss dieselbe "
+"Identifizierung haben."
+
+#: models.py:588
+msgid "Language"
+msgstr "Sprache"
+
+#: models.py:589
+msgid "Lookup is done via istartswith."
+msgstr ""
+"Abfrage berücksichtigt nur den Anfang und keine Groß- und Kleinschreibung "
+"(istartswith)."
+
+#: models.py:590
+msgid "Dialog width"
+msgstr "Dialogbreite"
+
+#: models.py:591
+msgid "Width of the help dialog."
+msgstr "Breite in Pixel des Hilfe-Dialogs."
+
+#: models.py:592
+msgid "Opener class"
+msgstr "Öffner Klasse"
+
+#: models.py:593
+msgid ""
+"CSS class of the element which gets the click event to open the help dialog "
+"(jQuery notation)."
+msgstr ""
+"CSS Klasse des Elements, dass zum Öffnen des Dialogs mit dem Klick-Ereignis "
+"versehen wird (jQuery Schreibweise)."
+
+#: models.py:596
+msgid "Main help text. You can use HTML here."
+msgstr "Haupt Hilfetext. Hier kann HTML verwendet werden."
+
+#: models.py:607
+msgid "Internal Help"
+msgstr "Interne Hilfe"
+
+#: models.py:608
+msgid "Internal Helps"
+msgstr "Interne Hilfen"
+
 #: utils.py:56
 msgid "An internal server error occured."
 msgstr "Der Server hat einen internen Fehler."
@@ -637,7 +695,7 @@ msgstr "Kollegen / Dozenten"
 msgid "No person found"
 msgstr "Keine Person gefunden"
 
-#: templates/error.html:5
+#: templates/error.html:5 templatetags/help.py:20
 msgid "Error"
 msgstr "Fehler"
 
@@ -692,7 +750,7 @@ msgstr "Abmelden"
 msgid "Admin"
 msgstr "Administration"
 
-#: templates/menu.html:37 templates/journal/add_entry.html:25
+#: templates/menu.html:37 templates/journal/add_entry.html:26
 msgid "Help"
 msgstr "Hilfe"
 
@@ -718,7 +776,7 @@ msgstr ""
 "Diese Daten können nur von der Verwaltung eingesehen werden (außer Telefon)."
 
 #: templates/profile.html:14 templates/companies/add_note.html:15
-#: templates/journal/add.html:21 templates/journal/add_entry.html:26
+#: templates/journal/add.html:21 templates/journal/add_entry.html:27
 #: templates/news/add.html:8
 msgid "Save"
 msgstr "Speichern"
@@ -834,10 +892,6 @@ msgstr "Vorherige Seite"
 msgid "Next page"
 msgstr "Nächste Seite"
 
-#: templates/help/journal_entry.html:3
-msgid "Journal Entry Help"
-msgstr "Tagebucheintrag Hilfe"
-
 #: templates/journal/add.html:5
 msgid "Add new Journal for Group"
 msgstr "Neues Tagebuch für Gruppe anlegen"
@@ -857,15 +911,15 @@ msgstr ""
 msgid "Enter data for new journal"
 msgstr "Daten für neues Tagebuch eingeben"
 
-#: templates/journal/add_entry.html:6
+#: templates/journal/add_entry.html:7
 msgid "New Entry"
 msgstr "Neuer Eintrag"
 
-#: templates/journal/add_entry.html:13
+#: templates/journal/add_entry.html:14
 msgid "Files"
 msgstr "Dateien"
 
-#: templates/journal/add_entry.html:33
+#: templates/journal/add_entry.html:34
 msgid "Entries for"
 msgstr "Einträge für"
 
@@ -1099,6 +1153,12 @@ msgstr "Keine Azubis gefunden."
 msgid "No students found"
 msgstr "Keine Azubis gefunden."
 
+#: templatetags/help.py:20
+#, python-format
+msgid "<p>No help found for lang %(lang)s and identifier %(id)s.</p>"
+msgstr ""
+"<p>Keine Hilfe für Sprache %(lang)s und Identifizierung %(id)s gefunden.</p>"
+
 #: views/helper.py:28
 msgid "All Groups"
 msgstr "Alle Gruppen"
@@ -1188,6 +1248,9 @@ msgstr "PIL ist nicht installiert."
 #: views/web.py:409
 msgid "Unsupported barcode format."
 msgstr "Nicht unterstütztes Strichcode-Format."
+
+#~ msgid "Journal Entry Help"
+#~ msgstr "Tagebucheintrag Hilfe"
 
 #~ msgid "Presence updated with %(entry)s (%(disp)s)."
 #~ msgstr "Anwesenheit aktualisiert mit %(entry)s (%(disp)s)."

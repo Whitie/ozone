@@ -1,5 +1,6 @@
 {% extends "index.html" %}
 {% load i18n %}
+{% load help %}
 
 {% block content %}
 <div id="left" style="width:50%;float:left;clear:right;">
@@ -37,7 +38,7 @@
 
 <p style="clear:both;padding-top:20px;"></p>
 
-{% include "help/journal_entry.html" %}
+{% show_help "journal-add" %}
 
 <script type="text/javascript">
 $(function() {

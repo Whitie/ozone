@@ -1,5 +1,6 @@
 {% extends "index.html" %}
 {% load i18n %}
+{% load help %}
 
 {% block content %}
 <h2 class="headline">{% trans "Companies to rate" %}</h2>
@@ -49,7 +50,7 @@
     </ul>
 </div>
 
-{% include "orders/ratings/help_dlg.html" %}
+{% show_help "ratings" %}
 
 <script type="text/javascript">
 $(function() {
