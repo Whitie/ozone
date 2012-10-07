@@ -1,0 +1,16 @@
+<div id="help-dialog" title="{{ title }}">
+{{ text|safe }}
+</div>
+
+<script type="text/javascript">
+$(function() {
+    $('#help-dialog').dialog({
+        'autoOpen': false,
+        'width': {{ width }}
+    });
+    $('{{ opener_class }}').click(function() {
+        $('#help-dialog').dialog('open');
+        return false;
+    });
+});
+</script>
