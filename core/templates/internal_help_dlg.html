@@ -1,15 +1,15 @@
-<div id="help-dialog" title="{{ title }}">
+<div id="help-dialog-{{ id }}" title="{{ title }}">
 {{ text|safe }}
 </div>
 
 <script type="text/javascript">
 $(function() {
-    $('#help-dialog').dialog({
+    $('#help-dialog-{{ id }}').dialog({
         'autoOpen': false,
         'width': {{ width }}
     });
     $('{{ opener_class }}').click(function() {
-        $('#help-dialog').dialog('open');
+        $('#help-dialog-{{ id }}').dialog('open');
         return false;
     });
 });
