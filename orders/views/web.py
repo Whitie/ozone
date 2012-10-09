@@ -128,6 +128,8 @@ def order(req, article_id=0):
             if req.user.id not in [x.id for x in company.rating_users.all()]:
                 company.rating_users.add(req.user)
                 company.save()
+                messages.success(req, u'Sie wurden als Bewerter für %s '
+                                      u'hinzugefügt.' % company.name)
             messages.success(req, u'Ihre Bestellung %s wurde gespeichert.'
                              % order)
             return redirect('orders-detail', order_id=order.order_day.id)
@@ -190,6 +192,8 @@ def add_supplier(req):
             c.rating_users.add(req.user)
             c.save()
             messages.success(req, u'Neuer Lieferant %s gespeichert.' % c.name)
+            messages.success(req, u'Sie wurden als Bewerter für diesen '
+                                  u'Lieferanten eingetragen.')
             return redirect('orders-index')
         messages.error(req, u'Bitte korrigieren Sie die falschen Felder.')
     else:
