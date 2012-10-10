@@ -10,7 +10,7 @@ sys.path.insert(0, EXT_DIR)
 
 # Django settings for ozone project.
 
-VERSION = '1.10.2'
+VERSION = '1.10.3'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -270,6 +270,7 @@ AD_MEMBERSHIP_REQ = AD_MEMBERSHIP_ADMIN + [
     'Leitung',
     'Verwaltung',
     'Biolaboranten',
+    'Laborberufe',
     'Chemikanten',
     'QMTeam',
 ]
