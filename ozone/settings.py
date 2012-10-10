@@ -10,7 +10,7 @@ sys.path.insert(0, EXT_DIR)
 
 # Django settings for ozone project.
 
-VERSION = '1.10.1'
+VERSION = '1.10.3'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -78,7 +78,7 @@ STATIC_ROOT = os.path.join(_PATH, 'ozone_static')
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 MEDIA_URL = '/media/'
-STATIC_URL = '/static/'
+STATIC_URL = 'https://10.0.0.196:8003/static/'
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -270,6 +270,7 @@ AD_MEMBERSHIP_REQ = AD_MEMBERSHIP_ADMIN + [
     'Leitung',
     'Verwaltung',
     'Biolaboranten',
+    'Laborberufe',
     'Chemikanten',
     'QMTeam',
 ]

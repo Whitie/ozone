@@ -99,6 +99,8 @@ def order(req, article_id=0):
         form = OrderForm(req.POST)
         form.fields['oday'].choices = h.get_oday_choices(choice_filter)
         if form.is_valid():
+            company = Company.objects.get(
+                id=form.cleaned_data['art_supplier_id'])
             costs = h.get_costs(req.POST)
             art, created = Article.objects.get_or_create(
                 name=form.cleaned_data['art_name'],
@@ -106,8 +108,7 @@ def order(req, article_id=0):
                 price=h.get_price(form.cleaned_data['art_price']))
             if created:
                 art.quantity = form.cleaned_data['art_q']
-                art.supplier = Company.objects.get(
-                    id=form.cleaned_data['art_supplier_id'])
+                art.supplier = company
                 art.save()
             order = Order.objects.create(count=form.cleaned_data['count'],
                 article=art,
@@ -123,6 +124,12 @@ def order(req, article_id=0):
             order.for_repair = form.cleaned_data['repair']
             order.users.add(req.user)
             order.save()
+            # Add orderer to rating_users
+            if req.user.id not in [x.id for x in company.rating_users.all()]:
+                company.rating_users.add(req.user)
+                company.save()
+                messages.success(req, u'Sie wurden als Bewerter für %s '
+                                      u'hinzugefügt.' % company.name)
             messages.success(req, u'Ihre Bestellung %s wurde gespeichert.'
                              % order)
             return redirect('orders-detail', order_id=order.order_day.id)
@@ -185,6 +192,8 @@ def add_supplier(req):
             c.rating_users.add(req.user)
             c.save()
             messages.success(req, u'Neuer Lieferant %s gespeichert.' % c.name)
+            messages.success(req, u'Sie wurden als Bewerter für diesen '
+                                  u'Lieferanten eingetragen.')
             return redirect('orders-index')
         messages.error(req, u'Bitte korrigieren Sie die falschen Felder.')
     else:
