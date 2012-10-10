@@ -78,7 +78,7 @@ STATIC_ROOT = os.path.join(_PATH, 'ozone_static')
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 MEDIA_URL = '/media/'
-STATIC_URL = 'http://10.0.0.196/ozone_static/'
+STATIC_URL = 'https://10.0.0.196:8003/static/'
 
 # List of finder classes that know how to find static files in
 # various locations.
