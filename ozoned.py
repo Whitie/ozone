@@ -19,7 +19,7 @@ OZONED_PATH = os.path.abspath(os.path.dirname(__file__))
 # Edit config here ############################################################
 
 SERVER_IP = '10.0.0.196'
-SERVER_PORT = 8005
+SERVER_PORT = 5000
 
 USER = 'bbz'
 GROUP = 'bbz'
