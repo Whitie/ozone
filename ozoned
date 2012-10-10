@@ -6,7 +6,7 @@
 BASEDIR="/home/bbz/bbz-tools/ozone"
 DAEMON="ozoned.py"
 # PIDFILE must match PID_FILE from ozoned.py
-PIDFILE="$BASEDIR/ozone_run/ozoned.pid"
+PIDFILE="$BASEDIR/run/ozoned.pid"
 
 if [ -f "$PIDFILE" ]; then
     PID=$(cat $PIDFILE)

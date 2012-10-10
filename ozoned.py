@@ -22,9 +22,9 @@ SERVER_IP = '10.0.0.196'
 SERVER_PORT = 5000
 
 USER = 'bbz'
-GROUP = 'bbz'
+GROUP = 'http'
 
-LOG_PID_DIR = os.path.join(OZONED_PATH, 'ozone_run')
+LOG_PID_DIR = os.path.join(OZONED_PATH, 'run')
 PID_FILE = os.path.join(LOG_PID_DIR, 'ozoned.pid')
 
 SSL_CERT_FILE = '/etc/httpd/conf/server.crt'
