@@ -5,8 +5,8 @@
 {% block content %}
 <h2 class="headline">404 - {% trans "Page not found" %}</h2>
 <div style="width:500px;margin:10px auto;text-align:center;padding:15px;border:1px solid red;">
-<p>{% blocktrans with request_path as rp %}
-The requested path {{ rp }} is not known.
+<p>{% blocktrans %}
+The requested path ({{ request_path }}) is not known.
 {% endblocktrans %}</p>
 </div>
 {% endblock %}
