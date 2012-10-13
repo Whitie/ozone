@@ -1,8 +1,8 @@
 {% load i18n %}
 {% load urls %}
 
-<nav id="menu">
-    <ul id="main-menu">
+<nav>
+    <ul id="menu">
         {% for menu in menus %}
         <li><a href="?{{ menu.title }}">{{ menu.title }}</a>
             <ul>
@@ -30,7 +30,7 @@
 
 <script>
 $(function() {
-    $( "#main-menu" ).menu({
+    $( "#menu" ).menu({
         select: function( event, ui ) {
             var link = ui.item.children( "a:first" );
             if ( link.attr( "target" ) || event.metaKey || event.shiftKey || event.ctrlKey ) {
