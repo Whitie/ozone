@@ -2,7 +2,7 @@ body {
     font-family: Arial, Verdana, sans-serif;
     font-size: 14px;
     /*background-color: #c0c0c0;*/
-    background-image: url("img/background.jpg");
+    background-image: url("../img/background.jpg");
     color: #000080;
 }
 
@@ -90,20 +90,6 @@ aside {
     margin-bottom: 15px;
 }
 
-a.menu:link, a.menu:visited, a.menu:hover, a.menu:active {
-    font-weight: bold;
-    text-decoration: none;
-    color: #000080;
-}
-
-aside a.menu:hover { color: #228b22; }
-
-#accordion_menu ul {
-    margin: 0px;
-    padding: 0px;
-    list-style-type: circle;
-}
-
 article {
     width: 80%;
     float: right;
@@ -118,17 +104,12 @@ small {
     text-align: center;
 }
 
-.menutitle {
-    font-weight: bold;
-    font-size: 14px;
-}
-
 .news {
     margin: 5px auto;
     padding: 5px;
     width: 90%;
-    background-color: #d3d3d3;
-    border-left: 1px solid #228b22;
+    background-color: transparent;
+    border-left: 2px solid #228b22;
     border-bottom: 1px solid #228b22;
 }
 

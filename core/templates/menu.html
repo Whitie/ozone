@@ -2,50 +2,42 @@
 {% load urls %}
 
 <nav id="menu">
-    <div id="accordion_menu">
-{% for menu in menus %}
-    <h3><a class="menutitle" href="#">{{ menu.title }}</a></h3>
-    <div>
-    <ul>
-    {% for u, name in menu.entries %}
-    <li><a class="menu" href="{% reverse u %}">{{ name }}</a></li>
-    {% endfor %}
+    <ul id="main-menu">
+        {% for menu in menus %}
+        <li><a href="?{{ menu.title }}">{{ menu.title }}</a>
+            <ul>
+                {% for u, name in menu.entries %}
+                <li><a href="{% reverse u %}">{{ name }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+        <li><a href="?{% trans "User" %}">{% trans "User" %}</a>
+            <ul>
+                {% if user.is_authenticated %}
+                <li><a href="{% url core-logout %}">{% trans "Logout" %}</a></li>
+                <li><a href="{% url core-profile %}">{% trans "Profile" %}</a></li>
+                {% if user.is_staff %}
+                <li><a href="{% url admin:index %}">{% trans "Admin" %}</a></li>
+                {% endif %}
+                {% else %}
+                <li><a href="{% url core-login %}">{% trans "Login" %}</a></li>
+                {% endif %}
+            </ul>
+        <li><a href="http://archie/docs/bbz_datenbank/index.html">{% trans "Help" %}</a></li>
     </ul>
-    </div>
-{% endfor %}
-
-<h3><a class="menutitle" href="#">{% trans "User" %}</a></h3>
-<div>
-<ul>
-  {% if user.is_authenticated %}
-  <li>
-      <a class="menu" href="{% url core-logout %}">{% trans "Logout" %}</a>
-  </li>
-  <li>
-      <a class="menu" href="{% url core-profile %}">{% trans "Profile" %}</a>
-  </li>
-    {% if user.is_staff %}
-    <li>
-        <a class="menu" href="{% url admin:index %}">{% trans "Admin" %}</a>
-    </li>
-    {% endif %}
-  {% else %}
-  <li>
-      <a class="menu" href="{% url core-login %}">{% trans "Login" %}</a>
-  </li>
-  {% endif %}
-  <li><a class="menu" href="http://archie/docs/bbz_datenbank/index.html">{% trans "Help" %}</a></li>
-</ul>
-</div>
-
-</div>
 </nav>
 
 <script>
 $(function() {
-    $("#accordion_menu").accordion({
-        autoHeight: false,
-        navigation: true
+    $( "#main-menu" ).menu({
+        select: function( event, ui ) {
+            var link = ui.item.children( "a:first" );
+            if ( link.attr( "target" ) || event.metaKey || event.shiftKey || event.ctrlKey ) {
+                return;
+            }
+            location.href = link.attr( "href" );
+        }
     });
 });
 </script>
