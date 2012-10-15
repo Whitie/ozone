@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block formtag %}
-<form method="post" action="{% url orders-order %}" onsubmit="return check_costs();">
+<form method="post" action="{% url orders-order %}" onsubmit="return check_form();">
 {% endblock %}
 {% block formextra %}
 <table style="border:1px solid blue;margin:5px auto;">
@@ -48,7 +48,31 @@ function update_sum() {
 function check_costs() {
     var sum = get_sum();
     if (sum != 100) {
+        return false;
+    }
+    return true;
+}
+function check_supplier() {
+    var sid = $('#id_art_supplier_id').val() || '0';
+    var valid = false;
+    $.ajax({
+        'type': 'POST',
+        'async': false,
+        'url': '{% url orders-api-check-supplier %}',
+        'data': {'_JSON_': JSON.stringify({'sid': sid})},
+        success: function (ret_data) {
+            valid = ret_data['result'];
+        }
+    });
+    return valid;
+}
+function check_form() {
+    if (check_costs() == false) {
         alert('{{ costs_msg }}');
+        return false;
+    }
+    if (check_supplier() == false) {
+        alert('{% trans "Supplier not valid. Please choose one from the list or add a new one " %}');
         return false;
     }
     return true;
