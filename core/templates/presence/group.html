@@ -39,7 +39,7 @@
   <tbody>
     {% for s, ds in students %}
     <tr>
-      <td>{{ s.company.name }}</td>
+      <td>{{ s.company.short_name|default:s.company.name }}</td>
       <td><a href="{% url core-presence-edit s.id %}" title="{% trans "Click here to enter notes." %}">{{ s.lastname }}</a></td>
       <td>{{ s.firstname }}</td>
       {% for d in ds %}

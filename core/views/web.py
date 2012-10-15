@@ -328,12 +328,13 @@ def presence_for_group(req, gid):
     else:
         start = datetime.strptime(start, '%d.%m.%Y').date()
     if start > end:
-        messages.error(u'Das Enddatum liegt vor dem Startdatum!')
+        messages.error(req, u'Das Enddatum liegt vor dem Startdatum!')
         return redirect('core-presence')
     req.session['presence_start'] = start
     req.session['presence_end'] = end
     dt = end - start
-    _students = group.students.all().order_by('company__name', 'lastname')
+    _students = group.students.all().order_by(
+        'company__short_name', 'lastname')
     students = h.get_presence(_students, start, end)
     days = (start + timedelta(days=x) for x in xrange(dt.days + 1))
     ctx = dict(page_title=_(u'Presence for Group'), group=group,
