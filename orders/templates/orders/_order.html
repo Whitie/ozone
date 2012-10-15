@@ -12,8 +12,8 @@
     <th>{{ form.art_name.label_tag }}:</th>
     <td>{{ form.art_name }}{{ form.art_name.errors }}</td>
     <th>{{ form.art_supplier_name.label_tag }}:</th>
-    <td>{{ form.art_supplier_name }}
-
+    <td title="{% trans "The supplier must be chosen by click!" %}">
+        {{ form.art_supplier_name }}
         {{ form.art_supplier_name.errors }}
     </td>
 </tr>
@@ -57,6 +57,7 @@ $(function() {
             $("#id_" + key).val(val);
         });
     });
+    $(document).tooltip();
 });
 $(function() {
     $('#id_art_supplier_name').autocomplete({
