@@ -22,15 +22,6 @@
   </form>
 </div>
 
-<script type="text/javascript">
-$(document).ready(function() {
-  $(".details").hide();
-  $("h3").click(function() {
-    $(this).next(".details").slideToggle("slow");
-    return true;
-  });
-});
-</script>
 {% for c in companies %}
 <h3 title="{% trans "Click for details." %}">
   {{ forloop.counter }}. {{ c.name }} ({{ c.short_name }})
@@ -46,7 +37,12 @@ $(document).ready(function() {
 
 <script>
 $(document).ready(function() {
-  $('a[title]').qtip();
+  $(document).tooltip();
+  $(".details").hide();
+  $("h3").click(function() {
+    $(this).next(".details").slideToggle("slow");
+    return true;
+  });
 });
 </script>
 

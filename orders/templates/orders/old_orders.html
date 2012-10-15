@@ -48,6 +48,7 @@
 
 <script>
 $(document).ready(function() {
+  $(document).tooltip();
   var oTable = $('#dataTable').dataTable({
     "bJQueryUI": true,
     "bPaginate": true,
@@ -58,7 +59,6 @@ $(document).ready(function() {
     }
   });
 });
-$('a[title]').qtip();
 </script>
 
 {% else %}

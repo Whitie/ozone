@@ -112,6 +112,7 @@
 
 <script>
 $(function() {
+  $(document).tooltip();
   var oTable = $('#dataTable').dataTable({
     "bJQueryUI": true,
     "bPaginate": false,
@@ -120,8 +121,6 @@ $(function() {
     }
   });
 });
-
-$('a[title]').qtip();
 
 function update_row(row) {
     var oid = $('#row_'+row+' > td > :input[name="order_id"]').val();

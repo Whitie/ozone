@@ -24,15 +24,6 @@
   </form>
 </div>
 
-<script type="text/javascript">
-$(document).ready(function() {
-  $(".details").hide();
-  $("h3").click(function() {
-    $(this).next(".details").slideToggle("slow");
-    return true;
-  });
-});
-</script>
 {% for s in students %}
 <h3 title="{% trans "Click for details" %}">
   {{ forloop.counter }}. {{ s.lastname }}, {{ s.firstname }} ({{ s.company.short_name }})
@@ -50,11 +41,15 @@ $(document).ready(function() {
 <h3>{% trans "No students found." %}</h3>
 {% endfor %}
 
-<script>
+<script type="text/javascript">
 $(document).ready(function() {
-  $('a[title]').qtip();
+  $(document).tooltip();
+  $(".details").hide();
+  $("h3").click(function() {
+    $(this).next(".details").slideToggle("slow");
+    return true;
+  });
 });
 </script>
-
 {% endblock %}
 

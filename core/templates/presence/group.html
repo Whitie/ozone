@@ -73,6 +73,7 @@
 
 <script>
 $(document).ready(function() {
+  $(document).tooltip();
   var oTable = $('#dataTable').dataTable({
     "bJQueryUI": true,
     "bPaginate": false,
@@ -81,7 +82,6 @@ $(document).ready(function() {
       "sUrl": "{% static "i18n/de_DE.txt" %}"
     }
   });
-  $('a[title]').qtip();
 });
 
 function update_day(did) {
