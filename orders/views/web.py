@@ -76,13 +76,14 @@ def delete_order(req, oday_id, order_id):
         if req.user.id not in [x.id for x in order.users.all()] or \
                 order.users.count() > 1:
             if not req.user.has_perm('orders.can_order'):
-                messages.error(req, _(u'Cannot delete foreign order!'))
+                messages.error(req,
+                    u'Fremde Bestellung kann nicht gelöscht werden!')
                 return redirect(redirect_to, **kw)
         if answer == u'yes':
             order.delete()
-            messages.success(req, _(u'Order (ID: %s) deleted.' % order_id))
+            messages.success(req, u'Bestellung (ID: %s) gelöscht.' % order_id)
         else:
-            messages.error(req, _(u'Nothing deleted. Cancelled by user.'))
+            messages.error(req, u'Nichts gelöscht. Abbruch.')
         return redirect(redirect_to, **kw)
     ctx = dict(page_title=_(u'Delete Order'), menus=menus, oday_id=oday_id,
         order=order)
@@ -300,15 +301,16 @@ def add_oday(req):
         form.fields['user'].choices = h.get_user_choices()
         if form.is_valid():
             if form.cleaned_data['user'].is_anonymous():
-                messages.error(req, _(u'The user you specified is not valid.'))
+                messages.error(req, u'Der Benutzer ist nicht gültig.')
                 return redirect('orders-manage')
             oday = OrderDay.objects.create(day=form.cleaned_data['day'],
                 user=form.cleaned_data['user'])
             oday.save()
-            messages.success(req, _(u'New orderday %s added.' % unicode(oday)))
+            messages.success(req,
+                u'Neuer Bestelltag %s hinzugefügt.' % unicode(oday))
             return redirect('orders-manage')
         else:
-            messages.error(req, _(u'Please correct the form.'))
+            messages.error(req, u'Bitte korrigieren Sie das Formular.')
     else:
         form = OrderDayForm()
         form.fields['user'].choices = h.get_user_choices()
