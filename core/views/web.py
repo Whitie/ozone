@@ -199,7 +199,7 @@ def list_all_companies(req, only_with_students=False):
         companies = paginator.page(paginator.num_pages)
     ctx = dict(page_title=_(u'All Companies'), companies=companies,
         menus=menus, only_with_students=only_with_students, single_view=False,
-        page=page)
+        page=page, start=(page - 1) * 15 + 1)
     return render(req, 'companies/list_all.html', ctx)
 
 
@@ -259,7 +259,7 @@ def list_all_students(req):
     except (EmptyPage, InvalidPage):
         students = paginator.page(paginator.num_pages)
     ctx = dict(page_title=_(u'List of all students'), menus=menus,
-        students=students, page=page)
+        students=students, page=page, start=(page - 1) * 30 + 1)
     return render(req, 'students/list_all.html', ctx)
 
 

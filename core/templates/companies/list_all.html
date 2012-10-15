@@ -1,5 +1,6 @@
 {% extends "index.html" %}
 {% load i18n %}
+{% load ozone_tags %}
 
 {% block content %}
 <h2 class="headline">
@@ -33,8 +34,8 @@
 
 {% if companies %}
 <div id="accordion" style="width:60%;margin:0px auto;">
-  {% for c in companies %}
-  <h3><a href="#">{{ forloop.counter }}) {{ c }}</a></h3>
+  {% for i, c in companies|enumerate:start %}
+  <h3><a href="#">{{ i }}) {{ c }}</a></h3>
   <div class="details">{% include "companies/details.html" %}</div>
   {% endfor %}
 </div>

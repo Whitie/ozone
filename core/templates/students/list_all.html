@@ -1,5 +1,6 @@
 {% extends "index.html" %}
 {% load i18n %}
+{% load ozone_tags %}
 
 {% block content %}
 <h2 class="headline">{% trans "Students" %} ({{ students.paginator.count }})</h2>
@@ -20,8 +21,8 @@
 
 {% if students %}
 <div id="accordion" style="width:60%;margin:0px auto;">
-  {% for s in students %}
-  <h3><a href="#">{{ forloop.counter }}) {{ s }}</a></h3>
+  {% for i, s in students|enumerate:start %}
+  <h3><a href="#">{{ i }}) {{ s }}</a></h3>
   <div class="details">{% include "students/details.html" %}</div>
   {% endfor %}
 </div>
