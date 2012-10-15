@@ -177,3 +177,13 @@ def send_memory_mail(req, data):
         except SMTPException:
             msg.append(u'Mail an %s konnte nicht gesendet werden.' % u.email)
     return {'msg': u' '.join(msg)}
+
+
+@require_POST
+@json_rpc
+def check_supplier_id(req, data):
+    try:
+        Company.objects.get(id=data['sid'])
+        return dict(result=True)
+    except Company.DoesNotExist:
+        return dict(result=False)

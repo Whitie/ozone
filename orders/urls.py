@@ -53,6 +53,8 @@ urlpatterns += patterns('orders.views.ajax',
     url(r'^api/rating/take/$', 'take_calculated_rating',
         name='orders-api-takerating'),
     url(r'^api/rating/sendmail/$', 'send_memory_mail', name='orders-api-mail'),
+    url(r'^api/check_supplier/$', 'check_supplier_id',
+        name='orders-api-check-supplier'),
 )
 
 urlpatterns += patterns('orders.views.pdf',
