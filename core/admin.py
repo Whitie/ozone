@@ -146,7 +146,7 @@ class UserProfileAdmin(admin.ModelAdmin):
                     'subjects', 'can_login')
     list_display_links = ('__unicode__',)
     list_editable = ('phone', 'mobile', 'subjects', 'can_login')
-    list_filter = ('part', 'can_login')
+    list_filter = ('part', 'external', 'can_login')
     search_fields = ('user__username', 'user__last_name', 'user__email',
                      'barcode', 'subjects')
     save_on_top = True
