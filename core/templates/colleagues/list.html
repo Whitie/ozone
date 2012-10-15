@@ -1,0 +1,48 @@
+{% extends "index.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block content %}
+
+<div id="left" style="width:48%;float:left;clear:right;">
+<h3 class="headline">{% trans "Internal" %}</h3>
+<ul>
+    {% for p in internal %}
+    {% include "colleagues/list_include.html" %}
+    {% endfor %}
+</ul>
+</div>
+
+<div id="right" style="width:48%;float:right;">
+<h3 class="headline">{% trans "External" %}</h3>
+<ul>
+    {% for p in external %}
+    {% include "colleagues/list_include.html" %}
+    {% endfor %}
+</ul>
+{% if perms.auth.add_user %}
+<a href="{% url core-user-add %}">{% trans "Add new external" %}</a>
+{% endif %}
+</div>
+
+<p style="clear:both;padding-top:20px;"></p>
+
+<div id="info-dialog" title="{% trans "User Information" %}"></div>
+
+<script type="text/javascript">
+$(function() {
+    $(document).tooltip();
+    $('#info-dialog').dialog({
+        'autoOpen': false,
+        'width': 500
+    });
+});
+function show_info(uid) {
+    $.get('/core/colleagues/info/'+uid+'/', function(ret_data) {
+        $('#info-dialog').html(ret_data);
+        $('#info-dialog').dialog('open');
+        return false;
+    });
+}
+</script>
+{% endblock %}

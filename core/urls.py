@@ -31,6 +31,10 @@ urlpatterns = patterns('core.views.web',
     # Student groups
     url(r'^groups/$', 'list_groups', name='core-groups'),
     url(r'^groups/(?P<gid>\d+)/$', 'group_details', name='core-group-details'),
+    # Collegues
+    url(r'^colleagues/$', 'list_colleagues', name='core-colleagues'),
+    url(r'^colleagues/add/$', 'add_colleague', name='core-user-add'),
+    url(r'^colleagues/info/(?P<uid>\d+)/$', 'get_user_info'),
     # Archive
     url(r'^students/archive/$', 'list_students', {'archive': True},
         name='core-students-archive'),

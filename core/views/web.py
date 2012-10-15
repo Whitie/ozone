@@ -12,13 +12,14 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
 from django.db.models import Q
 
 from core import utils
 from core.models import (News, Company, Student, StudentGroup, Contact, Note,
     UserProfile, PRESENCE_CHOICES)
 from core.forms import (NewsForm, SearchForm, StudentSearchForm, NoteForm,
-                        ProfileForm)
+                        ProfileForm, NewUserForm)
 from core.views import helper as h
 from core.menu import menus
 from barcode.codex import Code39
@@ -59,7 +60,7 @@ def edit_profile(req):
     else:
         form = ProfileForm(instance=profile)
     ctx = dict(page_title=_(u'My Profile'), menus=menus, form=form)
-    return render(req, 'profile.html', ctx)
+    return render(req, 'colleagues/profile.html', ctx)
 
 
 @login_required
@@ -68,7 +69,62 @@ def internal_phonelist(req):
         ).exclude(user__username='admin').order_by('user__last_name')
     ctx = dict(page_title=_(u'Internal Phonelist'), menus=menus,
         profiles=profiles)
-    return render(req, 'phonelist.html', ctx)
+    return render(req, 'colleagues/phonelist.html', ctx)
+
+
+@login_required
+def list_colleagues(req):
+    internal = UserProfile.objects.select_related().filter(external=False
+        ).exclude(user__username='admin').order_by('user__last_name')
+    external = UserProfile.objects.select_related().filter(external=True
+        ).exclude(user__username='admin').order_by('user__last_name')
+    ctx = dict(page_title=_(u'Colleagues'), menus=menus, internal=internal,
+        external=external)
+    return render(req, 'colleagues/list.html', ctx)
+
+
+@permission_required('auth.add_user', raise_exception=True)
+def add_colleague(req):
+    if req.method == 'POST':
+        form = NewUserForm(req.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            uname = h.make_username(cd['lastname'], cd['firstname'])
+            user = User.objects.create(username=uname, email=cd['email'],
+                last_name=cd['lastname'], first_name=cd['firstname'])
+            user.set_unusable_password()
+            user.save()
+            p = user.get_profile()
+            p.name_prefix = cd['name_prefix']
+            p.phone = cd['phone']
+            p.street = cd['street']
+            p.zip_code = cd['zip_code']
+            p.city = cd['city']
+            p.country = cd['country']
+            p.mobile = cd['mobile']
+            p.birthdate = cd['birthdate']
+            p.subjects = cd['subjects']
+            p.can_login = cd['can_login']
+            p.external = True
+            p.save()
+            messages.success(req, u'Neuer Datensatz (%(last)s, %(first)s) '
+                u'wurde gespeichert.' % {'last': user.last_name,
+                    'first': user.first_name})
+            return redirect('core-colleagues')
+        else:
+            messages.error(req, u'Bitte korrigieren Sie die Eingaben.')
+    else:
+        form = NewUserForm()
+    ctx = dict(page_title=_(u'Add external'), menus=menus, form=form)
+    return render(req, 'colleagues/add.html', ctx)
+
+
+@permission_required('auth.change_user', raise_exception=True)
+def get_user_info(req, uid):
+    profile = UserProfile.objects.select_related().get(user__id=int(uid))
+    user = profile.user
+    ctx = dict(u=user, p=profile)
+    return render(req, 'colleagues/detail.html', ctx)
 
 
 @permission_required('core.add_news')
@@ -391,7 +447,7 @@ def get_next_birthdays(req):
             students.append(s)
     ctx = dict(page_title=_(u'Next Birthdays'), menus=menus, users=users,
         students=students, choice=choice, days=days, today=start)
-    return render(req, 'birthdays.html', ctx)
+    return render(req, 'colleagues/birthdays.html', ctx)
 
 
 def barcode(req, format, barcode=''):

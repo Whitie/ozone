@@ -1,0 +1,51 @@
+{% load i18n %}
+
+<h3 class="headline">{{ p.name_prefix }} {{ u.last_name }}, {{ u.first_name }}</h3>
+<p>
+{{ p.street }}<br />
+{{ p.zip_code }} {{ p.city }}<br />
+{{ p.country }}
+</p>
+
+<table>
+    <tr>
+        <th style="text-align:right;">{% trans "Phone" %}:</th>
+        <td style="width:20px;"></td>
+        <td>{{ p.phone|default:"-" }}</td>
+    </tr>
+    <tr>
+        <th style="text-align:right;">{% trans "Mobile" %}:</th>
+        <td style="width:20px;"></td>
+        <td>{{ p.mobile|default:"-" }}</td>
+    </tr>
+    <tr>
+        <th style="text-align:right;">{% trans "Email" %}:</th>
+        <td style="width:20px;"></td>
+        <td>{{ u.email }}</td>
+    </tr>
+    <tr>
+        <th style="text-align:right;">{% trans "Birthdate" %}:</th>
+        <td style="width:20px;"></td>
+        <td>{{ p.birthdate|date:"SHORT_DATE_FORMAT"|default:"-" }}</td>
+    </tr>
+    <tr>
+        <th style="text-align:right;">{% trans "Part" %}:</th>
+        <td style="width:20px;"></td>
+        <td>{{ p.part|default:"-" }}</td>
+    </tr>
+    <tr>
+        <th style="text-align:right;">{% trans "Subjects" %}:</th>
+        <td style="width:20px;"></td>
+        <td>{{ p.subjects|default:"-" }}</td>
+    </tr>
+    <tr>
+        <th style="text-align:right;">{% trans "Username" %}:</th>
+        <td style="width:20px;"></td>
+        <td>{{ u.username }}</td>
+    </tr>
+    <tr>
+        <th style="text-align:right;">{% trans "Last Login" %}:</th>
+        <td style="width:20px;"></td>
+        <td>{{ u.last_login|date:"SHORT_DATETIME_FORMAT"|default:"-" }}</td>
+    </tr>
+</table>

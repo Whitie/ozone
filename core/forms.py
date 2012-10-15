@@ -92,3 +92,24 @@ class NewEntryForm(forms.Form):
     event = forms.CharField(label=_(u'Event'), max_length=50, required=False)
     text = forms.CharField(label=_(u'Text'), widget=forms.Textarea)
 
+
+class NewUserForm(forms.Form):
+    name_prefix = forms.CharField(label=_(u'Name Prefix'), max_length=12)
+    lastname = forms.CharField(label=_(u'Lastname'), max_length=30)
+    firstname = forms.CharField(label=_(u'Firstname'), max_length=30,
+        required=False)
+    street = forms.CharField(label=_(u'Street'), max_length=100,
+        required=False)
+    zip_code = forms.CharField(label=_(u'Zip Code'), max_length=15,
+        required=False)
+    city = forms.CharField(label=_(u'City'), max_length=100, required=False)
+    country = forms.CharField(label=_(u'Country'), max_length=50,
+        required=False)
+    email = forms.EmailField(label=_(u'Email'), required=False)
+    phone = forms.CharField(label=_(u'Phone'), max_length=30, required=False)
+    mobile = forms.CharField(label=_(u'Mobile'), max_length=30, required=False)
+    birthdate = forms.DateField(label=_(u'Birthdate'), required=False,
+        input_formats=['%Y-%m-%d', '%m/%d/%Y', '%d.%m.%Y', '%d.%m.%y'])
+    subjects = forms.CharField(label=_(u'Subjects'), max_length=150,
+        required=False, widget=forms.TextInput(attrs={'size': '100'}))
+    can_login = forms.BooleanField(label=_(u'Can Login'), required=False)
