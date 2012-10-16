@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0beta1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-12 13:50+0200\n"
+"POT-Creation-Date: 2012-10-16 09:00+0200\n"
 "PO-Revision-Date: 2012-09-20 08:47+0100\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -72,6 +72,10 @@ msgstr "Bestellsystem"
 #: base_templates/layout.html:21
 msgid "Logged in as"
 msgstr "Angemeldet als"
+
+#: base_templates/layout.html:52
+msgid "Click here to view a list of recent changes."
+msgstr "Klicken Sie hier, für eine Liste der letzten Änderungen (extern)."
 
 #: base_templates/admin/base_site.html:4
 msgid "Ozone site admin"
