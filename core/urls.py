@@ -28,6 +28,7 @@ urlpatterns = patterns('core.views.web',
     url(r'^students/$', 'list_students', name='core-students'),
     url(r'^students/(?P<startchar>[A-Z])/$', 'list_students'),
     url(r'^students/all/$', 'list_all_students', name='core-students-all'),
+    url(r'^students/search/$', 'search_student', name='core-students-search'),
     # Student groups
     url(r'^groups/$', 'list_groups', name='core-groups'),
     url(r'^groups/(?P<gid>\d+)/$', 'group_details', name='core-group-details'),

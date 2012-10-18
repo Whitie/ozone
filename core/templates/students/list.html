@@ -21,6 +21,7 @@
   {% csrf_token %}
   {% trans "Search" %}: {{ form.group }} {{ form.search }}
   <input type="submit" value="{% trans "Search" %}" />
+  <a href="{% url core-students-search %}">{% trans "Extended Search" %}</a>
   </form>
 </div>
 

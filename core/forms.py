@@ -14,6 +14,14 @@ DAYS = ((_(u'Mon'), _(u'Mon')), (_(u'Tue'), _(u'Tue')), (_(u'Wed'), _(u'Wed')),
     (_(u'Thu'), _(u'Thu')), (_(u'Fri'), _(u'Fri')))
 
 
+SEARCHES = {
+    'lastname': (_(u'Lastname'), ('lastname__icontains',)),
+    'email': (_(u'Email'), ('email__icontains',)),
+    'cabinet': (_(u'Cabinet Nr.'), ('cabinet__icontains',)),
+    'key': (_(u'Key Nr.'), ('key__icontains',)),
+}
+
+
 def get_user():
     return ((x.id, unicode(x.get_profile())) for x in
             User.objects.exclude(username='admin'))
@@ -21,6 +29,14 @@ def get_user():
 
 def get_student(sid):
     return Student.objects.get(id=int(sid))
+
+
+def get_search_fields(name):
+    lookups = SEARCHES.get(name, None)
+    if lookups is None:
+        return 'lastname__icontains',
+    else:
+        return lookups[1]
 
 
 class NewJournalForm(forms.ModelForm):
@@ -48,6 +64,11 @@ class SearchForm(forms.Form):
 
 class StudentSearchForm(SearchForm):
     group = forms.TypedChoiceField(coerce=int, empty_value=0, required=False)
+
+
+class ExtendedSearchForm(SearchForm):
+    search_for = forms.TypedChoiceField(coerce=get_search_fields,
+        choices=((x, y[0]) for x, y in SEARCHES.iteritems()))
 
 
 class NoteForm(forms.Form):

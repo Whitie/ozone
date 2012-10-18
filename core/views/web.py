@@ -19,7 +19,7 @@ from core import utils
 from core.models import (News, Company, Student, StudentGroup, Contact, Note,
     UserProfile, PRESENCE_CHOICES)
 from core.forms import (NewsForm, SearchForm, StudentSearchForm, NoteForm,
-                        ProfileForm, NewUserForm)
+                        ProfileForm, NewUserForm, ExtendedSearchForm)
 from core.views import helper as h
 from core.menu import menus
 from barcode.codex import Code39
@@ -317,6 +317,16 @@ def list_all_students(req):
     ctx = dict(page_title=_(u'List of all students'), menus=menus,
         students=students, page=page, start=(page - 1) * 30 + 1)
     return render(req, 'students/list_all.html', ctx)
+
+
+@login_required
+def search_student(req):
+    if req.method == 'POST':
+        form = ExtendedSearchForm(req.POST)
+    else:
+        form = ExtendedSearchForm()
+    ctx = dict(page_title=_(u'Extended Search'), menus=menus, form=form)
+    return render(req, 'students/search.html', ctx)
 
 
 @login_required
