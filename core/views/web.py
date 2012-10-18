@@ -321,11 +321,22 @@ def list_all_students(req):
 
 @login_required
 def search_student(req):
+    students = None
     if req.method == 'POST':
         form = ExtendedSearchForm(req.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            search = Q(**{cd['search_for_1']: cd['search_1']})
+            if cd['search_for_2'] and cd['search_2']:
+                if cd['connect_with'] == u'and':
+                    search &= Q(**{cd['search_for_2']: cd['search_2']})
+                else:
+                    search |= Q(**{cd['search_for_2']: cd['search_2']})
+            students = Student.objects.select_related().filter(search)
     else:
         form = ExtendedSearchForm()
-    ctx = dict(page_title=_(u'Extended Search'), menus=menus, form=form)
+    ctx = dict(page_title=_(u'Extended Search'), menus=menus, form=form,
+        students=students)
     return render(req, 'students/search.html', ctx)
 
 

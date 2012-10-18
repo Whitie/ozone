@@ -1,0 +1,41 @@
+{% extends "index.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block content %}
+<h2 class="headline">{% trans "Search Student" %}</h2>
+<div style="width:100%;text-align:center;">
+  <form action="{% url core-students-search %}" method="post">
+  {% csrf_token %}
+  {% trans "Search" %}: {{ form.search_for_1 }} {{ form.search_1 }}
+  {{ form.connect_with }} {{ form.search_for_2 }} {{ form.search_2 }}
+  <input type="submit" value="{% trans "Search" %}" />
+  </form>
+</div>
+
+<div>
+{% if students %}
+<h2 class="headline">{% trans "Result" %}</h3>
+{% for s in students %}
+<h3 title="{% trans "Click for details" %}">
+  {{ forloop.counter }}. {{ s.lastname }}, {{ s.firstname }} ({{ s.company.short_name }})
+</h3>
+<div class="details">{% include "students/details.html" %}</div>
+{% empty %}
+<p>{% trans "No results found" %}.</p>
+{% endfor %}
+{% endif %}
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $(document).tooltip();
+  $(".details").hide();
+  $("h3").click(function() {
+    $(this).next(".details").slideToggle("slow");
+    return true;
+  });
+});
+</script>
+
+{% endblock %}

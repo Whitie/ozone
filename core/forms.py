@@ -15,11 +15,17 @@ DAYS = ((_(u'Mon'), _(u'Mon')), (_(u'Tue'), _(u'Tue')), (_(u'Wed'), _(u'Wed')),
 
 
 SEARCHES = {
-    'lastname': (_(u'Lastname'), ('lastname__icontains',)),
-    'email': (_(u'Email'), ('email__icontains',)),
-    'cabinet': (_(u'Cabinet Nr.'), ('cabinet__icontains',)),
-    'key': (_(u'Key Nr.'), ('key__icontains',)),
+    'lastname': (_(u'Lastname'), 'lastname__icontains'),
+    'firstname': (_(u'Firstname'), 'firstname__icontains'),
+    'email': (_(u'Email'), 'email__icontains'),
+    'cabinet': (_(u'Cabinet Nr.'), 'cabinet__icontains'),
+    'key': (_(u'Key Nr.'), 'key__icontains'),
+    'barcode': (_(u'Barcode'), 'barcode__istartswith'),
+    'company': (_(u'Company Name'), 'company__name__icontains'),
 }
+
+SEARCHES_CHOICES = sorted([(x, y[0]) for x, y in SEARCHES.iteritems()],
+                          key=lambda x: x[1])
 
 
 def get_user():
@@ -31,10 +37,10 @@ def get_student(sid):
     return Student.objects.get(id=int(sid))
 
 
-def get_search_fields(name):
+def get_search_field(name):
     lookups = SEARCHES.get(name, None)
     if lookups is None:
-        return 'lastname__icontains',
+        return ''
     else:
         return lookups[1]
 
@@ -66,9 +72,17 @@ class StudentSearchForm(SearchForm):
     group = forms.TypedChoiceField(coerce=int, empty_value=0, required=False)
 
 
-class ExtendedSearchForm(SearchForm):
-    search_for = forms.TypedChoiceField(coerce=get_search_fields,
-        choices=((x, y[0]) for x, y in SEARCHES.iteritems()))
+class ExtendedSearchForm(forms.Form):
+    search_for_1 = forms.TypedChoiceField(coerce=get_search_field,
+        choices=SEARCHES_CHOICES)
+    search_1 = forms.CharField(max_length=50, widget=SearchInput5())
+    connect_with = forms.ChoiceField(choices=(
+        ('and', _(u'and')), ('or', _(u'or'))))
+    search_for_2 = forms.TypedChoiceField(coerce=get_search_field,
+        choices=[('', '-----')] + SEARCHES_CHOICES, empty_value='',
+        required=False)
+    search_2 = forms.CharField(max_length=50, widget=SearchInput5(),
+        required=False)
 
 
 class NoteForm(forms.Form):
