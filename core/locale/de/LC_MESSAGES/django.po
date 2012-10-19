@@ -34,7 +34,6 @@ msgid "User"
 msgstr "Benutzer"
 
 #: admin.py:202 models.py:414
-#, fuzzy
 msgid "Instructors"
 msgstr "Ausbilder"
 
@@ -768,7 +767,6 @@ msgid "Enter Data"
 msgstr "Daten eingeben"
 
 #: templates/colleagues/add.html:12
-#, fuzzy
 msgid "Personal Data"
 msgstr "Persönliche Daten"
 
