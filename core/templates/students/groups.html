@@ -4,24 +4,59 @@
 
 {% block content %}
 <h2 class="headline">{% trans "Overview" %}</h2>
-<div style="width:100%;text-align:center;">
+<div style="width:50%;text-align:center;margin:10px auto;">
   {% if perms.core.add_studentgroup %}
   <a href="/admin/core/studentgroup/add/">{% trans "Add Group" %}</a>
   {% endif %}
 </div>
 
-{% for g in groups %}
-<h3>{{ forloop.counter }}. <a title="{% trans "Click for details." %}"
-    href="{% url core-group-details g.id %}">{{ g.name }}</a>
-  {% blocktrans count counter=g.students.count %}({{ counter }} Student){% plural %}({{ counter }} Students){% endblocktrans %}
-  {% if perms.core.change_studentgroup %}
-  <a href="/admin/core/studentgroup/{{ g.id }}/">
-    <img src="{% static "img/edit.png" %}" title="{% trans "Edit" %}" /></a>
-  {% endif %}
-</h3>
-{% empty %}
-<h3>{% trans "No groups found." %}</h3>
-{% endfor %}
+<table id="dataTable">
+    <thead>
+        <tr>
+            <th>{% trans "Name" %}</th>
+            <th>{% trans "Job" %}</th>
+            <th>{% trans "Begin" %}</th>
+            <th>{% trans "Students" %}</th>
+            <th>{% trans "School Num." %}</th>
+            <th>{% trans "Actions" %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for g in groups %}
+        <tr>
+            <td><a title="{% trans "Click for details." %}" href="{% url core-group-details g.id %}">{{ g.name }}</a></td>
+            <td>{{ g.job }} ({{ g.job_short }})</td>
+            <td style="text-align:center;">
+                {{ g.start_date|date:"D" }}, <time>{{ g.start_date|date:"SHORT_DATE_FORMAT" }}</time>
+            </td>
+            <td style="text-align:center;">{{ g.students.count }}</td>
+            <td style="text-align:center;">{{ g.school_nr }}</td>
+            <td style="text-align:center;">{% if perms.core.change_studentgroup %}
+                <a href="/admin/core/studentgroup/{{ g.id }}/">
+                    <img src="{% static "img/edit.png" %}" title="{% trans "Edit" %}" />
+                </a>{% endif %}
+                {% if perms.core.delete_studentgroup %}
+                <a href="/admin/core/studentgroup/{{ g.id }}/delete/">
+                    <img src="{% static "img/delete.png" %}" title="{% trans "Delete" %}" />
+                </a>{% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+$(document).ready(function() {
+  var oTable = $('#dataTable').dataTable({
+    "bJQueryUI": true,
+    "bPaginate": false,
+    "bAutoWidth": true,
+    "oLanguage": {
+      "sUrl": "{% static "i18n/de_DE.txt" %}"
+    }
+  });
+});
+</script>
 
 {% endblock %}
 
