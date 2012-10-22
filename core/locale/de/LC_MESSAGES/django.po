@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Ozone 2.0\n"
+"Project-Id-Version: Ozone 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-18 21:23+0200\n"
+"POT-Creation-Date: 2012-10-22 08:13+0200\n"
 "PO-Revision-Date: 2012-10-18 21:27+0100\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <weimann@bbz-chemie.de>\n"
@@ -24,7 +24,8 @@ msgstr "Azubi(s)"
 
 #: admin.py:154 forms.py:20 forms.py:143 models.py:124 models.py:191
 #: models.py:322 templates/colleagues/detail.html:22
-#: templates/companies/details.html:61 templates/students/details.html:19
+#: templates/colleagues/filter.html:38 templates/companies/details.html:61
+#: templates/students/details.html:19
 msgid "Email"
 msgstr "Email"
 
@@ -62,12 +63,12 @@ msgid "Fri"
 msgstr "Fr"
 
 #: forms.py:18 forms.py:133 models.py:187 models.py:314
-#: templates/presence/group.html:32
+#: templates/colleagues/filter.html:33 templates/presence/group.html:32
 msgid "Lastname"
 msgstr "Nachname"
 
 #: forms.py:19 forms.py:134 models.py:188 models.py:315
-#: templates/presence/group.html:33
+#: templates/colleagues/filter.html:34 templates/presence/group.html:33
 msgid "Firstname"
 msgstr "Vorname"
 
@@ -87,10 +88,10 @@ msgstr "Strichcode"
 msgid "Company Name"
 msgstr "Firmenname"
 
-#: forms.py:67 templates/companies/list.html:20
-#: templates/companies/list.html.py:21 templates/students/list.html:22
-#: templates/students/list.html.py:23 templates/students/search.html:10
-#: templates/students/search.html.py:12
+#: forms.py:67 templates/colleagues/list.html:29
+#: templates/companies/list.html:20 templates/companies/list.html.py:21
+#: templates/students/list.html:22 templates/students/list.html.py:23
+#: templates/students/search.html:10 templates/students/search.html.py:12
 msgid "Search"
 msgstr "Suchen"
 
@@ -199,13 +200,14 @@ msgid "Country"
 msgstr "Land"
 
 #: forms.py:144 models.py:23 models.py:190 templates/colleagues/detail.html:12
-#: templates/companies/details.html:28 templates/companies/details.html:59
-#: templates/students/details.html:22
+#: templates/colleagues/filter.html:36 templates/companies/details.html:28
+#: templates/companies/details.html:59 templates/students/details.html:22
 msgid "Phone"
-msgstr "Telefon"
+msgstr "Festnetz"
 
 #: forms.py:145 models.py:46 models.py:323 templates/colleagues/detail.html:17
-#: templates/colleagues/phonelist.html:13 templates/students/details.html:23
+#: templates/colleagues/filter.html:37 templates/colleagues/phonelist.html:13
+#: templates/students/details.html:23
 msgid "Mobile"
 msgstr "Mobil"
 
@@ -214,6 +216,7 @@ msgid "Birthdate"
 msgstr "Geburtstag"
 
 #: forms.py:148 models.py:49 templates/colleagues/detail.html:37
+#: templates/colleagues/filter.html:35
 msgid "Subjects"
 msgstr "Fächer"
 
@@ -226,16 +229,16 @@ msgid "Core"
 msgstr "Hauptmenü"
 
 #: menu.py:18 models.py:163 templates/companies/list_all.html:10
-#: templates/presence/generate_pdf.html:34 views/web.py:234
+#: templates/presence/generate_pdf.html:34 views/web.py:246
 msgid "Companies"
 msgstr "Firmen"
 
 #: menu.py:19 models.py:384 templates/colleagues/birthdays.html:30
-#: templates/students/list_all.html:6 views/web.py:297
+#: templates/students/list_all.html:6 views/web.py:309
 msgid "Students"
 msgstr "Azubis"
 
-#: menu.py:20 models.py:295 views/web.py:347
+#: menu.py:20 models.py:295 views/web.py:359
 msgid "Groups"
 msgstr "Gruppen"
 
@@ -312,7 +315,8 @@ msgstr "Abteilungen"
 msgid "Separate two or more subjects with a comma."
 msgstr "Mehrere Fächer bitte durch Komma trennen."
 
-#: models.py:52 templates/colleagues/list.html:17
+#: models.py:52 templates/colleagues/filter.html:20
+#: templates/colleagues/filter.html:23 templates/colleagues/list.html:17
 msgid "External"
 msgstr "Extern"
 
@@ -738,7 +742,7 @@ msgid "of"
 msgstr "von"
 
 #: templates/index.html:30 templates/colleagues/add.html:46
-#: templates/colleagues/profile.html:30 templates/presence/overview.html:42
+#: templates/colleagues/profile.html:30 templates/presence/overview.html:40
 msgid "next"
 msgstr "nächste"
 
@@ -779,13 +783,13 @@ msgid "Misc"
 msgstr "Verschiedenes"
 
 #: templates/colleagues/add.html:32 templates/colleagues/profile.html:14
-#: templates/companies/add_note.html:15 templates/journal/add.html:21
+#: templates/companies/add_note.html:15 templates/journal/add.html:19
 #: templates/journal/add_entry.html:27 templates/news/add.html:8
 msgid "Save"
 msgstr "Speichern"
 
 #: templates/colleagues/add.html:47 templates/colleagues/profile.html:31
-#: templates/presence/overview.html:43
+#: templates/presence/overview.html:41
 msgid "prev"
 msgstr "vorherige"
 
@@ -820,15 +824,37 @@ msgstr "Benutzername"
 msgid "Last Login"
 msgstr "Letzte Anmeldung"
 
+#: templates/colleagues/filter.html:8
+msgid "Colleagues (internal and external)"
+msgstr "Kollegen (intern) / Dozenten (extern)"
+
+#: templates/colleagues/filter.html:10
+msgid "Colleagues (internal)"
+msgstr "Kollegen (intern)"
+
+#: templates/colleagues/filter.html:12
+msgid "Colleagues (external)"
+msgstr "Dozenten (extern)"
+
+#: templates/colleagues/filter.html:17
+msgid "Filter"
+msgstr "Filter"
+
+#: templates/colleagues/filter.html:19 templates/colleagues/filter.html:26
 #: templates/colleagues/list.html:8
 msgid "Internal"
-msgstr "Interner Mitarbeiter"
+msgstr "Interne Mitarbeiter"
+
+#: templates/colleagues/filter.html:22 templates/colleagues/filter.html:25
+#: templates/companies/list.html:11 templates/students/list.html:12
+msgid "All"
+msgstr "Alle"
 
 #: templates/colleagues/list.html:24
 msgid "Add new external"
 msgstr "Neuen externen Dozenten hinzufügen"
 
-#: templates/colleagues/list.html:30
+#: templates/colleagues/list.html:32
 msgid "User Information"
 msgstr "Benutzerinformation"
 
@@ -901,7 +927,7 @@ msgstr "Jahre"
 msgid "No"
 msgstr "Nein"
 
-#: templates/companies/details.html:64 views/web.py:166
+#: templates/companies/details.html:64 views/web.py:178
 msgid "Add Note"
 msgstr "Bemerkung hinzufügen"
 
@@ -920,10 +946,6 @@ msgstr "Keine Kooperationen"
 #: templates/companies/list.html:9
 msgid "Add Company"
 msgstr "Firma hinzufügen"
-
-#: templates/companies/list.html:11 templates/students/list.html:12
-msgid "All"
-msgstr "Alle"
 
 #: templates/companies/list.html:12 templates/students/list.html:14
 msgid "Other"
@@ -972,7 +994,7 @@ msgstr "Nächste Seite"
 msgid "Add new Journal for Group"
 msgstr "Neues Tagebuch für Gruppe anlegen"
 
-#: templates/journal/add.html:9
+#: templates/journal/add.html:7
 msgid ""
 "For the following groups a journal already exist. You can\n"
 "    not create a second one. If you want access to a specific journal,\n"
@@ -983,7 +1005,7 @@ msgstr ""
 "Tagebuch benötigen,\n"
 "wenden Sie sich bitte an einen von den aufgelisteten Ausbildern."
 
-#: templates/journal/add.html:17
+#: templates/journal/add.html:15
 msgid "Enter data for new journal"
 msgstr "Daten für neues Tagebuch eingeben"
 
@@ -999,19 +1021,19 @@ msgstr "Dateien"
 msgid "Entries for"
 msgstr "Einträge für"
 
-#: templates/journal/list.html:13
+#: templates/journal/list.html:11
 msgid "Click to add entry"
 msgstr "Klicken Sie hier, um einen Eintrag hinzuzufügen"
 
-#: templates/journal/list.html:14 views/journal.py:131
+#: templates/journal/list.html:12 views/journal.py:131
 msgid "Edit Rights"
 msgstr "Rechte bearbeiten"
 
-#: templates/journal/list.html:20
+#: templates/journal/list.html:18
 msgid "Click to show attached media"
 msgstr "Klicken Sie hier, um angehängte Medien anzusehen"
 
-#: templates/journal/list.html:28
+#: templates/journal/list.html:26
 msgid "Add new journal"
 msgstr "Neues Tagebuch"
 
@@ -1019,7 +1041,7 @@ msgstr "Neues Tagebuch"
 msgid "Entries"
 msgstr "Einträge"
 
-#: templates/journal/myentries.html:30 templates/presence/overview.html:21
+#: templates/journal/myentries.html:30 templates/presence/overview.html:19
 msgid "Show"
 msgstr "Anzeigen"
 
@@ -1112,7 +1134,7 @@ msgid "Legend"
 msgstr "Legende"
 
 #: templates/presence/list_printouts.html:5
-#: templates/presence/overview.html:13
+#: templates/presence/overview.html:11
 msgid "Old lists"
 msgstr "Alte Listen"
 
@@ -1120,15 +1142,15 @@ msgstr "Alte Listen"
 msgid "The first call of a list can take some time!"
 msgstr "Der erste Aufruf einer Liste kann einige Zeit dauern!"
 
-#: templates/presence/overview.html:19
+#: templates/presence/overview.html:17
 msgid "From"
 msgstr "Von"
 
-#: templates/presence/overview.html:20
+#: templates/presence/overview.html:18
 msgid "to"
 msgstr "bis"
 
-#: templates/presence/overview.html:27 templates/students/groups.html:23
+#: templates/presence/overview.html:25 templates/students/groups.html:23
 msgid "No groups found."
 msgstr "Keine Gruppen gefunden."
 
@@ -1209,7 +1231,7 @@ msgstr[1] "(%(counter)s Azubis)"
 msgid "Add Student"
 msgstr "Azubi hinzufügen"
 
-#: templates/students/list.html:24 views/web.py:338
+#: templates/students/list.html:24 views/web.py:350
 msgid "Extended Search"
 msgstr "Erweiterte Suche"
 
@@ -1283,123 +1305,65 @@ msgstr "Ozone Startseite"
 msgid "Add external"
 msgstr "Externen Dozenten hinzufügen"
 
-#: views/web.py:143
+#: views/web.py:129
+msgid "Filter Colleagues"
+msgstr "Kollegen / Dozenten filtern"
+
+#: views/web.py:155
 msgid "Add News"
 msgstr "News hinzufügen"
 
-#: views/web.py:194
+#: views/web.py:206
 msgid "Login Page"
 msgstr "Anmeldeseite"
 
-#: views/web.py:209
+#: views/web.py:221
 #, python-format
 msgid "Details: %s"
 msgstr "Details: %s"
 
-#: views/web.py:256
+#: views/web.py:268
 msgid "All Companies"
 msgstr "Alle Firmen"
 
-#: views/web.py:297
+#: views/web.py:309
 msgid "Students Archive"
 msgstr "Azubi-Archiv"
 
-#: views/web.py:317
+#: views/web.py:329
 msgid "List of all students"
 msgstr "Liste aller Azubis"
 
-#: views/web.py:363
+#: views/web.py:375
 msgid "Group Detail"
 msgstr "Details Gruppe"
 
-#: views/web.py:377
+#: views/web.py:389
 msgid "Group Overview"
 msgstr "Überblick Gruppen"
 
-#: views/web.py:417
+#: views/web.py:429
 msgid "Presence for Group"
 msgstr "Anwesenheiten für Gruppe"
 
-#: views/web.py:431
+#: views/web.py:443
 msgid "Presence for Student"
 msgstr "Anwesenheiten für Azubi"
 
-#: views/web.py:444
+#: views/web.py:456
 #, python-format
 msgid "Presence %s"
 msgstr "Anwesenheit %s"
 
-#: views/web.py:469
+#: views/web.py:481
 msgid "Next Birthdays"
 msgstr "Nächste Geburtstage"
 
-#: views/web.py:480
+#: views/web.py:492
 msgid "PIL is not installed."
 msgstr "PIL ist nicht installiert."
 
-#: views/web.py:487
+#: views/web.py:499
 msgid "Unsupported barcode format."
 msgstr "Nicht unterstütztes Strichcode-Format."
 
-#~ msgid "Journal Entry Help"
-#~ msgstr "Tagebucheintrag Hilfe"
-
-#~ msgid "Presence updated with %(entry)s (%(disp)s)."
-#~ msgstr "Anwesenheit aktualisiert mit %(entry)s (%(disp)s)."
-
-#~ msgid "Presence set to unknown!"
-#~ msgstr "Anwesenheit auf unbekannt (leer) gesetzt!"
-
-#~ msgid "Lateness %d minutes deleted!"
-#~ msgstr "%d Min. Verspätung gelöscht!"
-
-#~ msgid "Lateness set to %d minutes."
-#~ msgstr "Verspätung auf %d Min. gesetzt."
-
-#~ msgid "Nothing changed."
-#~ msgstr "Keine Änderungen."
-
-#~ msgid "Please correct the required fields."
-#~ msgstr "Bitte korrigieren Sie die fehlerhaften Felder."
-
-#~ msgid "All changes saved."
-#~ msgstr "Alle Änderungen gespeichert."
-
-#~ msgid "The News were added."
-#~ msgstr "Die News wurden hinzugefügt."
-
-#~ msgid "Please correct the wrong fields."
-#~ msgstr "Bitte korrigieren Sie die fehlerhaften Felder."
-
-#~ msgid "New note saved."
-#~ msgstr "Neue Bemerkung gespeichert."
-
-#~ msgid "Please enter subject and text."
-#~ msgstr "Bitte Betreff und Text eingeben."
-
-#~ msgid "Login accepted."
-#~ msgstr "Anmeldedaten akzeptiert."
-
-#~ msgid "Account is disabled."
-#~ msgstr "Der Account ist deaktiviert."
-
-#~ msgid "Username and/or password incorrect."
-#~ msgstr "Benutzername und/oder Passwort sind falsch."
-
-#~ msgid "Logged out."
-#~ msgstr "Abgemeldet."
-
-#~ msgid "Invalid search query."
-#~ msgstr "Ungültige Suchanfrage."
-
-#~ msgid "Group ID must be an integer."
-#~ msgstr "Gruppen-ID muss eine Zahl sein."
-
-#~ msgid "Group with ID %d does not exist."
-#~ msgstr "Gruppen-ID %d existiert nicht."
-
-#~ msgid "End date before start date."
-#~ msgstr "Das Enddatum liegt vor dem Anfangsdatum."
-
-#~ msgid "PDF generation is not installed."
-#~ msgstr "PDF Erzeugung ist nicht installiert."
