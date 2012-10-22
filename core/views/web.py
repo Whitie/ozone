@@ -37,7 +37,7 @@ def index(req):
         news_list = News.objects.all()
     else:
         news_list = News.objects.filter(public=True)
-    paginator = Paginator(news_list, 10)
+    paginator = Paginator(news_list, 5)
     try:
         page = int(req.GET.get('page', '1'))
     except ValueError:
