@@ -346,7 +346,7 @@ def search_student(req):
                     search |= Q(**{cd['search_for_2']: cd['search_2']})
             students = Student.objects.select_related().filter(search)
     else:
-        form = ExtendedSearchForm()
+        form = ExtendedSearchForm({'search_for_1': u'lastname'})
     ctx = dict(page_title=_(u'Extended Search'), menus=menus, form=form,
         students=students)
     return render(req, 'students/search.html', ctx)
