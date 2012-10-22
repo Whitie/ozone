@@ -119,6 +119,18 @@ def add_colleague(req):
     return render(req, 'colleagues/add.html', ctx)
 
 
+@login_required
+def filter_colleagues(req, filter):
+    q = UserProfile.objects.select_related().exclude(user__username='admin')
+    if filter == 'internal':
+        q = q.filter(external=False)
+    elif filter == 'external':
+        q = q.filter(external=True)
+    ctx = dict(page_title=_(u'Filter Colleagues'), menus=menus,
+        coll=q.order_by('user__last_name'), filter=filter)
+    return render(req, 'colleagues/filter.html', ctx)
+
+
 @permission_required('auth.change_user', raise_exception=True)
 def get_user_info(req, uid):
     profile = UserProfile.objects.select_related().get(user__id=int(uid))

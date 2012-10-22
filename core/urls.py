@@ -36,6 +36,8 @@ urlpatterns = patterns('core.views.web',
     url(r'^colleagues/$', 'list_colleagues', name='core-colleagues'),
     url(r'^colleagues/add/$', 'add_colleague', name='core-user-add'),
     url(r'^colleagues/info/(?P<uid>\d+)/$', 'get_user_info'),
+    url(r'^colleagues/filter/(?P<filter>all|internal|external)/$',
+        'filter_colleagues', name='core-colleagues-filter'),
     # Archive
     url(r'^students/archive/$', 'list_students', {'archive': True},
         name='core-students-archive'),

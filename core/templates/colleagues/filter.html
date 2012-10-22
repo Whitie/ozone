@@ -1,0 +1,68 @@
+{% extends "index.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block content %}
+<h2 class="headline">
+{% if filter == "all" %}
+    {% trans "Colleagues (internal and external)" %}:
+{% elif filter == "internal" %}
+    {% trans "Colleagues (internal)" %}:
+{% else %}
+    {% trans "Colleagues (external)" %}:
+{% endif %}{{ coll.count }}
+</h2>
+
+<div style="width:60%;text-align:center;margin:5px auto;">
+{% trans "Filter" %}:
+{% if filter == "all" %}
+    <a href="{% url core-colleagues-filter "internal" %}">{% trans "Internal" %}</a> |
+    <a href="{% url core-colleagues-filter "external" %}">{% trans "External" %}</a>
+{% elif filter == "internal" %}
+    <a href="{% url core-colleagues-filter "all" %}">{% trans "All" %}</a> |
+    <a href="{% url core-colleagues-filter "external" %}">{% trans "External" %}</a>
+{% else %}
+    <a href="{% url core-colleagues-filter "all" %}">{% trans "All" %}</a> |
+    <a href="{% url core-colleagues-filter "internal" %}">{% trans "Internal" %}</a>
+{% endif %}
+</div>
+
+<table id="dataTable">
+    <thead>
+        <tr>
+            <th>{% trans "Lastname" %}</th>
+            <th>{% trans "Firstname" %}</th>
+            <th>{% trans "Subjects" %}</th>
+            <th>{% trans "Phone" %}</th>
+            <th>{% trans "Mobile" %}</th>
+            <th>{% trans "Email" %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in coll %}
+        <tr>
+            <td>{{ c.user.last_name }}</td>
+            <td>{{ c.user.first_name }}</td>
+            <td>{{ c.subjects }}</td>
+            <td>{{ c.phone }}</td>
+            <td>{{ c.mobile }}</td>
+            <td><a href="mailto:{{ c.user.email }}">{{ c.user.email }}</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+$(document).ready(function() {
+  var oTable = $('#dataTable').dataTable({
+    "bJQueryUI": true,
+    "bPaginate": false,
+    "bAutoWidth": true,
+    "oLanguage": {
+      "sUrl": "{% static "i18n/de_DE.txt" %}"
+    }
+  });
+});
+</script>
+
+{% endblock %}
