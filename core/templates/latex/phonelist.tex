@@ -1,0 +1,42 @@
+\documentclass[a4paper]{scrartcl}
+
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[scaled]{uarial}
+\usepackage{longtable}
+\usepackage[automark]{scrpage2}
+\usepackage{color}
+\usepackage{colortbl}
+
+\pagestyle{scrheadings}
+
+\ihead[]{}
+\chead[]{}
+\ohead[]{}
+
+\ifoot[]{}
+\cfoot[]{Stand: \today}
+\ofoot[]{}
+
+\definecolor{blau}{rgb}{0.94,0.97,1.0} % hellblau
+\definecolor{weiss}{rgb}{1.0,1.0,1.0} % weiß
+
+\renewcommand{\raggedsection}{\centering}
+
+\begin{document}
+\sffamily
+
+\section*{bbz Telefonliste}
+
+\begin{longtable}{r|l|c|c}
+Nr. & Name & Festnetz & Handy\\
+\endhead
+\hline
+(% for p in profiles %)
+(( loop.cycle('\\rowcolor{blau}', '\\rowcolor{weiss}') ))
+(( loop.index )) & (( p.user.last_name )), (( p.user.first_name )) & (( p.phone )) & (( p.mobile ))\\
+\hline
+(% endfor %)
+\end{longtable}
+\end{document}

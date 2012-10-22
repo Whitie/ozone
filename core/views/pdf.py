@@ -18,7 +18,7 @@ from core import utils
 from core import latex
 from core.menu import menus
 from core.models import (Student, StudentGroup, PresencePrintout, Company,
-                         PresenceDay)
+                         PresenceDay, UserProfile)
 from core.forms import PresenceForm
 
 
@@ -69,6 +69,19 @@ def get_presence_context(gid, year, month):
 @login_required
 def pdf(req, what='grouplist'):
     response = HttpResponse(mimetype='application/pdf')
+    return response
+
+
+@login_required
+def generate_phonelist(req):
+    profiles = UserProfile.objects.select_related().exclude(
+        user__username='admin').filter(
+        external=False).order_by('user__last_name')
+    # Workaround to use make_latex function
+    ctx = dict(profiles=profiles, group='tmp')
+    filename = make_latex(ctx, 'phonelist.tex')
+    with open(filename, 'rb') as fp:
+        response = HttpResponse(fp.read(), content_type='application/pdf')
     return response
 
 
