@@ -385,29 +385,6 @@ class Student(CommonInfo):
         ordering = ['company__name', 'lastname']
 
 
-# deprecated (will be removed in 2.0)
-class Memo(models.Model):
-    student = models.ForeignKey(Student, verbose_name=_(u'Student'),
-        related_name='memos')
-    text = models.TextField(_(u'Text'))
-    created = models.DateTimeField(_(u'Created'), auto_now_add=True)
-    created_by = models.ForeignKey(User, verbose_name=_(u'Created by'))
-
-    def __unicode__(self):
-        if len(self.text) > 40:
-            dots = u'...'
-        else:
-            dots = u''
-        return u'[{0}] {1}: {2}{3}'.format(
-            self.created.strftime(settings.DEFAULT_DATETIME_FORMAT),
-            self.student, self.text[:40], dots)
-
-    class Meta:
-        verbose_name = _(u'Memo')
-        verbose_name_plural = _(u'Memos')
-        ordering = ['student__lastname']
-
-
 class PedagogicJournal(models.Model):
     group = models.OneToOneField(StudentGroup, verbose_name=_(u'Group'),
         related_name='journal')
