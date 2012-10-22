@@ -12,6 +12,7 @@ urlpatterns = patterns('core.views.web',
     url(r'^phonelist/$', 'internal_phonelist', name='core-phonelist'),
     url(r'^login/$', 'do_login', name='core-login'),
     url(r'^logout/$', 'do_logout', name='core-logout'),
+    url(r'^internal_admin/$', 'internal_admin', name='core-admin'),
     # Companies
     url(r'^companies/$', 'list_companies', name='core-companies'),
     url(r'^companies/list_all/$', 'list_all_companies',
@@ -77,6 +78,8 @@ urlpatterns += patterns('core.views.ajax',
         name='core-api-presence-update-day'),
     url(r'^api/journal/student_data/$', 'get_entries_for_student',
         name='core-api-student-entries'),
+    url(r'^api/iadmin/clean_sessions/$', 'clean_sessions',
+        name='core-api-clean-sessions'),
 )
 
 # PDF generation

@@ -1,0 +1,22 @@
+{% extends "index.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block content %}
+<h2 class="headline">{% trans "Tasks" %}</h2>
+<h3>{% trans "Clean old sessions" %}
+    <button type="button" onclick="clean_sessions();">
+        {% trans "Delete" %}<img src="{% static "img/delete.png" %}" />
+    </button>
+</h3>
+<span id="sess_result"></span>
+
+<script type="text/javascript">
+function clean_sessions() {
+    $.post('{% url core-api-clean-sessions %}', function(ret_data) {
+        $('#sess_result').text(ret_data['msg']);
+        }
+    );
+}
+</script>
+{% endblock %}

@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
+from datetime import datetime
+
 from django.conf import settings
+from django.contrib.sessions.models import Session
 
 from core.utils import json_rpc
 from core.models import PresenceDay, JournalEntry, Student
@@ -82,3 +85,11 @@ def get_entries_for_student(req, data):
     ret['entries'] = tmp
     ret['has_data'] = bool(tmp)
     return ret
+
+
+@json_rpc
+def clean_sessions(req, data=None):
+    q = Session.objects.filter(expire_date__lt=datetime.now())
+    count = q.count()
+    q.delete()
+    return dict(msg=u'Es wurden %d Datensätze gelöscht.' % count)

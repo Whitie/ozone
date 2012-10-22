@@ -17,11 +17,14 @@
                 {% if user.is_authenticated %}
                 <li><a href="{% url core-logout %}">{% trans "Logout" %}</a></li>
                 <li><a href="{% url core-profile %}">{% trans "Profile" %}</a></li>
+                {% else %}
+                <li><a href="{% url core-login %}">{% trans "Login" %}</a></li>
+                {% endif %}
                 {% if user.is_staff %}
                 <li><a href="{% url admin:index %}">{% trans "Admin" %}</a></li>
                 {% endif %}
-                {% else %}
-                <li><a href="{% url core-login %}">{% trans "Login" %}</a></li>
+                {% if user.is_superuser %}
+                <li><a href="{% url core-admin %}">{% trans "Internal Admin" %}</a></li>
                 {% endif %}
             </ul>
         <li><a href="http://archie/docs/bbz_datenbank/index.html">{% trans "Help" %}</a></li>

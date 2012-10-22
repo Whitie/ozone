@@ -14,6 +14,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.core.exceptions import PermissionDenied
 
 from core import utils
 from core.models import (News, Company, Student, StudentGroup, Contact, Note,
@@ -48,6 +49,14 @@ def index(req):
         news = paginator.page(paginator.num_pages)
     ctx = dict(page_title=_(u'Ozone Home'), menus=menus, news=news)
     return render(req, 'index.html', ctx)
+
+
+@login_required
+def internal_admin(req):
+    if not req.user.is_superuser:
+        raise PermissionDenied
+    ctx = dict(page_title=_(u'Internal Admin Page'), menus=menus)
+    return render(req, 'iadmin.html', ctx)
 
 
 @login_required

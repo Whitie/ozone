@@ -31,14 +31,10 @@
             </td>
             <td style="text-align:center;">{{ g.students.count }}</td>
             <td style="text-align:center;">{{ g.school_nr }}</td>
-            <td style="text-align:center;">{% if perms.core.change_studentgroup %}
-                <a href="/admin/core/studentgroup/{{ g.id }}/">
-                    <img src="{% static "img/edit.png" %}" title="{% trans "Edit" %}" />
-                </a>{% endif %}
-                {% if perms.core.delete_studentgroup %}
-                <a href="/admin/core/studentgroup/{{ g.id }}/delete/">
-                    <img src="{% static "img/delete.png" %}" title="{% trans "Delete" %}" />
-                </a>{% endif %}
+            <td style="text-align:center;">
+                {% if perms.core.change_studentgroup %}<a href="/admin/core/studentgroup/{{ g.id }}/"><img src="{% static "img/edit.png" %}" title="{% trans "Edit" %}" /></a>{% endif %}
+                <a href="{% url core-presence-group g.id %}"><img src="{% static "img/presence.png" %}" title="{% trans "Presence" %}" /></a>
+                {% if perms.core.delete_studentgroup %}<a href="/admin/core/studentgroup/{{ g.id }}/delete/"><img src="{% static "img/delete.png" %}" title="{% trans "Delete" %}" /></a>{% endif %}
             </td>
         </tr>
         {% endfor %}
