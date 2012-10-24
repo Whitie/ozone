@@ -325,7 +325,7 @@ def list_students(req, startchar='', archive=False):
 @login_required
 def list_all_students(req):
     student_list = Student.objects.select_related().all(
-        ).order_by('company__name', 'lastname')
+        ).order_by('lastname', 'group__job', 'sex')
     paginator = Paginator(student_list, 30)
     try:
         page = int(req.GET.get('page', '1'))
