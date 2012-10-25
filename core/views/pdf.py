@@ -57,12 +57,19 @@ def get_presence_context(gid, year, month):
     ctx = dict(group=group)
     days_of_month = monthrange(year, month)[1]
     start = date(year, month, 1)
-    end = date(year, month, days_of_month)
-    ctx['day_nums'] = [x.day for x in iter_days(start, days_of_month)
-                       if x.weekday() not in (5, 6)]
+    ctx['day_nums'] = []
     ctx['edu_year'] = utils.get_edu_year(group.start_date)
     ctx['timespan'] = unicode(start.strftime('%m/%Y'))
-    ctx['table_days'] = [u'c' for x in ctx['day_nums']]
+    tmp = []
+    for x in iter_days(start, days_of_month):
+        wd = x.weekday()
+        if wd not in (5, 6):
+            ctx['day_nums'].append(x.day)
+            if wd == 4:
+                tmp.extend([u'c', u'||'])
+            else:
+                tmp.extend([u'c', u'|'])
+    ctx['table_days'] = tmp[:-1]
     return ctx
 
 
