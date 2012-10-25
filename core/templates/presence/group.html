@@ -34,6 +34,7 @@
       {% for d in days %}
       <th>{{ d|date:"D d" }}</th>
       {% endfor %}
+      <th>{% trans "Lastname" %}</th>
     </tr>
   </thead>
   <tbody>
@@ -50,6 +51,7 @@
           <input id="l_{{ d.id }}" type="text" size="2" maxlength="3"{% if d.lateness %} style="border:1px solid red;"{% endif %} name="lateness" value="{% if d.lateness %}{{ d.lateness }}{% endif %}" onchange="lateness_changed({{ d.id }});" title="{% trans "Enter lateness here." %}" />
       </td>
       {% endfor %}
+      <td>{{ s.lastname }}</td>
     </tr>
     {% endfor %}
   </tbody>

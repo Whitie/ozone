@@ -508,7 +508,7 @@ class PresenceDay(models.Model):
     instructor = models.ForeignKey(User, verbose_name=_(u'Instructor'),
         editable=False, null=True, blank=True)
 
-    audit_log = AuditLog()
+    #audit_log = AuditLog()
 
     def __unicode__(self):
         return u'{0} {1} |{2}|'.format(self.student,
