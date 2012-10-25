@@ -27,9 +27,8 @@ TEMPLATE_PATH = os.path.normpath(
     os.path.join(PATH, '..', 'templates', 'latex'))
 
 
-def iter_days(start, end):
-    delta = end - start
-    for i in xrange(delta.days):
+def iter_days(start, days):
+    for i in xrange(days):
         yield start + timedelta(days=i)
 
 
@@ -56,12 +55,13 @@ def make_latex(ctx, template, company=None):
 def get_presence_context(gid, year, month):
     group = StudentGroup.objects.get(id=gid)
     ctx = dict(group=group)
+    days_of_month = monthrange(year, month)[1]
     start = date(year, month, 1)
-    end = date(year, month, monthrange(year, month)[1])
-    ctx['day_nums'] = [x.day for x in iter_days(start, end)
+    end = date(year, month, days_of_month)
+    ctx['day_nums'] = [x.day for x in iter_days(start, days_of_month)
                        if x.weekday() not in (5, 6)]
     ctx['edu_year'] = utils.get_edu_year(group.start_date)
-    ctx['timespan'] = unicode(start.strftime('%B %Y'))
+    ctx['timespan'] = unicode(start.strftime('%m/%Y'))
     ctx['table_days'] = [u'c' for x in ctx['day_nums']]
     return ctx
 
