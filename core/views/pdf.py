@@ -40,7 +40,8 @@ def make_latex(ctx, template, company=None):
         name = '{0}_{1}_{2}'.format(unicode(ctx['group']), company.short_name,
             template)
     else:
-        name = '{0}_{1}'.format(unicode(ctx['group']), template)
+        group_name = unicode(ctx['group']).replace('/', '_')
+        name = '{0}_{1}'.format(group_name, template)
     filename = os.path.join(s['build_dir'], name)
     try:
         os.remove(filename)
