@@ -431,7 +431,7 @@ def presence_for_group(req, gid):
     req.session['presence_start'] = start
     req.session['presence_end'] = end
     dt = end - start
-    _students = group.students.all().order_by(
+    _students = group.students.filter(finished=False).order_by(
         'company__short_name', 'lastname')
     students = h.get_presence(_students, start, end)
     days = (start + timedelta(days=x) for x in xrange(dt.days + 1))
