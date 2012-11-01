@@ -8,7 +8,7 @@
 <h3>{{ g }}</h3>
 <ul>
     {% for p in g.presence_printouts.all %}
-    <li><a href="{{ p.pdf.url }}">{{ p.date|date:"F Y" }}</a></li>
+    <li><a href="{{ p.pdf.url }}">{{ p.date|date:"F Y" }} ({{ p.company.name }})</a></li>
     {% endfor %}
 </ul>
 {% endfor %}
