@@ -95,7 +95,10 @@ def add_representative(req):
 @json_rpc
 def change_order(req, data):
     order = Order.objects.get(id=data['order_id'])
-    supplier = Company.objects.get(id=data['supp_id'])
+    try:
+        supplier = Company.objects.get(id=data['supp_id'])
+    except Company.DoesNotExist:
+        supplier = None
     article = order.article
     try:
         price = Decimal(data['price'].replace(u',', u'.'))
@@ -104,7 +107,8 @@ def change_order(req, data):
         article.price = price
     except KeyError:
         pass
-    article.supplier = supplier
+    if supplier is not None:
+        article.supplier = supplier
     article.save()
     order.count = data['count']
     order.save()
