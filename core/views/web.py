@@ -419,12 +419,22 @@ def presence_for_group(req, gid):
     if end is None:
         end = date.today()
     else:
-        end = datetime.strptime(end, '%d.%m.%Y').date()
+        try:
+            end = datetime.strptime(end, '%d.%m.%Y').date()
+        except ValueError:
+            messages.error(req, u'Das Enddatum (%r) ist nicht im Format '
+                                u'TT.MM.YYYY.' % end)
+            return redirect('core-presence')
     if start is None:
         d = date.today()
         start = date(d.year, d.month, 1)
     else:
-        start = datetime.strptime(start, '%d.%m.%Y').date()
+        try:
+            start = datetime.strptime(start, '%d.%m.%Y').date()
+        except ValueError:
+            messages.error(req, u'Das Startdatum (%r) ist nicht im Format '
+                                u'TT.MM.YYYY.' % start)
+            return redirect('core-presence')
     if start > end:
         messages.error(req, u'Das Enddatum liegt vor dem Startdatum!')
         return redirect('core-presence')
