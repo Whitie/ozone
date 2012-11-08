@@ -65,7 +65,7 @@
             <td>
                 {% if perms.orders.can_order and o.state in states %}
                 <select id="supp_{{ forloop.counter }}" size="1" onchange="update_row({{ forloop.counter }});">
-                {% for id, name in suppliers %}<option value="{{ id }}"{% if o.article.supplier.id == id %} selected="selected"{% endif %} />{{ name }}</option>{% endfor %}
+                {% for id, name in suppliers %}<option value="{{ id }}"{% if o.article.supplier.id == id %} selected="selected"{% endif %}>{{ name }}</option>{% endfor %}
                 </select>
                 <span style="display:none;">{{ o.article.supplier.short_name }}</span>
                 {% else %}{{ o.article.supplier.short_name }}{% endif %}
