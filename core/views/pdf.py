@@ -37,7 +37,8 @@ def make_latex(ctx, template, company=None):
     s = latex.get_latex_settings()
     tpl = env.get_template(template)
     if company is not None:
-        name = '{0}_{1}_{2}'.format(unicode(ctx['group']), company.short_name,
+        name = '{0}_{1}_{2}'.format(unicode(ctx['group']),
+            company.short_name.replace('/', '_').encode('ascii', 'replace'),
             template)
     else:
         group_name = unicode(ctx['group']).replace('/', '_')
