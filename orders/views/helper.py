@@ -53,7 +53,9 @@ def get_oday_choices(filters):
 
 
 def get_price(value):
-    value = value.replace(u',', u'.')
+    if not value.strip():
+        return Decimal('0.0')
+    value = value.strip().replace(u',', u'.')
     return Decimal(value)
 
 
