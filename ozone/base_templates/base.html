@@ -4,22 +4,57 @@
     <head>
         <meta charset="utf-8">
         <title>{{ title|default:"bbz Tools" }} - {% now "r (W)" %}</title>
-        <link rel="stylesheet" href="{% static "css/styles.css" %}" media="all" />
-        <link rel="stylesheet" href="{% static "css/print.css" %}" media="print" />
-        <link type="text/css" href="{% static "css/smoothness/jquery-ui-1.9.0.custom.min.css" %}" rel="Stylesheet" />
-        <link type="text/css" href="{% static "css/jquery.dataTables.css" %}" rel="Stylesheet" />
-        <script type="text/javascript" src="{% static "js/jquery-1.8.2.min.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/jquery-ui-1.9.0.custom.min.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/jquery.dataTables.min.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/json2.js" %}"></script>
-        <script type="text/javascript" src="{% static "js/csrf.js" %}"></script>
-        {% if include_media %}
-        <script type="text/javascript" src="{% static "js/html5media.js" %}"></script>
-        {% endif %}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Ozone Educational Database System">
+        <meta name="author" content="Thorsten Weimann">
+
+        <!-- Styles -->
+        <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
+        <style type="text/css">
+            body {
+                padding-top: 60px;
+                padding-bottom: 40px;
+            }
+            .sidebar-nav {
+                padding: 9px 0;
+            }
+            .centered {
+                text-align: center;
+            }
+            #logo {
+                position: absolute;
+                top: 60px;
+                right: 5px;
+                width: 150px;
+            }
+        </style>
+        <link href="{% static "css/bootstrap-responsive.min.css" %}" rel="stylesheet">
+        <link href="{% static "css/datepicker.css" %}" rel="Stylesheet">
+        <link href="{% static "css/jquery.dataTables.css" %}" rel="Stylesheet">
+        <!-- End Styles -->
+
+        <!-- IE Hack -->
+        <!--[if lt IE 9]>
+            <script src="{% static "js/html5.js" %}"></script>
+        <![endif]-->
         {% block head %}{% endblock %}
     </head>
     <body>
         {% block body %}{% endblock %}
+
+        <!-- Javascripts -->
+        <script src="{% static "js/jquery-1.8.3.min.js" %}"></script>
+        <script src="{% static "js/bootstrap.min.js" %}"></script>
+        <script src="{% static "js/bootstrap-datepicker.js" %}"></script>
+        <script src="{% static "js/bootbox.min.js" %}"></script>
+        <script src="{% static "js/jquery.dataTables.min.js" %}"></script>
+        {% if need_ajax %}
+        <script src="{% static "js/json2.js" %}"></script>
+        <script src="{% static "js/csrf.js" %}"></script>
+        {% endif %}
+        {% if include_media %}
+        <script src="{% static "js/html5media.js" %}"></script>
+        {% endif %}
     </body>
 </html>
 
