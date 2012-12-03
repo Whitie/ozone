@@ -49,6 +49,7 @@ td {
 {% if show %}
 <script type="text/javascript">
 function generate_company(cid) {
+    $('#but_'+cid).attr('disabled', 'disabled');
     var uid = {{ instructor.id }};
     var gid = {{ group.id }};
     var course = '{{ course }}';
@@ -62,7 +63,7 @@ function generate_company(cid) {
         function(res_data) {
             link = '<a href="'+res_data['url']+'">'+res_data['name']+'</a>';
             $('#res_'+cid).append(link).show();
-            $('#but_'+cid).attr('disabled', 'disabled');
+            /*$('#but_'+cid).attr('disabled', 'disabled');*/
         }
     );
 }

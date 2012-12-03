@@ -17,6 +17,7 @@
     {% trans "From" %} <input type="text" class="dateWidget" name="start" />
     {% trans "to" %} <input type="text" class="dateWidget" name="end" />
     <input type="submit" value="{% trans "Show" %}" />
+    {% for p in g.pdfs %}<a href="{{ p.pdf.url }}">{{ p.date.month }} / {{ p.company.short_name }}</a> {% endfor %}
   </li>
   </form>
   {% endfor %}
