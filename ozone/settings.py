@@ -10,7 +10,7 @@ sys.path.insert(0, EXT_DIR)
 
 # Django settings for ozone project.
 
-VERSION = '2.0.7'
+VERSION = '3.0'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
