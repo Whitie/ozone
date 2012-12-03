@@ -140,7 +140,7 @@ def generate_presence_filled(req, gid, year, month):
         else:
             messages.error(req, u'Bitte korrigieren Sie die Pflichtfelder.')
     else:
-        form = PresenceForm({'include_supported_days': True})
+        form = PresenceForm(initial={'include_supported_days': True})
     ctx = dict(page_title=_(u'Presence PDF-Generation'), menus=menus,
         instructor=instructor, course=course, school_days=school_days,
         group=group, show=show, ts=ts, form=form, companies=companies,
