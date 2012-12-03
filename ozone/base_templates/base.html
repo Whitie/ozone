@@ -55,6 +55,8 @@
         {% if include_media %}
         <script src="{% static "js/html5media.js" %}"></script>
         {% endif %}
+        {% block additional_js %}{% endblock %}
+        <!-- End Javascripts -->
     </body>
 </html>
 
