@@ -121,6 +121,8 @@ class PresenceForm(forms.Form):
     course = forms.CharField(label=_(u'Course'), max_length=50, required=False)
     school_days = forms.MultipleChoiceField(label=_(u'School days'),
         choices=DAYS, required=False, widget=CheckboxSelectMultiple)
+    include_supported_days = forms.BooleanField(label=_(u'Include supported '
+        u'days'), required=False)
 
 
 class NewEntryForm(forms.Form):

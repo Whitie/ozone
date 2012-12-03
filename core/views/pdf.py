@@ -115,6 +115,7 @@ def generate_presence_filled(req, gid, year, month):
     instructor = None
     course = None
     school_days = None
+    incl_sup = None
     ts = date(int(year), int(month), 1)
     group = StudentGroup.objects.select_related().get(id=int(gid))
     companies = []
@@ -134,15 +135,16 @@ def generate_presence_filled(req, gid, year, month):
             instructor = User.objects.get(id=form.cleaned_data['instructor'])
             course = form.cleaned_data['course']
             school_days = form.cleaned_data['school_days']
+            incl_sup = form.cleaned_data['include_supported_days']
             show = True
         else:
             messages.error(req, u'Bitte korrigieren Sie die Pflichtfelder.')
     else:
-        form = PresenceForm()
+        form = PresenceForm({'include_supported_days': True})
     ctx = dict(page_title=_(u'Presence PDF-Generation'), menus=menus,
         instructor=instructor, course=course, school_days=school_days,
         group=group, show=show, ts=ts, form=form, companies=companies,
-        year=year, month=month)
+        year=year, month=month, incl_sup=incl_sup)
     return render(req, 'presence/generate_pdf.html', ctx)
 
 
@@ -151,6 +153,8 @@ def generate_presence_pdf(req, data):
     user = User.objects.get(id=data['uid'])
     company = Company.objects.get(id=data['cid'])
     ctx = get_presence_context(data['gid'], data['year'], data['month'])
+    ctx['incl_sup'] = data['incl_sup']
+    ctx['company'] = company
     students = Student.objects.select_related().filter(
         group=ctx['group'], company=company).order_by('lastname')
     k = 0

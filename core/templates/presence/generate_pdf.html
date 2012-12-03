@@ -52,11 +52,12 @@ function generate_company(cid) {
     var uid = {{ instructor.id }};
     var gid = {{ group.id }};
     var course = '{{ course }}';
+    var incl_sup = {% if incl_sup %}true{% else %}false{% endif %};
     var sdays = ['{{ school_days|join:"', '" }}'];
     var year = {{ year }};
     var month = {{ month }};
     dat = {'cid': cid, 'uid': uid, 'gid': gid, 'course': course,
-        'sdays': sdays, 'year': year, 'month': month};
+        'sdays': sdays, 'year': year, 'month': month, 'incl_sup': incl_sup};
     $.post('{% url core-api-pdf-presence %}', {'_JSON_': JSON.stringify(dat)},
         function(res_data) {
             link = '<a href="'+res_data['url']+'">'+res_data['name']+'</a>';
