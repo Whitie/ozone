@@ -389,6 +389,7 @@ def group_details(req, gid):
 def presence_overview(req):
     month = date.today().month
     q = Q(date__month=month) | Q(date__month=month - 1)
+    q2 = Q(entry__isnull=True) | Q(entry__exact=u'')
     jobs = StudentGroup.objects.values_list('job', flat=True)
     jobs = list(set(jobs))
     jobs.sort()
@@ -399,7 +400,7 @@ def presence_overview(req):
         for g in gr:
             g.pdfs = g.presence_printouts.filter(q).order_by('-date')
             g.pdays = PresenceDay.objects.filter(student__group=g,
-                date__month=month - 1).count()
+                date__month=month - 1).exclude(q2).count()
         groups.append((j, gr))
     ctx = dict(page_title=_(u'Group Overview'), groups=groups, menus=menus,
         month=month - 1)
