@@ -9,19 +9,35 @@
 
 {% for n, gr in groups %}
 <h3>{{ n }} (<a href="{% url core-presence-printouts n %}">{% trans "Old lists" %}</a>)</h3>
-<ul>
-  {% for g in gr %}
-  <form action="{% url core-presence-group g.id %}" method="post">
-  {% csrf_token %}
-  <li><strong>{{ g }}</strong>
-    {% trans "From" %} <input type="text" class="dateWidget" name="start" />
-    {% trans "to" %} <input type="text" class="dateWidget" name="end" />
-    <input type="submit" value="{% trans "Show" %}" />
-    {% for p in g.pdfs %}<a href="{{ p.pdf.url }}">{{ p.date.month }} / {{ p.company.short_name }}</a> {% endfor %}
-  </li>
-  </form>
-  {% endfor %}
-  </ul>
+<table>
+    <tr>
+        <th style="border-bottom:1px solid blue;">{% trans "Group" %}</th>
+        <th style="border-left:1px solid blue;border-right:1px solid blue;border-bottom:1px solid blue;">
+            {% trans "Show list by date" %}
+        </th>
+        <th style="border-bottom:1px solid blue;">
+            {% trans "Finished lists / Information" %}
+        </th>
+    </tr>
+    {% for g in gr %}
+    <form action="{% url core-presence-group g.id %}" method="post">
+    {% csrf_token %}
+    <tr>
+        <td><strong>{{ g }}</strong></td>
+        <td style="border-left:1px solid blue;border-right:1px solid blue;">
+            {% trans "From" %} <input type="text" class="dateWidget" name="start" />
+            {% trans "to" %} <input type="text" class="dateWidget" name="end" />
+            <input type="submit" value="{% trans "Show" %}" />
+        </td>
+        <td>
+            {% if g.pdfs %}
+            {% for p in g.pdfs %}<a href="{{ p.pdf.url }}">{{ p.date.month }}-{{ p.company.short_name }}</a> {% endfor %}
+            / {% endif %}{% trans "Presence days for month" %} {{ month }}: {{ g.pdays }}
+        </td>
+    </tr>
+    </form>
+    {% endfor %}
+</table>
 {% empty %}
 <h3>{% trans "No groups found." %}</h3>
 {% endfor %}

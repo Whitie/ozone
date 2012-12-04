@@ -18,7 +18,7 @@ from django.core.exceptions import PermissionDenied
 
 from core import utils
 from core.models import (News, Company, Student, StudentGroup, Contact, Note,
-    UserProfile, PRESENCE_CHOICES)
+    UserProfile, PresenceDay, PRESENCE_CHOICES)
 from core.forms import (NewsForm, SearchForm, StudentSearchForm, NoteForm,
                         ProfileForm, NewUserForm, ExtendedSearchForm)
 from core.views import helper as h
@@ -398,8 +398,11 @@ def presence_overview(req):
             'start_date')
         for g in gr:
             g.pdfs = g.presence_printouts.filter(q).order_by('-date')
+            g.pdays = PresenceDay.objects.filter(student__group=g,
+                date__month=month - 1).count()
         groups.append((j, gr))
-    ctx = dict(page_title=_(u'Group Overview'), groups=groups, menus=menus)
+    ctx = dict(page_title=_(u'Group Overview'), groups=groups, menus=menus,
+        month=month - 1)
     return render(req, 'presence/overview.html', ctx)
 
 
