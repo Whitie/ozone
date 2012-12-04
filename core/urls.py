@@ -80,6 +80,8 @@ urlpatterns += patterns('core.views.ajax',
         name='core-api-student-entries'),
     url(r'^api/iadmin/clean_sessions/$', 'clean_sessions',
         name='core-api-clean-sessions'),
+    url(r'^api/iadmin/clean_presence/$', 'clean_presence',
+        name='core-api-clean-presence'),
 )
 
 # PDF generation
