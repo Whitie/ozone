@@ -73,6 +73,13 @@
     {% endfor %}
 </table>
 
+<div id="dialog-confirm" title="{% trans "Update for all" %}">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+        <span id="confirmtext"></span>
+    </p>
+</div>
+
 <script>
 $(document).ready(function() {
   $(document).tooltip();
