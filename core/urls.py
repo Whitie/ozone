@@ -95,5 +95,7 @@ urlpatterns += patterns('core.views.pdf',
         name='core-pdf-presence'),
     url(r'^api/presence/pdf/$', 'generate_presence_pdf',
         name='core-api-pdf-presence'),
+    url(r'^api/presence/pdf/all/$', 'generate_presence_pdf_all',
+        name='core-api-pdf-presence-all'),
     url(r'^pdf/phonelist/$', 'generate_phonelist', name='core-pdf-phonelist'),
 )
