@@ -20,14 +20,14 @@
         </th>
     </tr>
     {% for g in gr %}
-    <form action="{% url core-presence-group g.id %}" method="post">
+    <form action="{% url core-presence-group g.id %}" method="post" onsubmit="return disable_btn('btn_{{ forloop.counter }}');">
     {% csrf_token %}
     <tr>
         <td><strong>{{ g }}</strong></td>
         <td style="border-left:1px solid blue;border-right:1px solid blue;">
             {% trans "From" %} <input type="text" class="dateWidget" name="start" />
             {% trans "to" %} <input type="text" class="dateWidget" name="end" />
-            <input type="submit" value="{% trans "Show" %}" />
+            <input type="submit" id="btn_{{ forloop.counter }}" value="{% trans "Show" %}" />
         </td>
         <td>
             {% if g.pdfs %}
@@ -57,6 +57,11 @@ $(document).ready(function() {
     'prevText': '{% trans "prev" %}'
   });
 });
+
+function disable_btn(btn_id) {
+    $('#'+btn_id).attr('disabled', 'disabled');
+    return true;
+}
 </script>
 
 {% endblock %}
