@@ -49,6 +49,7 @@
           {% for e in choices %}<option value="{{ e }}"{% if e == d.entry %} selected="selected"{% endif %}>{{ e }}</option>{% endfor %}
           </select><br />
           <input id="l_{{ d.id }}" type="text" size="2" maxlength="3"{% if d.lateness %} style="border:1px solid red;"{% endif %} name="lateness" value="{% if d.lateness %}{{ d.lateness }}{% endif %}" onchange="lateness_changed({{ d.id }});" title="{% trans "Enter lateness here." %}" />
+          {% if d.note %}<a href="#" title="{{ d.note }}">*</a>{% endif %}
       </td>
       {% endfor %}
       <td>{{ s.lastname }}</td>
