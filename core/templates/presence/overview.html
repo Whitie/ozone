@@ -23,14 +23,15 @@
   </thead>
   <tbody>
     {% for g in gr %}
-    <form action="{% url core-presence-group g.id %}" method="post" onsubmit="return disable_btn('btn_{{ forloop.counter }}');">
-    {% csrf_token %}
     <tr>
         <td><strong>{{ g }}</strong></td>
         <td>
+          <form action="{% url core-presence-group g.id %}" method="post" onsubmit="return disable_btn('btn_{{ forloop.counter }}');">
+            {% csrf_token %}
             {% trans "From" %} <input type="text" class="dateWidget" name="start" size="10" />
             {% trans "to" %} <input type="text" class="dateWidget" name="end" size="10" />
             <input type="submit" id="btn_{{ forloop.counter }}" value="{% trans "Show" %}" />
+          </form>
         </td>
         <td>
             {% if g.pdfs %}
@@ -38,7 +39,6 @@
             / {% endif %}{% trans "Presence days for month" %} {{ month }}: {{ g.pdays }}
         </td>
     </tr>
-    </form>
     {% endfor %}
   </tbody>
 </table>
