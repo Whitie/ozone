@@ -27,7 +27,8 @@ td {
 {% else %}
 <p><strong>{% trans "Instructor" %}:</strong> {{ instructor.get_profile }},
     <strong>{% trans "Course" %}:</strong> {{ course }},
-    <strong>{% trans "School days" %}:</strong> {{ school_days|join:", " }}
+    <strong>{% trans "School days" %}:</strong> {{ school_days|join:", " }},
+    <strong>Info:</strong> Förderung wird{% if not incl_sup %} <strong>nicht</strong>{% endif %} aufgedruckt.
 </p>
 {% endif %}
 </div>

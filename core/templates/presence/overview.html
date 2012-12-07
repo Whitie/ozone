@@ -1,32 +1,35 @@
 {% extends "index.html" %}
 {% load i18n %}
+{% load staticfiles %}
 
 {% block content %}
 <h2 class="headline">{% trans "Presences" %}</h2>
 <div style="text-align:center;">
     <p>{% trans "The first call of a list can take some time!" %}</p>
+    <p>{% for j in jobs %}<a href="#{{ j}}">{{ j }}</a>{% if not forloop.last %} | {% endif %}{% endfor %}</p>
 </div>
 
 {% for n, gr in groups %}
-<h3>{{ n }} (<a href="{% url core-presence-printouts n %}">{% trans "Old lists" %}</a>)</h3>
-<table>
+<h3 style="margin-top:50px;">
+    <a id="{{ n }}">{{ n }}</a> (<a href="{% url core-presence-printouts n %}">{% trans "Old lists" %}</a>)
+</h3>
+<table class="dataTable">
+  <thead>
     <tr>
-        <th style="border-bottom:1px solid blue;">{% trans "Group" %}</th>
-        <th style="border-left:1px solid blue;border-right:1px solid blue;border-bottom:1px solid blue;">
-            {% trans "Show list by date" %}
-        </th>
-        <th style="border-bottom:1px solid blue;">
-            {% trans "Finished lists / Information" %}
-        </th>
+        <th>{% trans "Group" %}</th>
+        <th>{% trans "Show list by date" %}</th>
+        <th>{% trans "Finished lists / Information" %}</th>
     </tr>
+  </thead>
+  <tbody>
     {% for g in gr %}
     <form action="{% url core-presence-group g.id %}" method="post" onsubmit="return disable_btn('btn_{{ forloop.counter }}');">
     {% csrf_token %}
     <tr>
         <td><strong>{{ g }}</strong></td>
-        <td style="border-left:1px solid blue;border-right:1px solid blue;">
-            {% trans "From" %} <input type="text" class="dateWidget" name="start" />
-            {% trans "to" %} <input type="text" class="dateWidget" name="end" />
+        <td>
+            {% trans "From" %} <input type="text" class="dateWidget" name="start" size="10" />
+            {% trans "to" %} <input type="text" class="dateWidget" name="end" size="10" />
             <input type="submit" id="btn_{{ forloop.counter }}" value="{% trans "Show" %}" />
         </td>
         <td>
@@ -37,6 +40,7 @@
     </tr>
     </form>
     {% endfor %}
+  </tbody>
 </table>
 {% empty %}
 <h3>{% trans "No groups found." %}</h3>
@@ -55,6 +59,19 @@ $(document).ready(function() {
     'weekHeader': 'Wo',
     'nextText': '{% trans "next" %}',
     'prevText': '{% trans "prev" %}'
+  });
+  var oTable = $('.dataTable').dataTable({
+    "bJQueryUI": true,
+    "bPaginate": false,
+    "oLanguage": {
+      "sUrl": "{% static "i18n/de_DE.txt" %}"
+    },
+    "bAutoWidth": false,
+    "aoColumns": [
+        {"sWidth": "200px"},
+        {"sWidth": "300px"},
+        null
+    ]
   });
 });
 

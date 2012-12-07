@@ -403,7 +403,7 @@ def presence_overview(req):
                 date__month=month - 1).exclude(q2).count()
         groups.append((j, gr))
     ctx = dict(page_title=_(u'Group Overview'), groups=groups, menus=menus,
-        month=month - 1)
+        month=month - 1, jobs=jobs)
     return render(req, 'presence/overview.html', ctx)
 
 
