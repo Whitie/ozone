@@ -52,6 +52,9 @@ urlpatterns = patterns('core.views.web',
         name='core-presence-edit'),
     url(r'^presence/printouts/(?P<job>.+)/$', 'presence_printouts',
         name='core-presence-printouts'),
+    # Excel integration
+    url(r'^group/export_excel/(?P<gid>\d+)/$', 'export_group_excel',
+        name='core-group-to-excel'),
     # Barcode generation (not used yet)
     url(r'^barcode/(?P<format>[a-z]{3,4})/(?P<barcode>.+)/$', 'barcode',
         name='barcode'),

@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import string
+import os
+import time
 
 from datetime import datetime, date, timedelta
 
 from django.http import HttpResponse
+from django.conf import settings
 from django.shortcuts import redirect, get_object_or_404, render
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.utils.translation import ugettext_lazy as _
@@ -28,6 +31,10 @@ try:
     from barcode.writer import ImageWriter
 except ImportError:
     ImageWriter = None
+try:
+    from openpyxl import Workbook
+except ImportError:
+    Workbook = None
 
 
 # Create your views here.
@@ -513,6 +520,36 @@ def get_next_birthdays(req):
     ctx = dict(page_title=_(u'Next Birthdays'), menus=menus, users=users,
         students=students, choice=choice, days=days, today=start)
     return render(req, 'colleagues/birthdays.html', ctx)
+
+
+@login_required
+def export_group_excel(req, gid):
+    if Workbook is None:
+        return utils.error(u'Die Excelerweiterung ist nicht installiert.')
+    group = StudentGroup.objects.select_related().get(id=int(gid))
+    wb = Workbook()
+    ws = wb.get_active_sheet()
+    ws.cell('A1').value = unicode(group)
+    ws.cell('A3').value = u'Firma'
+    ws.cell('B3').value = u'Name'
+    ws.cell('C3').value = u'Vorname'
+    row = 4
+    for s in group.students.filter(finished=False).order_by(
+        'company__short_name', 'lastname'):
+        ws.cell('A{0}'.format(row)).value = s.company.short_name
+        ws.cell('B{0}'.format(row)).value = s.lastname
+        ws.cell('C{0}'.format(row)).value = s.firstname
+        row += 1
+    dest = os.path.join(settings.LATEX['build_dir'],
+        'excel_exp_{0}.xlsx'.format(time.time()))
+    wb.save(dest)
+    with open(dest, 'rb') as fp:
+        response = HttpResponse(fp.read(), content_type='application/vnd.'
+            'openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="{0}.xlsx"'.format(
+        unicode(group))
+    os.remove(dest)
+    return response
 
 
 def barcode(req, format, barcode=''):
