@@ -122,7 +122,7 @@ def generate_presence_filled(req, gid, year, month):
     ts = date(int(year), int(month), 1)
     group = StudentGroup.objects.select_related().get(id=int(gid))
     companies = []
-    for s in group.students.all():
+    for s in group.students.filter(finished=False):
         if s.company not in companies:
             count = s.company.students.filter(finished=False,
                 group=group).count()
@@ -159,7 +159,8 @@ def generate_presence_pdf(req, data):
     ctx['incl_sup'] = data['incl_sup']
     ctx['company'] = company
     students = Student.objects.select_related().filter(
-        group=ctx['group'], company=company).order_by('lastname')
+        group=ctx['group'], company=company, finished=False
+        ).order_by('lastname')
     k = 0
     whole = 0
     for s in students:
