@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import string
+import os
+import time
 
 from datetime import datetime, date, timedelta
 
 from django.http import HttpResponse
+from django.conf import settings
 from django.shortcuts import redirect, get_object_or_404, render
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.utils.translation import ugettext_lazy as _
@@ -18,7 +21,7 @@ from django.core.exceptions import PermissionDenied
 
 from core import utils
 from core.models import (News, Company, Student, StudentGroup, Contact, Note,
-    UserProfile, PRESENCE_CHOICES)
+    UserProfile, PresenceDay, PRESENCE_CHOICES)
 from core.forms import (NewsForm, SearchForm, StudentSearchForm, NoteForm,
                         ProfileForm, NewUserForm, ExtendedSearchForm)
 from core.views import helper as h
@@ -28,6 +31,10 @@ try:
     from barcode.writer import ImageWriter
 except ImportError:
     ImageWriter = None
+try:
+    from openpyxl import Workbook
+except ImportError:
+    Workbook = None
 
 
 # Create your views here.
@@ -387,15 +394,28 @@ def group_details(req, gid):
 
 @login_required
 def presence_overview(req):
+    d = date.today()
+    month = d.month
+    year = d.year
+    last_month = month - 1 if month > 1 else 12
+    lyear = year if last_month != 12 else year - 1
+    q = Q(date__month=month) & Q(date__year=year)
+    q |= Q(date__month=last_month) & Q(date__year=lyear)
+    q2 = Q(entry__isnull=True) | Q(entry__exact=u'')
     jobs = StudentGroup.objects.values_list('job', flat=True)
     jobs = list(set(jobs))
     jobs.sort()
     groups = []
     for j in jobs:
-        g = StudentGroup.objects.select_related().filter(job=j).order_by(
+        gr = StudentGroup.objects.select_related().filter(job=j).order_by(
             'start_date')
-        groups.append((j, g))
-    ctx = dict(page_title=_(u'Group Overview'), groups=groups, menus=menus)
+        for g in gr:
+            g.pdfs = g.presence_printouts.filter(q).order_by('-date')
+            g.pdays = PresenceDay.objects.filter(student__group=g,
+                date__month=last_month, date__year=lyear).exclude(q2).count()
+        groups.append((j, gr))
+    ctx = dict(page_title=_(u'Group Overview'), groups=groups, menus=menus,
+        month=last_month, jobs=jobs)
     return render(req, 'presence/overview.html', ctx)
 
 
@@ -500,6 +520,36 @@ def get_next_birthdays(req):
     ctx = dict(page_title=_(u'Next Birthdays'), menus=menus, users=users,
         students=students, choice=choice, days=days, today=start)
     return render(req, 'colleagues/birthdays.html', ctx)
+
+
+@login_required
+def export_group_excel(req, gid):
+    if Workbook is None:
+        return utils.error(u'Die Excelerweiterung ist nicht installiert.')
+    group = StudentGroup.objects.select_related().get(id=int(gid))
+    wb = Workbook()
+    ws = wb.get_active_sheet()
+    ws.cell('A1').value = unicode(group)
+    ws.cell('A3').value = u'Firma'
+    ws.cell('B3').value = u'Name'
+    ws.cell('C3').value = u'Vorname'
+    row = 4
+    for s in group.students.filter(finished=False).order_by(
+        'company__short_name', 'lastname'):
+        ws.cell('A{0}'.format(row)).value = s.company.short_name
+        ws.cell('B{0}'.format(row)).value = s.lastname
+        ws.cell('C{0}'.format(row)).value = s.firstname
+        row += 1
+    dest = os.path.join(settings.LATEX['build_dir'],
+        'excel_exp_{0}.xlsx'.format(time.time()))
+    wb.save(dest)
+    with open(dest, 'rb') as fp:
+        response = HttpResponse(fp.read(), content_type='application/vnd.'
+            'openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="{0}.xlsx"'.format(
+        unicode(group))
+    os.remove(dest)
+    return response
 
 
 def barcode(req, format, barcode=''):

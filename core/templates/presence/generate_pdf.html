@@ -27,7 +27,8 @@ td {
 {% else %}
 <p><strong>{% trans "Instructor" %}:</strong> {{ instructor.get_profile }},
     <strong>{% trans "Course" %}:</strong> {{ course }},
-    <strong>{% trans "School days" %}:</strong> {{ school_days|join:", " }}
+    <strong>{% trans "School days" %}:</strong> {{ school_days|join:", " }},
+    <strong>Info:</strong> Förderung wird{% if not incl_sup %} <strong>nicht</strong>{% endif %} aufgedruckt.
 </p>
 {% endif %}
 </div>
@@ -44,24 +45,52 @@ td {
     {% endif %}
 </li>
 {% endfor %}
+<li><strong>{% trans "All" %}</strong>
+    {% if show and perms.core.add_presenceprintout %}<input id="but_all" type="button" value="{% trans "Generate Printout" %}" onclick="generate_all();" />{% endif %}
+    <span style="display:none;" id="res_all"></span>
+</li>
 </ul>
+
+<p><a href="{% url core-presence %}">{% trans "Back to overview" %}</a></p>
 
 {% if show %}
 <script type="text/javascript">
 function generate_company(cid) {
+    $('#but_'+cid).attr('disabled', 'disabled');
     var uid = {{ instructor.id }};
     var gid = {{ group.id }};
     var course = '{{ course }}';
+    var incl_sup = {% if incl_sup %}true{% else %}false{% endif %};
     var sdays = ['{{ school_days|join:"', '" }}'];
     var year = {{ year }};
     var month = {{ month }};
     dat = {'cid': cid, 'uid': uid, 'gid': gid, 'course': course,
-        'sdays': sdays, 'year': year, 'month': month};
+        'sdays': sdays, 'year': year, 'month': month, 'incl_sup': incl_sup};
     $.post('{% url core-api-pdf-presence %}', {'_JSON_': JSON.stringify(dat)},
         function(res_data) {
             link = '<a href="'+res_data['url']+'">'+res_data['name']+'</a>';
             $('#res_'+cid).append(link).show();
-            $('#but_'+cid).attr('disabled', 'disabled');
+            /*$('#but_'+cid).attr('disabled', 'disabled');*/
+        }
+    );
+}
+
+function generate_all() {
+    $('#but_all').attr('disabled', 'disabled');
+    var uid = {{ instructor.id }};
+    var gid = {{ group.id }};
+    var course = '{{ course }}';
+    var incl_sup = {% if incl_sup %}true{% else %}false{% endif %};
+    var sdays = ['{{ school_days|join:"', '" }}'];
+    var year = {{ year }};
+    var month = {{ month }};
+    dat = {'uid': uid, 'gid': gid, 'course': course,
+        'sdays': sdays, 'year': year, 'month': month, 'incl_sup': incl_sup};
+    $.post('{% url core-api-pdf-presence-all %}',
+        {'_JSON_': JSON.stringify(dat)},
+        function(res_data) {
+            link = '<a href="'+res_data['url']+'">'+res_data['name']+'</a>';
+            $('#res_all').append(link).show();
         }
     );
 }

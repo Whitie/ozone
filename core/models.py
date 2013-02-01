@@ -6,7 +6,6 @@ from datetime import date
 from mimetypes import guess_type
 
 from django.db import models
-from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
@@ -185,7 +184,7 @@ class CooperationContract(models.Model):
 class Contact(models.Model):
     name_prefix = models.CharField(_(u'Name Prefix'), max_length=12)
     lastname = models.CharField(_(u'Lastname'), max_length=50)
-    firstname = models.CharField(_(u'Firstname'), max_length=50)
+    firstname = models.CharField(_(u'Firstname'), max_length=50, blank=True)
     function = models.CharField(_(u'Function'), max_length=50, blank=True)
     phone = models.CharField(_(u'Phone'), max_length=30, blank=True)
     email = models.EmailField(_(u'Email'), blank=True)

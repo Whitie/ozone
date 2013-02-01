@@ -29,8 +29,9 @@ SEARCHES_CHOICES = sorted([(x, y[0]) for x, y in SEARCHES.iteritems()],
 
 
 def get_user():
-    return ((x.id, unicode(x.get_profile())) for x in
-            User.objects.exclude(username='admin'))
+    return ((x.id, u'{0}, {1}'.format(x.last_name, x.first_name))
+            for x in User.objects.exclude(username='admin').order_by(
+            'last_name'))
 
 
 def get_student(sid):
@@ -120,6 +121,8 @@ class PresenceForm(forms.Form):
     course = forms.CharField(label=_(u'Course'), max_length=50, required=False)
     school_days = forms.MultipleChoiceField(label=_(u'School days'),
         choices=DAYS, required=False, widget=CheckboxSelectMultiple)
+    include_supported_days = forms.BooleanField(label=_(u'Include supported '
+        u'days'), required=False)
 
 
 class NewEntryForm(forms.Form):

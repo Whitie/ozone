@@ -52,6 +52,9 @@ urlpatterns = patterns('core.views.web',
         name='core-presence-edit'),
     url(r'^presence/printouts/(?P<job>.+)/$', 'presence_printouts',
         name='core-presence-printouts'),
+    # Excel integration
+    url(r'^group/export_excel/(?P<gid>\d+)/$', 'export_group_excel',
+        name='core-group-to-excel'),
     # Barcode generation (not used yet)
     url(r'^barcode/(?P<format>[a-z]{3,4})/(?P<barcode>.+)/$', 'barcode',
         name='barcode'),
@@ -80,6 +83,8 @@ urlpatterns += patterns('core.views.ajax',
         name='core-api-student-entries'),
     url(r'^api/iadmin/clean_sessions/$', 'clean_sessions',
         name='core-api-clean-sessions'),
+    url(r'^api/iadmin/clean_presence/$', 'clean_presence',
+        name='core-api-clean-presence'),
 )
 
 # PDF generation
@@ -93,5 +98,7 @@ urlpatterns += patterns('core.views.pdf',
         name='core-pdf-presence'),
     url(r'^api/presence/pdf/$', 'generate_presence_pdf',
         name='core-api-pdf-presence'),
+    url(r'^api/presence/pdf/all/$', 'generate_presence_pdf_all',
+        name='core-api-pdf-presence-all'),
     url(r'^pdf/phonelist/$', 'generate_phonelist', name='core-pdf-phonelist'),
 )

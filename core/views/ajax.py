@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
+from datetime import datetime, date, timedelta
 
 from django.conf import settings
 from django.contrib.sessions.models import Session
+from django.db.models import Q
 
 from core.utils import json_rpc
 from core.models import PresenceDay, JournalEntry, Student
@@ -92,4 +93,15 @@ def clean_sessions(req, data=None):
     q = Session.objects.filter(expire_date__lt=datetime.now())
     count = q.count()
     q.delete()
-    return dict(msg=u'Es wurden %d Datensätze gelöscht.' % count)
+    return dict(msg=u'Es wurden %d alte Sitzungen gelöscht.' % count)
+
+
+@json_rpc
+def clean_presence(req, data=None):
+    today = date.today()
+    day = date(today.year, today.month, 1) - timedelta(days=1)
+    query = Q(entry__isnull=True) | Q(entry__exact=u'')
+    q = PresenceDay.objects.filter(query, date__lt=day)
+    count = q.count()
+    q.delete()
+    return dict(msg=u'Es wurden %d Anwesenheitstage gelöscht.' % count)

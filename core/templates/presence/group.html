@@ -22,7 +22,7 @@
     <select id="p_all" size="1">
         {% for e in choices %}<option value="{{ e }}"{% if e == "*" %} selected="selected"{% endif %}>{{ e }}</option>{% endfor %}
     </select>
-    <input type="button" value="{% trans "Set now" %}" onclick="update_all();" />
+    <input type="button" value="{% trans "Set now" %}" onclick="update_all();" title="{% trans "Sets the presence for all EMPTY fields." %}" />
 </p>
 
 <table id="dataTable">
@@ -49,6 +49,7 @@
           {% for e in choices %}<option value="{{ e }}"{% if e == d.entry %} selected="selected"{% endif %}>{{ e }}</option>{% endfor %}
           </select><br />
           <input id="l_{{ d.id }}" type="text" size="2" maxlength="3"{% if d.lateness %} style="border:1px solid red;"{% endif %} name="lateness" value="{% if d.lateness %}{{ d.lateness }}{% endif %}" onchange="lateness_changed({{ d.id }});" title="{% trans "Enter lateness here." %}" />
+          {% if d.note %}<a href="#" title="{{ d.note }}" style="text-decoration:none;">*</a>{% endif %}
       </td>
       {% endfor %}
       <td>{{ s.lastname }}</td>
@@ -56,12 +57,6 @@
     {% endfor %}
   </tbody>
 </table>
-
-<div id="upd_messages">
-<h3>{% trans "Changes" %}</h3>
-<ul>
-</ul>
-</div>
 
 <table style="margin:5px auto;">
     <tr>
@@ -72,6 +67,14 @@
     {% cycle '' '' '' '</tr><tr>' %}
     {% endfor %}
 </table>
+
+<p><a href="{% url core-presence %}#{{ group.job }}">{% trans "Back" %}</a></p>
+
+<div id="upd_messages">
+<h3>{% trans "Changes" %}</h3>
+<ul>
+</ul>
+</div>
 
 <script>
 $(document).ready(function() {
@@ -109,8 +112,10 @@ function update_all() {
     var date = $('#p_all_day :selected').val();
     var entry = $('#p_all :selected').val();
     $('select.'+date).each(function(index) {
-        $(this).val(entry);
-        $(this).change();
+        if ($(this).val() == '') {
+            $(this).val(entry);
+            $(this).change();
+        }
     });
 }
 
