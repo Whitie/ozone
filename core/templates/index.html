@@ -1,38 +1,52 @@
 {% extends "layout.html" %}
 {% load i18n %}
 
+{% block head %}{% endblock %}
+
 {% block menu %}
   {% include "menu.html" %}
 {% endblock %}
 
 {% block content %}
-<h2 class="headline">{% trans "News" %}</h2>
 {% if news.paginator.count %}
 {% for n in news.object_list %}
-  <section class="news" id="News_{{ n.id }}">
-    <h3>{{ n.title }}</h3>
-    <p>{{ n.text }}</p>
-    <p>{% trans "Posted on" %}
-       <time datetime="{{ n.date|date:'c' }}">{{ n.date|date:"DATETIME_FORMAT" }}</time>
-       {% trans "by" %} {{ n.author.get_full_name|default:n.author.username }}.
-    </p>
-  </section>
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <div class="well">
+            <h3>{{ n.title }}</h3>
+            <p>{{ n.text }}</p>
+            <p>{% trans "Posted on" %}
+                <time datetime="{{ n.date|date:'c' }}">{{ n.date|date:"DATETIME_FORMAT" }}</time>
+                {% trans "by" %} {{ n.author.get_full_name|default:n.author.username }}.
+            </p>
+        </div>
+    </div>
+</div>
 {% endfor %}
 
-<div style="margin:10px auto;text-align:center;">
-  <span>
-  {% if news.has_previous %}
-    <a href="?page={{ news.previous_page_number }}">{% trans "previous" %}</a>
-  {% endif %}
-  <span>{% trans "Page" %} {{ news.number }} {% trans "of" %}
-        {{ news.paginator.num_pages }}.</span>
-  {% if news.has_next %}
-    <a href="?page={{ news.next_page_number }}">{% trans "next" %}</a>
-  {% endif %}
-  </span>
+{% if news.has_other_pages %}
+<div class="row-fluid">
+    <div class="span10">
+        <ul class="pager">
+            <li{% if not news.has_previous %} class="disabled"{% endif %}>
+                <a href="?page={{ news.previous_page_number }}">{% trans "Back" %}</a>
+            </li>
+            <li{% if not news.has_next %} class="disabled"{% endif %}>
+                <a href="?page={{ news.next_page_number }}">{% trans "Next" %}</a>
+            </li>
+        </ul>
+    </div>
 </div>
+{% endif %}
+
 {% else %}
-<p>{% trans "No News found." %}</p>
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <div class="well well-small">
+            {% trans "No News found." %}
+        </div>
+    </div>
+</div>
 {% endif %}
 
 {% endblock %}

@@ -31,7 +31,7 @@
         </div>
         <!-- Logo -->
         <img id="logo" src="{{ LOGO_URL }}">
-        <!-- Content -->
+        <!-- Content max. 10 cols -->
         <div class="span10">
             {% block content %}{% endblock %}
         </div>
@@ -43,13 +43,12 @@
     <footer>
         <p class="centered">
             <small>
-                Ozone Version {{ VERSION }}.
+                Ozone Version {{ VERSION }},
                 &copy; <time>2011</time> - <time>2013</time> by Thorsten Weimann.
             </small>
         </p>
     </footer>
     {% endblock %}
 </div>
-
 {% endblock %}
 
