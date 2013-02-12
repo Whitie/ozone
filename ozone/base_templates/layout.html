@@ -1,59 +1,55 @@
 {% extends "base.html" %}
-{% load i18n %}
 
 {% block head %}{% endblock %}
 
 {% block body %}
+{% include "topmenu.html" %}
 
-{% block header %}
-<header>
-  <img src="{{ LOGO_URL }}" alt="Logo" style="float:right;width:150px;" />
-  <h1>{{ page_title }}</h1>
-</header>
-<nav id="topnav">
-  <a class="top" href="/">{% trans "Home" %}</a>
-  <a class="top" href="/orders/">{% trans "Ordersystem" %}</a>
-</nav>
-<hr style="clear:both;" />
-{% endblock %}
+<!-- Main content block (12 cols) -->
+<div class="container-fluid">
+    <div class="row-fluid">
+        <!-- Left menu -->
+        <div class="span2">
+            {% block menu %}{% endblock %}
+        </div>
+        {% if messages %}
+        <!-- Messages -->
+        {% for msg in messages %}
+        <div class="span8">
+            <div class="alert{% if msg.tags %} alert-{{ msg.tags }}{% endif %}">
+                <button type="button" class="close" data-dismiss="alert">&#x00d7</button>
+                {{ msg }}
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+        <!-- Page title -->
+        <div class="span8">
+            <div class="page-header centered">
+                <h1>{{ page_title|default:"Ozone" }}</h1>
+            </div>
+        </div>
+        <!-- Logo -->
+        <img id="logo" src="{{ LOGO_URL }}">
+        <!-- Content -->
+        <div class="span10">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
 
-{% if user.is_authenticated %}
-<div id="show_user">{% trans "Logged in as" %} {{ userprofile }}</div>
-{% endif %}
-
-{% if messages %}
-<div id="messages">
-  {% for msg in messages %}
-  <p{% if msg.tags %} class="{{ msg.tags }}"{% endif %}>&raquo; {{ msg }}</p>
-  {% endfor %}
+    {% block footer %}
+    <!-- Footer -->
+    <hr>
+    <footer>
+        <p class="centered">
+            <small>
+                Ozone Version {{ VERSION }}.
+                &copy; <time>2011</time> - <time>2013</time> by Thorsten Weimann.
+            </small>
+        </p>
+    </footer>
+    {% endblock %}
 </div>
-<hr id="message_line" />
-<script type="text/javascript">
-$(document).ready(function() {
-    setTimeout(function() {
-        $('#messages').hide('slow');
-        $('#message_line').hide('slow');
-    }, 10000);
-});
-</script>
-{% endif %}
-
-<aside>
-  {% block menu %}{% endblock %}
-</aside>
-
-<article>
-  {% block content %}{% endblock %}
-</article>
-
-{% block footer %}
-<hr style="clear:both;" />
-<footer>
-<p><a href="https://bitbucket.org/whitie/ozone/changesets" title="{% trans "Click here to view a list of recent changes." %}">
-Ozone</a> Version {{ VERSION }}.
-  Copyright <time>2011</time> - <time>2012</time> by Thorsten Weimann.</p>
-</footer>
-{% endblock %}
 
 {% endblock %}
 

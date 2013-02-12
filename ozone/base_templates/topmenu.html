@@ -1,0 +1,56 @@
+{% load url from future %}
+{% load i18n %}
+{% load staticfiles %}
+
+<!-- Header - Navigationbar on top -->
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="brand" href="https://bitbucket.org/whitie/ozone/">
+                <img src="{% static "img/ozone-logo-small.png" %}">
+            </a>
+            <div class="nav-collapse collapse">
+                <div class="btn-group pull-right">
+                    {% if user.is_authenticated %}
+                    <button class="btn dropdown-toggle btn-primary" data-toggle="dropdown">
+                        <i class="icon-user icon-whitie"></i>
+                        {% trans "Logged in as" %} {{ userprofile }}
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url "core-logout" %}">
+                            <i class="icon-off"></i> {% trans "Logout" %}</a>
+                        </li>
+                        <li><a href="{% url "core-profile" %}">{% trans "Profile" %}</a></li>
+                        {% if user.is_superuser %}
+                        <li><a href="{% url "core-admin" %}">{% trans "Internal Admin" %}</a></li>
+                        {% endif %}
+                    </ul>
+                    {% else %}
+                    <a class="btn btn-primary" href="{% url "core-login" %}">
+                        <i class="icon-user icon-white"></i> {% trans "Login" %}</a>
+                    {% endif %}
+                </div>
+
+                <ul class="nav">
+                    <li{% ifequal app "core" %} class="active"{% endifequal %}>
+                        <a href="{% url "core-index" %}">
+                            <i class="icon-home icon-white"></i> {% trans "Home" %}</a>
+                    </li>
+                    <li{% ifequal app "orders" %} class="active"{% endifequal %}>
+                        <a href="{% url "orders-index" %}">{% trans "Ordersystem" %}</a>
+                    </li>
+                    {% if user.is_staff %}
+                    <li>
+                        <a href="{% url "admin:index" %}">{% trans "Admin" %}</a>
+                    </li>
+                    {% endif %}
+                    <li>
+                        <a href="http://217.91.188.203:8001/docs/bbz_datenbank/index.html">
+                            {% trans "Help" %} <i class="icon-globe icon-white"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

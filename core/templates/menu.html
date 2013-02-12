@@ -1,46 +1,13 @@
+{% load url from future %}
 {% load i18n %}
-{% load ozone_tags %}
 
-<nav>
-    <ul id="menu">
+<div class="well sidebar-nav">
+    <ul class="nav nav-list">
         {% for menu in menus %}
-        <li><a href="?{{ menu.title }}">{{ menu.title }}</a>
-            <ul>
-                {% for u, name in menu.entries %}
-                <li><a href="{% reverse u %}">{{ name }}</a></li>
-                {% endfor %}
-            </ul>
-        </li>
+        <li class="nav-header"><a href="#">{{ menu.title }}</a></li>
+        {% for u, name in menu.entries %}
+        <li><a href="{% url u %}">{{ name }}</a></li>
         {% endfor %}
-        <li><a href="?{% trans "User" %}">{% trans "User" %}</a>
-            <ul>
-                {% if user.is_authenticated %}
-                <li><a href="{% url core-logout %}">{% trans "Logout" %}</a></li>
-                <li><a href="{% url core-profile %}">{% trans "Profile" %}</a></li>
-                {% else %}
-                <li><a href="{% url core-login %}">{% trans "Login" %}</a></li>
-                {% endif %}
-                {% if user.is_staff %}
-                <li><a href="{% url admin:index %}">{% trans "Admin" %}</a></li>
-                {% endif %}
-                {% if user.is_superuser %}
-                <li><a href="{% url core-admin %}">{% trans "Internal Admin" %}</a></li>
-                {% endif %}
-            </ul>
-        <li><a href="http://archie/docs/bbz_datenbank/index.html">{% trans "Help" %}</a></li>
+        {% endfor %}
     </ul>
-</nav>
-
-<script>
-$(function() {
-    $( "#menu" ).menu({
-        select: function( event, ui ) {
-            var link = ui.item.children( "a:first" );
-            if ( link.attr( "target" ) || event.metaKey || event.shiftKey || event.ctrlKey ) {
-                return;
-            }
-            location.href = link.attr( "href" );
-        }
-    });
-});
-</script>
+</div>
