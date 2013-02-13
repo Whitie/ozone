@@ -69,7 +69,8 @@ def internal_server_error(req):
     msg = u'%s:\n\n%s' % (d.strftime('%c'), traceback.format_exc())
     send_mail(u'Ozone Serverfehler', msg, 'dms@bbz-chemie.de',
         ['weimann@bbz-chemie.de', 'weimann.th@gmail.com'])
-    return render(req, '500.html')
+    ctx = dict(page_title=_('Ozone Error'))
+    return render(req, '500.html', ctx)
 
 
 def check_for_import(module, msg=''):
