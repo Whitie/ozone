@@ -17,11 +17,12 @@
   {% if not forloop.last %} | {% endif %}
   {% endfor %}
   <br />
-  <form action="{% if archive %}{% url core-students-archive %}{% else %}{% url core-students %}{% endif %}" method="post">
+  <form action="{% if archive %}{% url core-students-archive %}{% else %}{% url core-students %}{% endif %}" method="post" class="form-inline">
   {% csrf_token %}
-  {% trans "Search" %}: {{ form.group }} {{ form.search }}
-  <input type="submit" value="{% trans "Search" %}" />
-  <a href="{% url core-students-search %}">{% trans "Extended Search" %}</a>
+  {{ form.group }}
+  {{ form.search }}
+  <button type="submit" class="btn">{% trans "Search" %}</button>
+  <a class="btn btn-info" href="{% url core-students-search %}">{% trans "Extended Search" %}</a>
   </form>
 </div>
 

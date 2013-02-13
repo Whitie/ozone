@@ -32,7 +32,7 @@
   <li>{% trans "Homepage" %}: <a href="{{ c.web }}">{{ c.web }}</a></li>
   {% endif %}
   {% if c.rate %}
-  <li>{% trans "Rating" %}: <a href="" title="{{ c.get_rating_display }}">
+  <li>{% trans "Rating" %}: <a href="#" title="{{ c.get_rating_display }}">
     {{ c.rating }}</a> ({% trans "Ratings" %}: {{ c.ratings.count }})</li>
   {% if c.rating_note %}
   <li>{% trans "Note" %}: {{ c.rating_note }}</li>

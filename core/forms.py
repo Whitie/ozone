@@ -66,7 +66,7 @@ class ProfileForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
     search = forms.CharField(label=_(u'Search'), max_length=50,
-        widget=SearchInput5())
+        widget=SearchInput5(attrs={'class': 'span2'}))
 
 
 class StudentSearchForm(SearchForm):

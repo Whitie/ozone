@@ -228,7 +228,7 @@ def do_login(req):
 def do_logout(req):
     logout(req)
     messages.success(req, u'Erfolgreich abgemeldet.')
-    return redirect('/')
+    return redirect('core-index')
 
 
 @login_required
@@ -261,9 +261,10 @@ def list_companies(req, startchar=''):
         else:
             companies = Company.objects.select_related().filter(
                 name__istartswith=startchar)
-    ctx = dict(page_title=_(u'Companies'), companies=companies, menus=menus,
-        startchar=startchar, chars=string.ascii_uppercase, form=form,
-        single_view=False)
+    ptitle = _(u'Companies: {0} ({1})'.format(startchar or '-',
+        companies.count()))
+    ctx = dict(page_title=ptitle, companies=companies, menus=menus,
+        chars=string.ascii_uppercase, form=form, single_view=False)
     return render(req, 'companies/list.html', ctx)
 
 
