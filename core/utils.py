@@ -7,7 +7,7 @@ from datetime import date, datetime
 from django.core.mail import send_mail
 from django.utils import simplejson
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render as django_render
 from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.decorators import user_passes_test
@@ -19,6 +19,12 @@ def named(verbose_name):
         f.short_description = verbose_name
         return f
     return decorate
+
+
+def render(request, template, context=None, app=u'core'):
+    ctx = context or {}
+    ctx['app'] = app
+    return django_render(request, template, ctx)
 
 
 def json_view(func):

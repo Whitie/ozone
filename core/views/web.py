@@ -8,7 +8,7 @@ from datetime import datetime, date, timedelta
 
 from django.http import HttpResponse
 from django.conf import settings
-from django.shortcuts import redirect, get_object_or_404, render
+from django.shortcuts import redirect, get_object_or_404
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
@@ -20,6 +20,7 @@ from django.db.models import Q
 from django.core.exceptions import PermissionDenied
 
 from core import utils
+from core.utils import render
 from core.models import (News, Company, Student, StudentGroup, Contact, Note,
     UserProfile, PresenceDay, PRESENCE_CHOICES)
 from core.forms import (NewsForm, SearchForm, StudentSearchForm, NoteForm,
@@ -35,12 +36,6 @@ try:
     from openpyxl import Workbook
 except ImportError:
     Workbook = None
-
-
-# Util
-def _render(req, tpl, ctx):
-    ctx['app'] = u'core'
-    return render(req, tpl, ctx)
 
 
 # Create your views here.
@@ -61,7 +56,7 @@ def index(req):
     except (EmptyPage, InvalidPage):
         news = paginator.page(paginator.num_pages)
     ctx = dict(page_title=_(u'News'), menus=menus, news=news)
-    return _render(req, 'index.html', ctx)
+    return render(req, 'index.html', ctx)
 
 
 @login_required
@@ -69,7 +64,7 @@ def internal_admin(req):
     if not req.user.is_superuser:
         raise PermissionDenied
     ctx = dict(page_title=_(u'Internal Admin Page'), menus=menus)
-    return _render(req, 'iadmin.html', ctx)
+    return render(req, 'iadmin.html', ctx)
 
 
 @login_required
@@ -82,7 +77,7 @@ def edit_profile(req):
     else:
         form = ProfileForm(instance=profile)
     ctx = dict(page_title=_(u'My Profile'), menus=menus, form=form)
-    return _render(req, 'colleagues/profile.html', ctx)
+    return render(req, 'colleagues/profile.html', ctx)
 
 
 @login_required
@@ -91,7 +86,7 @@ def internal_phonelist(req):
         ).exclude(user__username='admin').order_by('user__last_name')
     ctx = dict(page_title=_(u'Internal Phonelist'), menus=menus,
         profiles=profiles)
-    return _render(req, 'colleagues/phonelist.html', ctx)
+    return render(req, 'colleagues/phonelist.html', ctx)
 
 
 @login_required
@@ -102,7 +97,7 @@ def list_colleagues(req):
         ).exclude(user__username='admin').order_by('user__last_name')
     ctx = dict(page_title=_(u'Colleagues'), menus=menus, internal=internal,
         external=external)
-    return _render(req, 'colleagues/list.html', ctx)
+    return render(req, 'colleagues/list.html', ctx)
 
 
 @permission_required('auth.add_user', raise_exception=True)
@@ -138,7 +133,7 @@ def add_colleague(req):
     else:
         form = NewUserForm()
     ctx = dict(page_title=_(u'Add external'), menus=menus, form=form)
-    return _render(req, 'colleagues/add.html', ctx)
+    return render(req, 'colleagues/add.html', ctx)
 
 
 @login_required
@@ -150,7 +145,7 @@ def filter_colleagues(req, filter):
         q = q.filter(external=True)
     ctx = dict(page_title=_(u'Filter Colleagues'), menus=menus,
         coll=q.order_by('user__last_name'), filter=filter)
-    return _render(req, 'colleagues/filter.html', ctx)
+    return render(req, 'colleagues/filter.html', ctx)
 
 
 @permission_required('auth.change_user', raise_exception=True)
@@ -158,7 +153,7 @@ def get_user_info(req, uid):
     profile = UserProfile.objects.select_related().get(user__id=int(uid))
     user = profile.user
     ctx = dict(u=user, p=profile)
-    return _render(req, 'colleagues/detail.html', ctx)
+    return render(req, 'colleagues/detail.html', ctx)
 
 
 @permission_required('core.add_news')
@@ -175,7 +170,7 @@ def add_news(req):
     else:
         form = NewsForm()
     ctx = dict(page_title=_(u'Add News'), menus=menus, form=form)
-    return _render(req, 'news/add.html', ctx)
+    return render(req, 'news/add.html', ctx)
 
 
 @permission_required('core.add_note')
@@ -199,7 +194,7 @@ def add_note(req, id):
         form = NoteForm()
     ctx = dict(page_title=_(u'Add Note'), menus=menus, form=form,
         contact=contact, company=company, notes=old_notes)
-    return _render(req, 'companies/add_note.html', ctx)
+    return render(req, 'companies/add_note.html', ctx)
 
 
 def do_login(req):
@@ -226,7 +221,7 @@ def do_login(req):
         form = AuthenticationForm()
         req.session.set_test_cookie()
     ctx = dict(page_title=_(u'Login Page'), form=form, next_page=next_page)
-    return _render(req, 'login.html', ctx)
+    return render(req, 'login.html', ctx)
 
 
 def do_logout(req):
@@ -242,7 +237,7 @@ def company_details(req, id):
         ).order_by('group__job', 'lastname')
     ctx = dict(page_title=_(u'Details: %s' % company.name), menus=menus,
         c=company, single_view=True, students=students)
-    return _render(req, 'companies/view_company.html', ctx)
+    return render(req, 'companies/view_company.html', ctx)
 
 
 @login_required
@@ -268,7 +263,7 @@ def list_companies(req, startchar=''):
     ctx = dict(page_title=_(u'Companies'), companies=companies, menus=menus,
         startchar=startchar, chars=string.ascii_uppercase, form=form,
         single_view=False)
-    return _render(req, 'companies/list.html', ctx)
+    return render(req, 'companies/list.html', ctx)
 
 
 @login_required
@@ -290,7 +285,7 @@ def list_all_companies(req, only_with_students=False):
     ctx = dict(page_title=_(u'All Companies'), companies=companies,
         menus=menus, only_with_students=only_with_students, single_view=False,
         page=page, start=(page - 1) * 15 + 1)
-    return _render(req, 'companies/list_all.html', ctx)
+    return render(req, 'companies/list_all.html', ctx)
 
 
 @login_required
@@ -332,7 +327,7 @@ def list_students(req, startchar='', archive=False):
     ctx = dict(page_title=title, students=students, menus=menus,
         archive=archive, startchar=startchar, chars=string.ascii_uppercase,
         form=form)
-    return _render(req, 'students/list.html', ctx)
+    return render(req, 'students/list.html', ctx)
 
 
 @login_required
@@ -350,7 +345,7 @@ def list_all_students(req):
         students = paginator.page(paginator.num_pages)
     ctx = dict(page_title=_(u'List of all students'), menus=menus,
         students=students, page=page, start=(page - 1) * 30 + 1)
-    return _render(req, 'students/list_all.html', ctx)
+    return render(req, 'students/list_all.html', ctx)
 
 
 @login_required
@@ -371,7 +366,7 @@ def search_student(req):
         form = ExtendedSearchForm({'search_for_1': u'lastname'})
     ctx = dict(page_title=_(u'Extended Search'), menus=menus, form=form,
         students=students)
-    return _render(req, 'students/search.html', ctx)
+    return render(req, 'students/search.html', ctx)
 
 
 @login_required
@@ -379,7 +374,7 @@ def list_groups(req):
     g = StudentGroup.objects.select_related().all()
     groups = [x for x in g if not x.finished()]
     ctx = dict(page_title=_(u'Groups'), groups=groups, menus=menus)
-    return _render(req, 'students/groups.html', ctx)
+    return render(req, 'students/groups.html', ctx)
 
 
 @login_required
@@ -395,7 +390,7 @@ def group_details(req, gid):
         messages.error(req, u'Gruppe (ID: %d) existiert nicht.' % gid)
         return redirect('core-groups')
     ctx = dict(page_title=_(u'Group Detail'), group=group, menus=menus)
-    return _render(req, 'students/group_detail.html', ctx)
+    return render(req, 'students/group_detail.html', ctx)
 
 
 @login_required
@@ -422,7 +417,7 @@ def presence_overview(req):
         groups.append((j, gr))
     ctx = dict(page_title=_(u'Group Overview'), groups=groups, menus=menus,
         month=last_month, jobs=jobs)
-    return _render(req, 'presence/overview.html', ctx)
+    return render(req, 'presence/overview.html', ctx)
 
 
 @login_required
@@ -476,7 +471,7 @@ def presence_for_group(req, gid):
         days=[x for x in days if x.weekday() not in (5, 6)],
         choices=[x[0] for x in PRESENCE_CHOICES], legend=PRESENCE_CHOICES[1:],
         today=date.today())
-    return _render(req, 'presence/group.html', ctx)
+    return render(req, 'presence/group.html', ctx)
 
 
 @permission_required('core.change_presenceday')
@@ -488,7 +483,7 @@ def presence_edit(req, student_id):
     ctx = dict(page_title=_(u'Presence for Student'), menus=menus,
         student=student, days=days, start=start, end=end,
         choices=PRESENCE_CHOICES)
-    return _render(req, 'presence/edit.html', ctx)
+    return render(req, 'presence/edit.html', ctx)
 
 
 @login_required
@@ -500,7 +495,7 @@ def presence_printouts(req, job):
     jobs.sort()
     ctx = dict(page_title=_(u'Presence %s' % job), menus=menus, jobs=jobs,
         groups=groups)
-    return _render(req, 'presence/list_printouts.html', ctx)
+    return render(req, 'presence/list_printouts.html', ctx)
 
 
 @login_required
@@ -525,7 +520,7 @@ def get_next_birthdays(req):
             students.append(s)
     ctx = dict(page_title=_(u'Next Birthdays'), menus=menus, users=users,
         students=students, choice=choice, days=days, today=start)
-    return _render(req, 'colleagues/birthdays.html', ctx)
+    return render(req, 'colleagues/birthdays.html', ctx)
 
 
 @login_required
