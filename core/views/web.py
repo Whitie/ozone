@@ -63,7 +63,8 @@ def index(req):
 def internal_admin(req):
     if not req.user.is_superuser:
         raise PermissionDenied
-    ctx = dict(page_title=_(u'Internal Admin Page'), menus=menus)
+    ctx = dict(page_title=_(u'Internal Admin Page'), menus=menus,
+        need_ajax=True)
     return render(req, 'iadmin.html', ctx)
 
 

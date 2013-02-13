@@ -1,11 +1,16 @@
 {% extends "layout.html" %}
+{% load url from future %}
 {% load i18n %}
 
 {% block content %}
-<h2 class="headline">{% trans "Error" %}</h2>
-<div style="margin:10px auto;padding:10px;text-align:center;">
-<p>{{ msg }}</p>
-<p>{% trans "Please contact the administrator." %}</p>
-<p><a href="/">{% trans "Back" %}</a></p>
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <div class="alert alert-error">
+            <h2>{% trans "Error" %}</h2>
+            <p>{{ msg }}</p>
+            <p>{% trans "Please contact the administrator." %}</p>
+            <p><a href="{% url "core-index" %}">{% trans "Back" %}</a></p>
+        </div>
+    </div>
 </div>
 {% endblock %}

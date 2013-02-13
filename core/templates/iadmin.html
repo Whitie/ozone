@@ -1,34 +1,45 @@
 {% extends "index.html" %}
+{% load url from future %}
 {% load i18n %}
 {% load staticfiles %}
 
 {% block content %}
-<h2 class="headline">{% trans "Tasks" %}</h2>
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <div class="well well-small">
+            <h3>{% trans "Clean old sessions" %}
+                <button class="btn btn-danger pull-right" onclick="clean_sessions();">
+                    {% trans "Delete" %} <i class="icon-trash"></i>
+                </button>
+            </h3>
+            <p id="sess_result"></p>
+        </div>
+    </div>
+</div>
 
-<h3>{% trans "Clean old sessions" %}
-    <button type="button" onclick="clean_sessions();">
-        {% trans "Delete" %}<img src="{% static "img/delete.png" %}" />
-    </button>
-</h3>
-<span id="sess_result"></span>
-
-<h3>{% trans "Clean empty presence days" %}
-    <button type="button" onclick="clean_presence();">
-        {% trans "Delete" %}<img src="{% static "img/delete.png" %}" />
-    </button>
-</h3>
-<span id="presence_result"></span>
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <div class="well well-small">
+            <h3>{% trans "Clean empty presence days" %}
+                <button class="btn btn-danger pull-right" onclick="clean_presence();">
+                    {% trans "Delete" %} <i class="icon-trash"></i>
+                </button>
+            </h3>
+            <p id="presence_result"></p>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
 function clean_sessions() {
-    $.post('{% url core-api-clean-sessions %}', function(ret_data) {
+    $.post('{% url "core-api-clean-sessions" %}', function(ret_data) {
         $('#sess_result').text(ret_data['msg']);
         }
     );
 }
 
 function clean_presence() {
-    $.post('{% url core-api-clean-presence %}', function(ret_data) {
+    $.post('{% url "core-api-clean-presence" %}', function(ret_data) {
         $('#presence_result').text(ret_data['msg']);
         }
     );

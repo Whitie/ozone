@@ -20,7 +20,7 @@ def show_help(context, help_slug):
     except InternalHelp.DoesNotExist:
         return {'title': _(u'Error'), 'text': _(u'<p>No help found for lang '
             u'%(lang)s and identifier %(id)s.</p>' % {'lang': lang,
-                'id': help_slug}), 'width': 500, 'opener_class': u'.opener'}
+                'ident': help_slug}), 'width': 500, 'opener_class': u'.opener'}
 
 
 @register.filter(name='enumerate')
