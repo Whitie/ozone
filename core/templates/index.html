@@ -26,13 +26,13 @@
 
 {% if news.has_other_pages %}
 <div class="row-fluid">
-    <div class="span10">
+    <div class="span8 offset1">
         <ul class="pager">
-            <li{% if not news.has_previous %} class="disabled"{% endif %}>
-                <a href="?page={{ news.previous_page_number }}">{% trans "Back" %}</a>
+            <li class="previous{% if not news.has_previous %} disabled{% endif %}">
+                <a href="?page={{ news.previous_page_number }}">&larr; {% trans "Newer" %}</a>
             </li>
-            <li{% if not news.has_next %} class="disabled"{% endif %}>
-                <a href="?page={{ news.next_page_number }}">{% trans "Next" %}</a>
+            <li class="next{% if not news.has_next %} disabled{% endif %}">
+                <a href="?page={{ news.next_page_number }}">{% trans "Older" %} &rarr;</a>
             </li>
         </ul>
     </div>
