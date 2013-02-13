@@ -32,6 +32,7 @@ def simple_enumerate(value, start=1):
     return enumerate(value, start=start)
 
 
+# Deprecated since Ozone 3.0, will be removed in 3.1
 @register.tag(name='reverse')
 def do_reverse_url(parser, token):
     try:
