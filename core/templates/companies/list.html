@@ -26,10 +26,18 @@
     </div>
 </div>
 
+<div class="row-fluid">
+    <div class="span8 offset1">
+        {% for c in companies %}
+        <a class="btn btn-mini btn-info" href="#company_{{ c.id }}">{{ c.short_name }}</a>
+        {% endfor %}
+    </div>
+</div>
+
 {% for c in companies %}
 <div class="row-fluid">
     <div class="span8 offset1">
-        <div class="well">
+        <div class="well"><a id="company_{{ c.id }}"></a>
             <h3>{{ forloop.counter }}. {{ c.name }} ({{ c.short_name }})
                 {% if perms.core.change_company %}
                 <a class="btn btn-warning" href="{% url "admin:core_company_change" c.id %}"><i class="icon-edit"></i> {% trans "Edit" %}</a>
@@ -51,3 +59,17 @@
 
 {% endblock %}
 
+{% block additional_js %}
+<script>
+$(function() {
+    $('.pop').each(function() {
+        var e = $(this);
+        e.popover({'trigger': 'hover'});
+    });
+    $('.tt').each(function() {
+        var e = $(this);
+        e.tooltip();
+    });
+});
+</script>
+{% endblock %}

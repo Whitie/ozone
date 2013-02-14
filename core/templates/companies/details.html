@@ -1,38 +1,31 @@
+{% load url from future %}
 {% load i18n %}
 
 {% if c.rate and c.rating == "C" %}
-<style type="text/css">
-#blocked {
-    width: 400px;
-    border: 2px solid yellow;
-    background-color: red;
-    color: white;
-    font-weight: bolder;
-    text-align: center;
-    padding: 5px;
-}
-</style>
-<div id="blocked">
-{% trans "Attention: Supplier is blocked!" %}
+<div class="alert alert-warning">
+    <h4>{% trans "Attention!" %}</h4>
+    Supplier is blocked.
 </div>
 {% endif %}
 
+<address>
+    {{ c.street|default:"-" }}<br>
+    {{ c.zip_code }} {{ c.city|default:"-" }}<br>
+    <abbr title="{% trans "Phone" %}">{% trans "P" %}:</abbr> {{ c.phone|default:"-" }}<br>
+    <abbr title="{% trans "Fax" %}">{% trans "F" %}:</abbr> {{ c.fax|default:"-" }}
+</address>
+
 <ul>
   {% if not single_view %}
-  <li><a href="/core/companies/{{ c.id }}/">
+  <li><a href="{% url "core-company-detail" c.id %}">
     {% trans "Open on separate page" %}</a></li>
   {% endif %}
-  <li>{% trans "Street" %}: {{ c.street|default:"-" }}</li>
-  <li>{% trans "City" %}: {{ c.zip_code }} {{ c.city|default:"-" }}</li>
-  <li>{% trans "Country" %}: {{ c.country|default:"-" }}</li>
-  <li>{% trans "Phone" %}: {{ c.phone|default:"-" }}</li>
-  <li>{% trans "Fax" %}: {{ c.fax|default:"-" }}</li>
   <li>{% trans "Customer Number" %}: {{ c.customer_number|default:"-" }}</li>
   {% if c.web %}
   <li>{% trans "Homepage" %}: <a href="{{ c.web }}">{{ c.web }}</a></li>
   {% endif %}
   {% if c.rate %}
-  <li>{% trans "Rating" %}: <a href="#" title="{{ c.get_rating_display }}">
+  <li>{% trans "Rating" %}: <a href="#" class="tt" title="{{ c.get_rating_display }}">
     {{ c.rating }}</a> ({% trans "Ratings" %}: {{ c.ratings.count }})</li>
   {% if c.rating_note %}
   <li>{% trans "Note" %}: {{ c.rating_note }}</li>
@@ -42,8 +35,8 @@
   {% if single_view and c.active_students %}
   <ul>
   {% for s in students %}
-    <li><a href="/core/groups/{{ s.group.id }}/">{{ s.group }}</a>:
-      <a href="/core/students/{{ s.first }}/">{{ s.lastname }}</a>,
+    <li><a href="{% url "core-group-details"  s.group.id %}">{{ s.group }}</a>:
+      <a href="{% url "core-students" s.first %}">{{ s.lastname }}</a>,
       {{ s.firstname }}
       ({{ s.birthdate }}, {{ s.age }} {% trans "Years" %})</li>
   {% endfor %}
@@ -61,10 +54,11 @@
       <li>{% trans "Email" %}:
         <a href="mailto:{{ con.email }}">{{ con.email }}</a></li>
       {% endif %}
-      <li>{% trans "Notes" %} (<a href="/core/companies/addnote/{{ con.id }}/">{% trans "Add Note" %}</a>):
+      <li>{% trans "Notes" %} <a class="btn btn-mini btn-success" href="{% url "core-company-addnote" con.id %}">{% trans "Add Note" %}</a>:
         <ul>
         {% for n in con.notes.all %}
-          <li><a href="" title="{{ n.user.get_profile }}: {{ n.text }}">{{ n.date }}</a></li>
+          <li><a href="#" class="pop" data-toggle="popover" data-placement="top" data-content="{{ n.text }}" title="{{ n.user.get_profile }}">
+              {{ n.date }}</a></li>
         {% endfor %}
         </ul>
       </li>
@@ -77,7 +71,8 @@
   <li><strong>{% trans "Cooperation Contracts" %} ({{ c.cooperations.count }})</strong>
     <ul>
       {% for coop in c.cooperations.all %}
-      <li><a href="" title="{{ coop.note }}">{{ coop.date|date:"DATE_FORMAT" }} {{ coop.job }}</a>
+      <li><a href="#" class="pop" data-toggle="popover" data-placement="top" data-content="{{ coop.note }}" title="{% trans "Cooperation Contracts" %}">
+          {{ coop.date|date:"DATE_FORMAT" }} {{ coop.job }}</a>
         <ul>
           {% for student in coop.students.all %}
           <li>{{ student }}{% if student.finished %} ({% trans "finished" %}){% endif %}</li>
@@ -91,4 +86,3 @@
   <li>{% trans "No Cooperations" %}</li>
   {% endif %}
 </ul>
-

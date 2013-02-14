@@ -28,7 +28,8 @@ urlpatterns = patterns('core.views.web',
         name='core-company-addnote'),
     # Students
     url(r'^students/$', 'list_students', name='core-students'),
-    url(r'^students/(?P<startchar>[A-Z])/$', 'list_students'),
+    url(r'^students/(?P<startchar>[A-Z])/$', 'list_students',
+        name='core-students'),
     url(r'^students/all/$', 'list_all_students', name='core-students-all'),
     url(r'^students/search/$', 'search_student', name='core-students-search'),
     # Student groups
