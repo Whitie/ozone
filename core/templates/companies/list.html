@@ -1,7 +1,6 @@
 {% extends "index.html" %}
 {% load url from future %}
 {% load i18n %}
-{% load staticfiles %}
 
 {% block content %}
 <div class="row-fluid">
@@ -57,19 +56,4 @@
 </div>
 {% endfor %}
 
-{% endblock %}
-
-{% block additional_js %}
-<script>
-$(function() {
-    $('.pop').each(function() {
-        var e = $(this);
-        e.popover({'trigger': 'hover'});
-    });
-    $('.tt').each(function() {
-        var e = $(this);
-        e.tooltip();
-    });
-});
-</script>
 {% endblock %}
