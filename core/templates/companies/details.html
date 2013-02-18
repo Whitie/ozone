@@ -9,6 +9,7 @@
 {% endif %}
 
 <address>
+    <strong>{{ c.name }}</strong><br>
     {{ c.street|default:"-" }}<br>
     {{ c.zip_code }} {{ c.city|default:"-" }}<br>
     <abbr title="{% trans "Phone" %}">{% trans "P" %}:</abbr> {{ c.phone|default:"-" }}<br>

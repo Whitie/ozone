@@ -37,7 +37,7 @@
 <div class="row-fluid">
     <div class="span8 offset1">
         <div class="well"><a id="company_{{ c.id }}"></a>
-            <h3>{{ forloop.counter }}. {{ c.name }} ({{ c.short_name }})
+            <h3>{{ forloop.counter }}. {{ c.short_name }}
                 {% if perms.core.change_company %}
                 <a class="btn btn-warning" href="{% url "admin:core_company_change" c.id %}"><i class="icon-edit"></i> {% trans "Edit" %}</a>
                 {% endif %}
