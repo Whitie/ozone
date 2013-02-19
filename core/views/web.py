@@ -232,8 +232,8 @@ def do_logout(req):
 
 
 @login_required
-def company_details(req, id):
-    company = Company.objects.get(pk=int(id))
+def company_details(req, company_id):
+    company = Company.objects.get(pk=int(company_id))
     students = company.students.select_related().filter(finished=False
         ).order_by('group__job', 'lastname')
     ctx = dict(page_title=_(u'Details: %s' % company.name), menus=menus,
@@ -271,12 +271,15 @@ def list_companies(req, startchar=''):
 
 @login_required
 def list_all_companies(req, only_with_students=False):
-    q = Company.objects.select_related().all().order_by('name')
+    q = Company.objects.select_related().all(
+        ).exclude(**settings.EXCLUDE_FROM_COMPANY_LIST).order_by('name')
     if only_with_students:
-        companie_list = [x for x in q if x.has_students()]
+        company_list = [x for x in q if x.has_students()]
+        title = _(u'Companies with students ({n})')
     else:
-        companie_list = list(q)
-    paginator = Paginator(companie_list, 15)
+        company_list = list(q)
+        title = _(u'Companies ({n})')
+    paginator = Paginator(company_list, 15)
     try:
         page = int(req.GET.get('page', '1'))
     except ValueError:
@@ -285,8 +288,9 @@ def list_all_companies(req, only_with_students=False):
         companies = paginator.page(page)
     except (EmptyPage, InvalidPage):
         companies = paginator.page(paginator.num_pages)
-    ctx = dict(page_title=_(u'All Companies'), companies=companies,
-        menus=menus, only_with_students=only_with_students, single_view=False,
+    ctx = dict(page_title=title.format(n=len(company_list)),
+        companies=companies, menus=menus,
+        only_with_students=only_with_students, single_view=False,
         page=page, start=(page - 1) * 15 + 1)
     return render(req, 'companies/list_all.html', ctx)
 

@@ -17,10 +17,6 @@
 </address>
 
 <ul>
-  {% if not single_view %}
-  <li><a href="{% url "core-company-detail" c.id %}">
-    {% trans "Open on separate page" %}</a></li>
-  {% endif %}
   <li>{% trans "Customer Number" %}: {{ c.customer_number|default:"-" }}</li>
   {% if c.web %}
   <li>{% trans "Homepage" %}: <a href="{{ c.web }}">{{ c.web }}</a></li>

@@ -42,6 +42,10 @@
                 <a class="btn btn-warning" href="{% url "admin:core_company_change" c.id %}"><i class="icon-edit"></i> {% trans "Edit" %}</a>
                 {% endif %}
             </h3>
+            {% if not single_view %}
+            <a class="btn btn-mini btn-primary" href="{% url "core-company-detail" c.id %}">
+            {% trans "Open on separate page" %}</a>
+            {% endif %}
             <div>{% include "companies/details.html" %}</div>
         </div>
     </div>
