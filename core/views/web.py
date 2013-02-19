@@ -261,6 +261,7 @@ def list_companies(req, startchar=''):
         else:
             companies = Company.objects.select_related().filter(
                 name__istartswith=startchar)
+    companies = companies.exclude(**settings.EXCLUDE_FROM_COMPANY_LIST)
     ptitle = _(u'Companies: {0} ({1})'.format(startchar or '-',
         companies.count()))
     ctx = dict(page_title=ptitle, companies=companies, menus=menus,

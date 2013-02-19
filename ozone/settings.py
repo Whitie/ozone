@@ -320,6 +320,9 @@ except IOError:
 
 ###############################################################################
 
+# Global hacks
+EXCLUDE_FROM_COMPANY_LIST = {'short_name': u'Alle'}
+
 # Try to import the production settings
 
 try:
