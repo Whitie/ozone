@@ -330,8 +330,10 @@ def list_students(req, startchar='', archive=False):
         s.nex = s.ill - s.ex
         s.all_days = s.presence_days.filter(entry__in=[u'T', u'F', u'K', u'|']
             ).count()
-    title = _(u'Students Archive') if archive else _(u'Students')
-    ctx = dict(page_title=title, students=students, menus=menus,
+    title = _(u'Students Archive: {s} ({n})') if archive \
+        else _(u'Students: {s} ({n})')
+    ctx = dict(page_title=title.format(s=startchar or '-', n=students.count()),
+        students=students, menus=menus,
         archive=archive, startchar=startchar, chars=string.ascii_uppercase,
         form=form)
     return render(req, 'students/list.html', ctx)

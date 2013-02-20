@@ -45,7 +45,7 @@ urlpatterns = patterns('core.views.web',
     url(r'^students/archive/$', 'list_students', {'archive': True},
         name='core-students-archive'),
     url(r'^students/archive/(?P<startchar>[A-Z])/$', 'list_students',
-        {'archive': True}),
+        {'archive': True}, name='core-students-archive'),
     # Presence management
     url(r'^presence/$', 'presence_overview', name='core-presence'),
     url(r'^presence/group/(?P<gid>\d+)/$', 'presence_for_group',

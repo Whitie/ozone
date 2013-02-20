@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="row-fluid">
-    <div class="span8 offset1">
+    <div class="span8 offset1 centered">
         {% if perms.core.add_company %}
         <a class="btn btn-mini btn-success" href="{% url "admin:core_company_add" %}">{% trans "Add Company" %}</a>
         {% endif %}

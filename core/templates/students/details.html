@@ -1,5 +1,15 @@
+{% load url from future %}
 {% load i18n %}
 {% load staticfiles %}
+
+<address>
+    <strong>{{ s.name }}</strong><br>
+    {{ s.street|default:"-" }}<br>
+    {{ s.zip_code }} {{ s.city|default:"-" }}<br>
+    {{ s.country|default:"-" }}<br>
+    <abbr title="{% trans "Phone" %}">{% trans "P" %}:</abbr> {{ s.phone|default:"-" }}<br>
+    <abbr title="{% trans "Mobile" %}">{% trans "M" %}:</abbr> {{ s.mobile|default:"-" }}
+</address>
 
 <table style="width:95%;">
 <tr><td style="width:60%;">
@@ -7,7 +17,7 @@
   <li>{% trans "Group" %}: {{ s.group.name|default:"-" }}</li>
   <li>{% trans "Company" %}:
     {% if s.company %}
-    <a href="/core/companies/{{ s.company.id }}/">
+    <a href="{% url "core-company-detail" s.company.id %}">
       {{ s.company }}</a>
     {% else %}
     -
@@ -19,23 +29,14 @@
   <li>{% trans "Email" %}:
     {% if s.email %}<a href="mailto:{{ s.email }}">{{ s.email }}</a>{% else %}-{% endif %}
   </li>
-  <li>{% trans "Phone" %}: {{ s.phone|default:"-" }}</li>
-  <li>{% trans "Mobile" %}: {{ s.mobile|default:"-" }}</li>
-  <li>{% trans "Address" %}
-    <ul>
-      <li>{% trans "Street" %}: {{ s.street|default:"-" }}</li>
-      <li>{% trans "City" %}: {{ s.zip_code }} {{ s.city|default:"-" }}</li>
-      <li>{% trans "Country" %}: {{ s.country|default:"-" }}</li>
-    </ul>
-  </li>
   {% if s.presence_days %}
-  <li><a href="{% url core-presence-edit s.id %}">{% trans "Presence" %}</a>
+  <li><a href="{% url "core-presence-edit" s.id %}">{% trans "Presence" %}</a>
     <ul>
-      <li><a href="" title="{% trans "All except holiday." %}">
+      <li><a href="" class="tt" title="{% trans "All except holiday." %}">
         {% trans "Total days of absense" %}</a>: {{ s.all_days }}
       </li>
       <li>{% trans "Illness days" %}: {{ s.ill }}</li>
-      <li><a href="" title="{% trans "Not excused" %}: {{ s.nex }}">
+      <li><a href="" class="tt" title="{% trans "Not excused" %}: {{ s.nex }}">
         {% trans "Excused" %}</a>: {{ s.ex }}
       </li>
     </ul>
@@ -66,7 +67,7 @@
   {% endif %}
 </ul>
 </td>
-<td style="width:40%;">
+<td style="width:40%;text-align:right;">
   <figure>
 {% if s.picture %}
   <img src="{{ s.picture.url }}" alt="{% trans "Picture" %}" width="100" />

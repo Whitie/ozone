@@ -9,7 +9,7 @@
         <div class="well well-small">
             <h3>{% trans "Clean old sessions" %}
                 <button class="btn btn-danger pull-right" onclick="clean_sessions();">
-                    {% trans "Delete" %} <i class="icon-trash"></i>
+                    <i class="icon-trash"></i> {% trans "Delete" %}
                 </button>
             </h3>
             <p id="sess_result"></p>
@@ -22,7 +22,7 @@
         <div class="well well-small">
             <h3>{% trans "Clean empty presence days" %}
                 <button class="btn btn-danger pull-right" onclick="clean_presence();">
-                    {% trans "Delete" %} <i class="icon-trash"></i>
+                    <i class="icon-trash"></i> {% trans "Delete" %}
                 </button>
             </h3>
             <p id="presence_result"></p>
