@@ -3,7 +3,6 @@
 {% load staticfiles %}
 
 <address>
-    <strong>{{ s.name }}</strong><br>
     {{ s.street|default:"-" }}<br>
     {{ s.zip_code }} {{ s.city|default:"-" }}<br>
     {{ s.country|default:"-" }}<br>
