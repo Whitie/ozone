@@ -10,76 +10,71 @@
     <abbr title="{% trans "Mobile" %}">{% trans "M" %}:</abbr> {{ s.mobile|default:"-" }}
 </address>
 
-<table style="width:95%;">
-<tr><td style="width:60%;">
-<ul>
-  <li>{% trans "Group" %}: {{ s.group.name|default:"-" }}</li>
-  <li>{% trans "Company" %}:
-    {% if s.company %}
-    <a href="{% url "core-company-detail" s.company.id %}">
-      {{ s.company }}</a>
-    {% else %}
-    -
-    {% endif %}
-  </li>
-  <li><strong>{% trans "Notice in Emergency" %}:</strong> {{ s.emergency }}</li>
-  <li>{% trans "Birthday" %}: {{ s.birthdate|date:"DATE_FORMAT"|default:"-" }}
-    ({{ s.age }} {% trans "Years old" %})</li>
-  <li>{% trans "Email" %}:
-    {% if s.email %}<a href="mailto:{{ s.email }}">{{ s.email }}</a>{% else %}-{% endif %}
-  </li>
-  {% if s.presence_days %}
-  <li><a href="{% url "core-presence-edit" s.id %}">{% trans "Presence" %}</a>
-    <ul>
-      <li><a href="" class="tt" title="{% trans "All except holiday." %}">
-        {% trans "Total days of absense" %}</a>: {{ s.all_days }}
-      </li>
-      <li>{% trans "Illness days" %}: {{ s.ill }}</li>
-      <li><a href="" class="tt" title="{% trans "Not excused" %}: {{ s.nex }}">
-        {% trans "Excused" %}</a>: {{ s.ex }}
-      </li>
-    </ul>
-  </li>
-  {% else %}
-  <li>{% trans "No presence found for" %} {{ s }}</li>
-  {% endif %}
-  {% if s.cabinet or s.key %}
-  <li>{% trans "Misc" %}
-    <ul>
-      <li>{% trans "Cabinet" %}: {{ s.cabinet|default:"-" }}</li>
-      <li>{% trans "Key" %}: {{ s.key|default:"-" }}</li>
-    </ul>
-  </li>
-  {% endif %}
-  {% if s.test_date %}
-  <li>{% trans "Test" %}: {{ s.test_date|date:"DATE_FORMAT" }},
-    {{ s.test_result }} {% trans "Points" %}</li>
-  {% endif %}
-  {% if s.exam_1 %}
-  <li>{% trans "Exam 1" %}: {{ s.exam_1 }} {% trans "Points" %}</li>
-  {% endif %}
-  {% if s.exam_2 %}
-  <li>{% trans "Exam 2" %}: {{ s.exam_2 }} {% trans "Points" %}</li>
-  {% endif %}
-  {% if s.exam_1 and s.exam_2 %}
-  <li>{% trans "Final Grade" %}: {{ s.final_grade }} {% trans "Points" %}</li>
-  {% endif %}
-</ul>
-</td>
-<td style="width:40%;text-align:right;">
-  <figure>
-{% if s.picture %}
-  <img src="{{ s.picture.url }}" alt="{% trans "Picture" %}" width="100" />
-  <figcaption>
-    {{ s.lastname }}, {{ s.firstname }}
-  </figcaption>
-{% else %}
-  <img src="{% static "img/mustermann.jpg" %}" width="100" />
-  <figcaption>
-    {% trans "No Picture set." %}
-  </figcaption>
-{% endif %}
-  </figure>
-</td>
-</tr>
+<table class="table">
+    <tr>
+        <td>
+            <ul>
+                <li>{% trans "Group" %}: {{ s.group.name|default:"-" }}</li>
+                <li>{% trans "Company" %}:
+                    {% if s.company %}
+                    <a href="{% url "core-company-detail" s.company.id %}">
+                    {{ s.company }}</a>
+                    {% else %}-{% endif %}
+                </li>
+                <li><strong>{% trans "Notice in Emergency" %}:</strong> {{ s.emergency }}</li>
+                <li>{% trans "Birthday" %}: {{ s.birthdate|date:"DATE_FORMAT"|default:"-" }}
+                    ({{ s.age }} {% trans "Years old" %})</li>
+                <li>{% trans "Email" %}:
+                    {% if s.email %}<a href="mailto:{{ s.email }}">{{ s.email }}</a>{% else %}-{% endif %}
+                </li>
+                {% if s.presence_days %}
+                <li><a href="{% url "core-presence-edit" s.id %}">{% trans "Presence" %}</a>
+                    <ul>
+                        <li><a href="" class="tt" title="{% trans "All except holiday." %}">
+                            {% trans "Total days of absense" %}</a>: {{ s.all_days }}
+                        </li>
+                        <li>{% trans "Illness days" %}: {{ s.ill }}</li>
+                        <li><a href="" class="tt" title="{% trans "Not excused" %}: {{ s.nex }}">
+                            {% trans "Excused" %}</a>: {{ s.ex }}
+                        </li>
+                    </ul>
+                </li>
+                {% else %}
+                <li>{% trans "No presence found for" %} {{ s }}</li>
+                {% endif %}
+                {% if s.cabinet or s.key %}
+                <li>{% trans "Misc" %}
+                    <ul>
+                        <li>{% trans "Cabinet" %}: {{ s.cabinet|default:"-" }}</li>
+                        <li>{% trans "Key" %}: {{ s.key|default:"-" }}</li>
+                    </ul>
+                </li>
+                {% endif %}
+                {% if s.test_date %}
+                <li>{% trans "Test" %}: {{ s.test_date|date:"DATE_FORMAT" }},
+                    {{ s.test_result }} {% trans "Points" %}</li>
+                {% endif %}
+                {% if s.exam_1 %}
+                <li>{% trans "Exam 1" %}: {{ s.exam_1 }} {% trans "Points" %}</li>
+                {% endif %}
+                {% if s.exam_2 %}
+                <li>{% trans "Exam 2" %}: {{ s.exam_2 }} {% trans "Points" %}</li>
+                {% endif %}
+                {% if s.exam_1 and s.exam_2 %}
+                <li>{% trans "Final Grade" %}: {{ s.final_grade }} {% trans "Points" %}</li>
+                {% endif %}
+            </ul>
+        </td>
+        <td style="text-align:center;">
+            <figure>
+                {% if s.picture %}
+                <img class="img-polaroid" src="{{ s.picture.url }}" alt="{% trans "Picture" %}" width="100" />
+                <figcaption>{{ s.lastname }}, {{ s.firstname }}</figcaption>
+                {% else %}
+                <img class="img-polaroid" src="{% static "img/mustermann.jpg" %}" width="100" />
+                <figcaption>{% trans "No Picture set." %}</figcaption>
+                {% endif %}
+          </figure>
+        </td>
+    </tr>
 </table>
