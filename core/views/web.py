@@ -382,7 +382,8 @@ def search_student(req):
 def list_groups(req):
     g = StudentGroup.objects.select_related().all()
     groups = [x for x in g if not x.finished()]
-    ctx = dict(page_title=_(u'Groups'), groups=groups, menus=menus)
+    ctx = dict(page_title=_(u'Groups - Overview'), groups=groups, menus=menus,
+        dt=True)
     return render(req, 'students/groups.html', ctx)
 
 
