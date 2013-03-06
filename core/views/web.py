@@ -399,7 +399,12 @@ def group_details(req, gid):
     except StudentGroup.DoesNotExist:
         messages.error(req, u'Gruppe (ID: %d) existiert nicht.' % gid)
         return redirect('core-groups')
-    ctx = dict(page_title=_(u'Group Detail'), group=group, menus=menus)
+    if group.school_nr:
+        ptitle = _(u'Group - {name} ({nr})'.format(name=group.name(),
+            nr=group.school_nr))
+    else:
+        ptitle = _(u'Group - {name}'.format(name=group.name()))
+    ctx = dict(page_title=ptitle, group=group, menus=menus)
     return render(req, 'students/group_detail.html', ctx)
 
 
