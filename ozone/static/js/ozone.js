@@ -5,6 +5,8 @@ datatable_options = {
     'bPaginate': true,
     'sPaginationType': 'bootstrap',
     'bAutoWidth': true,
+    'bProcessing': true,
+    'bSort': true,
     'oLanguage': {
         'sUrl': '/static/i18n/de_DE.txt'
     }
