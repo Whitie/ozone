@@ -3,7 +3,6 @@
 {% load staticfiles %}
 
 {% block content %}
-<h2 class="headline">{% trans "Presences" %}</h2>
 <div style="text-align:center;">
     <p>{% trans "The first call of a list can take some time!" %}</p>
     <p>{% for j in jobs %}<a href="#{{ j }}">{{ j }}</a>{% if not forloop.last %} | {% endif %}{% endfor %}</p>

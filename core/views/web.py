@@ -133,7 +133,8 @@ def add_colleague(req):
             messages.error(req, u'Bitte korrigieren Sie die Eingaben.')
     else:
         form = NewUserForm()
-    ctx = dict(page_title=_(u'Add external'), menus=menus, form=form)
+    ctx = dict(page_title=_(u'Add external'), menus=menus, form=form,
+        dp=True)
     return render(req, 'colleagues/add.html', ctx)
 
 
@@ -142,9 +143,13 @@ def filter_colleagues(req, filter):
     q = UserProfile.objects.select_related().exclude(user__username='admin')
     if filter == 'internal':
         q = q.filter(external=False)
+        ptitle = _(u'Colleagues (internal): {0}')
     elif filter == 'external':
         q = q.filter(external=True)
-    ctx = dict(page_title=_(u'Filter Colleagues'), menus=menus,
+        ptitle = _(u'Colleagues (external): {0}')
+    else:
+        ptitle = _(u'Colleagues (internal and external): {0}')
+    ctx = dict(page_title=ptitle.format(q.count()), menus=menus, dt=True,
         coll=q.order_by('user__last_name'), filter=filter)
     return render(req, 'colleagues/filter.html', ctx)
 
@@ -430,8 +435,8 @@ def presence_overview(req):
             g.pdays = PresenceDay.objects.filter(student__group=g,
                 date__month=last_month, date__year=lyear).exclude(q2).count()
         groups.append((j, gr))
-    ctx = dict(page_title=_(u'Group Overview'), groups=groups, menus=menus,
-        month=last_month, jobs=jobs)
+    ctx = dict(page_title=_(u'Presence Overview'), groups=groups, menus=menus,
+        month=last_month, jobs=jobs, dp=True, dt=True)
     return render(req, 'presence/overview.html', ctx)
 
 

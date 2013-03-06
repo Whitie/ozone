@@ -3,31 +3,41 @@
 {% load staticfiles %}
 
 {% block content %}
-<h2 class="headline">
-{% if filter == "all" %}
-    {% trans "Colleagues (internal and external)" %}:
-{% elif filter == "internal" %}
-    {% trans "Colleagues (internal)" %}:
-{% else %}
-    {% trans "Colleagues (external)" %}:
-{% endif %}{{ coll.count }}
-</h2>
 
-<div style="width:60%;text-align:center;margin:5px auto;">
-{% trans "Filter" %}:
-{% if filter == "all" %}
-    <a href="{% url core-colleagues-filter "internal" %}">{% trans "Internal" %}</a> |
-    <a href="{% url core-colleagues-filter "external" %}">{% trans "External" %}</a>
-{% elif filter == "internal" %}
-    <a href="{% url core-colleagues-filter "all" %}">{% trans "All" %}</a> |
-    <a href="{% url core-colleagues-filter "external" %}">{% trans "External" %}</a>
-{% else %}
-    <a href="{% url core-colleagues-filter "all" %}">{% trans "All" %}</a> |
-    <a href="{% url core-colleagues-filter "internal" %}">{% trans "Internal" %}</a>
-{% endif %}
+<div class="row-fluid">
+    <div class="span8">
+        <div class="btn-group">
+            <a class="btn disabled" href="#">{% trans "Filter" %}:</a>
+            {% if filter == "all" %}
+            <a class="btn btn-info" href="{% url core-colleagues-filter "internal" %}">
+                {% trans "Internal" %}
+            </a>
+            <a class="btn btn-info" href="{% url core-colleagues-filter "external" %}">
+                {% trans "External" %}
+            </a>
+            {% elif filter == "internal" %}
+            <a class="btn btn-info" href="{% url core-colleagues-filter "all" %}">
+                {% trans "All" %}
+            </a>
+            <a class="btn btn-info" href="{% url core-colleagues-filter "external" %}">
+                {% trans "External" %}
+            </a>
+            {% else %}
+            <a class="btn btn-info" href="{% url core-colleagues-filter "all" %}">
+                {% trans "All" %}
+            </a>
+            <a class="btn btn-info" href="{% url core-colleagues-filter "internal" %}">
+                {% trans "Internal" %}
+            </a>
+            {% endif %}
+        </div>
+    </div>
 </div>
 
-<table id="dataTable">
+<br>
+
+<div class="row-fluid">
+<table class="dataTable table table-striped table-bordered">
     <thead>
         <tr>
             <th>{% trans "Lastname" %}</th>
@@ -51,18 +61,6 @@
         {% endfor %}
     </tbody>
 </table>
-
-<script>
-$(document).ready(function() {
-  var oTable = $('#dataTable').dataTable({
-    "bJQueryUI": true,
-    "bPaginate": false,
-    "bAutoWidth": true,
-    "oLanguage": {
-      "sUrl": "{% static "i18n/de_DE.txt" %}"
-    }
-  });
-});
-</script>
+</div>
 
 {% endblock %}
