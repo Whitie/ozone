@@ -1,18 +1,32 @@
 {% extends "index.html" %}
+{% load url from future %}
 {% load i18n %}
-{% load staticfiles %}
 
 {% block content %}
-<div style="text-align:center;">
-    <p>{% trans "The first call of a list can take some time!" %}</p>
-    <p>{% for j in jobs %}<a href="#{{ j }}">{{ j }}</a>{% if not forloop.last %} | {% endif %}{% endfor %}</p>
+<div class="row-fluid">
+    <div class="span8 offset1 centered">
+        <div class="alert">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {% trans "The first call of a list can take some time!" %}
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span8 offset1 centered">
+        {% for j in jobs %}
+        <a class="btn btn-mini btn-info" href="#{{ j }}">{{ j }}</a>
+        {% endfor %}
+    </div>
 </div>
 
 {% for n, gr in groups %}
 <h3 style="margin-top:50px;">
-    <a id="{{ n }}">{{ n }}</a> (<a href="{% url core-presence-printouts n %}">{% trans "Old lists" %}</a>)
+    <a id="{{ n }}">{{ n }}</a>
+    <a class="btn btn-primary" href="{% url "core-presence-printouts" n %}">
+        {% trans "Old lists" %}
+    </a>
 </h3>
-<table class="dataTable">
+<table class="dTable table table-striped table-bordered">
   <thead>
     <tr>
         <th>{% trans "Group" %}</th>
@@ -25,11 +39,11 @@
     <tr>
         <td><strong>{{ g }}</strong></td>
         <td>
-          <form action="{% url core-presence-group g.id %}" method="post" onsubmit="return disable_btn('btn_{{ forloop.counter }}');">
+          <form action="{% url "core-presence-group" g.id %}" method="post" onsubmit="return disable_btn('btn_{{ g.id }}');">
             {% csrf_token %}
-            {% trans "From" %} <input type="text" class="dateWidget" name="start" size="10" />
-            {% trans "to" %} <input type="text" class="dateWidget" name="end" size="10" />
-            <input type="submit" id="btn_{{ forloop.counter }}" value="{% trans "Show" %}" />
+            {% trans "From" %} <input type="text" class="dateWidget" name="start" size="16" />
+            {% trans "to" %} <input type="text" class="dateWidget" name="end" size="16" />
+            <input class="btn" type="submit" id="btn_{{ g.id }}" value="{% trans "Show" %}" />
           </form>
         </td>
         <td>
@@ -45,33 +59,24 @@
 <h3>{% trans "No groups found." %}</h3>
 {% endfor %}
 
+{% endblock %}
+
+{% block additional_js %}
 <script>
-$(document).ready(function() {
-  $('.dateWidget').datepicker({
-    'dateFormat': 'dd.mm.yy',
-    'dayNamesMin': ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
-    'monthNames': ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
-                   'Juli', 'August', 'September', 'Oktober', 'November',
-                   'Dezember'],
-    'showWeek': true,
-    'firstDay': 1,
-    'weekHeader': 'Wo',
-    'nextText': '{% trans "next" %}',
-    'prevText': '{% trans "prev" %}'
-  });
-  var oTable = $('.dataTable').dataTable({
-    "bJQueryUI": true,
-    "bPaginate": false,
-    "oLanguage": {
-      "sUrl": "{% static "i18n/de_DE.txt" %}"
-    },
-    "bAutoWidth": false,
-    "aoColumns": [
-        {"sWidth": "200px"},
-        {"sWidth": "300px"},
-        null
-    ]
-  });
+$(function() {
+    $('.dateWidget').each(function() {
+        var dp = $(this);
+        dp.datepicker({
+            'format': 'dd.mm.yyyy',
+            'weekStart': 1,
+            'viewMode': 'years'
+        });
+    });
+    datatable_options['bPaginate'] = false;
+    $('.dTable').each(function() {
+        var t = $(this);
+        t.dataTable(datatable_options);
+    });
 });
 
 function disable_btn(btn_id) {
