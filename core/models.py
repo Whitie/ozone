@@ -488,6 +488,7 @@ PRESENCE_CHOICES = (
     (u'F', u'Freistellung'),
     (u'Pr', u'Prüfung'),
     (u'U', u'Urlaub'),
+    (u'O', u'OSZ (Kurs)'),
     (u'/', u'nicht im bbz'),
     (u'P', u'Praktikum'),
     (u'BU', u'Bildungsurlaub'),
