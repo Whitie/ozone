@@ -1,74 +1,96 @@
 {% extends "index.html" %}
+{% load url from future %}
 {% load i18n %}
-{% load staticfiles %}
 
 {% block content %}
-<h2 class="headline">{{ group }}</h2>
-<h2 class="headline">
-  {{ start|date:"DATE_FORMAT" }} - {{ end|date:"DATE_FORMAT" }}
-</h2>
-<div style="text-align:center;">
-<p><a href="{% url core-pdf-presence-clean group.id end.year end.month %}">
-    {% trans "Print empty page for" %} {{ end|date:"F Y" }}</a>
-<a href="{% url core-pdf-presence group.id end.year end.month %}">
-    {% trans "Print filled page for" %} {{ end|date:"F Y" }}</a>
-</p>
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <div class="well centered">
+            <h3>{{ start|date:"DATE_FORMAT" }} - {{ end|date:"DATE_FORMAT" }}</h3>
+            <a class="btn btn-primary" href="{% url "core-pdf-presence-clean" group.id end.year end.month %}">
+                {% trans "Print empty page for" %} {{ end|date:"F Y" }}</a>
+            <a class="btn btn-info" href="{% url "core-pdf-presence" group.id end.year end.month %}">
+                {% trans "Print filled page for" %} {{ end|date:"F Y" }}</a>
+        </div>
+    </div>
 </div>
 
-<p>{% trans "Set presence for all" %}:
-    <select size="1" id="p_all_day">
-        {% for d in days %}<option value="{{ d|date:"Y-m-d" }}"{% if d == today %} selected="selected"{% endif %}>{{ d|date:"d.m." }}</option>{% endfor %}
-    </select>
-    <select id="p_all" size="1">
-        {% for e in choices %}<option value="{{ e }}"{% if e == "*" %} selected="selected"{% endif %}>{{ e }}</option>{% endfor %}
-    </select>
-    <input type="button" value="{% trans "Set now" %}" onclick="update_all();" title="{% trans "Sets the presence for all EMPTY fields." %}" />
-</p>
+<div class="row-fluid">
+    <div class="span10">
+        <form class="form-inline">
+            <label>{% trans "Set presence for all" %}:</label>
+            <select class="span2" size="1" id="p_all_day">
+                {% for d in days %}<option value="{{ d|date:"Y-m-d" }}"{% if d == today %} selected="selected"{% endif %}>{{ d|date:"d.m." }}</option>{% endfor %}
+            </select>
+            <select class="span1" id="p_all" size="1">
+                {% for e in choices %}<option value="{{ e }}"{% if e == "*" %} selected="selected"{% endif %}>{{ e }}</option>{% endfor %}
+            </select>
+            <button class="btn" type="button" onclick="update_all();" title="{% trans "Sets the presence for all EMPTY fields." %}">
+                {% trans "Set now" %}
+            </button>
+        </form>
+    </div>
+</div>
 
-<table id="dataTable">
-  <thead>
-    <tr>
-      <th>{% trans "Company" %}</th>
-      <th>{% trans "Lastname" %}</th>
-      <th>{% trans "Firstname" %}</th>
-      {% for d in days %}
-      <th>{{ d|date:"D d" }}</th>
-      {% endfor %}
-      <th>{% trans "Lastname" %}</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for s, ds in students %}
-    <tr>
-      <td>{{ s.company.short_name|default:s.company.name }}</td>
-      <td><a href="{% url core-presence-edit s.id %}" title="{% trans "Click here to enter notes." %}">{{ s.lastname }}</a></td>
-      <td>{{ s.firstname }}</td>
-      {% for d in ds %}
-      <td>
-          <select id="p_{{ d.id }}"  class="{{ d.date|date:"Y-m-d" }}" title="{{ d.get_entry_display }}" name="presence" size="1" onchange="update_day({{ d.id }});">
-          {% for e in choices %}<option value="{{ e }}"{% if e == d.entry %} selected="selected"{% endif %}>{{ e }}</option>{% endfor %}
-          </select><br />
-          <input id="l_{{ d.id }}" type="text" size="2" maxlength="3"{% if d.lateness %} style="border:1px solid red;"{% endif %} name="lateness" value="{% if d.lateness %}{{ d.lateness }}{% endif %}" onchange="lateness_changed({{ d.id }});" title="{% trans "Enter lateness here." %}" />
-          {% if d.note %}<a href="#" title="{{ d.note }}" style="text-decoration:none;">*</a>{% endif %}
-      </td>
-      {% endfor %}
-      <td>{{ s.lastname }}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+<div class="row-fluid">
+    <div class="span10">
+        <table class="dTable table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>{% trans "Company" %}</th>
+                    <th>{% trans "Lastname" %}</th>
+                    <th>{% trans "Firstname" %}</th>
+                    {% for d in days %}
+                    <th>{{ d|date:"D d" }}</th>
+                    {% endfor %}
+                    <th>{% trans "Lastname" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s, ds in students %}
+                <tr>
+                    <td>{{ s.company.short_name|default:s.company.name }}</td>
+                    <td><a href="{% url "core-presence-edit" s.id %}" class="tt" title="{% trans "Click here to enter notes." %}">{{ s.lastname }}</a></td>
+                    <td>{{ s.firstname }}</td>
+                    {% for d in ds %}
+                    <td><a href="#" class="tt" title="{{ d.get_entry_display }}">
+                            <select id="p_{{ d.id }}"  class="{{ d.date|date:"Y-m-d" }} input-mini" name="presence" size="1" onchange="update_day({{ d.id }});">
+                                {% for e in choices %}<option value="{{ e }}"{% if e == d.entry %} selected="selected"{% endif %}>{{ e }}</option>{% endfor %}
+                            </select>
+                        </a><br>
+                        <a href="#" class="tt" title="{% trans "Enter lateness here." %}">
+                            <input id="l_{{ d.id }}" class="input-mini" type="text" size="2" maxlength="3"{% if d.lateness %} style="border:1px solid red;"{% endif %} name="lateness" value="{% if d.lateness %}{{ d.lateness }}{% endif %}" onchange="lateness_changed({{ d.id }});">
+                        </a>
+                        {% if d.note %}<a href="#" title="{{ d.note }}" class="tt">*</a>{% endif %}
+                    </td>
+                    {% endfor %}
+                    <td>{{ s.lastname }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
-<table style="margin:5px auto;">
-    <tr>
-    {% for sym, txt in legend %}
-        <td>{% if forloop.first %}<small>{% trans "Legend" %}:</small>{% endif %}</td>
-        <td style="width:15px;"></td>
-        <td><small>{{ sym }} = {{ txt }}</small></td>
-    {% cycle '' '' '' '</tr><tr>' %}
-    {% endfor %}
-</table>
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <table style="margin:5px auto;">
+            <tr>
+                {% for sym, txt in legend %}
+                <td>{% if forloop.first %}<small>{% trans "Legend" %}:</small>{% endif %}</td>
+                <td style="width:15px;"></td>
+                <td><small>{{ sym }} = {{ txt }}</small></td>
+                {% cycle '' '' '' '</tr><tr>' %}
+                {% endfor %}
+        </table>
+    </div>
+</div>
 
-<p><a href="{% url core-presence %}#{{ group.job }}">{% trans "Back" %}</a></p>
+<div class="row-fluid">
+    <div class="span2">
+        <a class="btn btn-info" href="{% url "core-presence" %}#{{ group.job }}">{% trans "Back" %}</a>
+    </div>
+</div>
 
 <div id="upd_messages">
 <h3>{% trans "Changes" %}</h3>
@@ -76,17 +98,16 @@
 </ul>
 </div>
 
+{% endblock %}
+
+{% block additional_js %}
 <script>
-$(document).ready(function() {
-  $(document).tooltip();
-  var oTable = $('#dataTable').dataTable({
-    "bJQueryUI": true,
-    "bPaginate": false,
-    "sScrollX": "10%",
-    "oLanguage": {
-      "sUrl": "{% static "i18n/de_DE.txt" %}"
-    }
-  });
+$(function() {
+    datatable_options['bPaginate'] = false;
+    $('.dTable').each(function() {
+        var t = $(this);
+        t.dataTable(datatable_options);
+    });
 });
 
 function update_day(did) {
@@ -95,7 +116,7 @@ function update_day(did) {
     var presence = $('#p_'+did+' :selected').val();
     var json_data = {'day_id': day_id, 'lateness': parseInt(lateness),
                      'presence': presence};
-    $.post('{% url core-api-presence-update %}',
+    $.post('{% url "core-api-presence-update" %}',
         {'_JSON_': JSON.stringify(json_data)},
         function(ret_data) {
             $('#upd_messages').show('slow');

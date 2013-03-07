@@ -486,11 +486,11 @@ def presence_for_group(req, gid):
         'company__short_name', 'lastname')
     students = h.get_presence(_students, start, end)
     days = (start + timedelta(days=x) for x in xrange(dt.days + 1))
-    ctx = dict(page_title=_(u'Presence for Group'), group=group,
-        students=students, menus=menus, start=start, end=end,
+    ctx = dict(page_title=_(u'Presence for Group {0}'.format(unicode(group))),
+        group=group, students=students, menus=menus, start=start, end=end,
         days=[x for x in days if x.weekday() not in (5, 6)],
         choices=[x[0] for x in PRESENCE_CHOICES], legend=PRESENCE_CHOICES[1:],
-        today=date.today())
+        today=date.today(), dt=True, need_ajax=True)
     return render(req, 'presence/group.html', ctx)
 
 
