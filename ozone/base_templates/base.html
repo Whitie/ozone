@@ -47,7 +47,10 @@
         <script src="{% static "js/bootstrap-2.3.0.min.js" %}"></script>
         <script src="{% static "js/bootbox-3.0.0.min.js" %}"></script>
         {% if dp %}<script src="{% static "js/bootstrap-datepicker.js" %}"></script>{% endif %}
-        {% if dt %}<script src="{% static "js/jquery.dataTables.min.js" %}"></script>{% endif %}
+        {% if dt %}
+        <script src="{% static "js/jquery.dataTables.min.js" %}"></script>
+        <script src="{% static "js/bootstrap-dataTables.js" %}"></script>
+        {% endif %}
         {% if need_ajax %}
         <script src="{% static "js/json2.js" %}"></script>
         <script src="{% static "js/csrf.js" %}"></script>
