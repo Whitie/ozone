@@ -500,9 +500,9 @@ def presence_edit(req, student_id):
     start = req.session.get('presence_start', date.today())
     end = req.session.get('presence_end', date.today())
     student, days = h.get_presence([_student], start, end)[0]
-    ctx = dict(page_title=_(u'Presence for Student'), menus=menus,
-        student=student, days=days, start=start, end=end,
-        choices=PRESENCE_CHOICES)
+    ctx = dict(page_title=_(u'Presence - {0}'.format(unicode(student))),
+        menus=menus, student=student, days=days, start=start, end=end,
+        choices=PRESENCE_CHOICES, dt=True, need_ajax=True)
     return render(req, 'presence/edit.html', ctx)
 
 
