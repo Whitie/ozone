@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block head %}{% endblock %}
 
@@ -11,13 +12,19 @@
         <!-- Left menu -->
         <div class="span2">
             {% block menu %}{% endblock %}
+            <!-- Update messages -->
+            <div class="well hide" id="upd_container">
+                <h3>{% trans "Changes" %}</h3>
+                <ul id="upd_messages">
+                </ul>
+            </div>
         </div>
         {% if messages %}
         <!-- Messages -->
         {% for msg in messages %}
         <div class="span8">
             <div class="alert{% if msg.tags %} alert-{{ msg.tags }}{% endif %}">
-                <button type="button" class="close" data-dismiss="alert">&#x00d7</button>
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
                 {{ msg }}
             </div>
         </div>
