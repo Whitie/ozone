@@ -3,6 +3,7 @@
 {% load i18n %}
 
 {% block content %}
+
 <div class="row-fluid">
     <div class="span8 offset1">
         <div class="well centered">
@@ -53,14 +54,11 @@
                     <td><a href="{% url "core-presence-edit" s.id %}" class="tt" title="{% trans "Click here to enter notes." %}">{{ s.lastname }}</a></td>
                     <td>{{ s.firstname }}</td>
                     {% for d in ds %}
-                    <td><a href="#" class="tt" title="{{ d.get_entry_display }}">
-                            <select id="p_{{ d.id }}"  class="{{ d.date|date:"Y-m-d" }} input-mini" name="presence" size="1" onchange="update_day({{ d.id }});">
-                                {% for e in choices %}<option value="{{ e }}"{% if e == d.entry %} selected="selected"{% endif %}>{{ e }}</option>{% endfor %}
-                            </select>
-                        </a><br>
-                        <a href="#" class="tt" title="{% trans "Enter lateness here." %}">
-                            <input id="l_{{ d.id }}" class="input-mini" type="text" size="2" maxlength="3"{% if d.lateness %} style="border:1px solid red;"{% endif %} name="lateness" value="{% if d.lateness %}{{ d.lateness }}{% endif %}" onchange="lateness_changed({{ d.id }});">
-                        </a>
+                    <td><select id="p_{{ d.id }}"  title="{{ d.get_entry_display }}" class="{{ d.date|date:"Y-m-d" }} input-mini" name="presence" size="1" onchange="update_day({{ d.id }});">
+                            {% for e in choices %}<option value="{{ e }}"{% if e == d.entry %} selected="selected"{% endif %}>{{ e }}</option>{% endfor %}
+                        </select>
+                        <br>
+                        <input id="l_{{ d.id }}" title="{% trans "Enter lateness here." %}" class="input-mini" type="text" size="2" maxlength="3"{% if d.lateness %} style="border:1px solid red;"{% endif %} name="lateness" value="{% if d.lateness %}{{ d.lateness }}{% endif %}" onchange="lateness_changed({{ d.id }});">
                         {% if d.note %}<a href="#" title="{{ d.note }}" class="tt">*</a>{% endif %}
                     </td>
                     {% endfor %}
@@ -92,12 +90,6 @@
     </div>
 </div>
 
-<div id="upd_messages">
-<h3>{% trans "Changes" %}</h3>
-<ul>
-</ul>
-</div>
-
 {% endblock %}
 
 {% block additional_js %}
@@ -119,8 +111,8 @@ function update_day(did) {
     $.post('{% url "core-api-presence-update" %}',
         {'_JSON_': JSON.stringify(json_data)},
         function(ret_data) {
-            $('#upd_messages').show('slow');
-            $('#upd_messages > ul').prepend('<li>'+ret_data['msg']+'</li>');
+            show_update_container();
+            add_update_message(ret_data['msg']);
             if (parseInt(lateness) > 0) {
                 $('#l_'+did).css('border', '1px solid red');
             } else {

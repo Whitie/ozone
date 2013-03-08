@@ -26,5 +26,19 @@ $(document).ready(
             var t = $(this);
             t.dataTable(datatable_options);
         });
+        $('#upd_close').click(function() {
+            $('#upd_container').hide();
+        });
     }
 );
+
+function show_update_container() {
+    var e = $('#upd_container');
+    if (e.is(':hidden')) {
+        e.show();
+    }
+}
+
+function add_update_message(msg) {
+    $('#upd_messages').prepend('<li>'+msg+'</li>');
+}
