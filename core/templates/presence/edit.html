@@ -1,6 +1,6 @@
 {% extends "index.html" %}
+{% load url from future %}
 {% load i18n %}
-{% load staticfiles %}
 
 {% block content %}
 <div class="row-fluid">
@@ -42,7 +42,7 @@
                 {% endfor %}
             </tbody>
         </table>
-        <form action="{% url core-presence-group student.group.id %}" method="post">
+        <form action="{% url "core-presence-group" student.group.id %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="start" value="{{ start|date:"d.m.Y" }}" />
             <input type="hidden" name="end" value="{{ end|date:"d.m.Y" }}" />
@@ -73,7 +73,7 @@ function update_day(did) {
     var note = $('#note_'+did).val();
     json_data = {'day_id': did, 'entry': entry, 'lateness': parseInt(late),
                  'note': note};
-    $.post('{% url core-api-presence-update-day %}',
+    $.post('{% url "core-api-presence-update-day" %}',
         {'_JSON_': JSON.stringify(json_data)},
         function(ret_data) {
             $('#instructor_'+did).text(ret_data['instructor']);

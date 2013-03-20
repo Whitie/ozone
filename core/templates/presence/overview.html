@@ -5,7 +5,7 @@
 {% block content %}
 <div class="row-fluid">
     <div class="span8 offset1 centered">
-        <div class="alert">
+        <div class="alert time_msg">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             {% trans "The first call of a list can take some time!" %}
         </div>
@@ -64,6 +64,9 @@
 {% block additional_js %}
 <script>
 $(function() {
+    setTimeout(function() {
+        $('.time_msg').alert('close');
+        }, 3000);
     $('.dateWidget').each(function() {
         var dp = $(this);
         dp.datepicker({
