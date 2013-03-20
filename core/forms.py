@@ -75,15 +75,18 @@ class StudentSearchForm(SearchForm):
 
 class ExtendedSearchForm(forms.Form):
     search_for_1 = forms.TypedChoiceField(coerce=get_search_field,
-        choices=SEARCHES_CHOICES)
-    search_1 = forms.CharField(max_length=50, widget=SearchInput5())
+        choices=SEARCHES_CHOICES,
+        widget=forms.Select(attrs={'class': 'span2'}))
+    search_1 = forms.CharField(max_length=50,
+        widget=SearchInput5(attrs={'class': 'span2'}))
     connect_with = forms.ChoiceField(choices=(
-        ('and', _(u'and')), ('or', _(u'or'))))
+        ('and', _(u'and')), ('or', _(u'or'))),
+        widget=forms.Select(attrs={'class': 'span1'}))
     search_for_2 = forms.TypedChoiceField(coerce=get_search_field,
         choices=[('', '-----')] + SEARCHES_CHOICES, empty_value='',
-        required=False)
-    search_2 = forms.CharField(max_length=50, widget=SearchInput5(),
-        required=False)
+        required=False, widget=forms.Select(attrs={'class': 'span2'}))
+    search_2 = forms.CharField(max_length=50, required=False,
+        widget=SearchInput5(attrs={'class': 'span2'}))
 
 
 class NoteForm(forms.Form):

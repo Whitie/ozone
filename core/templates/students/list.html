@@ -40,7 +40,7 @@
 {% for s in students %}
 <div class="row-fluid">
     <div class="span8 offset1">
-        <div class="well"><a id="company_{{ c.id }}"></a>
+        <div class="well"><a id="student_{{ s.id }}"></a>
             <h3>{{ forloop.counter }}. {{ s.lastname }}, {{ s.firstname }} ({{ s.company.short_name }})
                 {% if perms.core.change_student %}
                 <a class="btn btn-warning" href="{% url "admin:core_student_change" s.id %}"><i class="icon-edit"></i> {% trans "Edit" %}</a>

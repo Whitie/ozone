@@ -365,7 +365,9 @@ def list_all_students(req):
 @login_required
 def search_student(req):
     students = None
+    result = False
     if req.method == 'POST':
+        result = True
         form = ExtendedSearchForm(req.POST)
         if form.is_valid():
             cd = form.cleaned_data
@@ -378,8 +380,8 @@ def search_student(req):
             students = Student.objects.select_related().filter(search)
     else:
         form = ExtendedSearchForm({'search_for_1': u'lastname'})
-    ctx = dict(page_title=_(u'Extended Search'), menus=menus, form=form,
-        students=students)
+    ctx = dict(page_title=_(u'Search Student'), menus=menus,
+        form=form, students=students, result=result)
     return render(req, 'students/search.html', ctx)
 
 
