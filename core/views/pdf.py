@@ -147,7 +147,7 @@ def generate_presence_filled(req, gid, year, month):
     ctx = dict(page_title=_(u'Presence PDF-Generation'), menus=menus,
         instructor=instructor, course=course, school_days=school_days,
         group=group, show=show, ts=ts, form=form, companies=companies,
-        year=year, month=month, incl_sup=incl_sup)
+        year=year, month=month, incl_sup=incl_sup, need_ajax=True)
     return render(req, 'presence/generate_pdf.html', ctx)
 
 

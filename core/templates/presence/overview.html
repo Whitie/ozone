@@ -22,7 +22,7 @@
 {% for n, gr in groups %}
 <h3 style="margin-top:50px;">
     <a id="{{ n }}">{{ n }}</a>
-    <a class="btn btn-primary" href="{% url "core-presence-printouts" n %}">
+    <a class="btn btn-info btn-small" href="{% url "core-presence-printouts" n %}">
         {% trans "Old lists" %}
     </a>
 </h3>
