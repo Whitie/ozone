@@ -44,9 +44,11 @@
 
 {% if show %}
 <div class="row-fluid">
-    <div class="span3 offset1">
-        <div class="progress progress-striped">
-            <div class="bar" style="width:0%"></div>
+    <div class="span8 offset1">
+        <div style="width:400px;">
+            <div class="progress progress-striped" id="pbar">
+                <div class="bar" style="width:0%"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -92,16 +94,33 @@
 {% if show %}
 <script type="text/javascript">
 function start_bar() {
+    var pbar = $('#pbar');
     var bar = $('.bar');
-    width = bar.width();
-    alert(width);
-    setInterval(function() {
-        bar.width('100%');
+    bar.width(0);
+    pbar.addClass('active');
+    var progress = setInterval(function() {
+        var width = bar.width();
+        if (width < 360) {
+            bar.width(width+40);
+        }
+        bar.text(width/4 + '%');
+    }, 1000);
+    return progress;
+}
+
+function stop_bar(progress) {
+    var pbar = $('#pbar');
+    var bar = $('.bar');
+    clearInterval(progress);
+    bar.width(400);
+    bar.text('100%');
+    setTimeout(function() {
+        pbar.removeClass('active');
     }, 1000);
 }
 
 function generate_company(cid) {
-    start_bar();
+    var progress = start_bar();
     $('#but_'+cid).attr('disabled', 'disabled');
     var uid = {{ instructor.id }};
     var gid = {{ group.id }};
@@ -116,6 +135,7 @@ function generate_company(cid) {
         function(res_data) {
             link = '<a class="btn btn-info btn-mini" href="'+res_data['url']+'">'+res_data['name']+'</a>';
             $('#res_'+cid).append(link).show();
+            stop_bar(progress);
         }
     );
 }
