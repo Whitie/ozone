@@ -217,7 +217,8 @@ def generate_presence_pdf_all(req, data):
     ctx = get_presence_context(data['gid'], data['year'], data['month'])
     ctx['incl_sup'] = data['incl_sup']
     students = Student.objects.select_related().filter(
-        group=ctx['group']).order_by('company__name', 'lastname')
+        group=ctx['group'], finished=False).order_by(
+            'company__name', 'lastname')
     k = 0
     whole = 0
     for s in students:
