@@ -515,7 +515,7 @@ def presence_printouts(req, job):
     jobs = StudentGroup.objects.values_list('job', flat=True)
     jobs = list(set(jobs))
     jobs.sort()
-    ctx = dict(page_title=_(u'Presence %s' % job), menus=menus, jobs=jobs,
+    ctx = dict(page_title=_(u'Presences %s' % job), menus=menus, jobs=jobs,
         groups=groups)
     return render(req, 'presence/list_printouts.html', ctx)
 
