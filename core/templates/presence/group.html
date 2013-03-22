@@ -96,6 +96,8 @@
 <script>
 $(function() {
     datatable_options['bPaginate'] = false;
+    datatable_options['sScrollX'] = '100%';
+    datatable_options['bScrollCollapse'] = true;
     $('.dTable').each(function() {
         var t = $(this);
         t.dataTable(datatable_options);
