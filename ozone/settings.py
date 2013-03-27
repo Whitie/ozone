@@ -310,7 +310,9 @@ try:
     with open(SECRET_FILE) as fp:
         SECRET_KEY = fp.read().strip()
 except IOError:
-    SECRET_KEY = os.urandom(40)
+    # Hack for django 1.5 to ensure only ascii in SECRET_KEY
+    from base64 import b64encode
+    SECRET_KEY = b64encode(os.urandom(50))
     with open(SECRET_FILE, 'w') as fp:
         fp.write(SECRET_KEY)
     try:
