@@ -540,8 +540,9 @@ def get_next_birthdays(req):
             s.today = (s.birthdate.month, s.birthdate.day) == today
             s.bdate = d
             students.append(s)
-    ctx = dict(page_title=_(u'Next Birthdays'), menus=menus, users=users,
-        students=students, choice=choice, days=days, today=start)
+    ctx = dict(page_title=_(u'Birthdays, next {0} days'.format(days)),
+        menus=menus, users=users, students=students, choice=choice, days=days,
+        today=start)
     return render(req, 'colleagues/birthdays.html', ctx)
 
 

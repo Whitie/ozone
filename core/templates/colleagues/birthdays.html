@@ -2,43 +2,50 @@
 {% load i18n %}
 
 {% block content %}
-<h2 class="headline">
-{% blocktrans with d=days %}Next {{ d }} days{% endblocktrans %}
-</h2>
-<form action="" method="get">
-<p>{% trans "Show next" %} <select name="days" size="1">
-    {% for c in choice %}
-    <option value="{{ c }}"{% if c == days %} selected="selected"{% endif %}>{{ c }}</option>
-    {% endfor %}
-    </select> {% trans "days" %}
-    <input type="submit" value="{% trans "go" %}" />
-</p>
-</form>
-<h3>{% trans "Colleagues" %}</h3>
-<ul>
-    {% for u in users %}
-    <li>
-        <span{% if u.today %} style="background-color:yellow;"{% endif %}>
-            <strong>{{ u.bdate|date:"D j. E" }}</strong>: {{ u.user.last_name }}, {{ u.user.first_name }}
-        </span>
-    </li>
-    {% empty %}
-    <li>{% trans "No person found" %}.</li>
-    {% endfor %}
-</ul>
+<div class="row-fluid">
+    <div class="span10 centered">
+        <form action="" method="get" class="form-inline">
+            <label>{% trans "Display: next" %}</label>
+            <select name="days" size="1" class="span1">
+                {% for c in choice %}
+                <option value="{{ c }}"{% if c == days %} selected="selected"{% endif %}>{{ c }}</option>
+                {% endfor %}
+            </select> {% trans "days" %}
+            <button class="btn" type="submit">{% trans "go" %}</button>
+        </form>
+    </div>
+</div>
 
-<h3>{% trans "Students" %}</h3>
-<ul>
-    {% for s in students %}
-    <li>
-        <span{% if s.today %} style="background-color:yellow;"{% endif %}>
-            <strong>{{ s.bdate|date:"D j. E" }}</strong>: {{ s.lastname }}, {{ s.firstname }} ({{ s.group }})
-        </span>
-    </li>
-    {% empty %}
-    <li>{% trans "No person found" %}.</li>
-    {% endfor %}
-</ul>
+<div class="row-fluid">
+    <div class="span5 offset1">
+        <h3>{% trans "Colleagues" %}</h3>
+        <ul>
+            {% for u in users %}
+            <li>
+                <span{% if u.today %} style="background-color:yellow;"{% endif %}>
+                <strong>{{ u.bdate|date:"D j. E" }}</strong>: {{ u.user.last_name }}, {{ u.user.first_name }}
+                </span>
+            </li>
+            {% empty %}
+            <li>{% trans "No person found" %}.</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="span5">
+        <h3>{% trans "Students" %}</h3>
+        <ul>
+            {% for s in students %}
+            <li>
+                <span{% if s.today %} style="background-color:yellow;"{% endif %}>
+                    <strong>{{ s.bdate|date:"D j. E" }}</strong>: {{ s.lastname }}, {{ s.firstname }} ({{ s.group }})
+                </span>
+            </li>
+            {% empty %}
+            <li>{% trans "No person found" %}.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 
 {% endblock %}
 
