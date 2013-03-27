@@ -86,7 +86,7 @@ def internal_phonelist(req):
     profiles = UserProfile.objects.select_related().filter(external=False
         ).exclude(user__username='admin').order_by('user__last_name')
     ctx = dict(page_title=_(u'Internal Phonelist'), menus=menus,
-        profiles=profiles)
+        profiles=profiles, dt=True)
     return render(req, 'colleagues/phonelist.html', ctx)
 
 
