@@ -77,7 +77,7 @@ def edit_profile(req):
         messages.success(req, u'Alle Änderungen gespeichert.')
     else:
         form = ProfileForm(instance=profile)
-    ctx = dict(page_title=_(u'My Profile'), menus=menus, form=form)
+    ctx = dict(page_title=_(u'My Profile'), menus=menus, form=form, dp=True)
     return render(req, 'colleagues/profile.html', ctx)
 
 
