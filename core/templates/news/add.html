@@ -1,11 +1,25 @@
 {% extends "index.html" %}
+{% load url from future %}
 {% load i18n %}
 
 {% block content %}
-<form method="post" action="{% url core-add-news %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <input type="submit" value="{% trans "Save" %}" />
-</form>
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <form method="post" action="{% url "core-add-news" %}">
+            {% csrf_token %}
+            <fieldset>
+                <legend>{% trans "New Message" %}</legend>
+                <label>{{ form.title.label }}</label>
+                {{ form.title }}
+                <label>{{ form.text.label }}</label>
+                {{ form.text }}
+                <label type="checkbox">
+                    {{ form.public }} {{ form.public.label }}
+                </label>
+                <button class="btn" type="submit">{% trans "Save" %}</button>
+            </fieldset>
+        </form>
+    </div>
+</div>
 {% endblock %}
 

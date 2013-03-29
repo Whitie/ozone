@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from django.forms.widgets import CheckboxSelectMultiple
+from django.forms.widgets import CheckboxSelectMultiple, TextInput, Textarea
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
@@ -55,6 +55,10 @@ class NewsForm(forms.ModelForm):
     class Meta:
         model = News
         exclude = ('author', 'date')
+        widgets = {
+            'title': TextInput(attrs={'class': 'input-xxlarge'}),
+            'text': Textarea(attrs={'class': 'input-xxlarge'}),
+        }
 
 
 class ProfileForm(forms.ModelForm):
