@@ -35,7 +35,6 @@ extra_menu = Menu(_(u'Extra'),
 )
 
 news_menu = Menu(_(u'News'),
-    ('core-index', _(u'Read News')),
     ('core-add-news', _(u'Write News')),
 )
 
