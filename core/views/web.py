@@ -216,6 +216,10 @@ def do_login(req):
                 p = user.get_profile()
                 if user.is_active and p.can_login:
                     login(req, user)
+                    if user.is_superuser:
+                        count = utils.remove_old_sessions()
+                        messages.success(req,
+                            u'{0} alte Sitzungen gelöscht'.format(count))
                     messages.success(req, u'Login akzeptiert.')
                     return redirect(next_page)
                 else:

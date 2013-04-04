@@ -3,10 +3,9 @@
 from datetime import datetime, date, timedelta
 
 from django.conf import settings
-from django.contrib.sessions.models import Session
 from django.db.models import Q
 
-from core.utils import json_rpc
+from core.utils import json_rpc, remove_old_sessions
 from core.models import PresenceDay, JournalEntry, Student
 
 
@@ -90,10 +89,8 @@ def get_entries_for_student(req, data):
 
 @json_rpc
 def clean_sessions(req, data=None):
-    q = Session.objects.filter(expire_date__lt=datetime.now())
-    count = q.count()
-    q.delete()
-    return dict(msg=u'Es wurden %d alte Sitzungen gelöscht.' % count)
+    session_count = remove_old_sessions()
+    return dict(msg=u'Es wurden %d alte Sitzungen gelöscht.' % session_count)
 
 
 @json_rpc
