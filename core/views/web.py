@@ -344,7 +344,7 @@ def list_students(req, startchar='', archive=False):
     ctx = dict(page_title=title.format(s=startchar or '-', n=students.count()),
         students=students, menus=menus,
         archive=archive, startchar=startchar, chars=string.ascii_uppercase,
-        form=form)
+        form=form, need_ajax=True)
     return render(req, 'students/list.html', ctx)
 
 
@@ -415,7 +415,7 @@ def group_details(req, gid):
             nr=group.school_nr))
     else:
         ptitle = _(u'Group - {name}'.format(name=group.name()))
-    ctx = dict(page_title=ptitle, group=group, menus=menus)
+    ctx = dict(page_title=ptitle, group=group, menus=menus, need_ajax=True)
     return render(req, 'students/group_detail.html', ctx)
 
 

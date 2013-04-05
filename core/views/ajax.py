@@ -4,6 +4,7 @@ from datetime import datetime, date, timedelta
 
 from django.conf import settings
 from django.db.models import Q
+from django.contrib import messages
 
 from core.utils import json_rpc, remove_old_sessions
 from core.models import PresenceDay, JournalEntry, Student
@@ -102,3 +103,26 @@ def clean_presence(req, data=None):
     count = q.count()
     q.delete()
     return dict(msg=u'Es wurden %d Anwesenheitstage gelöscht.' % count)
+
+
+@json_rpc
+def delete_student(req, data):
+    sid = data['student_id']
+    if req.user.has_perm('core.delete_student'):
+        try:
+            s = Student.objects.get(id=sid)
+            name = u'{0}, {1}'.format(s.lastname, s.firstname)
+            pdays = s.presence_days.all()
+            c = pdays.count()
+            pdays.delete()
+            s.journal_entries.all().delete()
+            s.delete()
+            messages.success(req, u'Azubi {name} und {pdays} '
+                u'Anwesenheitstage wurden gelöscht!'.format(name=name,
+                    pdays=c))
+        except Exception as e:
+            messages.error(req,
+                u'Beim Löschen ist ein Fehler aufgetreten: {0}'.format(e))
+    else:
+        messages.error(req, u'Unzureichende Berechtigungen!')
+    return dict()

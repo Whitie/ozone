@@ -46,9 +46,9 @@
                 <a class="btn btn-warning" href="{% url "admin:core_student_change" s.id %}"><i class="icon-edit"></i> {% trans "Edit" %}</a>
                 {% endif %}
                 {% if perms.core.delete_student %}
-                <a class="btn btn-danger pull-right" href="{% url "admin:core_student_delete" s.id %}">
+                <button type="button" class="btn btn-mini btn-danger pull-right" onclick="delete_student({{ s.id }}, '{{ s.lastname }}, {{ s.firstname }}');">
                     <i class="icon-trash"></i> {% trans "Delete" %}
-                </a>
+                </button>
                 {% endif %}
             </h3>
             {% include "students/details.html" %}

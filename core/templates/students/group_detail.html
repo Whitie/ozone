@@ -35,9 +35,9 @@
                     </a>
                     {% endif %}
                     {% if perms.core.delete_student %}
-                    <a class="btn btn-mini btn-danger pull-right" href="{% url "admin:core_student_delete" s.id %}">
+                    <button type="button" class="btn btn-mini btn-danger pull-right" onclick="delete_student({{ s.id }}, '{{ s.lastname }}, {{ s.firstname }}');">
                         <i class="icon-trash"></i> {% trans "Delete" %}
-                    </a>
+                    </button>
                     {% endif %}
                 </li>
                 {% endfor %}
