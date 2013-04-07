@@ -282,6 +282,15 @@ class StudentGroup(models.Model):
     def __unicode__(self):
         return self.name()
 
+    def active_count(self):
+        return self.active_students().count()
+
+    def active_students(self):
+        return self.students.filter(finished=False)
+
+    def finished_count(self):
+        return self.students.all().count() - self.active_count()
+
     def finished(self):
         return all([x.finished for x in self.students.all()])
 

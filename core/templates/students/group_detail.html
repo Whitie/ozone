@@ -23,7 +23,7 @@
             <h4>{% trans "Begin" %}: {{ group.start_date|date:"DATE_FORMAT" }}</h4>
 
             <ol>
-                {% for s in group.students.all %}
+                {% for s in group.active_students %}
                 <li>
                     <a class="tt" title="{% trans "Click for details." %}" href="{% url "core-students" s.first %}">{{ s.lastname }}</a>, {{ s.firstname }};
                     <a class="tt" title="{% trans "Click for details." %}" href="{% url "core-company-detail" s.company.id %}">{{ s.company.name }}</a>;
@@ -35,13 +35,21 @@
                     </a>
                     {% endif %}
                     {% if perms.core.delete_student %}
-                    <a class="btn btn-mini btn-danger pull-right" href="{% url "admin:core_student_delete" s.id %}">
+                    <button type="button" class="btn btn-mini btn-danger pull-right" onclick="delete_student({{ s.id }}, '{{ s.lastname }}, {{ s.firstname }}');">
                         <i class="icon-trash"></i> {% trans "Delete" %}
-                    </a>
+                    </button>
                     {% endif %}
                 </li>
                 {% endfor %}
             </ol>
+            {% if group.finished_count %}
+            <p class="text-info">{% blocktrans count students=group.finished_count %}
+                One student has finished yet.
+                {% plural %}
+                {{ students }} students have finished yet.
+                {% endblocktrans %}
+            </p>
+            {% endif %}
         </div>
     </div>
 </div>

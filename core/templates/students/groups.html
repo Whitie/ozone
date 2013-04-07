@@ -35,7 +35,7 @@
                 <td style="text-align:center;">
                     {{ g.start_date|date:"D" }}, <time>{{ g.start_date|date:"SHORT_DATE_FORMAT" }}</time>
                 </td>
-                <td style="text-align:center;">{{ g.students.count }}</td>
+                <td style="text-align:center;">{{ g.active_count }}</td>
                 <td style="text-align:center;">{{ g.school_nr }}</td>
                 <td style="text-align:center;">
                     <a class="tt" title="{% trans "Export names to excel" %}" href="{% url "core-group-to-excel" g.id %}"><img src="{% static "img/application-vnd.ms-excel.png" %}"></a>

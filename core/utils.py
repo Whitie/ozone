@@ -12,6 +12,7 @@ from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.decorators import user_passes_test
 from django.core.exceptions import PermissionDenied
+from django.contrib.sessions.models import Session
 
 
 def named(verbose_name):
@@ -107,3 +108,10 @@ def get_edu_year(start):
     elif days < 1460:
         return 4
     return 5
+
+
+def remove_old_sessions():
+    q = Session.objects.filter(expire_date__lt=datetime.now())
+    count = q.count()
+    q.delete()
+    return count

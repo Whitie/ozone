@@ -42,3 +42,20 @@ function show_update_container() {
 function add_update_message(msg) {
     $('#upd_messages').prepend('<li>'+msg+'</li>');
 }
+
+function delete_student(student_id, name) {
+    var dat = {'student_id': student_id};
+    bootbox.confirm('Wollen Sie wirklich '+name+' mit allen gespeicherten Anwesenheiten löschen?',
+        function(result) {
+            if (result == true) {
+                $.post('/core/api/student/delete/', {'_JSON_': JSON.stringify(dat)},
+                    function(res_data) {
+                        location.reload();
+                    });
+            } else {
+                show_update_container();
+                add_update_message('Löschen abgebrochen!');
+            }
+        }
+    );
+}
