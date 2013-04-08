@@ -27,7 +27,7 @@
             <td>{{ e.event|default:"-" }}</td>
             <td>{{ e.text }}</td>
             <td>
-                {% if e.has_media %}<a href="{% url core-entry-media e.id %}">{% trans "Show" %}</a>{% else %}-{% endif %}
+                {% if e.has_media %}<a href="{% url "core-entry-media" e.id %}">{% trans "Show" %}</a>{% else %}-{% endif %}
             </td>
         </tr>
         {% endfor %}

@@ -5,7 +5,7 @@
 {% block content %}
 <div id="left" style="width:50%;float:left;clear:right;">
 <h2 class="headline">{% trans "New Entry" %}</h2>
-<form action="{% url core-add-entry journal.id %}" method="post" enctype="multipart/form-data">
+<form action="{% url "core-add-entry" journal.id %}" method="post" enctype="multipart/form-data">
 {% csrf_token %}
 <input type="hidden" name="journal_id" id="journal_id" value="{{ journal.id }}" />
 <table style="width:100%;">
