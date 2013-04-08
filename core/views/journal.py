@@ -57,8 +57,8 @@ def add_journal(req):
     for j in journals:
         j.userlist = [x.last_name for x in j.instructors.all()]
     form = NewJournalForm()
-    ctx = dict(page_title=_(u'Add Journal'), menus=menus, journals=journals,
-        form=form)
+    ctx = dict(page_title=_(u'Add new Journal for Group'),
+        menus=menus, journals=journals, form=form)
     return render(req, 'journal/add.html', ctx)
 
 
