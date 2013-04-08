@@ -4,8 +4,8 @@
 {% block title %}{{ title }} | {% trans 'Ozone site admin' %}{% endblock %}
 
 {% block branding %}
-    <a href="{% url admin:index %}" class="brand" id="site-name">{% trans 'Ozone administration' %}</a>
-    <a href="{% url core-index %}" class="brand">{% trans 'Ozone Home' %}</a>
+    <a href="{% url "admin:index" %}" class="brand" id="site-name">{% trans 'Ozone administration' %}</a>
+    <a href="{% url "core-index" %}" class="brand">{% trans 'Ozone Home' %}</a>
 {% endblock %}
 
 {% block nav-global %}{% endblock %}
