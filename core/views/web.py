@@ -361,8 +361,9 @@ def list_all_students(req):
         students = paginator.page(page)
     except (EmptyPage, InvalidPage):
         students = paginator.page(paginator.num_pages)
-    ctx = dict(page_title=_(u'List of all students'), menus=menus,
-        students=students, page=page, start=(page - 1) * 30 + 1)
+    ctx = dict(page_title=_(u'List of all students ({0})'.format(
+            students.paginator.count)),
+        menus=menus, students=students, page=page, start=(page - 1) * 30 + 1)
     return render(req, 'students/list_all.html', ctx)
 
 
