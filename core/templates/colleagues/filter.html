@@ -1,6 +1,6 @@
 {% extends "index.html" %}
+{% load url from future %}
 {% load i18n %}
-{% load staticfiles %}
 
 {% block content %}
 
@@ -9,24 +9,24 @@
         <div class="btn-group">
             <a class="btn disabled" href="#">{% trans "Filter" %}:</a>
             {% if filter == "all" %}
-            <a class="btn btn-info" href="{% url core-colleagues-filter "internal" %}">
+            <a class="btn btn-info" href="{% url "core-colleagues-filter" "internal" %}">
                 {% trans "Internal" %}
             </a>
-            <a class="btn btn-info" href="{% url core-colleagues-filter "external" %}">
+            <a class="btn btn-info" href="{% url "core-colleagues-filter" "external" %}">
                 {% trans "External" %}
             </a>
             {% elif filter == "internal" %}
-            <a class="btn btn-info" href="{% url core-colleagues-filter "all" %}">
+            <a class="btn btn-info" href="{% url "core-colleagues-filter" "all" %}">
                 {% trans "All" %}
             </a>
-            <a class="btn btn-info" href="{% url core-colleagues-filter "external" %}">
+            <a class="btn btn-info" href="{% url "core-colleagues-filter" "external" %}">
                 {% trans "External" %}
             </a>
             {% else %}
-            <a class="btn btn-info" href="{% url core-colleagues-filter "all" %}">
+            <a class="btn btn-info" href="{% url "core-colleagues-filter" "all" %}">
                 {% trans "All" %}
             </a>
-            <a class="btn btn-info" href="{% url core-colleagues-filter "internal" %}">
+            <a class="btn btn-info" href="{% url "core-colleagues-filter" "internal" %}">
                 {% trans "Internal" %}
             </a>
             {% endif %}
