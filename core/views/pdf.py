@@ -17,6 +17,7 @@ from django.contrib import messages
 from core import utils
 from core import latex
 from core.menu import menus
+from core.views import helper as h
 from core.models import (Student, StudentGroup, PresencePrintout, Company,
                          PresenceDay, UserProfile)
 from core.forms import PresenceForm

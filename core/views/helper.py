@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from datetime import timedelta
+from datetime import date, timedelta
 
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
@@ -8,21 +8,37 @@ from django.contrib.auth.models import User
 from core.models import StudentGroup, PresenceDay, Student
 
 
-def get_presence(students, start, end):
+def get_presence(students, start, end, pdf=False):
     l = []
     dt = end - start
+    past = end < date.today()
+    print past
     for s in students:
         tmp = []
         for i in range(dt.days + 1):
             d = start + timedelta(days=i)
             if d.weekday() not in (5, 6):
-                day, created = PresenceDay.objects.get_or_create(student=s,
-                    date=d)
-                if created:
-                    day.save()
-                tmp.append(day)
-        l.append((s, tmp))
-    return l
+                if not past:
+                    day, created = PresenceDay.objects.get_or_create(student=s,
+                        date=d)
+                    if created:
+                        day.save()
+                    tmp.append(day)
+                else:
+                    try:
+                        day = PresenceDay.objects.get(student=s, date=d)
+                        tmp.append(day)
+                    except PresenceDay.DoesNotExist:
+                        pass
+        if not past:
+            l.append((s, tmp))
+        else:
+            if tmp and any([x.entry for x in tmp]):
+                l.append((s, tmp))
+    if pdf:
+        return [x[0] for x in tmp]
+    else:
+        return l
 
 
 def get_studentgroups():
