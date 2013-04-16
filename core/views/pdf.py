@@ -100,9 +100,7 @@ def generate_phonelist(req):
 @login_required
 def generate_presence_clean(req, gid, year, month):
     ctx = get_presence_context(int(gid), int(year), int(month))
-    ctx['students'] = Student.objects.filter(
-        group=ctx['group'], finished=False
-        ).order_by('company__short_name', 'lastname')
+    ctx['students'] = h.sort_students_for_presence(ctx['group'].students)
     ctx['s'] = latex.get_latex_settings()
     ctx['schooldays'] = u''
     ctx['instructor'] = unicode(req.user.get_profile())

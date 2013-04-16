@@ -70,6 +70,31 @@ def get_presence(students, start, end):
     return l
 
 
+def sort_students_for_presence(students):
+    """Sort students in a group by their cooperation contracts.
+
+    :parameters:
+        students : QuerySet
+            Queryset of students from one group.
+
+    :returns: List of the given Student objects sorted by full coop,
+              partly coop and undefined coop.
+    """
+    no_contract = []
+    full = []
+    partly = []
+    for s in students.filter(finished=False).order_by('company__short_name',
+                                                      'lastname'):
+        if s.contract is not None:
+            if s.contract.full:
+                full.append(s)
+            else:
+                partly.append(s)
+        else:
+            no_contract.append(s)
+    return full + partly + no_contract
+
+
 def get_studentgroups():
     return [(0, _(u'All Groups'))] + [(x.id, x.name()) for x in
                                       StudentGroup.objects.all()]
