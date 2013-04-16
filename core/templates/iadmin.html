@@ -30,6 +30,23 @@
     </div>
 </div>
 
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <h1>Ozone 3.0 migration<small>use once</small></h1>
+        <div class="well well-small">
+            <h3>{% trans "Migrate presence from '*' to 'A'." %}
+                <button class="btn btn-warning pull-right" onclick="migrate_3_0('presence');">
+                    <i class="icon-wrench"></i> {% trans "Migrate" %}
+                </button>
+            </h3>
+            <p id="migrate30_result"></p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block additional_js %}
 <script type="text/javascript">
 function clean_sessions() {
     $.post('{% url "core-api-clean-sessions" %}', function(ret_data) {
@@ -41,6 +58,15 @@ function clean_sessions() {
 function clean_presence() {
     $.post('{% url "core-api-clean-presence" %}', function(ret_data) {
         $('#presence_result').text(ret_data['msg']);
+        }
+    );
+}
+function migrate_3_0(what) {
+    pdata = {'what': what};
+    $.post('{% url "core-api-migrate30" %}',
+        {'_JSON_': JSON.stringify(pdata)},
+        function (ret_data) {
+            $('#migrate30_result').text(ret_data['msg']);
         }
     );
 }

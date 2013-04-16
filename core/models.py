@@ -486,7 +486,7 @@ class JournalMedia(models.Model):
 
 PRESENCE_CHOICES = (
     (u'', u'leer'),
-    (u'*', u'anwesend'),
+    (u'A', u'anwesend'),
     (u'T', u'nur telefonisch entschuldigt'),
     (u'|', u'fehlt unentschuldigt'),
     (u'K', u'krank (Nachweis vorhanden)'),

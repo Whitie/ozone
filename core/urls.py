@@ -87,6 +87,7 @@ urlpatterns += patterns('core.views.ajax',
         name='core-api-clean-sessions'),
     url(r'^api/iadmin/clean_presence/$', 'clean_presence',
         name='core-api-clean-presence'),
+    url(r'^api/iadmin/migrate30/', 'migrate30', name='core-api-migrate30'),
     url(r'^api/student/delete/$', 'delete_student'),
 )
 

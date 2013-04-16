@@ -106,6 +106,19 @@ def clean_presence(req, data=None):
 
 
 @json_rpc
+def migrate30(req, data=None):
+    what = data['what']
+    if what == u'presence':
+        q = PresenceDay.objects.filter(entry=u'*')
+        c = q.count()
+        for d in q:
+            d.entry = u'A'
+            d.save()
+        return dict(msg=u'{0} Datensätze wurden geändert.'.format(c))
+    return dict(msg=u'Falscher Befehl.')
+
+
+@json_rpc
 def delete_student(req, data):
     sid = data['student_id']
     if req.user.has_perm('core.delete_student'):

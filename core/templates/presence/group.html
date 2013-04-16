@@ -24,7 +24,7 @@
                 {% for d in days %}<option value="{{ d|date:"Y-m-d" }}"{% if d == today %} selected="selected"{% endif %}>{{ d|date:"d.m." }}</option>{% endfor %}
             </select>
             <select class="span1" id="p_all" size="1">
-                {% for e in choices %}<option value="{{ e }}"{% if e == "*" %} selected="selected"{% endif %}>{{ e }}</option>{% endfor %}
+                {% for e in choices %}<option value="{{ e }}"{% if e == "A" %} selected="selected"{% endif %}>{{ e }}</option>{% endfor %}
             </select>
             <button class="btn" type="button" onclick="update_all();" title="{% trans "Sets the presence for all EMPTY fields." %}">
                 {% trans "Set now" %}
