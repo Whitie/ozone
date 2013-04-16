@@ -38,14 +38,11 @@ def make_latex(ctx, template, company=None):
     s = latex.get_latex_settings()
     tpl = env.get_template(template)
     if company is not None:
-        name = '{0}_{1}_{2}'.format(
-            company.short_name.replace('/', '_').encode('ascii', 'replace'),
-            unicode(ctx['group']).replace('/', '_').encode('ascii', 'replace'),
+        name = u'{0}_{1}_{2}'.format(company.short_name, unicode(ctx['group']),
             template)
     else:
-        group_name = unicode(ctx['group']).replace(
-            '/', '_').encode('ascii', 'replace')
-        name = '{0}_{1}'.format(group_name, template)
+        name = '{0}_{1}'.format(unicode(ctx['group']), template)
+    name = utils.secure_filename(name)
     filename = os.path.join(s['build_dir'], name)
     try:
         os.remove(filename)
@@ -58,7 +55,10 @@ def make_latex(ctx, template, company=None):
 
 
 def get_presence_context(gid, year, month):
-    group = StudentGroup.objects.get(id=gid)
+    try:
+        group = StudentGroup.objects.get(id=gid)
+    except:
+        group = None
     ctx = dict(group=group)
     days_of_month = monthrange(year, month)[1]
     start = date(year, month, 1)
@@ -155,13 +155,22 @@ def generate_presence_filled(req, gid, year, month):
 @utils.json_rpc
 def generate_presence_pdf(req, data):
     user = User.objects.get(id=data['uid'])
-    company = Company.objects.get(id=data['cid'])
     ctx = get_presence_context(data['gid'], data['year'], data['month'])
+    student_filter = dict(group=ctx['group'], finished=False)
+    student_sort = ['lastname']
+    if data['cid']:
+        company = Company.objects.get(id=data['cid'])
+        student_filter['company'] = company
+    else:
+        company = Company.objects.get(short_name=u'Alle')
+        student_sort.insert(0, 'company__name')
     ctx['incl_sup'] = data['incl_sup']
     ctx['company'] = company
-    students = Student.objects.select_related().filter(
-        group=ctx['group'], company=company, finished=False
-        ).order_by('lastname')
+    start = date(data['year'], data['month'], 1)
+    end = start + timedelta(days=30)
+    _students = Student.objects.select_related().filter(**student_filter
+        ).order_by(*student_sort)
+    students = [x[0] for x in h.get_presence(_students, start, end)]
     k = 0
     whole = 0
     for s in students:
@@ -171,9 +180,11 @@ def generate_presence_pdf(req, data):
             try:
                 d = PresenceDay.objects.get(student=s,
                     date=date(data['year'], data['month'], num))
+                if d.entry == u'A':
+                    d.entry = u'*'
                 if d.entry in (u'K', u'T'):
                     k += 1
-                elif d.entry in (u'*',):
+                elif d.entry in (u'*', u'A'):
                     whole += 1
                 if d.lateness:
                     days.append(u'$%s_{%d}$' % (
@@ -201,9 +212,8 @@ def generate_presence_pdf(req, data):
     ctx['empty'] = False
     fullname = make_latex(ctx, 'awhl.tex', company)
     filename = os.path.split(fullname)[1]
-    d = date(data['year'], data['month'], 1)
     printout, created = PresencePrintout.objects.get_or_create(
-        company=company, group=ctx['group'], date=d)
+        company=company, group=ctx['group'], date=start)
     with open(fullname, 'rb') as fp:
         content = ContentFile(fp.read())
     printout.pdf.save(filename, content)
@@ -211,61 +221,5 @@ def generate_presence_pdf(req, data):
     return {'url': printout.pdf.url, 'name': filename}
 
 
-# Hack to have list for all companies, code will be cleaned in 3.0
-@utils.json_rpc
-def generate_presence_pdf_all(req, data):
-    user = User.objects.get(id=data['uid'])
-    ctx = get_presence_context(data['gid'], data['year'], data['month'])
-    ctx['incl_sup'] = data['incl_sup']
-    students = Student.objects.select_related().filter(
-        group=ctx['group'], finished=False).order_by(
-            'company__name', 'lastname')
-    k = 0
-    whole = 0
-    for s in students:
-        days = []
-        notes = []
-        for num in ctx['day_nums']:
-            try:
-                d = PresenceDay.objects.get(student=s,
-                    date=date(data['year'], data['month'], num))
-                if d.entry in (u'K', u'T'):
-                    k += 1
-                elif d.entry in (u'*',):
-                    whole += 1
-                if d.lateness:
-                    days.append(u'$%s_{%d}$' % (
-                        latex.tex_escape(d.entry), d.lateness))
-                else:
-                    days.append(latex.tex_escape(d.entry))
-                if d.note:
-                    notes.append(u'{0} {1}'.format(
-                        d.date.strftime('%d.%m.'), d.note))
-            except PresenceDay.DoesNotExist:
-                days.append(u'')
-        if notes:
-            days.append(u'\\tiny{%s}' %
-                (latex.tex_escape(u', '.join(notes)),))
-        else:
-            days.append(u'')
-        s.days = days
-    ctx['students'] = students
-    ctx['k'] = k
-    ctx['whole'] = whole
-    ctx['s'] = latex.get_latex_settings()
-    ctx['schooldays'] = data['sdays']
-    ctx['instructor'] = unicode(user.get_profile())
-    ctx['course'] = data['course']
-    ctx['empty'] = False
-    company = Company.objects.get(short_name=u'Alle')
-    ctx['company'] = company
-    fullname = make_latex(ctx, 'awhl.tex', company)
-    filename = os.path.split(fullname)[1]
-    d = date(data['year'], data['month'], 1)
-    printout, created = PresencePrintout.objects.get_or_create(
-        company=company, group=ctx['group'], date=d)
-    with open(fullname, 'rb') as fp:
-        content = ContentFile(fp.read())
-    printout.pdf.save(filename, content)
-    printout.save()
-    return {'url': printout.pdf.url, 'name': filename}
+# Alias will be removed in 4.0
+generate_presence_pdf_all = generate_presence_pdf

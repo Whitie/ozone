@@ -150,7 +150,7 @@ function generate_all() {
     var sdays = ['{{ school_days|join:"', '" }}'];
     var year = {{ year }};
     var month = {{ month }};
-    dat = {'uid': uid, 'gid': gid, 'course': course,
+    dat = {'uid': uid, 'gid': gid, 'course': course, 'cid': 0,
         'sdays': sdays, 'year': year, 'month': month, 'incl_sup': incl_sup};
     $.post('{% url "core-api-pdf-presence-all" %}',
         {'_JSON_': JSON.stringify(dat)},

@@ -8,37 +8,66 @@ from django.contrib.auth.models import User
 from core.models import StudentGroup, PresenceDay, Student
 
 
-def get_presence(students, start, end, pdf=False):
+def get_presence_day(day, student, in_past):
+    """Get one presence day for one student. If day is in the future it will
+    be created. If day is in the past and don't exists the return value is
+    None.
+
+    :parameters:
+        day : date
+            Date (day) to get the PresenceDay object for.
+        student : Student
+            Student object to get the presence day for.
+        in_past : bool
+            Indicates if day is in the past.
+
+    :returns: PresenceDay object or None
+    """
+    if in_past:
+        try:
+            pday = PresenceDay.objects.get(student=student, date=day)
+            return pday
+        except PresenceDay.DoesNotExist:
+            return
+    else:
+        pday, created = PresenceDay.objects.get_or_create(student=student,
+            date=day)
+        if created:
+            pday.save()
+        return pday
+
+
+def get_presence(students, start, end):
+    """Get all presence days for a list of students in a time period.
+
+    :parameters:
+        students : list
+            List of Student objects.
+        start : date
+            Start date for the list.
+        end : date
+            End date for the list.
+
+    :returns: List of 2-tuples with the student as first element and a list
+              of all found presence days as the second element.
+    """
     l = []
     dt = end - start
     past = end < date.today()
-    print past
     for s in students:
         tmp = []
         for i in range(dt.days + 1):
             d = start + timedelta(days=i)
             if d.weekday() not in (5, 6):
-                if not past:
-                    day, created = PresenceDay.objects.get_or_create(student=s,
-                        date=d)
-                    if created:
-                        day.save()
+                day = get_presence_day(d, s, past)
+                if day is not None:
                     tmp.append(day)
-                else:
-                    try:
-                        day = PresenceDay.objects.get(student=s, date=d)
-                        tmp.append(day)
-                    except PresenceDay.DoesNotExist:
-                        pass
         if not past:
             l.append((s, tmp))
         else:
             if tmp and any([x.entry for x in tmp]):
                 l.append((s, tmp))
-    if pdf:
-        return [x[0] for x in tmp]
-    else:
-        return l
+    return l
 
 
 def get_studentgroups():
