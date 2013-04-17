@@ -7,7 +7,7 @@ from django.db.models import Q
 from django.contrib import messages
 
 from core.utils import json_rpc, remove_old_sessions
-from core.models import PresenceDay, JournalEntry, Student
+from core.models import PresenceDay, JournalEntry, Student, Company
 
 
 @json_rpc
@@ -86,6 +86,14 @@ def get_entries_for_student(req, data):
     ret['entries'] = tmp
     ret['has_data'] = bool(tmp)
     return ret
+
+
+@json_rpc
+def get_contracts(req, data=None):
+    company = Company.objects.select_related().get(id=data['cid'])
+    contracts = [{'id': x.id, 'text': unicode(x)} for x in
+        company.cooperations.all()]
+    return dict(res=contracts)
 
 
 @json_rpc

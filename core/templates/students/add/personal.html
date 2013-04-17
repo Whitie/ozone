@@ -1,0 +1,43 @@
+{% extends "students/add/base.html" %}
+{% load i18n %}
+
+{% block form %}
+<div class="span3 offset2">
+    <fieldset>
+        <legend>{% trans "Personal Data" %}</legend>
+        {{ wizard.form.sex.label_tag }}
+        {{ wizard.form.sex }}
+        {{ wizard.form.lastname.label_tag }}
+        {{ wizard.form.lastname }} {{ wizard.form.lastname.errors }}
+        {{ wizard.form.firstname.label_tag }}
+        {{ wizard.form.firstname }}
+        {{ wizard.form.birthdate.label_tag }}
+        {{ wizard.form.birthdate }}
+    </fieldset>
+</div>
+<div class="span3">
+    <fieldset>
+        <legend>{% trans "Contact Data" %}</legend>
+        {{ wizard.form.street.label_tag }}
+        {{ wizard.form.street }}
+        {{ wizard.form.zip_code.label_tag }}
+        {{ wizard.form.zip_code }}
+        {{ wizard.form.city.label_tag }}
+        {{ wizard.form.city }}
+        {{ wizard.form.country.label_tag }}
+        {{ wizard.form.country }}
+    </fieldset>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+$(function() {
+  $('#id_personal-birthdate').datepicker({
+    'format': 'dd.mm.yyyy',
+    'weekStart': 1,
+    'viewMode': 'years'
+  });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "students/add/base.html" %}
+{% load i18n %}
+
+{% block form %}
+<div class="span3 offset2">
+    <fieldset>
+        <legend>{% trans "Job Data" %}</legend>
+        {{ wizard.form.group.label_tag }}
+        {{ wizard.form.group }}
+        {{ wizard.form.company.label_tag }}
+        {{ wizard.form.company }}
+        {{ wizard.form.contract.label_tag }}
+        {{ wizard.form.contract }}
+    </fieldset>
+</div>
+<div class="span3">
+    <fieldset>
+        <legend>{% trans "House Data" %}</legend>
+        {{ wizard.form.cabinet.label_tag }}
+        {{ wizard.form.cabinet }}
+        {{ wizard.form.key.label_tag }}
+        {{ wizard.form.key }}
+        {{ wizard.form.picture.label_tag }}
+        {{ wizard.form.picture }}
+    </fieldset>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+$('#id_job-company').change(function() {
+    var val = $('#id_job-company option:selected').attr('value');
+    pdata = {'cid': parseInt(val)};
+    $.post('{% url "core-api-contracts" %}', {'_JSON_': JSON.stringify(pdata)},
+        function(ret_data) {
+            $('#id_job-contract option:gt(0)').remove();
+            $.each(ret_data['res'], function(i, v) {
+                var opt = $('<option></option>').attr('value', v['id']).text(v['text']);
+                $('#id_job-contract').append(opt);
+            });
+        }
+    );
+});
+</script>
+{% endblock %}

@@ -62,6 +62,14 @@ urlpatterns = patterns('core.views.web',
         name='barcode'),
 )
 
+# Add students
+urlpatterns += patterns('core.views.add_student',
+    url(r'student/add/$', 'student_wizard_view_wrapper',
+        name='core-student-add'),
+    url(r'student/added/(?P<student_id>\d+)/$', 'student_added',
+        name='core-student-added'),
+)
+
 # Journal
 urlpatterns += patterns('core.views.journal',
     url(r'^journal/myentries/$', 'my_entries', name='core-myentries'),
@@ -89,6 +97,8 @@ urlpatterns += patterns('core.views.ajax',
         name='core-api-clean-presence'),
     url(r'^api/iadmin/migrate30/', 'migrate30', name='core-api-migrate30'),
     url(r'^api/student/delete/$', 'delete_student'),
+    url(r'^api/company/contracts/$', 'get_contracts',
+        name='core-api-contracts'),
 )
 
 # PDF generation

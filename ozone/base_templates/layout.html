@@ -34,7 +34,7 @@
         <!-- Page title -->
         <div class="span8">
             <div class="page-header centered">
-                <h1>{{ page_title|default:"Ozone" }}</h1>
+                <h1>{{ page_title|default:"Ozone" }}{% if subtitle %} <small>{{ subtitle }}</small>{% endif %}</h1>
             </div>
         </div>
         <!-- Logo -->
