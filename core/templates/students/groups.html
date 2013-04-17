@@ -1,7 +1,6 @@
 {% extends "index.html" %}
 {% load url from future %}
 {% load i18n %}
-{% load staticfiles %}
 
 {% block content %}
 {% if perms.core.add_studentgroup and not archive %}
@@ -33,13 +32,17 @@
                 </td>
                 <td>{{ g.job }} ({{ g.job_short }})</td>
                 <td style="text-align:center;">
-                    {{ g.start_date|date:"D" }}, <time>{{ g.start_date|date:"SHORT_DATE_FORMAT" }}</time>
+                    <time datetime="{{ g.start_date|date:"Y-m-d" }}">{{ g.start_date|date:"F Y" }}</time>
                 </td>
                 <td style="text-align:center;">{{ g.active_count }}</td>
                 <td style="text-align:center;">{{ g.school_nr }}</td>
                 <td style="text-align:center;">
-                    <a class="tt" title="{% trans "Export names to excel" %}" href="{% url "core-group-to-excel" g.id %}"><img src="{% static "img/application-vnd.ms-excel.png" %}"></a>
-                    <a class="tt" title="{% trans "Presence" %}" href="{% url "core-presence-group" g.id %}"><img src="{% static "img/presence.png" %}" ></a>
+                    <a class="btn btn-mini btn-warning tt" title="{% trans "Export names to excel" %}" href="{% url "core-group-to-excel" g.id %}">
+                        <i class="icon-th-list"></i>
+                    </a>
+                    <a class="btn btn-mini btn-warning tt" title="{% trans "Presence" %}" href="{% url "core-presence-group" g.id %}">
+                        <i class="icon-list-alt"></i>
+                    </a>
                 </td>
             </tr>
             {% endfor %}
