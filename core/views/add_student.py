@@ -11,6 +11,8 @@ from django.core.files.storage import FileSystemStorage
 
 from core import forms
 from core.menu import menus
+from core.models import Student
+from core.utils import render
 
 
 FORMS = [
@@ -43,8 +45,14 @@ class StudentWizard(SessionWizardView):
         return ctx
 
     def done(self, form_list, **kw):
-        print [form.cleaned_data for form in form_list]
-        return redirect('core-student-added', 1)
+        d = {}
+        for form in form_list:
+            for k, v in form.cleaned_data.iteritems():
+                if v:
+                    d[k] = v
+        s = Student.objects.create(**d)
+        s.save()
+        return redirect('core-student-added', s.id)
 
 
 student_wizard_view = StudentWizard.as_view(FORMS)
@@ -56,4 +64,7 @@ def student_wizard_view_wrapper(req):
 
 
 def student_added(req, student_id):
-    pass
+    s = Student.objects.select_related().get(id=int(student_id))
+    ctx = dict(page_title=_(u'New student added'), s=s, menus=menus,
+        subtitle=_(u'{l}, {f}'.format(l=s.lastname, f=s.firstname)))
+    return render(req, 'students/add/success.html', ctx)

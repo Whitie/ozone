@@ -386,7 +386,7 @@ def search_student(req):
     else:
         form = ExtendedSearchForm({'search_for_1': u'lastname'})
     ctx = dict(page_title=_(u'Search Student'), menus=menus,
-        form=form, students=students, result=result)
+        form=form, students=students, result=result, need_ajax=True)
     return render(req, 'students/search.html', ctx)
 
 

@@ -6,7 +6,7 @@
 <div class="row-fluid">
     <div class="span8 offset1 centered">
         {% if perms.core.add_student and not archive %}
-        <a class="btn btn-mini btn-success" href="{% url "admin:core_student_add" %}">{% trans "Add Student" %}</a>
+        <a class="btn btn-mini btn-success" href="{% url "core-student-add" %}">{% trans "Add Student" %}</a>
         {% endif %}
         {% if not archive %}
         <a class="btn btn-mini" href="{% url "core-students-all" %}">{% trans "All" %}</a>
