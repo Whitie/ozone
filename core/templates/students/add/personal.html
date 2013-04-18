@@ -5,14 +5,24 @@
 <div class="span3 offset2">
     <fieldset>
         <legend>{% trans "Personal Data" %}</legend>
-        {{ wizard.form.sex.label_tag }}
+        <label for="{{ wizard.form.sex.auto_id }}">
+            <strong>{{ wizard.form.sex.label }}</strong>
+        </label>
         {{ wizard.form.sex }}
-        {{ wizard.form.lastname.label_tag }}
+        <label for="{{ wizard.form.lastname.auto_id }}">
+            <strong>{{ wizard.form.lastname.label }}</strong>
+        </label>
         {{ wizard.form.lastname }} {{ wizard.form.lastname.errors }}
-        {{ wizard.form.firstname.label_tag }}
-        {{ wizard.form.firstname }}
-        {{ wizard.form.birthdate.label_tag }}
-        {{ wizard.form.birthdate }}
+        <label for="{{ wizard.form.firstname.auto_id }}">
+            <strong>{{ wizard.form.firstname.label }}</strong>
+        </label>
+        {{ wizard.form.firstname }} {{ wizard.form.firstname.errors }}
+        <label for="{{ wizard.form.birthdate.auto_id }}">
+            <strong>{{ wizard.form.birthdate.label }}</strong>
+        </label>
+        {{ wizard.form.birthdate }} {{ wizard.form.birthdate.errors }}
+        {{ wizard.form.emergency.label_tag }}
+        {{ wizard.form.emergency }}
     </fieldset>
 </div>
 <div class="span3">
