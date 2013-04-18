@@ -1,0 +1,51 @@
+\documentclass[a5paper, oneside, landscape]{scrartcl}
+
+%Standard:
+\usepackage[ngerman]{babel}
+\usepackage[applemac]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{float}
+
+%Einstellung der Seitenränder
+\usepackage[left=1.5cm,right=1.5cm,top=1.2cm,bottom=1.5cm,includeheadfoot]{geometry}
+
+%Kopf- und Fußzeile
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+%Kopfzeile: Fach
+\fancyhead[L]{(( s.lastname )), (( s.firstname )) Geb. (( birthdate ))}
+
+%Linie oben
+\renewcommand{\headrulewidth}{0.5pt}
+
+%Dokument:
+\begin{document}
+\begin{minipage}{13cm}
+\section*{}
+(( s.street|default('-') ))\\
+(( s.zip_code|default('-') )) (( s.city|default('-') ))\\
+Tel. (( s.phone|default('-') ))\\
+Mobil (( s.mobile|default('-') ))\\
+Im Notfall zu benachrichtigen: (( s.emergency|default('nicht angegeben') ))
+
+\section*{}
+Betrieb: (( s.company.name|default('-') ))\\
+Gruppe: (( s.group.name()|default('-') ))\\
+Schrank: (( s.cabinet|default('-') ))\\
+Schlüssel: (( s.key|default('-') ))
+
+\section*{}
+Schulbildung: (( s.school_education|default('-') ))\\
+Eignung: (( s.suit_phrase|default('-') ))
+
+\end{minipage}
+\begin{minipage}{1cm}
+%platz zwischen den minipages
+\end{minipage}
+\begin{minipage}[u]{4cm}
+
+\end{minipage}
+
+\end{document}
