@@ -15,7 +15,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 %Kopfzeile: Fach
-\fancyhead[L]{(( s.lastname )), (( s.firstname )) Geb. (( birthdate ))}
+\fancyhead[L]{(( s.lastname|te )), (( s.firstname|te )) Geb. (( birthdate ))}
 
 %Linie oben
 \renewcommand{\headrulewidth}{0.5pt}
@@ -23,29 +23,40 @@
 %Dokument:
 \begin{document}
 \begin{minipage}{13cm}
-\section*{}
-(( s.street|default('-') ))\\
-(( s.zip_code|default('-') )) (( s.city|default('-') ))\\
-Tel. (( s.phone|default('-') ))\\
-Mobil (( s.mobile|default('-') ))\\
-Im Notfall zu benachrichtigen: (( s.emergency|default('nicht angegeben') ))
+\section*{Kontakt}
+(( s.street|te ))\\
+(( s.zip_code|te )) (( s.city|te ))\\
+Tel. (( s.phone|te ))\\
+Mobil (( s.mobile|te ))\\
+Im Notfall zu benachrichtigen: (( s.emergency|te ))
 
-\section*{}
-Betrieb: (( s.company.name|default('-') ))\\
-Gruppe: (( s.group.name()|default('-') ))\\
-Schrank: (( s.cabinet|default('-') ))\\
-Schlüssel: (( s.key|default('-') ))
+\section*{bbz}
+Betrieb: (( s.company.name|te ))\\
+Gruppe: (( s.group.name()|te ))\\
+Schrank: (( s.cabinet|te ))\\
+Schl"ussel: (( s.key|te ))
 
-\section*{}
-Schulbildung: (( s.school_education|default('-') ))\\
-Eignung: (( s.suit_phrase|default('-') ))
+\section*{Bildung}
+Schulbildung: (( s.get_school_education_display()|te ))\\
+Eignung: (( s.get_suit_phrase_display()|te ))
 
 \end{minipage}
 \begin{minipage}{1cm}
 %platz zwischen den minipages
 \end{minipage}
 \begin{minipage}[u]{4cm}
-
+	(% if s.picture %)
+	\begin{figure}
+		\includegraphics[width=3cm]{(( s.picture.path|pe ))}
+		\caption{(( s.lastname|te )), (( s.firstname|te ))}
+	\end{figure}
+	(% else %)
+	\textbf{Kein Bild vorhanden.}
+	(% endif %)
+	\begin{figure}
+		\includegraphics[width=3cm]{(( s._barcode.path|pe ))}
+		\caption{(( s.barcode|te ))}
+	\end{figure}
 \end{minipage}
 
 \end{document}

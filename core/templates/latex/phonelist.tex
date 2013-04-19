@@ -35,7 +35,7 @@ Nr. & Name & Festnetz & Handy\\
 \hline
 (% for p in profiles %)
 (( loop.cycle('\\rowcolor{blau}', '\\rowcolor{weiss}') ))
-(( loop.index )) & (( p.user.last_name )), (( p.user.first_name )) & (( p.phone )) & (( p.mobile ))\\
+(( loop.index )) & (( p.user.last_name|te )), (( p.user.first_name|te )) & (( p.phone|te )) & (( p.mobile|te ))\\
 \hline
 (% endfor %)
 \end{longtable}

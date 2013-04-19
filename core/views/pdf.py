@@ -98,8 +98,14 @@ def generate_phonelist(req):
 
 
 @login_required
-def student_detail(req, student_id):
-    pass
+def student_detail(req, sid):
+    student = Student.objects.select_related().get(id=int(sid))
+    ctx = dict(s=student, birthdate=student.birthdate.strftime('%d.%m.%Y'),
+        group='tmp')
+    filename = make_latex(ctx, 'student_detail.tex')
+    with open(filename, 'rb') as fp:
+        response = HttpResponse(fp.read(), content_type='application/pdf')
+    return response
 
 
 @login_required

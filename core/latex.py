@@ -14,7 +14,17 @@ texescape.init()
 
 
 def tex_escape(text):
-    return text.translate(texescape.tex_hl_escape_map_new)
+    try:
+        return text.translate(texescape.tex_hl_escape_map_new)
+    except:
+        return u''
+
+
+def escape_path(path):
+    if os.name != 'nt':
+        return path
+    else:
+        return path.replace('\\', '/')
 
 
 def get_latex_env(template_path):
@@ -28,6 +38,7 @@ def get_latex_env(template_path):
         comment_end_string='#)',
     )
     env.filters['te'] = tex_escape
+    env.filters['pe'] = escape_path
     return env
 
 
@@ -51,8 +62,8 @@ def render_latex_to_pdf(filename, build_dir=None):
     if build_dir is None:
         build_dir = s['build_dir']
     clean_build_dir(build_dir)
-    build_dir = build_dir.replace('\\', '/')
-    filename = filename.replace('\\', '/')
+    build_dir = escape_path(build_dir)
+    filename = escape_path(filename)
     s['options'].append('-output-directory={0}'.format(build_dir))
     cmd = [s['pdflatex']] + s['options'] + [filename]
     basename = os.path.splitext(filename)[0]

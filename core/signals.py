@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import os
 import re
 try:
     from cStringIO import StringIO
@@ -9,7 +8,7 @@ except ImportError:
 
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save
 
 from core.models import UserProfile, Student
 from barcode.codex import Code39
