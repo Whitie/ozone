@@ -1,0 +1,31 @@
+{% load i18n %}
+<div id="edit_student" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="edit_label" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 id="edit_label">{% trans "Edit student" %}</h3>
+    </div>
+    <div class="modal-body">
+        <form id="student_edit_form">
+            {% csrf_token %}
+            <fieldset>
+                <legend>{{ student.lastname }}, {{ student.firstname }}</legend>
+                {{ form.cabinet.label_tag }}
+                {{ form.cabinet }}
+                {{ form.key.label_tag }}
+                {{ form.key }}
+                {{ form.exam_1.label_tag }}
+                {{ form.exam_1 }}
+                {{ form.exam_2.label_tag }}
+                {{ form.exam_2 }}
+                <label class="checkbox">
+                    {{ form.finished }}
+                    {{ form.finished.label }}
+                </label>
+            </fieldset>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning" data-dismiss="modal" aria-hidden="true">{% trans "Cancel" %}</button>
+        <button class="btn btn-primary" onclick="save_student();">{% trans "Save" %}</button>
+    </div>
+</div>

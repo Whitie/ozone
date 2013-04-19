@@ -32,6 +32,8 @@ urlpatterns = patterns('core.views.web',
         name='core-students'),
     url(r'^students/all/$', 'list_all_students', name='core-students-all'),
     url(r'^students/search/$', 'search_student', name='core-students-search'),
+    url(r'^student/edit/(?P<sid>\d+)/$', 'edit_student',
+        name='core-student-edit'),
     # Student groups
     url(r'^groups/$', 'list_groups', name='core-groups'),
     url(r'^groups/(?P<gid>\d+)/$', 'group_details', name='core-group-details'),
@@ -99,6 +101,7 @@ urlpatterns += patterns('core.views.ajax',
     url(r'^api/student/delete/$', 'delete_student'),
     url(r'^api/company/contracts/$', 'get_contracts',
         name='core-api-contracts'),
+    url(r'^api/student/save/$', 'save_student', name='core-api-student-save'),
 )
 
 # PDF generation

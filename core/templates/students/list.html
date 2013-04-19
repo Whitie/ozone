@@ -43,7 +43,8 @@
         <div class="well"><a id="student_{{ s.id }}"></a>
             <h3>{{ forloop.counter }}. {{ s.lastname }}, {{ s.firstname }} ({{ s.company.short_name }})
                 {% if perms.core.change_student %}
-                <a class="btn btn-warning" href="{% url "admin:core_student_change" s.id %}"><i class="icon-edit"></i> {% trans "Edit" %}</a>
+                <a class="btn btn-warning tt" title="{% trans "Full edit" %}" href="{% url "admin:core_student_change" s.id %}"><i class="icon-edit"></i> {% trans "Edit" %}</a>
+                <a class="btn btn-warning tt" title="{% trans "Short edit" %}" href="#" onclick="edit_student('{% url "core-student-edit" s.id %}');"><i class="icon-edit"> </i></a>
                 {% endif %}
                 {% if perms.core.delete_student %}
                 <button type="button" class="btn btn-mini btn-danger pull-right" onclick="delete_student({{ s.id }}, '{{ s.lastname }}, {{ s.firstname }}');">

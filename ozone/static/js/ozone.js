@@ -59,3 +59,22 @@ function delete_student(student_id, name) {
         }
     );
 }
+
+function edit_student(url) {
+    $.get(url, function(res) {
+        $('body').append(res);
+        $('#edit_student').modal({'show': true});
+    });
+}
+
+function save_student() {
+    var form = $('#student_edit_form');
+    var pdata = form.serializeArray();
+    $.post('/core/api/student/save/', {'_JSON_': JSON.stringify(pdata)},
+        function(res) {
+            alert(res['msg']);
+            $('#edit_student').modal('hide').remove();
+        }
+    );
+    return false;
+}

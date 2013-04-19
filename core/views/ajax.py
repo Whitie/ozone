@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime, date, timedelta
+from datetime import date, timedelta
 
 from django.conf import settings
 from django.db.models import Q
@@ -147,3 +147,9 @@ def delete_student(req, data):
     else:
         messages.error(req, u'Unzureichende Berechtigungen!')
     return dict()
+
+
+@json_rpc
+def save_student(req, data=None):
+    print data
+    return dict(msg=u'Gespeichert')

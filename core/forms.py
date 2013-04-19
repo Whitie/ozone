@@ -264,8 +264,6 @@ class StudentEditForm(forms.Form):
     key = forms.CharField(label=_(u'Key'), max_length=20, required=False)
     exam_1 = forms.TypedChoiceField(label=_(u'Exam 1'), required=False,
         choices=get_points(), coerce=int)
-    exam_1_weight = forms.TypedChoiceField(label=_(u'Exam 1 weight'),
-        choices=get_points(), initial=30, required=False, coerce=int)
     exam_2 = forms.TypedChoiceField(label=_(u'Exam 2'), required=False,
         choices=get_points(), coerce=int)
     finished = forms.BooleanField(label=_(u'Finished'), required=False)

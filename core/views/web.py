@@ -24,7 +24,8 @@ from core.utils import render
 from core.models import (News, Company, Student, StudentGroup, Contact, Note,
     UserProfile, PresenceDay, PRESENCE_CHOICES)
 from core.forms import (NewsForm, SearchForm, StudentSearchForm, NoteForm,
-                        ProfileForm, NewUserForm, ExtendedSearchForm)
+                        ProfileForm, NewUserForm, ExtendedSearchForm,
+                        StudentEditForm)
 from core.views import helper as h
 from core.menu import menus
 from barcode.codex import Code39
@@ -388,6 +389,16 @@ def search_student(req):
     ctx = dict(page_title=_(u'Search Student'), menus=menus,
         form=form, students=students, result=result, need_ajax=True)
     return render(req, 'students/search.html', ctx)
+
+
+@permission_required('core.change_student')
+def edit_student(req, sid):
+    s = Student.objects.get(id=int(sid))
+    initial = dict(cabinet=s.cabinet, key=s.key, exam_1=s.exam_1,
+        exam_2=s.exam_2, finished=s.finished)
+    form = StudentEditForm(initial=initial)
+    ctx = dict(student=s, form=form)
+    return render(req, 'students/edit_short.html', ctx)
 
 
 @login_required
