@@ -541,18 +541,21 @@ def get_next_birthdays(req):
     choice = [7, 14, 30, 90, 180]
     start = date.today()
     today = (start.month, start.day)
+    start = start - timedelta(days=10)
     dates = [start + timedelta(days=x) for x in xrange(days)]
     users = []
     students = []
     for d in dates:
         for p in UserProfile.objects.select_related(
             ).filter(birthdate__month=d.month, birthdate__day=d.day):
-            p.today = (p.birthdate.month, p.birthdate.day) == today
+            p.bsclass = utils.get_birthday_color(
+                (p.birthdate.month, p.birthdate.day), today)
             p.bdate = d
             users.append(p)
         for s in Student.objects.select_related(
             ).filter(birthdate__month=d.month, birthdate__day=d.day):
-            s.today = (s.birthdate.month, s.birthdate.day) == today
+            s.bsclass = utils.get_birthday_color(
+                (s.birthdate.month, s.birthdate.day), today)
             s.bdate = d
             students.append(s)
     ctx = dict(page_title=_(u'Birthdays, next {0} days'.format(days)),

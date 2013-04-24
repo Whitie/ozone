@@ -68,6 +68,17 @@ def secure_filename(filename):
 # End of werkzeug code #######################################################
 
 
+def get_birthday_color(birthdate, day):
+    bd = date(2000, *birthdate)
+    td = date(2000, *day)
+    if bd < td:
+        return u'muted'
+    elif bd == td:
+        return u'text-warning'
+    else:
+        return u'text-success'
+
+
 def named(verbose_name):
     def decorate(f):
         f.short_description = verbose_name
