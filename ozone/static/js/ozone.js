@@ -76,7 +76,6 @@ function save_student() {
     });
     $.post('/core/api/student/save/', {'_JSON_': JSON.stringify(pdata)},
         function(res) {
-            alert(res['msg']);
             $('#edit_student').modal('hide').remove();
             location.reload();
         }
