@@ -164,5 +164,11 @@ def delete_student(req, data):
 
 @json_rpc
 def save_student(req, data=None):
-    print data
-    return dict(msg=u'Gespeichert')
+    s = Student.objects.get(id=int(data['student_id']))
+    s.cabinet = data['cabinet']
+    s.key = data['key']
+    s.exam_1 = int(data['exam_1'])
+    s.exam_2 = int(data['exam_2'])
+    s.finished = u'finished' in data
+    s.save()
+    return dict(msg=u'Datensatz %s wurde gespeichert.' % s)

@@ -69,11 +69,16 @@ function edit_student(url) {
 
 function save_student() {
     var form = $('#student_edit_form');
-    var pdata = form.serializeArray();
+    var pdata = {};
+    var form_data = form.serializeArray();
+    $.each(form_data, function() {
+        pdata[this.name] = this.value;
+    });
     $.post('/core/api/student/save/', {'_JSON_': JSON.stringify(pdata)},
         function(res) {
             alert(res['msg']);
             $('#edit_student').modal('hide').remove();
+            location.reload();
         }
     );
     return false;

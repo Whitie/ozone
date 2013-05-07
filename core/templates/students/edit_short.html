@@ -7,6 +7,7 @@
     <div class="modal-body">
         <form id="student_edit_form">
             {% csrf_token %}
+            <input type="hidden" name="student_id" value="{{ student.id }}" />
             <fieldset>
                 <legend>{{ student.lastname }}, {{ student.firstname }}</legend>
                 {{ form.cabinet.label_tag }}
