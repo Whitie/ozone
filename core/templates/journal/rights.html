@@ -1,32 +1,36 @@
 {% extends "index.html" %}
+{% load url from future %}
 {% load i18n %}
 
 {% block content %}
-<h2 class="headline">{% trans "Rights for Journal" %} {{ journal }}</h2>
-<h3>{% trans "Instructors with access" %}:</h3>
-<ul>
-    {% for inst in journal.instructors.all %}
-    <li>{{ inst.get_profile }}</li>
-    {% endfor %}
-</ul>
+<div class="row-fluid">
+    <div class="span4">
+        <h3>{% trans "Instructors with access" %}:</h3>
+        <ul>
+            {% for inst in journal.instructors.all %}
+            <li>{{ inst.get_profile }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="span4">
+        <form action="{% url "core-journal-rights" journal.id %}" method="post">
+        {% csrf_token %}
+        <h3>{% trans "Select instructors to remove" %}:</h3>
+        <select name="remove" size="5" multiple="multiple">
+            {% for inst in journal.instructors.all %}
+            <option value="{{ inst.id }}">{{ inst.last_name }}</option>
+            {% endfor %}
+        </select>
 
-<form action="{% url core-journal-rights journal.id %}" method="post">
-{% csrf_token %}
-<h3>{% trans "Select instructors to remove" %}:</h3>
-<select name="remove" size="5" multiple="multiple">
-    {% for inst in journal.instructors.all %}
-    <option value="{{ inst.id }}">{{ inst.last_name }}</option>
-    {% endfor %}
-</select>
+        <h3>{% trans "Select intructors to add" %}:</h3>
+        <select name="add" size="5" multiple="multiple">
+            {% for u in users %}
+            <option value="{{ u.id }}">{{ u.last_name }}</option>
+            {% endfor %}
+        </select>
 
-<h3>{% trans "Select intructors to add" %}:</h3>
-<select name="add" size="5" multiple="multiple">
-    {% for u in users %}
-    <option value="{{ u.id }}">{{ u.last_name }}</option>
-    {% endfor %}
-</select>
-
-<p><input type="submit" value="{% trans "Change" %}" /></p>
-</form>
-
+        <p><input type="submit" value="{% trans "Change" %}" /></p>
+        </form>
+    </div>
+</div>
 {% endblock %}
