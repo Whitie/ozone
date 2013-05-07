@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import os
+
 from datetime import date, timedelta
 
 from django.conf import settings
@@ -111,6 +113,17 @@ def clean_presence(req, data=None):
     count = q.count()
     q.delete()
     return dict(msg=u'Es wurden %d Anwesenheitstage gelöscht.' % count)
+
+
+@json_rpc
+def clean_build_dir(req, data=None):
+    build_dir = settings.LATEX['build_dir']
+    count = 0
+    for filename in os.listdir(build_dir):
+        if filename.endswith('.tex'):
+            count += 1
+            os.remove(os.path.join(build_dir, filename))
+    return dict(msg=u'Es wurden %d alte Latex Dateien gelöscht.' % count)
 
 
 @json_rpc

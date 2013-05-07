@@ -1,7 +1,6 @@
 {% extends "index.html" %}
 {% load url from future %}
 {% load i18n %}
-{% load staticfiles %}
 
 {% block content %}
 <div class="row-fluid">
@@ -32,7 +31,20 @@
 
 <div class="row-fluid">
     <div class="span8 offset1">
-        <h1>Ozone 3.0 migration<small>use once</small></h1>
+        <div class="well well-small">
+            <h3>{% trans "Empty latex build dir" %}
+                <button class="btn btn-danger pull-right" onclick="clean_build_dir();">
+                    <i class="icon-trash"></i> {% trans "Delete" %}
+                </button>
+            </h3>
+            <p id="latex_result"></p>
+        </div>
+    </div>
+</div>
+
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <h1>{% trans "Ozone 3.0 migration" %}<small>{% trans "use once" %}</small></h1>
         <div class="well well-small">
             <h3>{% trans "Migrate presence from '*' to 'A'." %}
                 <button class="btn btn-warning pull-right" onclick="migrate_3_0('presence');">
@@ -51,6 +63,13 @@
 function clean_sessions() {
     $.post('{% url "core-api-clean-sessions" %}', function(ret_data) {
         $('#sess_result').text(ret_data['msg']);
+        }
+    );
+}
+
+function clean_build_dir() {
+    $.post('{% url "core-api-clean-build-dir" %}', function(ret_data) {
+        $('#latex_result').text(ret_data['msg']);
         }
     );
 }
