@@ -642,3 +642,8 @@ def mystudents(req):
         group__id__in=pgroups, finished=False).order_by(
             'group__job_short', 'lastname')
     return render(req, 'presence/studentlist.html', {'students': students})
+
+
+@login_required
+def mypresence(req):
+    pass

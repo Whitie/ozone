@@ -60,6 +60,7 @@ urlpatterns = patterns('core.views.web',
         name='core-presence-select-groups'),
     url(r'^my_presence/mystudents/$', 'mystudents',
         name='core-presence-mystudents'),
+    url(r'^my_presence/list/$', 'mypresence', name='core-presence-own'),
     # Excel integration
     url(r'^group/export_excel/(?P<gid>\d+)/$', 'export_group_excel',
         name='core-group-to-excel'),
