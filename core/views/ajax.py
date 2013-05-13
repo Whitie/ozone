@@ -9,7 +9,8 @@ from django.db.models import Q
 from django.contrib import messages
 
 from core.utils import json_rpc, remove_old_sessions
-from core.models import PresenceDay, JournalEntry, Student, Company
+from core.models import (PresenceDay, JournalEntry, Student, Company,
+    StudentGroup)
 
 
 @json_rpc
@@ -176,3 +177,45 @@ def save_student(req, data=None):
     except Exception as e:
         messages.error(req, u'Ein Fehler ist aufgetreten: %s' % e)
     return dict()
+
+
+@json_rpc
+def mygroups(req, data=None):
+    profile = req.user.get_profile()
+    config = profile.config()
+    pgroups = config.get('pgroups', [])
+    pstudents = config.get('pstudents', [])
+    group = StudentGroup.objects.get(id=data['gid'])
+    if data['gid'] in pgroups:
+        pgroups.remove(data['gid'])
+        count = 0
+        for sid in group.students.values_list('id', flat=True):
+            if sid in pstudents:
+                pstudents.remove(sid)
+                count += 1
+        msg = u'Gruppe {g} wurde entfernt (mit Azubis [{c}]).'.format(g=group,
+            c=count)
+    else:
+        pgroups.append(data['gid'])
+        msg = u'Gruppe {g} wurde hinzugefügt.'.format(g=group)
+    profile.set_value('pgroups', pgroups)
+    profile.set_value('pstudents', pstudents)
+    profile.save()
+    return dict(msg=msg)
+
+
+@json_rpc
+def mystudent(req, data=None):
+    profile = req.user.get_profile()
+    config = profile.config()
+    pstudents = config.get('pstudents', [])
+    student = Student.objects.get(id=data['sid'])
+    if data['sid'] in pstudents:
+        pstudents.remove(data['sid'])
+        msg = u'{0} wurde entfernt.'.format(student)
+    else:
+        pstudents.append(data['sid'])
+        msg = u'{0} wurde hinzugefügt.'.format(student)
+    profile.set_value('pstudents', pstudents)
+    profile.save()
+    return dict(msg=msg)

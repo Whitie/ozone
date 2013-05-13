@@ -609,3 +609,36 @@ def barcode(req, format, barcode=''):
     except KeyError:
         return utils.error(req, _('Unsupported barcode format.'))
     return response
+
+
+# Functions for user defined presence list (one per user)
+
+@login_required
+def select_groups(req):
+    jobs = StudentGroup.objects.values_list('job', flat=True)
+    jobs = list(set(jobs))
+    jobs.sort()
+    groups = []
+    for j in jobs:
+        g = StudentGroup.objects.filter(job=j).order_by('-start_date')
+        groups.append((j, [x for x in g if x.active_count()]))
+    profile = req.user.get_profile()
+    config = profile.config()
+    pgroups = config.get('pgroups', [])
+    students = Student.objects.select_related().filter(
+        group__id__in=pgroups, finished=False).order_by(
+            'group__job_short', 'lastname')
+    ctx = dict(page_title=_(u'Edit own presence list'), menus=menus, jobs=jobs,
+        groups=groups, need_ajax=True, students=students)
+    return render(req, 'presence/select_groups.html', ctx)
+
+
+@login_required
+def mystudents(req):
+    profile = req.user.get_profile()
+    config = profile.config()
+    pgroups = config.get('pgroups', [])
+    students = Student.objects.select_related().filter(
+        group__id__in=pgroups, finished=False).order_by(
+            'group__job_short', 'lastname')
+    return render(req, 'presence/studentlist.html', {'students': students})

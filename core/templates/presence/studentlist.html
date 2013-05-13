@@ -1,0 +1,15 @@
+{% load i18n %}
+
+<div id="studentlist">
+    <h3>{% trans "Students" %}</h3>
+    <ul>
+        {% for s in students %}
+        <li>
+            <label class="checkbox">
+                <input type="checkbox" onclick="update_student({{ s.id }});"{% if s.id in userconfig.pstudents %} checked{% endif %}>
+                {{ s.lastname }}, {{ s.firstname }} ({{ s.group }})
+            </label>
+        </li>
+        {% endfor %}
+    </ul>
+</div>

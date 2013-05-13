@@ -56,6 +56,10 @@ urlpatterns = patterns('core.views.web',
         name='core-presence-edit'),
     url(r'^presence/printouts/(?P<job>.+)/$', 'presence_printouts',
         name='core-presence-printouts'),
+    url(r'^my_presence/select_groups/$', 'select_groups',
+        name='core-presence-select-groups'),
+    url(r'^my_presence/mystudents/$', 'mystudents',
+        name='core-presence-mystudents'),
     # Excel integration
     url(r'^group/export_excel/(?P<gid>\d+)/$', 'export_group_excel',
         name='core-group-to-excel'),
@@ -104,6 +108,10 @@ urlpatterns += patterns('core.views.ajax',
     url(r'^api/company/contracts/$', 'get_contracts',
         name='core-api-contracts'),
     url(r'^api/student/save/$', 'save_student', name='core-api-student-save'),
+    url(r'^api/presence/mygroups/$', 'mygroups',
+        name='core-api-presence-mygroups'),
+    url(r'^api/presence/mystudent/$', 'mystudent',
+        name='core-api-presence-mystudent'),
 )
 
 # PDF generation
