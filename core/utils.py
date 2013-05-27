@@ -16,7 +16,6 @@ from django.contrib.auth.decorators import user_passes_test
 from django.core.exceptions import PermissionDenied
 from django.contrib.sessions.models import Session
 
-
 # Taken from werkzeug <http://werkzeug.pocoo.org>
 _filename_ascii_strip_re = re.compile(r'[^A-Za-z0-9_.-]')
 _windows_device_files = ('CON', 'AUX', 'COM1', 'COM2', 'COM3', 'COM4', 'LPT1',
@@ -179,3 +178,14 @@ def remove_old_sessions():
     count = q.count()
     q.delete()
     return count
+
+
+def get_date(value, default=None):
+    if value is None:
+        return default
+    else:
+        try:
+            d = datetime.strptime(value, '%d.%m.%Y').date()
+            return d
+        except ValueError:
+            return default

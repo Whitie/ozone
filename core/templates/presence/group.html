@@ -8,10 +8,15 @@
     <div class="span8 offset1">
         <div class="well centered">
             <h3>{{ start|date:"DATE_FORMAT" }} - {{ end|date:"DATE_FORMAT" }}</h3>
+            {% if group %}
             <a class="btn btn-primary" href="{% url "core-pdf-presence-clean" group.id end.year end.month %}" target="_blank">
                 {% trans "Print empty page for" %} {{ end|date:"F Y" }}</a>
             <a class="btn btn-info" href="{% url "core-pdf-presence" group.id end.year end.month %}">
                 {% trans "Print filled page for" %} {{ end|date:"F Y" }}</a>
+            {% else %}
+            <a class="btn btn-primary" href="{% url "core-pdf-presence-clean" 0 end.year end.month %}" target="_blank">
+                {% trans "Print empty page for" %} {{ end|date:"F Y" }}</a>
+            {% endif %}
         </div>
     </div>
 </div>

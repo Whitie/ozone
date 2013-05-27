@@ -63,7 +63,10 @@ def get_presence_context(gid, year, month):
     days_of_month = monthrange(year, month)[1]
     start = date(year, month, 1)
     ctx['day_nums'] = []
-    ctx['edu_year'] = utils.get_edu_year(group.start_date)
+    try:
+        ctx['edu_year'] = utils.get_edu_year(group.start_date)
+    except AttributeError:
+        ctx['edu_year'] = u'-'
     ctx['timespan'] = unicode(start.strftime('%m/%Y'))
     tmp = []
     for x in iter_days(start, days_of_month):
@@ -111,7 +114,11 @@ def student_detail(req, sid):
 @login_required
 def generate_presence_clean(req, gid, year, month):
     ctx = get_presence_context(int(gid), int(year), int(month))
-    ctx['students'] = h.sort_students_for_presence(ctx['group'].students)
+    try:
+        ctx['students'] = h.sort_students_for_presence(ctx['group'].students)
+    except AttributeError:
+        s = h.get_students(req.user)
+        ctx['students'] = h.sort_students_for_presence(s)
     ctx['s'] = latex.get_latex_settings()
     ctx['schooldays'] = u''
     ctx['instructor'] = unicode(req.user.get_profile())

@@ -475,25 +475,10 @@ def presence_for_group(req, gid):
     except StudentGroup.DoesNotExist:
         messages.error(req, u'Gruppe (ID: %d) existiert nicht.' % gid)
         return redirect('core-presence')
-    if end is None:
-        end = date.today()
-    else:
-        try:
-            end = datetime.strptime(end, '%d.%m.%Y').date()
-        except ValueError:
-            messages.error(req, u'Das Enddatum (%r) ist nicht im Format '
-                                u'TT.MM.YYYY.' % end)
-            return redirect('core-presence')
-    if start is None:
-        d = date.today()
-        start = date(d.year, d.month, 1)
-    else:
-        try:
-            start = datetime.strptime(start, '%d.%m.%Y').date()
-        except ValueError:
-            messages.error(req, u'Das Startdatum (%r) ist nicht im Format '
-                                u'TT.MM.YYYY.' % start)
-            return redirect('core-presence')
+    _d = date.today()
+    d = date(_d.year, _d.month, 1)
+    start = utils.get_date(start, d)
+    end = utils.get_date(end, _d)
     if start > end:
         messages.error(req, u'Das Enddatum liegt vor dem Startdatum!')
         return redirect('core-presence')
@@ -646,4 +631,28 @@ def mystudents(req):
 
 @login_required
 def mypresence(req):
-    pass
+    if req.method == 'POST':
+        start = req.POST['start'] or None
+        end = req.POST['end'] or None
+    else:
+        start = end = None
+    _d = date.today()
+    d = date(_d.year, _d.month, 1)
+    start = utils.get_date(start, d)
+    end = utils.get_date(end, _d)
+    if start > end:
+        messages.error(req, u'Das Enddatum liegt vor dem Startdatum!')
+        return redirect('core-presence')
+    req.session['presence_start'] = start
+    req.session['presence_end'] = end
+    dt = end - start
+    _studs = h.get_students(req.user)
+    _students = h.sort_students_for_presence(_studs)
+    students = h.get_presence(_students, start, end)
+    days = (start + timedelta(days=x) for x in xrange(dt.days + 1))
+    ctx = dict(page_title=_(u'My Presence'),
+        students=students, menus=menus, start=start, end=end,
+        days=[x for x in days if x.weekday() not in (5, 6)],
+        choices=[x[0] for x in PRESENCE_CHOICES], legend=PRESENCE_CHOICES[1:],
+        today=date.today(), dt=True, need_ajax=True)
+    return render(req, 'presence/group.html', ctx)

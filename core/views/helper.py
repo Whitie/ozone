@@ -131,3 +131,11 @@ def make_username(last, first):
         except User.DoesNotExist:
             return tmp
         i += 1
+
+
+def get_students(user):
+    profile = user.get_profile()
+    c = profile.config()
+    s = c.get('pstudents', [])
+    return Student.objects.select_related().filter(id__in=s).order_by(
+        'lastname')
