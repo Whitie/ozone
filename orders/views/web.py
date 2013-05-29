@@ -156,11 +156,8 @@ def ask_order(req):
             return redirect('orders-order', form.cleaned_data['article_id'])
     else:
         form = OrderOldForm()
-    articles = [(x.id, x.name, x.short_desc()) for x in
-                Article.objects.all().order_by('name')]
-    ctx = dict(page_title=_(u'Orders'), form=form, menus=menus,
-        articles=articles)
-    return render(req, 'orders/select_article.html', ctx)
+    ctx = dict(page_title=_(u'Make order'), form=form, menus=menus)
+    return render(req, 'orders/select_article.html', ctx, app=u'orders')
 
 
 @login_required
