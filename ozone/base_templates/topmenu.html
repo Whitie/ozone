@@ -37,15 +37,18 @@
                         <a href="{% url "core-index" %}">
                             <i class="icon-home icon-white"></i> {% trans "Home" %}</a>
                     </li>
+                    <li class="divider-vertical"></li>
                     <li{% ifequal app "orders" %} class="active"{% endifequal %}>
                         <a href="{% url "orders-index" %}">
                             <i class="icon-shopping-cart icon-white"></i> {% trans "Ordersystem" %}</a>
                     </li>
+                    <li class="divider-vertical"></li>
                     {% if user.is_staff %}
                     <li>
                         <a href="{% url "admin:index" %}">
                             <i class="icon-wrench icon-white"></i> {% trans "Admin" %}</a>
                     </li>
+                    <li class="divider-vertical"></li>
                     {% endif %}
                     <li>
                         <a href="http://217.91.188.203:8001/docs/bbz_datenbank/index.html" target="_blank">
