@@ -38,11 +38,13 @@
                             <i class="icon-home icon-white"></i> {% trans "Home" %}</a>
                     </li>
                     <li{% ifequal app "orders" %} class="active"{% endifequal %}>
-                        <a href="{% url "orders-index" %}">{% trans "Ordersystem" %}</a>
+                        <a href="{% url "orders-index" %}">
+                            <i class="icon-shopping-cart icon-white"></i> {% trans "Ordersystem" %}</a>
                     </li>
                     {% if user.is_staff %}
                     <li>
-                        <a href="{% url "admin:index" %}">{% trans "Admin" %}</a>
+                        <a href="{% url "admin:index" %}">
+                            <i class="icon-wrench icon-white"></i> {% trans "Admin" %}</a>
                     </li>
                     {% endif %}
                     <li>
