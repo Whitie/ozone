@@ -5,7 +5,7 @@
 {% block content %}
 <h2 class="headline">{% trans "Select Order Day" %}</h2>
 <div style="text-align:center;">
-<form action="{% url orders-manage %}" method="post">
+<form action="{% url "orders-manage" %}" method="post">
 {% csrf_token %}
 <p>{% trans "Please select the order day do you want to edit" %}:
     <select name="oday" size="1">
@@ -19,8 +19,8 @@
 </div>
 <hr />
 <div style="text-align:center;">
-<a href="{% url orders-add-oday %}">{% trans "Add new orderday" %}</a> |
-<a href="{% url orders-list-printouts %}">{% trans "List of all printouts" %}</a>
+<a href="{% url "orders-add-oday" %}">{% trans "Add new orderday" %}</a> |
+<a href="{% url "orders-list-printouts" %}">{% trans "List of all printouts" %}</a>
 </div>
 <hr />
 <h2 class="headline">{% trans "Select Representative" %}</h2>
@@ -75,7 +75,7 @@
 <script type="text/javascript">
 function save_changes(action_type) {
     var users = $('#'+action_type).val() || [];
-    var url = '{% url orders-api-repr %}';
+    var url = '{% url "orders-api-repr" %}';
     var dat = {'type': action_type, 'users': users};
     $.post(url, dat, function(data) {
         $('#update_message').text(data['msg']).toggle('slow');

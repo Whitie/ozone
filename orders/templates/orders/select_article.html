@@ -15,7 +15,7 @@
 </style>
 <h2 class="headline">{% trans "Make order" %}</h2>
 <h3>{% trans "Order old article" %}</h3>
-<form action="{% url orders-ask %}" method="post">
+<form action="{% url "orders-ask" %}" method="post">
 {% csrf_token %}
 {{ form.as_p }}
 <p id="article-description"></p>
@@ -23,7 +23,7 @@
 </form>
 <br /><hr /><br />
 <h3>{% trans "Order new article" %}</h3>
-<form action="{% url orders-order %}" method="get">
+<form action="{% url "orders-order" %}" method="get">
 <input type="submit" value="{% trans "Next" %}" />
 </form>
 
@@ -31,7 +31,7 @@
 $(function() {
     $("#id_article_name").autocomplete({
         minLength: 1,
-        source: '{% url orders-api-articles %}',
+        source: '{% url "orders-api-articles" %}',
         focus: function(event, ui) {
             $("#id_article_name").val(ui.item.label);
             return false;

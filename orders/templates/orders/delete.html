@@ -6,7 +6,7 @@
 <div style="text-align:center;width:60%;margin:5px auto;border:1px solid orange;">
 <h3>{% trans "Are you sure to delete the following article?" %}</h3>
 <p>{{ order.count }}x {{ order.article }}</p>
-<form action="{% url orders-delete oday_id order.id %}" method="post">
+<form action="{% url "orders-delete" oday_id order.id %}" method="post">
 {% csrf_token %}
 <p>
     <input type="radio" name="delete" value="yes" />{% trans "Yes" %}<br />

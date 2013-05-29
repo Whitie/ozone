@@ -9,7 +9,7 @@
 <p>{% trans "All changes will be saved automatically." %}</p>
 
 {% if perms.orders.can_order and oday.has_accepted_order %}
-<form action="{% url orders-genpdf %}" method="post">
+<form action="{% url "orders-genpdf" %}" method="post">
 {% csrf_token %}
 <input type="hidden" name="oday_id" value="{{ oday.id }}" />
 <input type="hidden" name="header" value="Chemikalien und Ausbildungsmittel" />
@@ -93,7 +93,7 @@
             </td>
             <td style="text-align:center;">
                 {% if o.state in states %}
-                <a href="{% url orders-delete oday.id o.id %}">
+                <a href="{% url "orders-delete" oday.id o.id %}">
                     <img src="{% static "img/delete.png" %}" alt="{% trans "Delete" %}"
                         title="{% trans "Delete" %}"/>
                 </a>

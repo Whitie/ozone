@@ -5,7 +5,7 @@
 <h2 class="headline">{% trans "New Orderday" %}</h2>
 <div style="width:40%;margin:5px auto;">
 <p>{% trans "Orderdays" %}: {{ odays|join:" | " }}</p>
-<form action="{% url orders-add-oday %}" method="post">
+<form action="{% url "orders-add-oday" %}" method="post">
 {% csrf_token %}
 {% for f in form %}
 <p>{{ f.label_tag }}: {{ f }}</p>

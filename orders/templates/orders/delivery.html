@@ -99,7 +99,7 @@ $(document).ready(function() {
 
 function update_delivery(oid, count) {
     var dat = {'oid': oid, 'count': count};
-    $.post('{% url orders-api-delivery %}', {'_JSON_': JSON.stringify(dat)},
+    $.post('{% url "orders-api-delivery" %}', {'_JSON_': JSON.stringify(dat)},
         function(res_data) {
             $('#upd_messages').show('slow');
             $('#upd_messages > ul').prepend('<li>'+res_data['msg']+'</li>');

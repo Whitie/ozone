@@ -52,7 +52,7 @@
 
 <script type="text/javascript">
 $(function() {
-    $.getJSON('{% url orders-api-article article_id %}', function(data) {
+    $.getJSON('{% url "orders-api-article" article_id %}', function(data) {
         $.each(data, function(key, val) {
             $("#id_" + key).val(val);
         });
@@ -62,7 +62,7 @@ $(function() {
 $(function() {
     $('#id_art_supplier_name').autocomplete({
         minLength: 1,
-        source: '{% url orders-api-suppliers %}',
+        source: '{% url "orders-api-suppliers" %}',
         select: function(event, ui) {
             $('#id_art_supplier_id').val(ui.item.value);
             $('#id_art_supplier_name').val(ui.item.label);

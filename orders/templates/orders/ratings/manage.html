@@ -54,7 +54,7 @@
 <script type="text/javascript">
 function send_mail(uids) {
     post_data = {'uids': uids};
-    $.post('{% url orders-api-mail %}', {'_JSON_': JSON.stringify(post_data)},
+    $.post('{% url "orders-api-mail" %}', {'_JSON_': JSON.stringify(post_data)},
         function(ret_data) {
             alert(ret_data['msg']);
         }

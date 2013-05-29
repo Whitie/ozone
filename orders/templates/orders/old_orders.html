@@ -36,9 +36,9 @@
             <td><a href="" title="{% trans "Orders" %}">{{ o.olist|length }}</a> /
                 <a href="" title="{% trans "Count" %}">{{ o.counts }}</a>
             </td>
-            <td><a href="{% url orders-order o.article.id %}">{% trans "ReOrder" %}</a>
+            <td><a href="{% url "orders-order" o.article.id %}">{% trans "ReOrder" %}</a>
                 {% if perms.orders.extra_order %}
-                <a href="{% url orders-extra-order o.article.id %}">{% trans "Now" %}</a>
+                <a href="{% url "orders-extra-order" o.article.id %}">{% trans "Now" %}</a>
                 {% endif %}
             </td>
         </tr>

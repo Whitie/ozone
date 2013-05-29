@@ -54,7 +54,7 @@
                     onclick="update_count('{{ forloop.counter }}');" />
                 {% endif %}
                 {% if o.deleteable %}
-                <a href="{% url orders-delete oday.id o.id %}">
+                <a href="{% url "orders-delete" oday.id o.id %}">
                     <img src="{% static "img/delete.png" %}" alt="{% trans "Delete" %}"
                         title="{% trans "Delete" %}"/>
                 </a>

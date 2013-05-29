@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block formtag %}
-<form method="post" action="{% url orders-order %}" onsubmit="return check_form();">
+<form method="post" action="{% url "orders-order" %}" onsubmit="return check_form();">
 {% endblock %}
 {% block formextra %}
 <table style="border:1px solid blue;margin:5px auto;">
@@ -58,7 +58,7 @@ function check_supplier() {
     $.ajax({
         'type': 'POST',
         'async': false,
-        'url': '{% url orders-api-check-supplier %}',
+        'url': '{% url "orders-api-check-supplier" %}',
         'data': {'_JSON_': JSON.stringify({'sid': sid})},
         success: function (ret_data) {
             valid = ret_data['result'];

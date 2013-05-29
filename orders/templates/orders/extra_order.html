@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block formtag %}
-<form method="post" action="{% url orders-extra-order %}">
+<form method="post" action="{% url "orders-extra-order" %}">
 {% endblock %}
 {% block formextra %}
 <div style="margin:5px auto;width:10%;text-align:center;">
@@ -16,7 +16,7 @@
     <li>{{ o }}, {{ o.article.supplier }}</li>
     {% endfor %}
 </ul>
-<form action="{% url orders-genpdf %}" method="post">
+<form action="{% url "orders-genpdf" %}" method="post">
 {% csrf_token %}
 <input type="hidden" name="oday_id" value="{{ oday_id }}" />
 <input type="hidden" name="header" value="Haustechnik" />

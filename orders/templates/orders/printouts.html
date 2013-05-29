@@ -26,7 +26,7 @@ function generate_external(oday_id, cid) {
                      'header': '{{ header }}'};
     $('#but_'+cid).attr('disabled', 'disabled');
     $.post(
-        '{% url orders-api-pdf %}',
+        '{% url "orders-api-pdf" %}',
         {'_JSON_': JSON.stringify(container)},
         function(data) {
             var s = '<a href="'+data['url']+'">'+data['filename']
@@ -40,7 +40,7 @@ function generate_internal(oday_id) {
     var container = {'oday_id': oday_id};
     $('#but_internal').attr('disabled', 'disabled');
     $.post(
-        '{% url orders-api-pdf %}',
+        '{% url "orders-api-pdf" %}',
         {'_JSON_': JSON.stringify(container)},
         function(data) {
             $('<hr />').insertAfter('#external');
