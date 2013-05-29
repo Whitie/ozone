@@ -1,19 +1,42 @@
 {% extends "index.html" %}
+{% load url from future %}
 {% load i18n %}
 
 {% block content %}
-<h2 class="headline">{% trans "Next order days" %}</h2>
-<ul>
-    {% for d in odays %}
-    <li{% if forloop.first %} style="font-weight:bold;" {% endif %}> 
-        <a href="{% url orders-detail d.id %}" title="{% trans "Click for details." %}">
-        {{ d.day|date:"DATE_FORMAT" }}</a>,
-        {% trans "Responsible user" %}: {{ d.user.get_profile }},
-        {% trans "Open orders" %}: {{ d.orders.count }}
-    </li>
-    {% empty %}
-    <li>{% trans "No order day found." %}</li>
-    {% endfor %}
-</ul>
+<div class="row-fluid">
+    <div class="span6 offset2">
+        {% if odays %}
+        <table class="table table-striped">
+            <tr>
+                <th>{% trans "Date" %}</th>
+                <th>{% trans "Responsible user" %}</th>
+                <th>{% trans "Open orders" %}</th>
+            </tr>
+            {% for d in odays %}
+            <tr>
+                <td>
+                    <a class="btn btn-mini btn-info tt" href="{% url "orders-detail" d.id %}" title="{% trans "Click for details." %}">
+                        {{ d.day|date:"DATE_FORMAT" }}
+                    </a>
+                </td>
+                <td>{{ d.user.get_profile }}</td>
+                <td>{{ d.orders.count }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <div class="well well-small">
+            <h3>{% trans "No order day found." %}</h3>
+        </div>
+        {% endif %}
+    </div>
+    {% if perms.orders.can_order %}
+    <div class="span10 centered">
+        <a class="btn btn-success" href="{% url "orders-add-oday" %}">
+            {% trans "Add new order day" %}
+        </a>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}
 

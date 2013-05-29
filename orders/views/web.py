@@ -5,13 +5,13 @@ from datetime import date, datetime, timedelta
 from decimal import Decimal
 
 from django.conf import settings
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.utils.translation import ugettext as _
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 
-from core.utils import any_permission_required
+from core.utils import any_permission_required, render
 from core.models import Company, CompanyRating, PDFPrintout
 from core.forms import CompanyRatingForm
 from orders.forms import (OrderOldForm, OrderForm, ShortSupplierForm,
@@ -28,9 +28,12 @@ def index(req):
         inc = True
     else:
         inc = False
-    odays = h.get_next_odays(inc)
-    ctx = dict(page_title=_(u'Orders'), odays=odays, menus=menus)
-    return render(req, 'orders/index.html', ctx)
+    odays = list(h.get_next_odays(inc))
+    ctx = dict(page_title=_(u'Next order days'), odays=odays, menus=menus)
+    if odays:
+        diff = odays[0].day - date.today()
+        ctx['subtitle'] = _(u'Next in {0} days'.format(diff.days))
+    return render(req, 'orders/index.html', ctx, app=u'orders')
 
 
 @login_required
