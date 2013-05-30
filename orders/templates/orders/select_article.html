@@ -9,10 +9,10 @@
         <form action="{% url "orders-ask" %}" method="post" class="form-horizontal">
             {% csrf_token %}
             <div class="control-group">
-                <label class="control-label" for="id_article_name">{{ form.article_name.label }}</label>
+                <label class="control-label" for="id_article">{% trans "Article" %}</label>
                 <div class="controls">
-                    <input type="text" id="id_article_name" data-provide="typeahead" autocomplete="off">
-                    {{ form.article_id }}
+                    <input type="text" id="id_article" name="article" data-provide="typeahead" autocomplete="off">
+                    <input type="hidden" id="id_article_id" name="article_id">
                     <p id="article-description"></p>
                 </div>
             </div>
@@ -32,30 +32,35 @@
 
 {% block additional_js %}
 <script>
-var options = {
-    'source': function(query, process) {
-        articles = [];
-        map = {};
-        return $.ajax({
-            'url': '{% url "orders-api-articles" %}?term='+query,
-            'type': 'get',
-            'data': {'term': query},
-            'dataType': 'json',
-            'success': function(data) {
-                $.each(data, function(i, article) {
-                    map[article['label']] = article;
-                    articles.push(article['label']);
-                });
-                return process(articles);
-            }
-        });
-    },
-    'updater': function(item) {
-        alert(map[item]);
-        return item;
-    }
-}
-$('#id_article_name').typeahead(options);
+$(function() {
+    var options = {
+        'source': function(query, process) {
+            articles = [];
+            map = {};
+            return $.ajax({
+                'url': '{% url "orders-api-articles" %}',
+                'type': 'get',
+                'data': {'term': query},
+                'dataType': 'json',
+                'success': function(data) {
+                    $.each(data, function(i, article) {
+                        map[article['label']] = article;
+                        articles.push(article['label']);
+                    });
+                    return process(articles);
+                }
+            });
+        },
+        'updater': function(item) {
+            var obj = map[item];
+            $('#article-description').text('');
+            $('#article-description').append(obj['desc']);
+            $('#id_article_id').val(obj['value']);
+            return item;
+        }
+    };
+    $('#id_article').typeahead(options);
+})
 </script>
 {% endblock %}
 

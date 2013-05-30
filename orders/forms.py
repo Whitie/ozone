@@ -27,11 +27,6 @@ class OrderDayForm(forms.Form):
         coerce=get_user, empty_value=AnonymousUser())
 
 
-class OrderOldForm(forms.Form):
-    article_name = forms.CharField(label=_('Article'), max_length=100)
-    article_id = forms.IntegerField(widget=forms.HiddenInput)
-
-
 class BaseOrderForm(forms.Form):
     count = _wid.IntegerField5(label=_(u'Count'))
     art_name = forms.CharField(label=_(u'Article'), max_length=100)

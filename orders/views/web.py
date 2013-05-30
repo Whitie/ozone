@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 from core.utils import any_permission_required, render
 from core.models import Company, CompanyRating, PDFPrintout
 from core.forms import CompanyRatingForm
-from orders.forms import (OrderOldForm, OrderForm, ShortSupplierForm,
+from orders.forms import (OrderForm, ShortSupplierForm,
                           OrderDayForm, BaseOrderForm, SummarizeForm)
 from orders.models import OrderDay, Order, Article, Cost, CostOrder
 from orders.views import helper as h
@@ -151,12 +151,12 @@ def order(req, article_id=0):
 @login_required
 def ask_order(req):
     if req.method == 'POST':
-        form = OrderOldForm(req.POST)
-        if form.is_valid():
-            return redirect('orders-order', form.cleaned_data['article_id'])
-    else:
-        form = OrderOldForm()
-    ctx = dict(page_title=_(u'Make order'), form=form, menus=menus)
+        article_id = req.POST.get('article_id')
+        if article_id:
+            return redirect('orders-order', article_id)
+        else:
+            messages.error(req, u'Kein Artikel ausgewählt.')
+    ctx = dict(page_title=_(u'Make order'), menus=menus)
     return render(req, 'orders/select_article.html', ctx, app=u'orders')
 
 
