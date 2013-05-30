@@ -12,7 +12,7 @@
         <div class="controls controls-row">
             {% for c in costs %}
             <div class="input-prepend">
-                <span class="add-on">{{ c }}</span>
+                <span class="add-on">{{ c|rjust:"9" }}</span>
                 <input type="text" name="cost_{{ c.ident }}" maxlength="3" size="3"
                     value="0" onkeyup="update_sum()" class="costs input-mini">
             </div>
