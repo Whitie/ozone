@@ -2,81 +2,28 @@
 {% load i18n %}
 
 {% block formtag %}
-<form method="post" action="{% url "orders-order" %}" onsubmit="return check_form();">
+<form method="post" action="{% url "orders-order" %}" onsubmit="return check_form('{% url "orders-api-check-supplier" %}');">
 {% endblock %}
+
 {% block formextra %}
-<table style="border:1px solid blue;margin:5px auto;">
-<tr>
-{% for c in costs %}
-<td class="rotate" style="height:70px;width:20px;">{{ c }}</td>
-{% endfor %}
-</tr>
-<tr>
-{% for c in costs %}
-<td><input type="text" name="cost_{{ c.ident }}" maxlength="3" size="3"
-    value="0" onkeyup="update_sum()" class="costs" /></td>
-{% endfor %}
-</tr>
-</table>
-<div style="margin:5px auto;width:10%;text-align:center;">
-<span id="sum" style="font-weight:bold;"></span>
-<input type="submit" value="{% trans "Order now" %}" />
+<div class="row-fluid">
+    <div class="span10">
+        <legend>{% trans "Costs" %} <span id="sum" style="font-weight:bold;"></span></legend>
+        <div class="controls controls-row">
+            {% for c in costs %}
+            <div class="input-prepend">
+                <span class="add-on">{{ c }}</span>
+                <input type="text" name="cost_{{ c.ident }}" maxlength="3" size="3"
+                    value="0" onkeyup="update_sum()" class="costs input-mini">
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span6 offset2">
+        <button type="submit" class="btn btn-success">{% trans "Order now" %}</button>
+    </div>
 </div>
 </form>
 {% endblock %}
-
-{% block jsextra %}
-<script type="text/javascript">
-function get_sum() {
-    var sum = 0;
-    $(".costs").each(function(i) {
-        sum = sum + parseInt($(this).val(), 10);
-    });
-    return sum;
-}
-function update_sum() {
-    var sum = get_sum();
-    var color = '';
-    $('#sum').text(sum);
-    if (sum != 100) {
-        color = 'red';
-    } else {
-        color = 'green';
-    }
-    $('#sum').css({'color': color});
-}
-function check_costs() {
-    var sum = get_sum();
-    if (sum != 100) {
-        return false;
-    }
-    return true;
-}
-function check_supplier() {
-    var sid = $('#id_art_supplier_id').val() || '0';
-    var valid = false;
-    $.ajax({
-        'type': 'POST',
-        'async': false,
-        'url': '{% url "orders-api-check-supplier" %}',
-        'data': {'_JSON_': JSON.stringify({'sid': sid})},
-        success: function (ret_data) {
-            valid = ret_data['result'];
-        }
-    });
-    return valid;
-}
-function check_form() {
-    if (check_costs() == false) {
-        alert('{{ costs_msg }}');
-        return false;
-    }
-    if (check_supplier() == false) {
-        alert('{% trans "Supplier not valid. Please choose one from the list or add a new one " %}');
-        return false;
-    }
-    return true;
-}
-</script>
-{% endblock %}
-

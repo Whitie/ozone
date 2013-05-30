@@ -142,10 +142,11 @@ def order(req, article_id=0):
         form = OrderForm()
         form.fields['oday'].choices = h.get_oday_choices(choice_filter)
     costs = Cost.objects.all().order_by('ident')
-    ctx = dict(page_title=_(u'Order'), form=form, menus=menus, costs=costs,
+    ctx = dict(page_title=_(u'New Order'), form=form, menus=menus, costs=costs,
         article_id=article_id, costs_msg=_(u'Sum of costs must be 100!'),
-        cur_msg=_(u'Price in %s.' % settings.CURRENCY[0]), extra=False)
-    return render(req, 'orders/order.html', ctx)
+        cur_msg=_(u'Price in %s.' % settings.CURRENCY[0]), extra=False,
+        need_ajax=True)
+    return render(req, 'orders/order.html', ctx, app=u'orders')
 
 
 @login_required

@@ -5,51 +5,60 @@
 {% block formtag %}{% endblock %}
 {% csrf_token %}
 {{ form.art_supplier_id }}
-<table style="border:1px solid blue;margin:5px auto;">
-<tr>
-    <th>{{ form.count.label_tag }}:</th>
-    <td>{{ form.count }}{{ form.count.errors }}</td>
-    <th>{{ form.art_name.label_tag }}:</th>
-    <td>{{ form.art_name }}{{ form.art_name.errors }}</td>
-    <th>{{ form.art_supplier_name.label_tag }}:</th>
-    <td title="{% trans "The supplier must be chosen by click!" %}">
-        {{ form.art_supplier_name }}
-        {{ form.art_supplier_name.errors }}
-    </td>
-</tr>
-<tr>
-    <th>{{ form.art_id.label_tag }}:</th>
-    <td>{{ form.art_id }}{{ form.art_id.errors }}</td>
-    <th>{{ form.art_q.label_tag }}:</th>
-    <td>{{ form.art_q }}{{ form.art_q.errors }}</td>
-    <th title="{{ cur_msg }}">{{ form.art_price.label_tag }}:</th>
-    <td>{{ form.art_price }}{{ CURRENCY_SYM }}{{ form.art_price.errors }}</td>
-</tr>
-<tr>
-    {% if extra %}<th></th><td></td>{% else %}
-    <th>{{ form.oday.label_tag }}:</th>
-    <td>{{ form.oday }}{{ form.oday.errors }}</td>
-    {% endif %}
-    <th title="{% trans "Klick to enter message." %}" id="memo_cell">
-        {% trans "Memo" %}
-    </th>
-    <td><span style="display:none;position:absolute;z-index:3;" id="memo_field">
-        {{ form.memo }}</span>
-    </td>
-    <th></th>
-    <td></td>
-</tr>
-<tr>
-    <th>{{ form.exam.label_tag }}:</th>
-    <td>{{ form.exam }}{{ form.exam.errors }}</td>
-    <th>{{ form.repair.label_tag }}:</th>
-    <td>{{ form.repair }}{{ form.repair.errors }}</td>
-    <th></th>
-    <td></td>
-</tr>
-</table>
+<div class="row-fluid">
+    <div class="span10">
+        <legend>{% trans "Order" %}</legend>
+        <div class="controls controls-row">
+            <div class="input-prepend">
+                <span class="add-on">{{ form.count.label }}</span>
+                {{ form.count }}{{ form.count.errors }}
+            </div>
+            <div class="input-prepend">
+                <span class="add-on">{{ form.art_name.label }}</span>
+                {{ form.art_name }}{{ form.art_name.errors }}
+            </div>
+            <div class="input-prepend">
+                <span class="add-on">{{ form.art_supplier_name.label }}</span>
+                {{ form.art_supplier_name }}{{ form.art_supplier_name.errors }}
+            </div>
+        </div>
+        <div class="controls controls-row">
+            <div class="input-prepend">
+                <span class="add-on">{{ form.art_id.label }}</span>
+                {{ form.art_id }}{{ form.art_id.errors }}
+            </div>
+            <div class="input-prepend">
+                <span class="add-on">{{ form.art_q.label_tag }}</span>
+                {{ form.art_q }}{{ form.art_q.errors }}
+            </div>
+            <div class="input-prepend input-append">
+                <span class="add-on">{{ form.art_price.label }}</span>
+                {{ form.art_price }}{{ form.art_price.errors }}
+                <span class="add-on">{{ CURRENCY_SYM }}</span>
+            </div>
+        </div>
+        <div class="controls controls-row">
+            {% if not extra %}
+            <div class="input-prepend">
+                <span class="add-on">{{ form.oday.label }}</span>
+                {{ form.oday }}{{ form.oday.errors }}
+            </div>
+            {% endif %}
+            <button type="button" class="btn btn-inverse" id="memo_trigger">{{ form.memo.label }}</button>
+            <span style="display:none;position:absolute;z-index:3;" id="memo">{{ form.memo }}</span>
+            <label class="checkbox inline" for="id_exam">
+                {{ form.exam }} {{ form.exam.label }}
+            </label>
+            <label class="checkbox inline" for="id_repair">
+                {{ form.repair }} {{ form.repair.label }}
+            </label>
+        </div>
+    </div>
+</div>
 {% block formextra %}{% endblock %}
+{% endblock %}
 
+{% block additional_js %}
 <script type="text/javascript">
 $(function() {
     $.getJSON('{% url "orders-api-article" article_id %}', function(data) {
@@ -57,23 +66,38 @@ $(function() {
             $("#id_" + key).val(val);
         });
     });
-    $(document).tooltip();
+    $('#memo_trigger').click(
+        function() {
+            $('#memo').toggle();
+        }
+    );
 });
 $(function() {
-    $('#id_art_supplier_name').autocomplete({
-        minLength: 1,
-        source: '{% url "orders-api-suppliers" %}',
-        select: function(event, ui) {
-            $('#id_art_supplier_id').val(ui.item.value);
-            $('#id_art_supplier_name').val(ui.item.label);
-            return false;
-            }
-        });
-});
-
-$('#memo_cell').click(function() {
-    $('#memo_field').toggle();
+    var options = {
+        'source': function(query, process) {
+            suppliers = [];
+            map = {};
+            return $.ajax({
+                'url': '{% url "orders-api-suppliers" %}',
+                'type': 'get',
+                'data': {'term': query},
+                'dataType': 'json',
+                'success': function(data) {
+                    $.each(data, function(i, sup) {
+                        map[sup['label']] = sup;
+                        suppliers.push(sup['label']);
+                    });
+                    return process(suppliers);
+                }
+            });
+        },
+        'updater': function(item) {
+            var obj = map[item];
+            $('#id_art_supplier_id').val(obj['value']);
+            return item;
+        }
+    };
+    $('#id_art_supplier_name').typeahead(options);
 });
 </script>
-{% block jsextra %}{% endblock %}
 {% endblock %}

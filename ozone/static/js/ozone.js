@@ -82,3 +82,58 @@ function save_student() {
     );
     return false;
 }
+
+function get_sum() {
+    var sum = 0;
+    $(".costs").each(function(i) {
+        sum = sum + parseInt($(this).val(), 10);
+    });
+    return sum;
+}
+
+function update_sum() {
+    var sum = get_sum();
+    var color = '';
+    $('#sum').text(sum);
+    if (sum != 100) {
+        color = 'red';
+    } else {
+        color = 'green';
+    }
+    $('#sum').css({'color': color});
+}
+
+function check_costs() {
+    var sum = get_sum();
+    if (sum != 100) {
+        return false;
+    }
+    return true;
+}
+
+function check_supplier(url) {
+    var sid = $('#id_art_supplier_id').val() || '0';
+    var valid = false;
+    $.ajax({
+        'type': 'POST',
+        'async': false,
+        'url': url,
+        'data': {'_JSON_': JSON.stringify({'sid': sid})},
+        success: function (ret_data) {
+            valid = ret_data['result'];
+        }
+    });
+    return valid;
+}
+
+function check_form(sup_url) {
+    if (check_costs() == false) {
+        alert('Summe der Kostenstellen muss 100 ergeben.');
+        return false;
+    }
+    if (check_supplier(sup_url) == false) {
+        alert('Lieferant ungültig. Bitte einen aus der Liste wählen.');
+        return false;
+    }
+    return true;
+}
