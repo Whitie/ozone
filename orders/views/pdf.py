@@ -150,7 +150,7 @@ def generate_pdf(req):
     req.session['oday_id'] = None
     ctx = dict(page_title=_(u'Printouts'), menus=menus, oday=oday,
         ids=supplier_ids, supplier=supplier, header=header)
-    return render(req, 'orders/printouts.html', ctx)
+    return render(req, 'orders/printouts.html', ctx, app=u'orders')
 
 
 @require_POST

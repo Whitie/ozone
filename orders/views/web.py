@@ -40,7 +40,7 @@ def index(req):
 def show_old_orders(req):
     orders = h.get_order_for_every_article()
     ctx = dict(page_title=_(u'Old Orders'), menus=menus, orders=orders)
-    return render(req, 'orders/old_orders.html', ctx)
+    return render(req, 'orders/old_orders.html', ctx, app=u'orders')
 
 
 @login_required
@@ -66,7 +66,7 @@ def order_detail(req, order_id):
         order_sum=order_sum)
     req.session['came_from'] = 'orders-detail'
     req.session['came_from_kw'] = {'order_id': order_id}
-    return render(req, 'orders/orderday.html', ctx)
+    return render(req, 'orders/orderday.html', ctx, app=u'orders')
 
 
 @login_required
@@ -90,7 +90,7 @@ def delete_order(req, oday_id, order_id):
         return redirect(redirect_to, **kw)
     ctx = dict(page_title=_(u'Delete Order'), menus=menus, oday_id=oday_id,
         order=order)
-    return render(req, 'orders/delete.html', ctx)
+    return render(req, 'orders/delete.html', ctx, app=u'orders')
 
 
 @login_required
@@ -172,7 +172,7 @@ def myorders(req):
             ids.add(o.article.id)
             orders.append(o)
     ctx = dict(page_title=_(u'My Orders'), menus=menus, orders=orders)
-    return render(req, 'orders/myorders.html', ctx)
+    return render(req, 'orders/myorders.html', ctx, app=u'orders')
 
 
 @permission_required('core.add_company')
@@ -201,7 +201,7 @@ def add_supplier(req):
     else:
         form = ShortSupplierForm(initial={'web': 'http://'})
     ctx = dict(page_title=_(u'Add new Supplier'), menus=menus, form=form)
-    return render(req, 'orders/new_supplier.html', ctx)
+    return render(req, 'orders/new_supplier.html', ctx, app=u'orders')
 
 
 @any_permission_required(['orders.can_order', 'orders.extra_order'],
@@ -251,7 +251,7 @@ def make_extra_order(req, article_id=0):
         'article__name')
     ctx = dict(page_title=_(u'Extra Order'), form=form, menus=menus,
         article_id=article_id, extra=True, orders=orders, oday_id=oday_id)
-    return render(req, 'orders/extra_order.html', ctx)
+    return render(req, 'orders/extra_order.html', ctx, app=u'orders')
 
 
 @any_permission_required(['orders.can_order', 'orders.can_change_orderstate'],
@@ -270,7 +270,7 @@ def manage_orders(req):
     odays = OrderDay.objects.filter(day__gte=limit).order_by('day')
     ctx = dict(page_title=_(u'Manage Orders'), menus=menus, odays=odays,
         users=users, can_order=can_order, can_change=can_change)
-    return render(req, 'orders/manage_orders.html', ctx)
+    return render(req, 'orders/manage_orders.html', ctx, app=u'orders')
 
 
 @any_permission_required(['orders.can_order', 'orders.can_change_orderstate'],
@@ -292,7 +292,7 @@ def manage_order(req, oday_id):
         order_sum=order_sum, suppliers=h.get_supplier_choices())
     req.session['came_from'] = 'orders-manage'
     req.session['came_from_kw'] = {'oday_id': oday_id}
-    return render(req, 'orders/manage_order.html', ctx)
+    return render(req, 'orders/manage_order.html', ctx, app=u'orders')
 
 
 @permission_required('orders.can_order', raise_exception=True)
@@ -318,7 +318,7 @@ def add_oday(req):
     odays = h.get_next_odays(True)
     ctx = dict(page_title=_(u'Add new orderday'), menus=menus, form=form,
         odays=[unicode(x) for x in odays])
-    return render(req, 'orders/add_oday.html', ctx)
+    return render(req, 'orders/add_oday.html', ctx, app=u'orders')
 
 
 @permission_required('orders.can_order', raise_exception=True)
@@ -332,7 +332,7 @@ def list_printouts(req):
             oday.count += 1
     ctx = dict(page_title=_(u'List of all printouts'), menus=menus,
         odays=odays)
-    return render(req, 'orders/list_printouts.html', ctx)
+    return render(req, 'orders/list_printouts.html', ctx, app=u'orders')
 
 
 @login_required
@@ -358,7 +358,7 @@ def company_rating(req):
         c.average = c.calculate_rating()[1]
     ctx = dict(page_title=_(u'Company Rating'), menus=menus,
         companies=companies, form=form)
-    return render(req, 'orders/ratings/rate.html', ctx)
+    return render(req, 'orders/ratings/rate.html', ctx, app=u'orders')
 
 
 @permission_required('core.summarize', raise_exception=True)
@@ -381,7 +381,7 @@ def rate_company(req, company_id):
     company = h.calculate_ratings([company])[0]
     ctx = dict(page_title=_(u'Edit Rating'), menus=menus, company=company,
         form=form, sum_form=sum_form)
-    return render(req, 'orders/ratings/edit.html', ctx)
+    return render(req, 'orders/ratings/edit.html', ctx, app=u'orders')
 
 
 @login_required
@@ -391,7 +391,7 @@ def company_rating_summary(req):
     companies = h.calculate_ratings(companies)
     ctx = dict(page_title=_(u'Company Rating Summary'), menus=menus,
         companies=companies, today=date.today())
-    return render(req, 'orders/ratings/summary.html', ctx)
+    return render(req, 'orders/ratings/summary.html', ctx, app=u'orders')
 
 
 @permission_required('core.summarize', raise_exception=True)
@@ -407,7 +407,7 @@ def manage_ratings(req):
     ctx = dict(page_title=_(u'Manage Ratings'), menus=menus, users=users,
         uids=[x.id for x in users], old_ratings=old_ratings,
         companies=companies)
-    return render(req, 'orders/ratings/manage.html', ctx)
+    return render(req, 'orders/ratings/manage.html', ctx, app=u'orders')
 
 
 @permission_required('orders.controlling', raise_exception=True)
@@ -435,4 +435,4 @@ def ctrl_by_cost(req):
         l = sorted(((k, v) for k, v in d.iteritems()), key=lambda x: x[1])
         _ctx = dict(costs=l, start=start, end=end)
         ctx.update(_ctx)
-    return render(req, 'orders/controlling/bycost.html', ctx)
+    return render(req, 'orders/controlling/bycost.html', ctx, app=u'orders')
