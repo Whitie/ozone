@@ -33,6 +33,12 @@ def index(req):
     if odays:
         diff = odays[0].day - date.today()
         ctx['subtitle'] = _(u'Next in {0} days'.format(diff.days))
+    oday_count = len(odays)
+    if oday_count < 2 and req.user.has_perm('orders.can_order'):
+        if oday_count == 1:
+            messages.warning(req, u'Es ist nur noch 1 Bestelltag angelegt!')
+        else:
+            messages.error(req, u'Es ist kein Bestelltag mehr angelegt!')
     return render(req, 'orders/index.html', ctx, app=u'orders')
 
 
