@@ -98,7 +98,7 @@ def json_view(func):
             translation.activate(req.LANGUAGE_CODE)
             response = func(req, *args, **kw)
             json = simplejson.dumps(response)
-            return HttpResponse(json, mimetype='application/json')
+            return HttpResponse(json, content_type='application/json')
         finally:
             translation.activate(cur_lang)
     return wrap
@@ -115,10 +115,18 @@ def json_rpc(func):
             else:
                 response = func(req, *args, **kwargs)
             json = simplejson.dumps(response)
-            return HttpResponse(json, mimetype='application/json')
+            return HttpResponse(json, content_type='application/json')
         finally:
             translation.activate(cur_lang)
     return wrap
+
+
+def desktop_view(func):
+    def wrapped(req, *args, **kw):
+        res = func(req, *args, **kw)
+        json = simplejson.dumps(res)
+        return HttpResponse(json, content_type='application/json')
+    return wrapped
 
 
 def error(req, msg=''):

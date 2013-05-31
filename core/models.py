@@ -593,3 +593,23 @@ class InternalHelp(models.Model):
         verbose_name = _(u'Internal Help')
         verbose_name_plural = _(u'Internal Helps')
         ordering = ['ident', 'lang']
+
+
+# New in 3.0 for desktop usage
+# Qt desktop client is added soon
+
+class DesktopSession(models.Model):
+    user = models.OneToOneField(User, verbose_name=_(u'User'), editable=False,
+        related_name='desktop_session')
+    ip = models.CharField(_(u'IP'), max_length=40)
+    log_time = models.DateTimeField(_(u'Log Time'), auto_now=True)
+    token = models.CharField(_(u'Token'), max_length=128)
+
+    def __unicode__(self):
+        return u'{0}; {1} ({2})'.format(self.user.username, self.ip,
+            self.log_time.strftime('%d.%m.%Y %H:%M'))
+
+    class Meta:
+        verbose_name = _(u'Desktop Session')
+        verbose_name_plural = _(u'Desktop Sessions')
+        ordering = ['-log_time']
