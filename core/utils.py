@@ -121,14 +121,6 @@ def json_rpc(func):
     return wrap
 
 
-def desktop_view(func):
-    def wrapped(req, *args, **kw):
-        res = func(req, *args, **kw)
-        json = simplejson.dumps(res)
-        return HttpResponse(json, content_type='application/json')
-    return wrapped
-
-
 def error(req, msg=''):
     if not msg:
         msg = _('An internal server error occured.')

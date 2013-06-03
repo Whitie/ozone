@@ -123,7 +123,6 @@ MIDDLEWARE_CLASSES = (
     # Uncomment the next line for simple clickjacking protection:
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'audit_log.middleware.UserLoggingMiddleware',
-    'core.middlewares.DesktopClientMiddleware',
 )
 
 ROOT_URLCONF = 'ozone.urls'
