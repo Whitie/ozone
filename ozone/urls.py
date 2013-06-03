@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     (r'^$', 'core.views.web.index'),
     (r'^core/', include('core.urls')),
     (r'^orders/', include('orders.urls')),
+    (r'^desktop/', include('desktop.urls')),
 
     (r'^admin/', include(admin.site.urls)),
 )

@@ -2,6 +2,10 @@
 
 import os, sys
 
+# For testing
+sys.path.insert(0, '../ozone_extensions')
+
+
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ozone.settings")
 
