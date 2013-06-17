@@ -132,8 +132,3 @@ urlpatterns += patterns('core.views.pdf',
     url(r'^pdf/student/detail/(?P<sid>\d+)/$', 'student_detail',
         name='core-pdf-student-detail'),
 )
-
-# Desktop client
-urlpatterns += patterns('core.views.desktop',
-    url(r'^desktop/test/$', 'test'),
-)
