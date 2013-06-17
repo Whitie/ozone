@@ -1,9 +1,11 @@
 #!/usr/bin/env python2
 
-import os, sys
+import os
+import sys
 
 # For testing
-sys.path.insert(0, '../ozone_extensions')
+_PATH = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(_PATH, '..', 'ozone_extensions'))
 
 
 if __name__ == "__main__":
