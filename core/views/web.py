@@ -332,17 +332,11 @@ def list_students(req, startchar='', archive=False):
         else:
             students = Student.objects.select_related().filter(
                 lastname__istartswith=startchar)
-    students = students.filter(finished=archive)
-    for s in students:
-        q = s.presence_days.filter(entry=u'K')
-        s.ill = q.count()
-        s.ex = q.filter(excused=True).count()
-        s.nex = s.ill - s.ex
-        s.all_days = s.presence_days.filter(entry__in=[u'T', u'F', u'K', u'|']
-            ).count()
+    students = [h.get_presence_details(s) for s in
+                students.filter(finished=archive)]
     title = _(u'Students Archive: {s} ({n})') if archive \
         else _(u'Students: {s} ({n})')
-    ctx = dict(page_title=title.format(s=startchar or '-', n=students.count()),
+    ctx = dict(page_title=title.format(s=startchar or '-', n=len(students)),
         students=students, menus=menus,
         archive=archive, startchar=startchar, chars=string.ascii_uppercase,
         form=form, need_ajax=True)

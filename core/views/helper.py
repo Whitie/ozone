@@ -4,6 +4,7 @@ from datetime import date, timedelta
 
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
+from django.conf import settings
 
 from core.models import StudentGroup, PresenceDay, Student
 
@@ -93,6 +94,47 @@ def sort_students_for_presence(students):
         else:
             no_contract.append(s)
     return full + partly + no_contract
+
+
+def get_presence_details(student):
+    """Get a detailed overview from presence days for one student. Saves
+    them on the student object.
+
+    :parameters:
+        student : Student
+            The student to work on.
+
+    :returns: The same student object with the following new attributes
+              (all prefixed with p_)::
+                  p_all: All saved presence days (entry != '')
+                  p_all_days: All absent days (T, F, K, |)
+                  p_all_days_percent: p_all_days in percent from p_all
+                  p_ill: All illness days (K)
+                  p_ill_percent: p_ill in percent from p_all
+                  p_not_excused: All not excused absent days (|)
+                  p_lateness_count: Count of all latenesses
+                  p_latenesses: Dates of the latenesses
+                  p_lateness_sum: Sum of all latenesses in minutes
+    """
+    q = student.presence_days.exclude(entry=u'')
+    student.p_all = q.count()
+    student.p_all_days = q.filter(entry__in=[u'T', u'F', u'K', u'|']).count()
+    student.p_all_days_percent = (float(student.p_all_days) / student.p_all
+        ) * 100
+    student.p_ill = q.filter(entry=u'K').count()
+    student.p_ill_percent = (float(student.p_ill) / student.p_all
+        ) * 100
+    student.p_not_excused = q.filter(entry=u'|').count()
+    student.p_holiday = q.filter(entry=u'U').count()
+    student.p_lateness_count = 0
+    student.p_latenesses = []
+    student.p_lateness_sum = 0
+    for d in q.filter(lateness__gt=0).order_by('date'):
+        student.p_lateness_sum += d.lateness
+        student.p_lateness_count += 1
+        student.p_latenesses.append(d.date.strftime(
+            settings.DEFAULT_DATE_FORMAT))
+    return student
 
 
 def get_studentgroups():
