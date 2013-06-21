@@ -29,10 +29,10 @@
     <div class="span8 offset1">
         <ul class="pager">
             <li class="previous{% if not news.has_previous %} disabled{% endif %}">
-                <a href="?page={{ news.previous_page_number }}">&larr; {% trans "Newer" %}</a>
+                <a href="?page={% if news.has_previous %}{{ news.previous_page_number }}{%endif %}">&larr; {% trans "Newer" %}</a>
             </li>
             <li class="next{% if not news.has_next %} disabled{% endif %}">
-                <a href="?page={{ news.next_page_number }}">{% trans "Older" %} &rarr;</a>
+                <a href="?page={% if news.has_next %}{{ news.next_page_number }}{% endif %}">{% trans "Older" %} &rarr;</a>
             </li>
         </ul>
     </div>
