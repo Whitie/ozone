@@ -20,8 +20,11 @@ from orders.views import helper as h
 def update_article_count(req, order_id, count):
     order_id, count = int(order_id), int(count)
     order = Order.objects.select_related().get(id=order_id)
+    price = order.article.price
     old_count = order.count
     order.count = count
+    new_price = count * price
+    price_diff = new_price - old_count * price
     try:
         u = order.users.get(id=req.user.id)
     except:
@@ -33,7 +36,8 @@ def update_article_count(req, order_id, count):
     if u is None:
         msg.append(u'Benutzer %s wurde hinzugefügt.' % req.user.username)
     user = [x.username for x in order.users.all()]
-    return dict(msg=u' '.join(msg), user=u', '.join(user))
+    return dict(msg=u' '.join(msg), user=u', '.join(user),
+        price_diff=float(price_diff), new_price=float(new_price))
 
 
 @json_view

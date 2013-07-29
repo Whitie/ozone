@@ -132,7 +132,7 @@ function update_row(row) {
     data = {'order_id': parseInt(oid), 'count': parseInt(count),
             'art_name': art_name, 'art_ident': art_ident, 'price': price,
             'supp_id': parseInt(supp_id)};
-    $.post('{% url orders-api-change %}', {'_JSON_': JSON.stringify(data)},
+    $.post('{% url "orders-api-change" %}', {'_JSON_': JSON.stringify(data)},
         function(data) {
             $('#upd_messages').show('slow');
             $('#upd_messages > ul').prepend('<li>'+data['msg']+'</li>');
@@ -143,7 +143,7 @@ function update_state(row) {
     var oid = $('#row_'+row+' > td > :input[name="order_id"]').val();
     var state = $('#row_'+row+' > td > :input[name^="state"]:checked').val();
     post_data = {'order_id': parseInt(oid), 'state': state};
-    $.post('{% url orders-api-state %}', {'_JSON_': JSON.stringify(post_data)},
+    $.post('{% url "orders-api-state" %}', {'_JSON_': JSON.stringify(post_data)},
         function(ret_data) {
             $('#upd_messages').show('slow');
             $('#upd_messages > ul').prepend('<li>'+ret_data['msg']+'</li>');

@@ -1,105 +1,132 @@
 {% extends "index.html" %}
 {% load i18n %}
-{% load staticfiles %}
 
 {% block content %}
-<h2 class="headline">{% trans "Orders for" %} {{ oday.day|date:"DATE_FORMAT" }}</h2>
-<h3 id="sum" style="text-align:center;color:{% if order_sum > 6000 %}red{% else %}green{% endif %};">
-{% trans "Sum" %}: {{ order_sum|floatformat:2 }}{{ CURRENCY_SYM }}</h3>
-<div id="update_message"></div>
-{% if orders %}
-<table id="dataTable">
-    <thead>
-        <tr>
-            <th>{% trans "Added" %}</th>
-            <th>{% trans "Count" %}</th>
-            <th>{% trans "Article" %}</th>
-            <th>{% trans "Quantity" %}</th>
-            <th>{% trans "Price" %}</th>
-            <th>{% trans "Supplier" %}</th>
-            <th>{% trans "Ordered by" %}</th>
-            <th>{% trans "State" %}</th>
-            <th>{% trans "Edit" %}</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for o in orders %}
-        <tr>
-            <td style="text-align:center;">
-                {{ o.added|date:"SHORT_DATE_FORMAT" }}
-            </td>
-            <td>{% if o.state == 'new' %}
-                <input type="hidden" id="id_order_{{ forloop.counter }}" value="{{ o.id }}" />
-                <input type="hidden" id="old_{{ forloop.counter }}" value="{{ o.count }}" />
-                <input id="count_{{ forloop.counter }}" type="text" value="{{ o.count }}" size="3" />
-                {% else %}{{ o.count }}{% endif %}
-            </td>
-            <td title="Ident Number: {{ o.article.ident }}">
-                {{ o.article.name }}</td>
-            <td>{{ o.article.quantity }}</td>
-            <td style="text-align:right;"
-                title="{% trans "Single price" %}: {{ o.article.price|floatformat:2 }}{{ CURRENCY_SYM }}">
-                {{ o.sum_price|floatformat:2 }}{{ CURRENCY_SYM }}
-            </td>
-            <td>{{ o.article.supplier }}</td>
-            <td id="users_{{ forloop.counter }}" title="{% trans 'Costs' %}: {{ o.costlist|join:', ' }}">
-                {{ o.userlist|join:", " }}
-            </td>
-            <td title="{{ o.get_state_display }}" style="text-align:center;">
-                <img src="{{ o.state_icon }}" alt="{{ o.state }}" />
-            </td>
-            <td style="text-align:center;">
-                {% if o.state == 'new' %}
-                <input type="button" value="{% trans "Change" %}"
-                    onclick="update_count('{{ forloop.counter }}');" />
-                {% endif %}
-                {% if o.deleteable %}
-                <a href="{% url "orders-delete" oday.id o.id %}">
-                    <img src="{% static "img/delete.png" %}" alt="{% trans "Delete" %}"
-                        title="{% trans "Delete" %}"/>
-                </a>
-                {% endif %}
-                {% if o.state != 'new' and not o.deleteable %}
-                {% trans "Not possible" %}
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="row-fluid">
+    <div class="span10 centered" id="sum_container">
+        <h3>
+            {% trans "Sum" %}:
+            <span id="sum">{{ order_sum|floatformat:2 }}</span>{{ CURRENCY_SYM }}
+        </h3>
+    </div>
+</div>
 
+<div class="row-fluid">
+    <div class="span10 centered" id="sum_container">
+        {% if orders %}
+        <table class="table table-striped dataTable">
+            <thead>
+                <tr>
+                    <th>{% trans "Added" %}</th>
+                    <th>{% trans "Count" %}</th>
+                    <th>{% trans "Article" %}</th>
+                    <th>{% trans "Quantity" %}</th>
+                    <th>{% trans "Price" %}</th>
+                    <th>{% trans "Supplier" %}</th>
+                    <th>{% trans "Ordered by" %}</th>
+                    <th>{% trans "State" %}</th>
+                    <th>{% trans "Delete" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for o in orders %}
+                <tr>
+                    <td style="text-align:center;">
+                        {{ o.added|date:"SHORT_DATE_FORMAT" }}
+                    </td>
+                    <td>
+                        {% if o.state == 'new' %}
+                        <input type="hidden" id="id_order_{{ forloop.counter }}" value="{{ o.id }}">
+                        <input type="hidden" id="old_{{ forloop.counter }}" value="{{ o.count }}">
+                        <input id="count_{{ forloop.counter }}" type="text" value="{{ o.count }}" class="input-mini" onchange="update_count({{ forloop.counter }});">
+                        {% else %}{{ o.count }}{% endif %}
+                    </td>
+                    <td title="Ident Number: {{ o.article.ident }}">
+                        {{ o.article.name }}</td>
+                    <td>{{ o.article.quantity }}</td>
+                    <td style="text-align:right;">
+                        <span id="price_{{ forloop.counter }}" class="tt" title="{% trans "Single price" %}: <strong>{{ o.article.price|floatformat:2 }}{{ CURRENCY_SYM }}</strong>">
+                            {{ o.sum_price|floatformat:2 }}
+                        </span>{{ CURRENCY_SYM }}
+                    </td>
+                    <td>{{ o.article.supplier }}</td>
+                    <td>
+                        <span id="users_{{ forloop.counter }}" class="tt" title="{% trans 'Costs' %}<br>{{ o.costlist|join:', ' }}">
+                            {{ o.userlist|join:", " }}
+                        </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span class="tt" title="{{ o.get_state_display }}">
+                            <button type="button" class="btn btn-mini {{ o.state_btn }}">
+                                <i class="icon-white {{ o.state_icon }}"> </i>
+                            </button>
+                        </span>
+                    </td>
+                    <td style="text-align:center;">
+                        {% if o.deleteable %}
+                        <span class="tt" title="{% trans "Delete order now." %}">
+                            <a class="btn btn-danger btn-mini" href="{% url "orders-delete" oday.id o.id %}">
+                                <i class="icon-remove icon-white"> </i>
+                            </a>
+                        </span>
+                        {% else %}
+                        <a href="#" class="btn btn-danger btn-mini disabled tt" title="{% trans "Not possible" %}">
+                            <i class="icon-remove icon-white"> </i>
+                        </a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="well well-small">
+            <h3>{% trans "No orders found." %}</h3>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
 <script>
-$(document).ready(function() {
-  var oTable = $('#dataTable').dataTable({
-    "bJQueryUI": true,
-    "bPaginate": true,
-    "oLanguage": {
-      "sUrl": "{% static "i18n/de_DE.txt" %}"
+function color_sum() {
+    var fullcost = parseFloat($('#sum').text().replace(',', '.'));
+    var container = $('#sum_container');
+    if (fullcost < 6000) {
+        container.css('color', 'green');
+    } else {
+        container.css('color', 'red');
     }
-  });
+}
+
+function update_sum(diff) {
+    var fullcost = parseFloat($('#sum').text().replace(',', '.'));
+    var new_sum = fullcost + diff;
+    $('#sum').text(new_sum.toFixed(2).toString().replace('.', ','));
+    color_sum();
+}
+
+$(document).ready(function() {
+    color_sum();
 });
+
 function update_count(oid) {
     var order_id = $('#id_order_'+oid).val();
     var count = $('#count_'+oid).val();
-    var old = $('#old_'+oid).val();
-    if (parseInt(old, 10) == parseInt(count, 10)) {
-        alert('{{ not_changed }}');
+    var old = $('#old_'+oid);
+    if (parseInt(old.val(), 10) == parseInt(count, 10)) {
+        alert('{% trans "Count was not changed. Aborting." %}');
         return false;
     }
     var url = '/orders/api/update_count/'+order_id+'/'+count+'/';
     $.getJSON(url, function(data) {
-        $('#update_message').text(data['msg']).toggle('slow');
+        add_update_message(data['msg']);
         $('#users_'+oid).text(data['user']);
-        $('#sum').hide();
-        setTimeout(function() {
-                $('#update_message').text('').toggle('slow');
-            }, 5000);
+        $('#price_'+oid).text(data['new_price'].toFixed(2).toString().replace('.', ','));
+        old.val(count);
+        update_sum(data['price_diff']);
     });
 }
 </script>
-
-{% else %}
-<p>{% trans "No orders found." %}</p>
-{% endif %}
-
 {% endblock %}

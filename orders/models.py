@@ -81,6 +81,14 @@ STATE_CHOICES = ((u'new', _(u'New')), (u'accepted', _(u'Accepted')),
     (u'rejected', _(u'Rejected')), (u'ordered', _(u'Ordered')),
     (u'delivered', _(u'Delivered')))
 
+_mapper = dict(
+    new=(u'btn-success', u'icon-plus'),
+    accepted=(u'btn-primary', u'icon-ok'),
+    rejected=(u'btn-danger', u'icon-ban-circle'),
+    ordered=(u'btn-info', u'icon-shopping-cart'),
+    delivered=(u'btn-inverse', u'icon-inbox'),
+)
+
 
 class Order(models.Model):
     count = models.PositiveIntegerField(_(u'Count'))
@@ -112,7 +120,10 @@ class Order(models.Model):
             return 0.0
 
     def state_icon(self):
-        return u'{0}img/{1}.png'.format(settings.STATIC_URL, self.state)
+        return _mapper[self.state][1]
+
+    def state_btn(self):
+        return _mapper[self.state][0]
 
     def is_complete(self):
         delivered = sum([x.count for x in

@@ -24,17 +24,14 @@ from orders.menu import menus
 # Views
 
 def index(req):
-    if req.user.has_perm('orders.can_order'):
-        inc = True
-    else:
-        inc = False
+    inc = req.user.has_perm('orders.can_order')
     odays = list(h.get_next_odays(inc))
     ctx = dict(page_title=_(u'Next order days'), odays=odays, menus=menus)
     if odays:
         diff = odays[0].day - date.today()
         ctx['subtitle'] = _(u'Next in {0} days'.format(diff.days))
     oday_count = len(odays)
-    if oday_count < 2 and req.user.has_perm('orders.can_order'):
+    if oday_count < 2 and inc:
         if oday_count == 1:
             messages.warning(req, u'Es ist nur noch 1 Bestelltag angelegt!')
         else:
@@ -68,8 +65,8 @@ def order_detail(req, order_id):
         else:
             o.deleteable = False
     ctx = dict(page_title=_(u'Open Orders'), menus=menus, oday=oday,
-        orders=orders, not_changed=_(u'Count was not changed. Aborting.'),
-        order_sum=order_sum)
+        orders=orders, order_sum=order_sum, subtitle=unicode(oday), dt=True,
+        need_ajax=True)
     req.session['came_from'] = 'orders-detail'
     req.session['came_from_kw'] = {'order_id': order_id}
     return render(req, 'orders/orderday.html', ctx, app=u'orders')

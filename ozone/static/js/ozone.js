@@ -1,5 +1,5 @@
 popover_options = {'trigger': 'hover'};
-tooltip_options = {};
+tooltip_options = {'html': true};
 datatable_options = {
     'bJQueryUI': false,
     'bPaginate': true,
@@ -7,6 +7,7 @@ datatable_options = {
     'bAutoWidth': true,
     'bProcessing': true,
     'bSort': true,
+    'aaSorting': [],
     'oLanguage': {
         'sUrl': '/static/i18n/de_DE.txt'
     }
@@ -40,6 +41,7 @@ function show_update_container() {
 }
 
 function add_update_message(msg) {
+    show_update_container();
     $('#upd_messages').prepend('<li>'+msg+'</li>');
 }
 

@@ -3,7 +3,6 @@
 from django.http import HttpResponse
 from django.conf import settings
 from django.template import RequestContext
-from django.utils import translation
 from django.core.urlresolvers import get_callable, reverse, NoReverseMatch
 
 from jinja2 import FileSystemLoader, PackageLoader, ChoiceLoader, Environment
@@ -19,6 +18,7 @@ jinja_extensions = getattr(settings, 'JINJA_EXTENSIONS', ())
 env = Environment(extensions=jinja_extensions, loader=ChoiceLoader(loaders))
 
 if 'jinja2.ext.i18n' in jinja_extensions:
+    from django.utils import translation
     env.install_gettext_translations(translation)
 
 global_imports = getattr(settings, 'JINJA_GLOBALS', ())
