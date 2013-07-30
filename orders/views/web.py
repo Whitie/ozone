@@ -42,7 +42,13 @@ def index(req):
 @login_required
 def show_old_orders(req):
     orders = h.get_order_for_every_article()
-    ctx = dict(page_title=_(u'Old Orders'), menus=menus, orders=orders)
+    try:
+        first = Order.objects.all().order_by('added')[0]
+        dt = first.added.strftime(settings.DEFAULT_DATE_FORMAT)
+    except:
+        dt = u''
+    ctx = dict(page_title=_(u'All ordered articles'), menus=menus,
+        orders=orders, dt=True, subtitle=_(u'Since {0}'.format(dt)))
     return render(req, 'orders/old_orders.html', ctx, app=u'orders')
 
 
