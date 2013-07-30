@@ -168,17 +168,17 @@ def add_supplier(req):
     if req.method == 'POST':
         form = ShortSupplierForm(req.POST)
         if form.is_valid():
-            c, created = Company.objects.get_or_create(
-                name=form.cleaned_data['name'])
+            cd = form.cleaned_data
+            c, created = Company.objects.get_or_create(name=cd['name'])
             if not created:
                 messages.error(req, u'Lieferant %s existiert bereits.' %
                                c.name)
                 return redirect('orders-index')
-            c.customer_number = form.cleaned_data['customer_number']
-            c.phone = form.cleaned_data['phone']
-            c.fax = form.cleaned_data['fax']
-            c.email = form.cleaned_data['email']
-            c.web = form.cleaned_data['web']
+            c.customer_number = cd['customer_number']
+            c.phone = cd['phone']
+            c.fax = cd['fax']
+            c.email = cd['email']
+            c.web = cd['web']
             c.rating_users.add(req.user)
             c.save()
             messages.success(req, u'Neuer Lieferant %s gespeichert.' % c.name)
@@ -188,7 +188,8 @@ def add_supplier(req):
         messages.error(req, u'Bitte korrigieren Sie die falschen Felder.')
     else:
         form = ShortSupplierForm(initial={'web': 'http://'})
-    ctx = dict(page_title=_(u'Add new Supplier'), menus=menus, form=form)
+    ctx = dict(page_title=_(u'Add new Supplier'), menus=menus, form=form,
+        need_ajax=True)
     return render(req, 'orders/new_supplier.html', ctx, app=u'orders')
 
 

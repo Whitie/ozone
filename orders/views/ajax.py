@@ -57,6 +57,17 @@ def get_suppliers(req):
     return sup
 
 
+@require_POST
+@json_rpc
+def find_supplier(req, data):
+    supps = set()
+    for query in 'istartswith', 'iendswith', 'icontains':
+        q = {'name__{0}'.format(query): data['supp_name']}
+        for c in Company.objects.filter(**q):
+            supps.add(c.name)
+    return dict(supps=sorted(list(supps)))
+
+
 @json_view
 def api_article(req, article_id=0):
     article_id = int(article_id)

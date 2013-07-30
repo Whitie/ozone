@@ -54,6 +54,7 @@ urlpatterns += patterns('orders.views.ajax',
     url(r'^api/check_supplier/$', 'check_supplier_id',
         name='orders-api-check-supplier'),
     url(r'^api/delete_order/$', 'delete_order', name='orders-api-del-order'),
+    url(r'^api/find_supplier/$', 'find_supplier', name='orders-api-find-supp'),
 )
 
 urlpatterns += patterns('orders.views.pdf',
