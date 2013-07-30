@@ -67,33 +67,7 @@ def order_detail(req, order_id):
     ctx = dict(page_title=_(u'Open Orders'), menus=menus, oday=oday,
         orders=orders, order_sum=order_sum, subtitle=unicode(oday), dt=True,
         need_ajax=True)
-    req.session['came_from'] = 'orders-detail'
-    req.session['came_from_kw'] = {'order_id': order_id}
     return render(req, 'orders/orderday.html', ctx, app=u'orders')
-
-
-@login_required
-def delete_order(req, oday_id, order_id):
-    order = Order.objects.get(id=int(order_id))
-    if req.method == 'POST':
-        answer = req.POST.get('delete', u'no')
-        redirect_to = req.session.get('came_from', 'orders-detail')
-        kw = req.session.get('came_from_kw', {'order_id': oday_id})
-        if req.user.id not in [x.id for x in order.users.all()] or \
-                order.users.count() > 1:
-            if not req.user.has_perm('orders.can_order'):
-                messages.error(req,
-                    u'Fremde Bestellung kann nicht gelöscht werden!')
-                return redirect(redirect_to, **kw)
-        if answer == u'yes':
-            order.delete()
-            messages.success(req, u'Bestellung (ID: %s) gelöscht.' % order_id)
-        else:
-            messages.error(req, u'Nichts gelöscht. Abbruch.')
-        return redirect(redirect_to, **kw)
-    ctx = dict(page_title=_(u'Delete Order'), menus=menus, oday_id=oday_id,
-        order=order)
-    return render(req, 'orders/delete.html', ctx, app=u'orders')
 
 
 @login_required
@@ -177,7 +151,7 @@ def myorders(req):
                 ids.add(o.article.id)
                 tmp.append(o)
         orders.append((state, tmp))
-    ctx = dict(page_title=_(u'My Orders'),
+    ctx = dict(page_title=_(u'My Orders'), dt=True, need_ajax=True,
         subtitle=unicode(req.user.get_profile()),
         menus=menus, orders=orders)
     return render(req, 'orders/myorders.html', ctx, app=u'orders')
@@ -298,8 +272,6 @@ def manage_order(req, oday_id):
     ctx = dict(page_title=_(u'Manage Orders'), menus=menus, oday=oday,
         orders=orders, states=(u'new', u'accepted', u'rejected'),
         order_sum=order_sum, suppliers=h.get_supplier_choices())
-    req.session['came_from'] = 'orders-manage'
-    req.session['came_from_kw'] = {'oday_id': oday_id}
     return render(req, 'orders/manage_order.html', ctx, app=u'orders')
 
 

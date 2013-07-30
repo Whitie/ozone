@@ -6,8 +6,6 @@ from django.conf.urls.defaults import *
 urlpatterns = patterns('orders.views.web',
     url(r'^$', 'index', name='orders-index'),
     url(r'^detail/(?P<order_id>\d+)/$', 'order_detail', name='orders-detail'),
-    url(r'^delete/(?P<oday_id>\d+)/(?P<order_id>\d+)/$', 'delete_order',
-        name='orders-delete'),
     url(r'^order/(?P<article_id>\d+)/$', 'order', name='orders-order'),
     url(r'^order/$', 'order', name='orders-order'),
     url(r'^extra/(?P<article_id>\d+)/$', 'make_extra_order',
@@ -55,6 +53,7 @@ urlpatterns += patterns('orders.views.ajax',
     url(r'^api/rating/sendmail/$', 'send_memory_mail', name='orders-api-mail'),
     url(r'^api/check_supplier/$', 'check_supplier_id',
         name='orders-api-check-supplier'),
+    url(r'^api/delete_order/$', 'delete_order', name='orders-api-del-order'),
 )
 
 urlpatterns += patterns('orders.views.pdf',

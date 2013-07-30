@@ -65,9 +65,9 @@
                     <td style="text-align:center;">
                         {% if o.deleteable %}
                         <span class="tt" title="{% trans "Delete order now." %}">
-                            <a class="btn btn-danger btn-mini" href="{% url "orders-delete" oday.id o.id %}">
+                            <button type="button" class="btn btn-danger btn-mini" onclick="delete_order({{ o.id }}, '{{ o.article.name }}');">
                                 <i class="icon-remove icon-white"> </i>
-                            </a>
+                            </button>
                         </span>
                         {% else %}
                         <a href="#" class="btn btn-danger btn-mini disabled tt" title="{% trans "Not possible" %}">

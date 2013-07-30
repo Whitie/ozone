@@ -16,10 +16,14 @@
 {% for state, ods in orders %}
 <div class="row-fluid">
     <div class="span10">
-        <a name="{{ state.name }}"></a>
-        <button type="button" class="btn btn-{{ state.btn }}">
+        <button type="button" class="btn btn-{{ state.btn }} btn-large pull-right">
             <i class="icon-white {{ state.icon }}"> </i> {% trans state.name|title %}
         </button>
+    </div>
+</div>
+<a name="{{ state.name }}"></a>
+<div class="row-fluid">
+    <div class="span10">
         <table class="table table-striped dataTable">
             <thead>
                 <tr>
@@ -65,9 +69,9 @@
                         </a>
                         {% endif %}
                         {% if state.name == "rejected" %}
-                        <a class="btn btn-danger btn-mini" href="{% url "orders-delete" o.order_day.id o.id %}">
+                        <button type="button" class="btn btn-danger btn-mini" onclick="delete_order({{ o.id }}, '{{ o.article.name }}');">
                             <i class="icon-remove icon-white"> </i> {% trans "Delete" %}
-                        </a>
+                        </button>
                         {% endif %}
                     </td>
                 </tr>

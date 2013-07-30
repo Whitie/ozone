@@ -195,3 +195,17 @@ def check_supplier_id(req, data):
         return dict(result=True)
     except Company.DoesNotExist:
         return dict(result=False)
+
+
+@require_POST
+@json_rpc
+def delete_order(req, data):
+    order = Order.objects.get(id=data['oid'])
+    try:
+        order.delete()
+        msg = u''
+        ok = True
+    except Exception as e:
+        msg = u'Fehler beim Löschen: {0}'.format(unicode(e))
+        ok = False
+    return dict(msg=msg, ok=ok)

@@ -45,6 +45,27 @@ function add_update_message(msg) {
     $('#upd_messages').prepend('<li>'+msg+'</li>');
 }
 
+function delete_order(oid, article) {
+    var dat = {'oid': oid};
+    bootbox.confirm('Wollen Sie die Bestellung für Artikel '+article+' wirklich löschen?',
+        function(result) {
+            if (result == true) {
+                $.post('/orders/api/delete_order/', {'_JSON_': JSON.stringify(dat)},
+                    function(res) {
+                        if (res['ok'] == true) {
+                            location.reload();
+                        } else {
+                            add_update_message(res['msg']);
+                        }
+                    }
+                );
+            } else {
+                add_update_message('Löschen abgebrochen!');
+            }
+        }
+    );
+}
+
 function delete_student(student_id, name) {
     var dat = {'student_id': student_id};
     bootbox.confirm('Wollen Sie wirklich '+name+' mit allen gespeicherten Anwesenheiten löschen?',
