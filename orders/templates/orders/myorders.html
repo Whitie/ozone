@@ -64,6 +64,11 @@
                             {% trans "Now" %}
                         </a>
                         {% endif %}
+                        {% if state.name == "rejected" %}
+                        <a class="btn btn-danger btn-mini" href="{% url "orders-delete" o.order_day.id o.id %}">
+                            <i class="icon-remove icon-white"> </i> {% trans "Delete" %}
+                        </a>
+                        {% endif %}
                     </td>
                 </tr>
                 {% empty %}
