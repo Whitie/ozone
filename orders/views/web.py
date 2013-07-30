@@ -16,7 +16,7 @@ from core.models import Company, CompanyRating, PDFPrintout
 from core.forms import CompanyRatingForm
 from orders.forms import (OrderForm, ShortSupplierForm,
                           OrderDayForm, BaseOrderForm, SummarizeForm)
-from orders.models import OrderDay, Order, Article, Cost, CostOrder
+from orders.models import OrderDay, Order, Article, Cost, CostOrder, _mapper
 from orders.views import helper as h
 from orders.menu import menus
 
@@ -166,15 +166,20 @@ def ask_order(req):
 
 @login_required
 def myorders(req):
-    order_list = req.user.order_set.select_related().all(
-        ).order_by('article__name', '-added')
+    _orders = req.user.order_set.select_related().all()
     orders = []
-    ids = set()
-    for o in order_list:
-        if not o.article.id in ids:
-            ids.add(o.article.id)
-            orders.append(o)
-    ctx = dict(page_title=_(u'My Orders'), menus=menus, orders=orders)
+    for s in u'new', u'accepted', u'ordered', u'delivered', u'rejected':
+        state = dict(name=s, btn=_mapper[s][0], icon=_mapper[s][1])
+        tmp = []
+        ids = set()
+        for o in _orders.filter(state=s).order_by('article__name', '-added'):
+            if not o.article.id in ids:
+                ids.add(o.article.id)
+                tmp.append(o)
+        orders.append((state, tmp))
+    ctx = dict(page_title=_(u'My Orders'),
+        subtitle=unicode(req.user.get_profile()),
+        menus=menus, orders=orders)
     return render(req, 'orders/myorders.html', ctx, app=u'orders')
 
 

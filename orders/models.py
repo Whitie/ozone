@@ -82,11 +82,11 @@ STATE_CHOICES = ((u'new', _(u'New')), (u'accepted', _(u'Accepted')),
     (u'delivered', _(u'Delivered')))
 
 _mapper = dict(
-    new=(u'btn-success', u'icon-plus'),
-    accepted=(u'btn-primary', u'icon-ok'),
-    rejected=(u'btn-danger', u'icon-ban-circle'),
-    ordered=(u'btn-info', u'icon-shopping-cart'),
-    delivered=(u'btn-inverse', u'icon-inbox'),
+    new=(u'success', u'icon-plus'),
+    accepted=(u'primary', u'icon-ok'),
+    rejected=(u'danger', u'icon-ban-circle'),
+    ordered=(u'info', u'icon-shopping-cart'),
+    delivered=(u'inverse', u'icon-inbox'),
 )
 
 
