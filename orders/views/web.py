@@ -142,7 +142,7 @@ def ask_order(req):
 def myorders(req):
     _orders = req.user.order_set.select_related().all()
     orders = []
-    for s in u'new', u'accepted', u'ordered', u'delivered', u'rejected':
+    for s in u'delivered', u'new', u'accepted', u'ordered', u'rejected':
         state = dict(name=s, btn=_mapper[s][0], icon=_mapper[s][1])
         tmp = []
         ids = set()
