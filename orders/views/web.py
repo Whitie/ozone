@@ -248,8 +248,8 @@ def make_extra_order(req, article_id=0):
 def manage_orders(req):
     if req.method == 'POST':
         day = int(req.POST['oday'])
-        oday = OrderDay.objects.select_related().get(id=day)
-        messages.success(req, _(u'%s selected.' % oday))
+        messages.warning(req,
+            u'Alle Änderungen werden automatisch gespeichert!')
         return redirect('orders-manage', oday_id=day)
     users = User.objects.exclude(username='admin')
     can_order = [x.username for x in users if x.has_perm('orders.can_order')]
@@ -258,7 +258,8 @@ def manage_orders(req):
     limit = date.today() - timedelta(days=14)
     odays = OrderDay.objects.filter(day__gte=limit).order_by('day')
     ctx = dict(page_title=_(u'Manage Orders'), menus=menus, odays=odays,
-        users=users, can_order=can_order, can_change=can_change)
+        users=users, can_order=can_order, can_change=can_change,
+        need_ajax=True)
     return render(req, 'orders/manage_orders.html', ctx, app=u'orders')
 
 
@@ -276,7 +277,8 @@ def manage_order(req, oday_id):
         o.sum_price = o.count * o.article.price
         o.costlist = [u'%s: %d%%' % (unicode(x.cost), x.percent) for x in
                       CostOrder.objects.filter(order=o)]
-    ctx = dict(page_title=_(u'Manage Orders'), menus=menus, oday=oday,
+    ctx = dict(page_title=_(u'Edit Orders'), menus=menus, oday=oday,
+        subtitle=_(u'for {0}'.format(unicode(oday))), need_ajax=True, dt=True,
         orders=orders, states=(u'new', u'accepted', u'rejected'),
         order_sum=order_sum, suppliers=h.get_supplier_choices())
     return render(req, 'orders/manage_order.html', ctx, app=u'orders')
