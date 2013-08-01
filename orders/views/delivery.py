@@ -2,12 +2,12 @@
 
 from datetime import date, timedelta
 
-from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 
 from orders.models import DeliveredOrder, Order
 from orders.menu import menus
+from core.utils import render
 
 
 @login_required
@@ -22,7 +22,7 @@ def index(req):
         o.userlist = [x.username for x in o.users.all()]
         orders.append(o)
     tmp = set()
-    last = date.today() - timedelta(days=30)
+    last = date.today() - timedelta(days=14)
     for d in DeliveredOrder.objects.select_related().filter(
         order__state=u'delivered', date__gte=last):
         if d.order.is_complete():
@@ -40,5 +40,5 @@ def index(req):
         o.userlist = [x.username for x in o.users.all()]
         dorders.append(o)
     ctx = dict(page_title=_(u'Delivery'), menus=menus, orders=orders,
-        dorders=dorders)
+        dorders=dorders, dt=True, need_ajax=True)
     return render(req, 'orders/delivery.html', ctx, app=u'orders')

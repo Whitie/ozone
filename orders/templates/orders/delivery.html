@@ -1,108 +1,99 @@
 {% extends "index.html" %}
 {% load i18n %}
-{% load staticfiles %}
 
 {% block content %}
-<h2 class="headline">{% trans "Open Orders" %}</h2>
-<table class="dataTable">
-    <thead>
-        <th>{% trans "Ordered" %}</th>
-        <th>{% trans "Article" %}</th>
-        <th>{% trans "Art. ID" %}</th>
-        <th>{% trans "Supplier" %}</th>
-        <th>{% trans "Count" %}</th>
-        <th>{% trans "Deliveries" %}</th>
-        <th>{% trans "Delivered" %}</th>
-        <th>{% trans "Orderer" %}</th>
-    </thead>
-    <tbody>
-        {% for o in orders %}
-        <tr>
-            <td>{{ o.ordered|date:"SHORT_DATE_FORMAT" }}</td>
-            <td>{{ o.article.name }}</td>
-            <td>{{ o.article.ident }}</td>
-            <td>{{ o.article.supplier }}</td>
-            <td>{{ o.count }}</td>
-            <td title="{% trans "Missing" %}: {{ o.missing }}" id="msg_{{ o.id }}">
-                {% for d in o.deliveries.all %}
-                <strong>{{ d.count }}x</strong> {{ d.date|date:"SHORT_DATE_FORMAT" }}({{ d.user.username }})<br />
+<div class="row-fluid">
+    <div class="span12">
+        <h2>{% trans "Open Orders" %}</h2>
+        <table class="table table-striped dTable">
+            <thead>
+                <th>{% trans "Ordered" %}</th>
+                <th>{% trans "Article" %}</th>
+                <th>{% trans "Art. ID" %}</th>
+                <th>{% trans "Supplier" %}</th>
+                <th>{% trans "Count" %}</th>
+                <th>{% trans "Deliveries" %}</th>
+                <th>{% trans "Delivered" %}</th>
+                <th>{% trans "Orderer" %}</th>
+            </thead>
+            <tbody>
+                {% for o in orders %}
+                <tr>
+                    <td>{{ o.ordered|date:"Y-m-d" }}</td>
+                    <td>{{ o.article.name }}</td>
+                    <td>{{ o.article.ident }}</td>
+                    <td>{{ o.article.supplier }}</td>
+                    <td>{{ o.count }}</td>
+                    <td title="{% trans "Missing" %}: {{ o.missing }}" id="msg_{{ o.id }}">
+                        {% for d in o.deliveries.all %}
+                        <strong>{{ d.count }}x</strong> {{ d.date|date:"SHORT_DATE_FORMAT" }}({{ d.user.username }})<br />
+                        {% endfor %}
+                    </td>
+                    <td>{% if perms.orders.can_order %}
+                        <input class="input-mini" type="text" maxlength="3" id="count_{{ o.id }}" onchange="delivery({{ o.id }});">
+                        <input type="hidden" id="missing_{{ o.id }}" value="{{ o.missing }}">
+                        <button type="button" class="btn btn-primary btn-mini" onclick="delivery_all({{ o.id }});">
+                            <i class="icon-white  icon-download-alt"> </i> {% trans "ALL" %}
+                        </button>
+                        {% else %}{{ o.dsum }}{% endif %}
+                    </td>
+                    <td>{{ o.userlist|join:", " }}</td>
+                </tr>
                 {% endfor %}
-            </td>
-            <td>{% if perms.orders.can_order %}
-                <input type="text" size="3" maxlength="3" id="count_{{ o.id }}" onchange="delivery({{ o.id }});" />
-                <input type="hidden" id="missing_{{ o.id }}" value="{{ o.missing }}" />
-                <span onclick="delivery_all({{ o.id }});">{% trans "All" %}</span>
-                {% else %}{{ o.dsum }}{% endif %}
-            </td>
-            <td>{{ o.userlist|join:", " }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-<h2 class="headline">{% trans "Delivered last 30 days" %}</h2>
-<table class="dataTable">
-    <thead>
-        <th>{% trans "Ordered" %}</th>
-        <th>{% trans "Article" %}</th>
-        <th>{% trans "Art. ID" %}</th>
-        <th>{% trans "Supplier" %}</th>
-        <th>{% trans "Count" %}</th>
-        <th>{% trans "Deliveries" %}</th>
-        <th>{% trans "Avg. time to delivery" %}</th>
-        <th>{% trans "Orderer" %}</th>
-    </thead>
-    <tbody>
-        {% for o in dorders %}
-        <tr>
-            <td>{{ o.ordered|date:"SHORT_DATE_FORMAT" }}</td>
-            <td>{{ o.article.name }}</td>
-            <td>{{ o.article.ident }}</td>
-            <td>{{ o.article.supplier }}</td>
-            <td>{{ o.count }}</td>
-            <td>
-                {% for d in o.deliveries.all %}
-                <strong>{{ d.count }}x</strong> {{ d.date|date:"SHORT_DATE_FORMAT" }}({{ d.user.username }})<br />
-                {% endfor %}
-            </td>
-            <td>{{ o.avg_days|floatformat:0 }} {% trans "days" %}</td>
-            <td>{{ o.userlist|join:", " }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-<div id="upd_messages" style="height:90px;">
-<h3>{% trans "Changes" %}</h3>
-<ul>
-</ul>
+            </tbody>
+        </table>
+    </div>
 </div>
 
-<div id="count-error" title="{% trans "Error" %}" style="display:none;">
-    <p class="ui-state-error">
-        <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 50px 0;"></span>
-        {% trans "Your delivery count is higher than your order count!" %}<br />
-        {% trans "Maximum count that can be delivered is" %}: <strong id="count-missing"></strong>
-    </p>
+<div class="row-fluid">
+    <div class="span12">
+        <h2>{% trans "Delivered last 2 weeks" %}</h2>
+        <table class="table table-striped dTable">
+            <thead>
+                <th>{% trans "Ordered" %}</th>
+                <th>{% trans "Article" %}</th>
+                <th>{% trans "Art. ID" %}</th>
+                <th>{% trans "Supplier" %}</th>
+                <th>{% trans "Count" %}</th>
+                <th>{% trans "Deliveries" %}</th>
+                <th>{% trans "Avg. time to delivery" %}</th>
+                <th>{% trans "Orderer" %}</th>
+            </thead>
+            <tbody>
+                {% for o in dorders %}
+                <tr>
+                    <td>{{ o.ordered|date:"Y-m-d" }}</td>
+                    <td>{{ o.article.name }}</td>
+                    <td>{{ o.article.ident }}</td>
+                    <td>{{ o.article.supplier }}</td>
+                    <td>{{ o.count }}</td>
+                    <td>
+                        {% for d in o.deliveries.all %}
+                        <strong>{{ d.count }}x</strong> {{ d.date|date:"SHORT_DATE_FORMAT" }}({{ d.user.username }})<br />
+                        {% endfor %}
+                    </td>
+                    <td>{{ o.avg_days|floatformat:0 }} {% trans "days" %}</td>
+                    <td>{{ o.userlist|join:", " }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
+{% endblock %}
 
+{% block additional_js %}
 <script>
 $(document).ready(function() {
-  var oTable = $('.dataTable').dataTable({
-    "bJQueryUI": true,
-    "bPaginate": false,
-    "oLanguage": {
-      "sUrl": "{% static "i18n/de_DE.txt" %}"
-    }
-  });
+    datatable_options['bPaginate'] = false;
+    var oTable = $('.dTable').dataTable(datatable_options);
 });
 
 function update_delivery(oid, count) {
     var dat = {'oid': oid, 'count': count};
     $.post('{% url "orders-api-delivery" %}', {'_JSON_': JSON.stringify(dat)},
         function(res_data) {
-            $('#upd_messages').show('slow');
-            $('#upd_messages > ul').prepend('<li>'+res_data['msg']+'</li>');
+            add_update_message(res_data['msg']);
             $('#count_'+oid).val('');
             $('#msg_'+oid).append(res_data['entry']);
             if (res_data['complete'] == true) {
@@ -117,20 +108,11 @@ function delivery(oid) {
     var delivered = parseInt($('#count_'+oid).val());
     var missing = parseInt($('#missing_'+oid).val());
     if (delivered > missing) {
-        $('#count-missing').text(missing);
-        $('#count-error').dialog({
-            modal: true,
-            resizable: false,
-            buttons: {
-                Ok: function() {
-                    $(this).dialog('close');
-                    $('#count_'+oid).val('');
-                }
-            },
-            close: function(event, ui) {
-                $('#count_'+oid).val('');
-            }
-        });
+        bootbox.alert(
+            '{% trans "Your delivery count is higher than your order count!" %}<br />'
+            +'{% trans "Maximum count that can be delivered is" %}: <strong>'
+            +missing+'</strong>');
+        $('#count_'+oid).val('');
     } else {
         update_delivery(oid, delivered);
     }
