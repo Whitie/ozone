@@ -3,6 +3,7 @@
 from decimal import Decimal
 from smtplib import SMTPException
 
+from django.db.models import Q
 from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
 from django.contrib.auth.models import User
@@ -60,12 +61,11 @@ def get_suppliers(req):
 @require_POST
 @json_rpc
 def find_supplier(req, data):
-    supps = set()
-    for query in 'istartswith', 'iendswith', 'icontains':
-        q = {'name__{0}'.format(query): data['supp_name']}
-        for c in Company.objects.filter(**q):
-            supps.add(c.name)
-    return dict(supps=sorted(list(supps)))
+    s = data['supp_name']
+    supps = Company.objects.filter(
+        Q(name__istartswith=s) | Q(name__icontains=s) | Q(name__iendswith=s)
+    ).values_list('name', flat=True).order_by('name')
+    return dict(supps=list(supps))
 
 
 @json_view
