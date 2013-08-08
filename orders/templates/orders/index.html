@@ -70,10 +70,6 @@
             {% trans "Last deliveries" %}
             {% if user.is_authenticated %}{% trans "for" %} {{ user.get_profile }}{% endif %}
         </h3>
-    </div>
-</div>
-<div class="row-fluid">
-    <div class="span6 offset2">
         <table class="table table-striped">
             <tr>
                 <th>{% trans "Date" %}</th>
