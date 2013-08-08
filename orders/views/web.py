@@ -16,7 +16,8 @@ from core.models import Company, CompanyRating, PDFPrintout
 from core.forms import CompanyRatingForm
 from orders.forms import (OrderForm, ShortSupplierForm,
                           OrderDayForm, BaseOrderForm, SummarizeForm)
-from orders.models import OrderDay, Order, Article, Cost, CostOrder, _mapper
+from orders.models import (OrderDay, Order, Article, Cost, CostOrder, _mapper,
+                           DeliveredOrder)
 from orders.views import helper as h
 from orders.menu import menus
 
@@ -36,6 +37,11 @@ def index(req):
             messages.warning(req, u'Es ist nur noch 1 Bestelltag angelegt!')
         else:
             messages.error(req, u'Es ist kein Bestelltag mehr angelegt!')
+    if req.user.is_authenticated():
+        deliveries = DeliveredOrder.objects.filter(order__users=req.user)
+    else:
+        deliveries = DeliveredOrder.objects.all()
+    ctx['deliveries'] = deliveries.order_by('-date')[:5]
     return render(req, 'orders/index.html', ctx, app=u'orders')
 
 
