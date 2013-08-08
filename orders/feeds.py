@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib.syndication.views import Feed
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.models import User
 
 from orders.models import Order, DeliveredOrder
 
@@ -63,3 +64,18 @@ class LatestDeliveriesFeed(Feed):
 
     def item_link(self, item):
         return reverse('orders-delivery')
+
+
+class LatestUserDeliveriesFeed(LatestDeliveriesFeed):
+    title = _(u'My Latest Deliveries')
+
+    def get_object(self, req, user_id):
+        return User.objects.get(pk=int(user_id))
+
+    def description(self, obj):
+        return _(u'Latest 10 deliveries for {0}.'.format(
+            unicode(obj.get_profile())))
+
+    def items(self, obj):
+        return DeliveredOrder.objects.filter(order__users=obj).order_by(
+            '-date')[:10]

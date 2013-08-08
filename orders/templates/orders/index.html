@@ -38,6 +38,11 @@
                 </a>
             </p>
             <p class="text-right">
+                <a href="{% url "orders-feed-latest-delivery" user.id %}">
+                    {% trans "My Latest Deliveries" %}
+                </a>
+            </p>
+            <p class="text-right">
                 <a href="{% url "orders-feed-latest-delivery" %}">
                     {% trans "Latest Deliveries" %}
                 </a>

@@ -68,11 +68,13 @@
                         <small><span class="label label-info">{% trans "Repair" %}</span></small>
                         {% endif %}
                     </td>
+                    <td>
                     {% if o.state in states %}
-                    <td title="{% trans "Only correct typos here!" %}">
-                        <input class="input-mini" type="text" value="{{ o.article.ident }}" name="art_ident"
-                            onchange="update_row({{ forloop.counter }});" id="art_ident_{{ forloop.counter }}">
-                    {% else %}<td>{{ o.article.ident }}{% endif %}
+                        <span class="tt" title="{% trans "Only correct typos here!" %}">
+                            <input class="input-mini" type="text" value="{{ o.article.ident }}" name="art_ident"
+                                onchange="update_row({{ forloop.counter }});" id="art_ident_{{ forloop.counter }}">
+                        </span>
+                    {% else %}{{ o.article.ident }}{% endif %}
                     </td>
                     <td>{{ o.article.quantity }}</td>
                     <td>
@@ -96,7 +98,11 @@
                         {% else %}{{ o.article.supplier.short_name }}{% endif %}
                         {% if o.memo %}<span class="badge badge-info tt" title="{{ o.memo }}"><i class="icon-white icon-info-sign"> </i></span>{% endif %}
                     </td>
-                    <td title="{{ o.costlist|join:", " }}">{{ o.userlist|join:", " }}</td>
+                    <td>
+                        <span class="tt" title="{{ o.costlist|join:", " }}">
+                            {{ o.userlist|join:", " }}
+                        </span>
+                    </td>
                     {% if perms.orders.can_change_orderstate and o.state in states %}
                     <td id="state_{{ forloop.counter }}">
                         <label class="radio">

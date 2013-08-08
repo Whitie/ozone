@@ -2,7 +2,8 @@
 
 from django.conf.urls.defaults import *
 
-from orders.feeds import LatestOrdersFeed, LatestDeliveriesFeed
+from orders.feeds import (LatestOrdersFeed, LatestDeliveriesFeed,
+                          LatestUserDeliveriesFeed)
 
 
 urlpatterns = patterns('orders.views.web',
@@ -72,5 +73,7 @@ urlpatterns += patterns('orders.views.pdf',
 urlpatterns += patterns('',
     url(r'^feeds/ordered/$', LatestOrdersFeed(), name='orders-feed-latest'),
     url(r'^feeds/delivered/$', LatestDeliveriesFeed(),
+        name='orders-feed-latest-delivery'),
+    url(r'^feeds/delivered/(?P<user_id>\d+)/$', LatestUserDeliveriesFeed(),
         name='orders-feed-latest-delivery'),
 )
