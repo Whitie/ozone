@@ -1,10 +1,9 @@
 {% extends "index.html" %}
 {% load i18n %}
-{% load staticfiles %}
 
 {% block content %}
 <div class="row-fluid">
-    <div class="span10 centered">
+    <div class="span10 centered" id="sum_container">
         <h3>{% trans "Sum" %}: <span id="sum">{{ order_sum|floatformat:2 }}</span>
             {{ CURRENCY_SYM }}
         </h3>
@@ -44,18 +43,20 @@
             </thead>
             <tbody>
                 {% for o in orders %}
-                <tr id="row_{{ forloop.counter }}">
+                <tr>
                     <td>{% if o.state in states %}
                         <input type="text" class="input-mini" value="{{ o.count }}" name="count"
                             onchange="update_row({{ forloop.counter }});"
-                            style="text-align:right;" />
-                        <input type="hidden" name="order_id" value="{{ o.id }}" />
+                            style="text-align:right;" id="count_{{ forloop.counter }}">
+                        <input type="hidden" name="order_id" value="{{ o.id }}" id="order_id_{{ forloop.counter }}">
                         {% else %}{{ o.count }}{% endif %}
                     </td>
                     {% if o.state in states %}
-                    <td title="{% trans "Only correct typos here!" %}">
-                        <input class="input-medium" type="text" value="{{ o.article.name }}" name="art_name"
-                            onchange="update_row({{ forloop.counter }});" />
+                    <td>
+                        <span class="tt" title="{% trans "Only correct typos here!" %}">
+                            <input class="input-medium" type="text" value="{{ o.article.name }}" name="art_name"
+                                onchange="update_row({{ forloop.counter }});" id="art_name_{{ forloop.counter }}">
+                        </span>
                         <span style="display:none;">{{ o.article.name }}</span>
                     {% else %}
                     <td>{{ o.article.name }}
@@ -70,19 +71,21 @@
                     {% if o.state in states %}
                     <td title="{% trans "Only correct typos here!" %}">
                         <input class="input-mini" type="text" value="{{ o.article.ident }}" name="art_ident"
-                            onchange="update_row({{ forloop.counter }});" />
+                            onchange="update_row({{ forloop.counter }});" id="art_ident_{{ forloop.counter }}">
                     {% else %}<td>{{ o.article.ident }}{% endif %}
                     </td>
                     <td>{{ o.article.quantity }}</td>
-                    <td title="{% trans "Sum" %}: {{ o.price|floatformat:2 }}{{ CURRENCY_SYM }}">
-                        {% if o.state in states %}
-                        <div class="input-append">
-                            <input class="input-mini" type="text" value="{{ o.article.price|floatformat:2 }}"
-                                name="art_price" onchange="update_row({{ forloop.counter }});"
-                                style="text-align:right;">
-                            <span class="add-on">{{ CURRENCY_SYM }}</span>
-                        </div>
-                        {% else %}{{ o.article.price|floatformat:2 }}{{ CURRENCY_SYM }}{% endif %}
+                    <td>
+                        <span class="tt" title="{% trans "Sum" %}: {{ o.price|floatformat:2 }}{{ CURRENCY_SYM }}">
+                            {% if o.state in states %}
+                            <div class="input-append">
+                                <input class="input-mini" type="text" value="{{ o.article.price|floatformat:2 }}"
+                                    name="art_price" onchange="update_row({{ forloop.counter }});"
+                                    style="text-align:right;" id="art_price_{{ forloop.counter }}">
+                                <span class="add-on">{{ CURRENCY_SYM }}</span>
+                            </div>
+                            {% else %}{{ o.article.price|floatformat:2 }}{{ CURRENCY_SYM }}{% endif %}
+                        </span>
                     </td>
                     <td>
                         {% if perms.orders.can_order and o.state in states %}
@@ -95,7 +98,7 @@
                     </td>
                     <td title="{{ o.costlist|join:", " }}">{{ o.userlist|join:", " }}</td>
                     {% if perms.orders.can_change_orderstate and o.state in states %}
-                    <td>
+                    <td id="state_{{ forloop.counter }}">
                         <label class="radio">
                             <input type="radio" name="state_{{ forloop.counter }}" value="new"
                                 onchange="update_state({{ forloop.counter }});"
@@ -126,7 +129,8 @@
                     <td style="text-align:center;">
                         {% if o.state in states %}
                         <span class="tt" title="{% trans "Delete order now." %}">
-                            <button type="button" class="btn btn-danger btn-mini" onclick="delete_order({{ o.id }}, '{{ o.article.name }}');">
+                            <button type="button" class="btn btn-danger btn-mini"
+                                onclick="delete_order({{ o.id }}, '{{ o.article.name }}');">
                                 <i class="icon-remove icon-white"> </i>
                             </button>
                         </span>
@@ -143,33 +147,53 @@
 {% block additional_js %}
 <script>
 $(function() {
+    color_sum();
     datatable_options['bPaginate'] = false;
     var oTable = $('.dtable').dataTable(datatable_options);
 });
 
+function color_sum() {
+    var fullcost = parseFloat($('#sum').text().replace(',', '.'));
+    var container = $('#sum_container');
+    if (fullcost < 6000) {
+        container.css('color', 'green');
+    } else {
+        container.css('color', 'red');
+    }
+}
+
+function update_sum(diff) {
+    var fullcost = parseFloat($('#sum').text().replace(',', '.'));
+    var new_sum = fullcost + diff;
+    $('#sum').text(new_sum.toFixed(2).toString().replace('.', ','));
+    color_sum();
+}
+
 function update_row(row) {
-    var oid = $('#row_'+row+' > td > :input[name="order_id"]').val();
-    var count = $('#row_'+row+' > td > :input[name="count"]').val();
-    var art_name = $('#row_'+row+' > td > :input[name="art_name"]').val();
-    var art_ident = $('#row_'+row+' > td > :input[name="art_ident"]').val();
-    var price = $('#row_'+row+' > td > :input[name="art_price"]').val();
+    var oid = $('#order_id_'+row).val();
+    var count = $('#count_'+row).val();
+    var art_name = $('#art_name_'+row).val();
+    var art_ident = $('#art_ident'+row).val();
+    var price = $('#art_price'+row).val();
     var supp_id = $('#supp_'+row+' :selected').val();
     data = {'order_id': parseInt(oid), 'count': parseInt(count),
             'art_name': art_name, 'art_ident': art_ident, 'price': price,
             'supp_id': parseInt(supp_id)};
     $.post('{% url "orders-api-change" %}', {'_JSON_': JSON.stringify(data)},
         function(data) {
+            update_sum(data['diff']);
             add_update_message(data['msg']);
         });
 }
 
 function update_state(row) {
-    var oid = $('#row_'+row+' > td > :input[name="order_id"]').val();
-    var state = $('#row_'+row+' > td > label > :input[name^="state"]:checked').val();
+    var oid = $('#order_id_'+row).val();
+    var state = $('#state_'+row+' > label > :input[name^="state"]:checked').val();
     post_data = {'order_id': parseInt(oid), 'state': state};
     $.post('{% url "orders-api-state" %}', {'_JSON_': JSON.stringify(post_data)},
         function(ret_data) {
             add_update_message(ret_data['msg']);
+            update_sum(ret_data['diff']);
         });
 }
 </script>

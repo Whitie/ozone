@@ -115,6 +115,7 @@ def change_order(req, data):
     except Company.DoesNotExist:
         supplier = None
     article = order.article
+    old_price = article.price * order.count
     try:
         price = Decimal(data['price'].replace(u',', u'.'))
         article.name = data['art_name']
@@ -127,20 +128,28 @@ def change_order(req, data):
     article.save()
     order.count = data['count']
     order.save()
+    diff = article.price * order.count - old_price
     msg = (u'Alle Änderungen an Bestellung: %(name)s (ID: %(id)d) '
            u'gespeichert.' % {'name': article.name, 'id': order.id})
-    return {'msg': msg}
+    return dict(msg=msg, diff=float(diff))
 
 
 @require_POST
 @json_rpc
 def update_state(req, data):
     order = Order.objects.select_related().get(id=data['order_id'])
+    old_state = order.state
     order.state = data['state']
     order.save()
+    if old_state == u'rejected' and order.state in (u'new', u'accepted'):
+        diff = order.count * order.article.price
+    elif old_state in (u'new', u'accepted') and order.state == u'rejected':
+        diff = order.count * order.article.price * -1
+    else:
+        diff = 0.0
     msg = (u'Status für %(art)s auf %(state)s gesetzt.' %
-           {'art': order.article.name, 'state': order.state})
-    return {'msg': msg}
+           {'art': order.article.name, 'state': order.get_state_display()})
+    return dict(msg=msg, new_state=order.state, diff=float(diff))
 
 
 @require_POST

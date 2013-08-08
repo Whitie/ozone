@@ -90,6 +90,10 @@
 
 {% block additional_js %}
 <script>
+$(document).ready(function() {
+    color_sum();
+});
+
 function color_sum() {
     var fullcost = parseFloat($('#sum').text().replace(',', '.'));
     var container = $('#sum_container');
@@ -106,10 +110,6 @@ function update_sum(diff) {
     $('#sum').text(new_sum.toFixed(2).toString().replace('.', ','));
     color_sum();
 }
-
-$(document).ready(function() {
-    color_sum();
-});
 
 function update_count(oid) {
     var order_id = $('#id_order_'+oid).val();

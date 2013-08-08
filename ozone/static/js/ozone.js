@@ -47,7 +47,7 @@ function add_update_message(msg) {
 
 function delete_order(oid, article) {
     var dat = {'oid': oid};
-    bootbox.confirm('Wollen Sie die Bestellung für Artikel '+article+' wirklich löschen?',
+    bootbox.confirm('Wollen Sie die Bestellung für Artikel: '+article+' wirklich löschen?',
         function(result) {
             if (result == true) {
                 $.post('/orders/api/delete_order/', {'_JSON_': JSON.stringify(dat)},
