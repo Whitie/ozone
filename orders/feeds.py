@@ -1,0 +1,65 @@
+# -*- coding: utf-8 -*-
+
+from django.conf import settings
+from django.contrib.syndication.views import Feed
+from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext_lazy as _
+
+from orders.models import Order, DeliveredOrder
+
+
+class LatestOrdersFeed(Feed):
+    title = _(u'Latest Orders')
+    link = '/orders/'
+    description = _(u'Shows the last 10 orders made.')
+
+    def items(self):
+        return Order.objects.order_by('-added')[:10]
+
+    def item_title(self, item):
+        title = _(u'{article}, {date}'.format(article=unicode(item.article),
+            date=item.added.strftime(settings.DEFAULT_DATETIME_FORMAT)))
+        return title
+
+    def item_description(self, item):
+        desc = _(u'Order: {order}, State: {state}'.format(
+            order=unicode(item), state=item.get_state_display()))
+        return desc
+
+    def item_link(self, item):
+        return reverse('orders-detail', kwargs={'order_id': item.order_day.id})
+
+
+class LatestDeliveriesFeed(Feed):
+    title = _(u'Latest Deliveries')
+    link = '/orders/delivery/'
+    description = _(u'Shows the last 20 deliveries.')
+
+    def items(self):
+        return DeliveredOrder.objects.order_by('-date')[:20]
+
+    def item_title(self, item):
+        title = _(u'{date}, Article: {article}'.format(
+            date=item.date.strftime(settings.DEFAULT_DATE_FORMAT),
+            article=unicode(item.order.article)))
+        return title
+
+    def item_description(self, item):
+        if item.order.is_complete():
+            comp = _(u', order complete.')
+        else:
+            comp = _(u', INCOMPLETE.')
+        data = dict(
+            ocount=item.order.count,
+            odate=item.order.ordered.strftime(settings.DEFAULT_DATE_FORMAT),
+            users=u', '.join([x.username for x in item.order.users.all()]),
+            count=item.count,
+            date=item.date.strftime(settings.DEFAULT_DATE_FORMAT),
+            comp=comp,
+        )
+        desc = _(u'Ordered: {ocount}x {odate} by {users}, delivered: {count}x '
+            u'{date}{comp}'.format(**data))
+        return desc
+
+    def item_link(self, item):
+        return reverse('orders-delivery')

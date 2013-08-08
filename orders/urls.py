@@ -2,6 +2,8 @@
 
 from django.conf.urls.defaults import *
 
+from orders.feeds import LatestOrdersFeed, LatestDeliveriesFeed
+
 
 urlpatterns = patterns('orders.views.web',
     url(r'^$', 'index', name='orders-index'),
@@ -64,4 +66,11 @@ urlpatterns += patterns('orders.views.pdf',
     url(r'^api/generate_pdf/$', 'generate_one_pdf', name='orders-api-pdf'),
     url(r'^api/ratings/printout/$', 'generate_ratings_pdf',
         name='orders-pdf-rating-printout'),
+)
+
+# Feeds
+urlpatterns += patterns('',
+    url(r'^feeds/ordered/$', LatestOrdersFeed(), name='orders-feed-latest'),
+    url(r'^feeds/delivered/$', LatestDeliveriesFeed(),
+        name='orders-feed-latest-delivery'),
 )

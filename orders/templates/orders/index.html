@@ -1,5 +1,4 @@
 {% extends "index.html" %}
-{% load url from future %}
 {% load i18n %}
 
 {% block content %}
@@ -30,13 +29,30 @@
         </div>
         {% endif %}
     </div>
-    {% if perms.orders.can_order %}
+    <div class="span2 offset1">
+        <div class="well centered">
+            <h3>{% trans "Feeds" %}</h3>
+            <p class="text-right">
+                <a href="{% url "orders-feed-latest" %}">
+                    {% trans "Latest Orders" %}
+                </a>
+            </p>
+            <p class="text-right">
+                <a href="{% url "orders-feed-latest-delivery" %}">
+                    {% trans "Latest Deliveries" %}
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+{% if perms.orders.can_order %}
+<div class="row-fluid">
     <div class="span10 centered">
         <a class="btn btn-success" href="{% url "orders-add-oday" %}">
             {% trans "Add new order day" %}
         </a>
     </div>
-    {% endif %}
 </div>
+{% endif %}
 {% endblock %}
 
