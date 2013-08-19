@@ -92,29 +92,26 @@ def order(req, article_id=0):
         form = OrderForm(req.POST)
         form.fields['oday'].choices = h.get_oday_choices(choice_filter)
         if form.is_valid():
-            company = Company.objects.get(
-                id=form.cleaned_data['art_supplier_id'])
+            cleaned = form.cleaned_data
+            company = Company.objects.get(id=cleaned['art_supplier_id'])
             costs = h.get_costs(req.POST)
             art, created = Article.objects.get_or_create(
-                name=form.cleaned_data['art_name'],
-                ident=form.cleaned_data['art_id'],
-                price=h.get_price(form.cleaned_data['art_price']))
+                name=cleaned['art_name'], ident=cleaned['art_id'].strip(),
+                price=h.get_price(cleaned['art_price']))
             if created:
-                art.quantity = form.cleaned_data['art_q']
+                art.quantity = cleaned['art_q']
                 art.supplier = company
                 art.save()
-            order = Order.objects.create(count=form.cleaned_data['count'],
-                article=art,
-                order_day=OrderDay.objects.get(
-                    id=int(form.cleaned_data['oday'])))
+            order = Order.objects.create(count=cleaned['count'], article=art,
+                order_day=OrderDay.objects.get(id=int(cleaned['oday'])))
             order.save()
             for cost, percent in costs:
                 co = CostOrder.objects.create(percent=percent, order=order,
                     cost=cost)
                 co.save()
-            order.memo = form.cleaned_data['memo']
-            order.for_test = form.cleaned_data['exam']
-            order.for_repair = form.cleaned_data['repair']
+            order.memo = cleaned['memo']
+            order.for_test = cleaned['exam']
+            order.for_repair = cleaned['repair']
             order.users.add(req.user)
             order.save()
             # Add orderer to rating_users
