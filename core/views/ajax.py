@@ -137,6 +137,19 @@ def migrate30(req, data=None):
             d.entry = u'A'
             d.save()
         return dict(msg=u'{0} Datensätze wurden geändert.'.format(c))
+    elif what == u'orders_article_ident':
+        try:
+            from orders.models import Article
+            count = 0
+            for art in Article.objects.all():
+                _old = art.ident
+                art.ident = art.ident.strip()
+                if art.ident != _old:
+                    count += 1
+                    art.save()
+            return dict(msg=u'{0} Artikel geändert.'.format(count))
+        except Exception as e:
+            return dict(msg=str(e))
     return dict(msg=u'Falscher Befehl.')
 
 

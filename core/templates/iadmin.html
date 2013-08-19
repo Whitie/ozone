@@ -1,5 +1,4 @@
 {% extends "index.html" %}
-{% load url from future %}
 {% load i18n %}
 
 {% block content %}
@@ -8,7 +7,7 @@
         <div class="well well-small">
             <h3>{% trans "Clean old sessions" %}
                 <button class="btn btn-danger pull-right" onclick="clean_sessions();">
-                    <i class="icon-trash"></i> {% trans "Delete" %}
+                    <i class="icon-trash"> </i> {% trans "Delete" %}
                 </button>
             </h3>
             <p id="sess_result"></p>
@@ -21,7 +20,7 @@
         <div class="well well-small">
             <h3>{% trans "Clean empty presence days" %}
                 <button class="btn btn-danger pull-right" onclick="clean_presence();">
-                    <i class="icon-trash"></i> {% trans "Delete" %}
+                    <i class="icon-trash"> </i> {% trans "Delete" %}
                 </button>
             </h3>
             <p id="presence_result"></p>
@@ -34,7 +33,7 @@
         <div class="well well-small">
             <h3>{% trans "Empty latex build dir" %}
                 <button class="btn btn-danger pull-right" onclick="clean_build_dir();">
-                    <i class="icon-trash"></i> {% trans "Delete" %}
+                    <i class="icon-trash"> </i> {% trans "Delete" %}
                 </button>
             </h3>
             <p id="latex_result"></p>
@@ -48,7 +47,12 @@
         <div class="well well-small">
             <h3>{% trans "Migrate presence from '*' to 'A'." %}
                 <button class="btn btn-warning pull-right" onclick="migrate_3_0('presence');">
-                    <i class="icon-wrench"></i> {% trans "Migrate" %}
+                    <i class="icon-wrench"> </i> {% trans "Migrate" %}
+                </button>
+            </h3>
+            <h3>{% trans "Remove whitespace before and after article identifiers." %}
+                <button class="btn btn-warning pull-right" onclick="migrate_3_0('orders_article_ident');">
+                    <i class="icon-wrench"> </i> {% trans "Migrate" %}
                 </button>
             </h3>
             <p id="migrate30_result"></p>
