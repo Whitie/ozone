@@ -9,9 +9,35 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
+from south.modelsinspector import add_introspection_rules
 
 from audit_log.models.managers import AuditLog
+from audit_log.models import fields
 from core.utils import named
+
+
+# South migration rules
+# Usage:
+# Only for the first migration: manage.py syncdb
+#                               manage.py convert_to_south app
+# Do this for every app you want to have controlled by south
+# For every other installation (after syncing the repo):
+#     manage.py migrate app 0001 --fake
+# After these steps all installations can use normal migrate command:
+#     manage.py schemamigration app --auto (to create the migration)
+#     manage.py migrate app (to apply the migration after sync)
+rules = [(
+    (fields.LastUserField,),
+    [],
+    {
+        'to': ['rel.to', {'default': User}],
+        'null': ['null', {'default': True}],
+    },
+)]
+add_introspection_rules(
+    rules,
+    ['^audit_log\.models\.fields\.LastUserField'],
+)
 
 
 class CommonInfo(models.Model):

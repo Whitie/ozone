@@ -150,6 +150,7 @@ INSTALLED_APPS = (
     'core',
     'orders',
     'desktop',
+    'south',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
