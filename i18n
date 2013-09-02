@@ -15,7 +15,7 @@ esac
 for d in ${DIRS[@]}
 do
     cd $d
-    /usr/bin/django-admin.py $ACTION
+    ../../django-admin.py $ACTION
     cd ..
 done
 
