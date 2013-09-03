@@ -2,6 +2,12 @@
 
 DIRS=("orders" "active_directory" "core" "ozone")
 
+if [ -n "$VIRTUAL_ENV" ]; then
+    dj_admin="$VIRTUAL_ENV/bin/django-admin.py"
+else
+    dj_admin="/usr/bin/django-admin.py"
+fi
+
 case "$1" in
 
     compile) ACTION="compilemessages"
@@ -15,7 +21,7 @@ esac
 for d in ${DIRS[@]}
 do
     cd $d
-    ../../django-admin.py $ACTION
+    $dj_admin $ACTION
     cd ..
 done
 
