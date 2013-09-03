@@ -621,54 +621,47 @@ class InternalHelp(models.Model):
         ordering = ['ident', 'lang']
 
 
-PLACE_CHOICES = (
-    (1, u'CHL 1'),
-    (2, u'CHL 2'),
-    (3, u'CVT'),
-    (4, u'EDV'),
-    (5, u'IAL'),
-    (6, u'Kombilabor'),
-    (7, u'Mibi'),
-    (8, u'MSR'),
-    (9, u'PHL 1'),
-    (10, u'PRL'),
-    (11, u'PVT'),
-    (12, u'Unterrichtsraum'),
-    (13, u'Verwaltung'),
-    (14, u'Werkstatt'),
-    (20, u'Sonstige'),
-)
 VIOLATION_CHOICES = (
     (1, u'Brandwunde'),
     (2, u'Schnittwunde'),
 )
 
 
-class CommonEntry(models.Model):
-    date_time = models.DateTimeField(u'Datum / Zeit')
+class Place(models.Model):
+    name = models.CharField(_(u'Name'), max_length=20, unique=True)
+    room = models.CharField(_(u'Roomnumber'), max_length=10, blank=True)
+
+
+class AccidentEntry(models.Model):
+    date_time = models.DateTimeField(_(u'Date / Time'))
     added = models.DateTimeField(auto_now_add=True)
-    place = models.PositiveSmallIntegerField(u'Ort', choices=PLACE_CHOICES)
-    place_def = models.CharField(u'Ort (genauer)', max_length=50, blank=True)
-    violation = models.PositiveSmallIntegerField(u'Verletzung',
+    student = models.ForeignKey(Student, null=True, blank=True,
+        verbose_name=_(u'Verletzter Azubi'), related_name='accidents')
+    employee = models.ForeignKey(User, null=True, blank=True,
+        verbose_name=_(u'Verletzter Mitarbeiter'), related_name='accidents')
+    place = models.ForeignKey(Place, verbose_name=_(u'Place'),
+        related_name='accident_entries')
+    place_def = models.CharField(_(u'Ort (genauer)'), max_length=50, blank=True)
+    violation = models.PositiveSmallIntegerField(_(u'Verletzung'),
         choices=VIOLATION_CHOICES)
-    violation_def = models.TextField(u'Genaue Verletzung und Ursache')
-    way = models.BooleanField(u'Wegeunfall', default=False)
-    notify = models.BooleanField(u'Meldepflichtig', default=False)
-    witnesses = models.TextField('Zeugen', blank=True, help_text=u'Bitte '
-        u'die Nachnamen der Zeugen durch Komma getrennt hier eingeben.')
-    helper = models.TextField('Ersthelfer oder Arzt')
-    first_aid = models.TextField(u'Erste-Hilfe-Maßnahmen/Behandlung')
-    used = models.TextField(u'Benutztes Material', blank=True)
-    comment = models.TextField(u'Bemerkungen', blank=True)
+    violation_def = models.TextField(_(u'Genaue Verletzung und Ursache'))
+    way = models.BooleanField(_(u'Wegeunfall'), default=False)
+    notify = models.BooleanField(_(u'Meldepflichtig'), default=False)
+    witnesses = models.TextField(_('Zeugen'), blank=True, help_text=_(u'Bitte '
+        u'die Nachnamen der Zeugen durch Komma getrennt hier eingeben.'))
+    helper = models.TextField(_(u'Ersthelfer oder Arzt'))
+    first_aid = models.TextField(_(u'Erste-Hilfe-Maßnahmen/Behandlung'))
+    used = models.TextField(_(u'Benutztes Material'), blank=True)
+    comment = models.TextField(_(u'Bemerkungen'), blank=True)
+
+    @property
+    def injured(self):
+        if self.student is not None:
+            return unicode(self.student)
+        else:
+            return unicode(self.employee.get_profile())
 
     class Meta:
-        abstract = True
-
-
-class EmployeeEntry(CommonEntry):
-    name = models.ForeignKey(User, verbose_name=u'Verletzter')
-
-
-class StudentEntry(CommonEntry):
-    name = models.ForeignKey(Student, verbose_name=u'Verletzter')
-    instructor = models.ForeignKey(User, verbose_name=u'Ausbilder')
+        verbose_name = _(u'Accident Entry')
+        verbose_name_plural = _(u'Accident Entries')
+        ordering = ['-date_time']

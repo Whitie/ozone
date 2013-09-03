@@ -56,5 +56,20 @@
       "width": 500,
       "opener_class": ".opener"
     }
-  }
+  },
+  {"pk": 1, "model": "core.place", "fields": {"name": "CHL 1"}},
+  {"pk": 2, "model": "core.place", "fields": {"name": "CHL 2"}},
+  {"pk": 3, "model": "core.place", "fields": {"name": "CVT"}},
+  {"pk": 4, "model": "core.place", "fields": {"name": "EDV"}},
+  {"pk": 5, "model": "core.place", "fields": {"name": "IAL"}},
+  {"pk": 6, "model": "core.place", "fields": {"name": "Kombilabor"}},
+  {"pk": 7, "model": "core.place", "fields": {"name": "Mibi"}},
+  {"pk": 8, "model": "core.place", "fields": {"name": "MSR"}},
+  {"pk": 9, "model": "core.place", "fields": {"name": "PHL 1"}},
+  {"pk": 10, "model": "core.place", "fields": {"name": "PRL"}},
+  {"pk": 11, "model": "core.place", "fields": {"name": "PVT"}},
+  {"pk": 12, "model": "core.place", "fields": {"name": "Unterrichtsraum"}},
+  {"pk": 13, "model": "core.place", "fields": {"name": "Verwaltung"}},
+  {"pk": 14, "model": "core.place", "fields": {"name": "Werkstatt"}},
+  {"pk": 15, "model": "core.place", "fields": {"name": "Sonstige"}}
 ]
