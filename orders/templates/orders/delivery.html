@@ -21,7 +21,12 @@
                 <tr>
                     <td>{{ o.ordered|date:"Y-m-d" }}</td>
                     <td>{{ o.article.name }}</td>
-                    <td>{{ o.article.ident }}</td>
+                    <td>
+                        <a href="#" class="tt" title="{% trans 'Barcode' %}: {{ o.article.barcode|default:'-' }}">
+                            {{ o.article.ident }}
+                        </a>
+                        <span style="display:none;">{{ o.article.barcode }}</span>
+                    </td>
                     <td>{{ o.article.supplier }}</td>
                     <td>{{ o.count }}</td>
                     <td title="{% trans "Missing" %}: {{ o.missing }}" id="msg_{{ o.id }}">
@@ -64,7 +69,12 @@
                 <tr>
                     <td>{{ o.ordered|date:"Y-m-d" }}</td>
                     <td>{{ o.article.name }}</td>
-                    <td>{{ o.article.ident }}</td>
+                    <td>
+                        <a href="#" class="tt" title="{% trans 'Barcode' %}: {{ o.article.barcode|default:'-' }}">
+                            {{ o.article.ident }}
+                        </a>
+                        <span style="display:none;">{{ o.article.barcode }}</span>
+                    </td>
                     <td>{{ o.article.supplier }}</td>
                     <td>{{ o.count }}</td>
                     <td>
