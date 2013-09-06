@@ -289,11 +289,11 @@ AD_CACHE_TIME = 8 * 60 * 60
 ###############################################################################
 
 # Latex settings ##############################################################
+# Deprecated (moved to configuration model), will be removed in 3.1
 LATEX = {
     'pdflatex': (r'P:/Portable/latex-portable/miktex-portable/miktex'
                  r'/bin/pdflatex.exe'),
     'options': ['-interaction=nonstopmode'],
-    'outdir': r'C:/Windows/temp',  # Deprecated
     'build_dir': os.path.abspath(os.path.join(_PATH, '..', '_latex_build')),
     'fromfax': u'030 / 6 77 44 53',
     'fromphone': u'030 / 67 00 04-0',
@@ -301,6 +301,8 @@ LATEX = {
     'fromaddress': u'Adlergestell 333, 12489 Berlin',
     'fromlogo': u'P:/container/bbz-tools/ozone/ozone/static/img/bbzlogo.png',
 }
+
+LATEX_BUILD_DIR = os.path.abspath(os.path.join(_PATH, '..', '_latex_build'))
 
 ###############################################################################
 

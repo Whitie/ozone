@@ -8,6 +8,12 @@ from core.utils import named
 from core.models import *
 
 
+class ConfigurationAdmin(admin.ModelAdmin):
+    list_display = ('name', 'short_name', 'phone', 'fax', 'pdflatex')
+    list_display_links = ('name',)
+    list_editable = ('short_name', 'phone', 'fax', 'pdflatex')
+
+
 class ContactAdmin(admin.ModelAdmin):
     list_display = ('name_prefix', 'lastname', 'firstname', 'company',
                     'function', 'phone', 'email')
@@ -255,4 +261,5 @@ admin.site.register(PDFPrintout)
 admin.site.register(PedagogicJournal, PedagogicJournalAdmin)
 admin.site.register(JournalEntry, JournalEntryAdmin)
 admin.site.register(JournalMedia, JournalMediaAdmin)
+admin.site.register(Configuration, ConfigurationAdmin)
 admin.site.register(InternalHelp)

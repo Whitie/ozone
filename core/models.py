@@ -51,6 +51,22 @@ class CommonInfo(models.Model):
         abstract = True
 
 
+class Configuration(CommonInfo):
+    name = models.CharField(_(u'Organization Name'), max_length=100)
+    short_name = models.CharField(_(u'Organization Short Name'),
+        max_length=20, blank=True)
+    pdflatex = models.CharField(_(u'PDFLatex'), max_length=100,
+        default=u'/usr/bin/pdflatex', help_text=_(u'Path to pdflatex '
+        u'executable.'))
+    latex_options = models.CharField(_(u'Latex Commandline Options'),
+        max_length=100, default=u'-interaction=nonstopmode', blank=True)
+    fax = models.CharField(_(u'Fax'), max_length=30, blank=True)
+    logo = models.ImageField(_(u'Logo'), upload_to='pictures', blank=True)
+
+    def __unicode__(self):
+        return self.short_name
+
+
 class Part(models.Model):
     name = models.CharField(_(u'Name'), max_length=30)
     description = models.TextField(_(u'Description'), blank=True)
@@ -542,8 +558,6 @@ class PresenceDay(models.Model):
     note = models.CharField(_(u'Note'), max_length=25, blank=True)
     instructor = models.ForeignKey(User, verbose_name=_(u'Instructor'),
         editable=False, null=True, blank=True)
-
-    #audit_log = AuditLog()
 
     def __unicode__(self):
         return u'{0} {1} |{2}|'.format(self.student,
