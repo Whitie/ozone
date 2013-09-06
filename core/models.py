@@ -66,6 +66,11 @@ class Configuration(CommonInfo):
     def __unicode__(self):
         return self.short_name
 
+    class Meta:
+        verbose_name = _(u'Configuration')
+        verbose_name_plural = _(u'Configurations')
+        get_latest_by = 'id'
+
 
 class Part(models.Model):
     name = models.CharField(_(u'Name'), max_length=30)
@@ -649,6 +654,7 @@ class Place(models.Model):
 class AccidentEntry(models.Model):
     date_time = models.DateTimeField(_(u'Date / Time'))
     added = models.DateTimeField(auto_now_add=True)
+    added_by = models.ForeignKey(User, editable=False)
     student = models.ForeignKey(Student, null=True, blank=True,
         verbose_name=_(u'Verletzter Azubi'), related_name='accidents')
     employee = models.ForeignKey(User, null=True, blank=True,

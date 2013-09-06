@@ -244,6 +244,26 @@ class JournalMediaAdmin(admin.ModelAdmin):
     list_filter = ('entry',)
 
 
+class AccidentEntryAdmin(admin.ModelAdmin):
+    list_display = ('date_time', 'get_injured', 'place__name', 'violation',
+        'way', 'notify')
+    list_display_links = ('date_time',)
+    list_editable = ('way', 'notify')
+    list_filter = ('date_time', 'place', 'violation', 'way', 'notify')
+    search_fields = ('student__lastname', 'employee__last_name', 'witness',
+        'helper', 'violation', 'violation_def')
+    ordering = ('-date_time', 'place__name')
+
+    @named(_(u'Injured'))
+    def get_injured(self, obj):
+        return obj.injured
+
+    def save_model(self, req, obj, form, change):
+        if getattr(obj, 'added_by', None) is None:
+            obj.added_by = req.user
+        obj.save()
+
+
 admin.site.register(News, NewsAdmin)
 admin.site.register(Part, PartAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
@@ -263,3 +283,5 @@ admin.site.register(JournalEntry, JournalEntryAdmin)
 admin.site.register(JournalMedia, JournalMediaAdmin)
 admin.site.register(Configuration, ConfigurationAdmin)
 admin.site.register(InternalHelp)
+admin.site.register(Place)
+admin.site.register(AccidentEntry, AccidentEntryAdmin)
