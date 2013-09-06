@@ -685,3 +685,4 @@ class AccidentEntry(models.Model):
         verbose_name = _(u'Accident Entry')
         verbose_name_plural = _(u'Accident Entries')
         ordering = ['-date_time']
+        get_latest_by = 'date_time'
