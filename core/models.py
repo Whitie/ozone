@@ -641,8 +641,12 @@ class InternalHelp(models.Model):
 
 
 VIOLATION_CHOICES = (
-    (1, u'Brandwunde'),
-    (2, u'Schnittwunde'),
+    (1, _(u'Wegeunfall')),
+    (2, _(u'Schnittverletzung')),
+    (3, _(u'Verbrennung')),
+    (4, _(u'Augenverletzung')),
+    (5, _(u'Verätzung')),
+    (6, _(u'Sonstige')),
 )
 
 
@@ -665,7 +669,6 @@ class AccidentEntry(models.Model):
     violation = models.PositiveSmallIntegerField(_(u'Verletzung'),
         choices=VIOLATION_CHOICES)
     violation_def = models.TextField(_(u'Genaue Verletzung und Ursache'))
-    way = models.BooleanField(_(u'Wegeunfall'), default=False)
     notify = models.BooleanField(_(u'Meldepflichtig'), default=False)
     witnesses = models.TextField(_('Zeugen'), blank=True, help_text=_(u'Bitte '
         u'die Nachnamen der Zeugen durch Komma getrennt hier eingeben.'))
@@ -677,9 +680,9 @@ class AccidentEntry(models.Model):
     @property
     def injured(self):
         if self.student is not None:
-            return unicode(self.student)
+            return self.student
         else:
-            return unicode(self.employee.get_profile())
+            return self.employee
 
     class Meta:
         verbose_name = _(u'Accident Entry')

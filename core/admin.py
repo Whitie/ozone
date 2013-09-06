@@ -246,17 +246,17 @@ class JournalMediaAdmin(admin.ModelAdmin):
 
 class AccidentEntryAdmin(admin.ModelAdmin):
     list_display = ('date_time', 'get_injured', 'place__name', 'violation',
-        'way', 'notify')
+        'notify')
     list_display_links = ('date_time',)
-    list_editable = ('way', 'notify')
-    list_filter = ('date_time', 'place', 'violation', 'way', 'notify')
+    list_editable = ('notify', 'violation')
+    list_filter = ('date_time', 'place', 'violation', 'notify')
     search_fields = ('student__lastname', 'employee__last_name', 'witness',
         'helper', 'violation', 'violation_def')
     ordering = ('-date_time', 'place__name')
 
     @named(_(u'Injured'))
     def get_injured(self, obj):
-        return obj.injured
+        return unicode(obj.injured)
 
     def save_model(self, req, obj, form, change):
         if getattr(obj, 'added_by', None) is None:
