@@ -1,0 +1,20 @@
+{% extends "index.html" %}
+{% load i18n %}
+
+{% block content %}
+{% if accident.notify %}
+<div class="row-fluid">
+    <div class="span3">
+        <a href="#" class="btn btn-info">
+            {% trans "Generate report" %}
+        </a>
+    </div>
+</div>
+{% endif %}
+
+<div class="row-fluid">
+    <div class="span5">
+    {{ accident }}
+    </div>
+</div>
+{% endblock %}

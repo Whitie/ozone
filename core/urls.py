@@ -65,6 +65,8 @@ urlpatterns = patterns('core.views.web',
     url(r'^accidents/$', 'accidents_index', name='core-accidents'),
     url(r'^accidents/(?P<id>\d+)/$', 'accident_details',
         name='core-accident-details'),
+    url(r'^accidents/statistics/$', 'accidents_statistics',
+        name='core-accidents-statistic'),
     url(r'^accidents/add/$', 'accident_add', name='core-accident-add'),
     # Excel integration
     url(r'^group/export_excel/(?P<gid>\d+)/$', 'export_group_excel',

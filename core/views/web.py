@@ -666,6 +666,14 @@ def accidents_index(req):
 
 @login_required
 def accident_details(req, id):
+    accident = AccidentEntry.objects.select_related().get(pk=int(id))
+    ctx = dict(page_title=_(u'Accident'), accident=accident, menus=menus,
+        subtitle=accident.date_time.strftime(settings.DEFAULT_DATETIME_FORMAT))
+    return render(req, 'accidents/details.html', ctx)
+
+
+@login_required
+def accidents_statistics(req):
     pass
 
 
