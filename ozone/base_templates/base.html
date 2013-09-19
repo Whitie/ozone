@@ -33,7 +33,10 @@
             }
         </style>
         <link href="{% static "css/bootstrap-responsive.min.css" %}" rel="stylesheet">
-        {% if dp %}<link href="{% static "css/datepicker.css" %}" rel="Stylesheet">{% endif %}
+        {% if dp %}
+        <link href="{% static "css/datepicker.css" %}" rel="stylesheet">
+        <link href="{% static "css/bootstrap-datetimepicker.min.css" %}" rel="stylesheet">
+        {% endif %}
         {% if dt %}<link href="{% static "css/bootstrap-dataTables.css" %}" rel="Stylesheet">{% endif %}
         <!-- End Styles -->
 
@@ -50,7 +53,10 @@
         <script src="{% static "js/jquery-1.9.1.min.js" %}"></script>
         <script src="{% static "js/bootstrap-2.3.0.min.js" %}"></script>
         <script src="{% static "js/bootbox-3.0.0.min.js" %}"></script>
-        {% if dp %}<script src="{% static "js/bootstrap-datepicker.js" %}"></script>{% endif %}
+        {% if dp %}
+        <script src="{% static "js/bootstrap-datepicker.js" %}"></script>
+        <script src="{% static "js/bootstrap-datetimepicker.min.js" %}"></script>
+        {% endif %}
         {% if dt %}
         <script src="{% static "js/jquery.dataTables.min.js" %}"></script>
         <script src="{% static "js/bootstrap-dataTables.js" %}"></script>

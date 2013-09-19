@@ -4,7 +4,7 @@ import string
 import os
 import time
 
-from datetime import datetime, date, timedelta
+from datetime import date, timedelta
 
 from django.http import HttpResponse
 from django.conf import settings
@@ -22,10 +22,10 @@ from django.core.exceptions import PermissionDenied
 from core import utils
 from core.utils import render
 from core.models import (News, Company, Student, StudentGroup, Contact, Note,
-    UserProfile, PresenceDay, PRESENCE_CHOICES)
+    UserProfile, PresenceDay, PRESENCE_CHOICES, AccidentEntry)
 from core.forms import (NewsForm, SearchForm, StudentSearchForm, NoteForm,
                         ProfileForm, NewUserForm, ExtendedSearchForm,
-                        StudentEditForm)
+                        StudentEditForm, AccidentForm)
 from core.views import helper as h
 from core.menu import menus
 from barcode.codex import Code39
@@ -650,3 +650,30 @@ def mypresence(req):
         choices=[x[0] for x in PRESENCE_CHOICES], legend=PRESENCE_CHOICES[1:],
         today=date.today(), dt=True, need_ajax=True)
     return render(req, 'presence/group.html', ctx)
+
+
+# Views for accidents
+
+@login_required
+def accidents_index(req):
+    today = date.today()
+    accidents = AccidentEntry.objects.filter(date_time__year=today.year
+        ).order_by('-date_time')
+    ctx = dict(page_title=_(u'Accidents'), subtitle=_(u'This year.'),
+        accidents=accidents, menus=menus, dp=True, need_ajax=True)
+    return render(req, 'accidents/index.html', ctx)
+
+
+@login_required
+def accident_details(req, id):
+    pass
+
+
+@login_required
+def accident_add(req):
+    form = AccidentForm()
+    form.fields['student'].queryset = Student.objects.filter(
+        finished=False).order_by('lastname')
+    form.fields['employee'].queryset = User.objects.exclude(
+        username='admin').order_by('last_name')
+    return render(req, 'accidents/add.html', {'form': form})

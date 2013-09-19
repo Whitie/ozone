@@ -11,6 +11,7 @@ from django.contrib import messages
 from core.utils import json_rpc, remove_old_sessions
 from core.models import (PresenceDay, JournalEntry, Student, Company,
     StudentGroup)
+from core.forms import AccidentForm
 
 
 @json_rpc
@@ -232,3 +233,17 @@ def mystudent(req, data=None):
     profile.set_value('pstudents', pstudents)
     profile.save()
     return dict(msg=msg)
+
+
+@json_rpc
+def save_accident(req, data=None):
+    try:
+        form = AccidentForm(data)
+        accident = form.save(commit=False)
+        accident.added_by = req.user
+        accident.save()
+        messages.success(req, u'Der neue Unfall wurde gespeichert.')
+    except Exception as e:
+        messages.error(req, u'Ein Fehler ist aufgetreten: %s' % e)
+        messages.warning(req, u'Bitte füllen Sie alle Pflichtfelder aus!')
+    return dict()

@@ -1,0 +1,147 @@
+{% load i18n %}
+<div id="add_accident" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="edit_label" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 id="edit_label">{% trans "Add accident" %}</h3>
+    </div>
+    <div class="modal-body">
+        <form id="accident_form" class="form-horizontal">
+            {% csrf_token %}
+            <fieldset>
+                <legend>{% trans "Persons involved" %}</legend>
+                <div class="control-group">
+                    <label class="control-label" for="datetimepicker">
+                        {% trans "Date / Time of accident" %}
+                    </label>
+                    <div class="controls">
+                        <div id="datetimepicker" class="input-append date">
+                            <input data-format="dd.MM.yyyy hh:mm" type="text" name="date_time">
+                            <span class="add-on">
+                                <i data-time-icon="icon-time" data-date-icon="icon-calendar"> </i>
+                            </span>
+                        </div>
+                        <i class="icon-exclamation-sign"> </i>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="id_student">
+                        {{ form.student.label }}
+                    </label>
+                    <div class="controls">
+                        {{ form.student }}
+                        <i class="icon-exclamation-sign"> </i>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="id_employee">
+                        {{ form.employee.label }}
+                    </label>
+                    <div class="controls">
+                        {{ form.employee }}
+                        <i class="icon-exclamation-sign"> </i>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="id_helper">
+                        {{ form.helper.label }}
+                    </label>
+                    <div class="controls">
+                        <input type="text" id="id_helper" name="helper">
+                        <i class="icon-exclamation-sign"> </i>
+                        <span class="help-block">
+                            {% trans "Separate more than one name with a comma." %}
+                        </span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="id_witnesses">
+                        {{ form.witnesses.label }}
+                    </label>
+                    <div class="controls">
+                        <input type="text" id="id_witnesses" name="witnesses">
+                        <span class="help-block">
+                            {% trans "Separate more than one name with a comma." %}
+                        </span>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>{% trans "Place and violation" %}</legend>
+                <div class="control-group">
+                    <label class="control-label" for="id_place">
+                        {{ form.place.label }}
+                    </label>
+                    <div class="controls">
+                        {{ form.place }}
+                        <i class="icon-exclamation-sign"> </i>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="id_place_def">
+                        {{ form.place_def.label }}
+                    </label>
+                    <div class="controls">
+                        {{ form.place_def }}
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="id_violation">
+                        {{ form.violation.label }}
+                    </label>
+                    <div class="controls">
+                        {{ form.violation }}
+                        <i class="icon-exclamation-sign"> </i>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="id_violation_def">
+                        {{ form.violation_def.label }}
+                    </label>
+                    <div class="controls">
+                        <textarea id="id_violation_def" name="violation_def" rows="3"></textarea>
+                        <i class="icon-exclamation-sign"> </i>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <label class="checkbox">
+                            {{ form.notify }} {{ form.notify.label }}
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>{% trans "Misc" %}</legend>
+                <div class="control-group">
+                    <label class="control-label" for="id_first_aid">
+                        {{ form.first_aid.label }}
+                    </label>
+                    <div class="controls">
+                        <textarea id="id_first_aid" name="first_aid" rows="3"></textarea>
+                        <i class="icon-exclamation-sign"> </i>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="id_used">
+                        {{ form.used.label }}
+                    </label>
+                    <div class="controls">
+                        <textarea id="id_used" name="used" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="id_comment">
+                        {{ form.comment.label }}
+                    </label>
+                    <div class="controls">
+                        <textarea id="id_comment" name="comment" rows="3"></textarea>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning" data-dismiss="modal" aria-hidden="true">{% trans "Cancel" %}</button>
+        <button class="btn btn-primary" onclick="save_accident();">{% trans "Save" %}</button>
+    </div>
+</div>

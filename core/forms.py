@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 from core.models import (News, RATING_CHOICES, UserProfile, PedagogicJournal,
     Student, StudentGroup, SEX_CHOICES, SUIT_CHOICES, EDU_CHOICES, Company,
-    CooperationContract)
+    CooperationContract, AccidentEntry)
 from core.html5_widgets import SearchInput5
 
 
@@ -93,6 +93,12 @@ def get_search_field(name):
 class NewJournalForm(forms.ModelForm):
     class Meta:
         model = PedagogicJournal
+
+
+class AccidentForm(forms.ModelForm):
+    class Meta:
+        model = AccidentEntry
+        exclude = ('added', 'added_by')
 
 
 class NewsForm(forms.ModelForm):

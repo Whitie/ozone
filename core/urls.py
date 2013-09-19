@@ -61,6 +61,11 @@ urlpatterns = patterns('core.views.web',
     url(r'^my_presence/mystudents/$', 'mystudents',
         name='core-presence-mystudents'),
     url(r'^my_presence/list/$', 'mypresence', name='core-presence-own'),
+    # Accidents
+    url(r'^accidents/$', 'accidents_index', name='core-accidents'),
+    url(r'^accidents/(?P<id>\d+)/$', 'accident_details',
+        name='core-accident-details'),
+    url(r'^accidents/add/$', 'accident_add', name='core-accident-add'),
     # Excel integration
     url(r'^group/export_excel/(?P<gid>\d+)/$', 'export_group_excel',
         name='core-group-to-excel'),
@@ -113,6 +118,8 @@ urlpatterns += patterns('core.views.ajax',
         name='core-api-presence-mygroups'),
     url(r'^api/presence/mystudent/$', 'mystudent',
         name='core-api-presence-mystudent'),
+    url(r'^api/accidents/save/$', 'save_accident',
+        name='core-api-accident-save'),
 )
 
 # PDF generation

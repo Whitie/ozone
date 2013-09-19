@@ -20,6 +20,7 @@ core_menu = Menu(_(u'Core'),
     ('core-groups', _(u'Groups')),
     ('core-colleagues', _(u'Colleagues')),
     ('core-presence', _(u'Presences')),
+    ('core-accidents', _(u'Accidents')),
     ('core-students-archive', _(u'Archive')),
 )
 

@@ -1,0 +1,82 @@
+{% extends "index.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="row-fluid">
+    <div class="span3">
+        <button type="button" class="btn btn-success" onclick="add_accident();">
+            {% trans "Add new accident" %}
+        </button>
+    </div>
+</div>
+
+<div class="row-fluid">
+    <div class="span10">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>{% trans "Date" %}</th>
+                    <th>{% trans "Injured" %}</th>
+                    <th>{% trans "Place" %}</th>
+                    <th>{% trans "Violation" %}</th>
+                    <th>{% trans "Added by" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in accidents %}
+                <tr>
+                    <td>
+                        <a href="{% url "core-accident-details" a.id %}" class="tt" title="{% trans "Click for details." %}">
+                            {{ a.date_time|date:"DATETIME_FORMAT" }}
+                        </a>
+                    </td>
+                    <td>{{ a.injured }}</td>
+                    <td>
+                        <a href="#" class="tt" title="{{ a.place_def|default:"-" }}">
+                            {{ a.place }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#" class="tt" title="{{ a.violation_def|default:"-" }}">
+                            {{ a.get_violation_display }}
+                        </a>
+                    </td>
+                    <td>{{ a.added_by.get_profile }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+function add_accident() {
+    $.get('{% url "core-accident-add" %}', function(res) {
+        $('body').append(res);
+        $('#add_accident').modal({'show': true});
+        $('#datetimepicker').datetimepicker({
+            'language': 'de-DE'
+        });
+    });
+}
+
+function save_accident() {
+    var form = $('#accident_form');
+    var pdata = {};
+    var form_data = form.serializeArray();
+    $.each(form_data, function() {
+        pdata[this.name] = this.value;
+    });
+    $.post('{% url "core-api-accident-save" %}',
+        {'_JSON_': JSON.stringify(pdata)},
+        function(res) {
+            $('#add_accident').modal('hide').remove();
+            location.reload();
+        }
+    );
+    return false;
+}
+</script>
+{% endblock %}
