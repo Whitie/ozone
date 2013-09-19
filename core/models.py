@@ -698,6 +698,10 @@ class AccidentEntry(models.Model):
         else:
             return self.employee
 
+    @property
+    def is_employee(self):
+        return self.student is None
+
     class Meta:
         verbose_name = _(u'Accident Entry')
         verbose_name_plural = _(u'Accident Entries')

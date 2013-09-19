@@ -667,8 +667,10 @@ def accidents_index(req):
 @login_required
 def accident_details(req, id):
     accident = AccidentEntry.objects.select_related().get(pk=int(id))
-    ctx = dict(page_title=_(u'Accident'), accident=accident, menus=menus,
+    ctx = dict(page_title=_(u'Accident'), ac=accident, menus=menus,
         subtitle=accident.date_time.strftime(settings.DEFAULT_DATETIME_FORMAT))
+    if accident.is_employee:
+        ctx['pr'] = accident.employee.get_profile()
     return render(req, 'accidents/details.html', ctx)
 
 

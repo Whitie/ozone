@@ -2,19 +2,92 @@
 {% load i18n %}
 
 {% block content %}
-{% if accident.notify %}
+{% if ac.notify %}
 <div class="row-fluid">
     <div class="span3">
         <a href="#" class="btn btn-info">
             {% trans "Generate report" %}
         </a>
     </div>
+    <div class="span3">
+        <span class="label label-important">
+            {% trans "Dieser Unfall ist meldepflichtig!" %}
+        </span>
+    </div>
 </div>
 {% endif %}
 
 <div class="row-fluid">
-    <div class="span5">
-    {{ accident }}
+    <div class="span4">
+        <h3>{% trans "Personal data" %}</h3>
+        {% if ac.is_employee %}
+        <address>
+            <strong>{{ ac.employee.last_name }}, {{ ac.employee.first_name }}</strong><br>
+            {{ pr.street }}<br>
+            {{ pr.zip_code }} {{ pr.city }}<br>
+            {{ pr.country }}<br>
+        </address>
+        {% trans "Birthdate" %}: {{ pr.birthdate }}<br>
+        {% else %}
+        <address>
+            <strong>{{ ac.student.lastname }}, {{ ac.student.firstname }}</strong><br>
+            {{ ac.student.street }}<br>
+            {{ ac.student.zip_code }} {{ ac.student.city }}<br>
+            {{ ac.student.country }}<br>
+        </address>
+        {% trans "Birthdate" %}: {{ ac.student.birthdate }}<br>
+        {% endif %}
+    </div>
+    <div class="span6">
+        <h3>{% trans "Accident" %}</h3>
+        <table class="table">
+            <tr>
+                <th>{% trans "Date / time of accident" %}:</th>
+                <td>{{ ac.date_time|date:"DATETIME_FORMAT" }}</td>
+            </tr>
+            <tr>
+                <th>{% trans "Added" %}:</th>
+                <td>{{ ac.added|date:"DATETIME_FORMAT" }}</td>
+            </tr>
+            <tr>
+                <th>{% trans "Added by" %}:</th>
+                <td>{{ ac.added_by.get_profile }}</td>
+            </tr>
+            <tr>
+                <th>{% trans "Violation" %}:</th>
+                <td>
+                    {{ ac.get_violation_display }}
+                    {% if ac.violation_def %}({{ ac.violation_def }}){% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>{% trans "Place" %}:</th>
+                <td>
+                    {{ ac.place.name }}
+                    {% if ac.place_def %}({{ ac.place_def }}){% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>{% trans "Witnesses" %}:</th>
+                <td>{{ ac.witnesses|default:"-" }}</td>
+            </tr>
+            <tr>
+                <th>{% trans "First helper or doctor" %}:</th>
+                <td>{{ ac.helper }}</td>
+            </tr>
+            <tr>
+                <th>{% trans "First aid" %}:</th>
+                <td>{{ ac.first_aid }}</td>
+            </tr>
+            <tr>
+                <th>{% trans "Used material" %}:</th>
+                <td>{{ ac.used|default:"-" }}</td>
+            </tr>
+            <tr>
+                <th>{% trans "Comment" %}:</th>
+                <td>{{ ac.comment|default:"-" }}</td>
+            </tr>
+        </table>
     </div>
 </div>
 {% endblock %}
