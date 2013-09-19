@@ -245,7 +245,7 @@ class JournalMediaAdmin(admin.ModelAdmin):
 
 
 class AccidentEntryAdmin(admin.ModelAdmin):
-    list_display = ('date_time', 'get_injured', 'place__name', 'violation',
+    list_display = ('date_time', 'get_injured', 'place', 'violation',
         'notify')
     list_display_links = ('date_time',)
     list_editable = ('notify', 'violation')
@@ -273,7 +273,6 @@ admin.site.register(CooperationContract, CooperationContractAdmin)
 admin.site.register(CompanyRating, CompanyRatingAdmin)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(StudentGroup, StudentGroupAdmin)
-#admin.site.register(Memo, MemoAdmin)
 admin.site.register(PresenceDay, PresenceDayAdmin)
 admin.site.register(Note, NoteAdmin)
 admin.site.register(PresencePrintout, PresencePrintoutAdmin)

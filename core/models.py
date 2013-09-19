@@ -654,11 +654,22 @@ class Place(models.Model):
     name = models.CharField(_(u'Name'), max_length=20, unique=True)
     room = models.CharField(_(u'Roomnumber'), max_length=10, blank=True)
 
+    def __unicode__(self):
+        if self.room:
+            return u'{0} ({1})'.format(self.name, self.room)
+        else:
+            return self.name
+
+    class Meta:
+        verbose_name = _(u'Place')
+        verbose_name_plural = _(u'Places')
+        ordering = ['name']
+
 
 class AccidentEntry(models.Model):
     date_time = models.DateTimeField(_(u'Date / Time'))
     added = models.DateTimeField(auto_now_add=True)
-    added_by = models.ForeignKey(User, editable=False)
+    added_by = models.ForeignKey(User, editable=False, blank=True, null=True)
     student = models.ForeignKey(Student, null=True, blank=True,
         verbose_name=_(u'Verletzter Azubi'), related_name='accidents')
     employee = models.ForeignKey(User, null=True, blank=True,
@@ -676,6 +687,9 @@ class AccidentEntry(models.Model):
     first_aid = models.TextField(_(u'Erste-Hilfe-Maßnahmen/Behandlung'))
     used = models.TextField(_(u'Benutztes Material'), blank=True)
     comment = models.TextField(_(u'Bemerkungen'), blank=True)
+
+    def __unicode__(self):
+        return u'{0} - {1}'.format(self.get_violation_display(), self.injured)
 
     @property
     def injured(self):
