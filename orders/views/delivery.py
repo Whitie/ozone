@@ -2,10 +2,10 @@
 
 from datetime import date, timedelta
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.translation import ugettext as _
 
-from orders.models import DeliveredOrder, Order
+from orders.models import DeliveredOrder, Order, Article
 from orders.menu import menus
 from core.utils import render
 
@@ -42,3 +42,30 @@ def index(req):
     ctx = dict(page_title=_(u'Delivery'), menus=menus, orders=orders,
         dorders=dorders, dt=True, need_ajax=True)
     return render(req, 'orders/delivery/index.html', ctx, app=u'orders')
+
+
+@permission_required('orders.can_order')
+def delivery_by_barcode(req):
+    # All functionality is provided by ajax functions.
+    ctx = dict(page_title=_(u'Delivery'), subtitle=_('By barcode'),
+        need_ajax=True, menus=menus)
+    return render(req, 'orders/delivery/barcodes.html', ctx, app=u'orders')
+
+
+@permission_required('orders.can_order')
+def get_article_by_barcode(req, barcode):
+    bc = barcode.strip()
+    orders = Order.objects.select_related().filter(state=u'ordered',
+        article__barcode=bc).order_by('ordered')
+    if orders:
+        for o in orders:
+            o.delivered = 0
+            for d in DeliveredOrder.objects.filter(order=o):
+                o.delivered += d.count
+        ctx = dict(orders=orders, article=orders[0].article)
+        return render(req, 'orders/delivery/known_bc.html', ctx)
+    else:
+        articles = Article.objects.filter(order__state=u'ordered',
+            barcode=u'').order_by('name')
+        ctx = dict(articles=articles, barcode=bc)
+        return render(req, 'orders/delivery/new_bc.html', ctx)

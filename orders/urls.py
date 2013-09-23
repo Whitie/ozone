@@ -34,8 +34,13 @@ urlpatterns = patterns('orders.views.web',
     url(r'^controlling/by_cost/$', 'ctrl_by_cost', name='orders-ctrl-bycost'),
 )
 
+# Delivery
 urlpatterns += patterns('orders.views.delivery',
     url(r'^delivery/$', 'index', name='orders-delivery'),
+    url(r'^delivery/by_barcode/$', 'delivery_by_barcode',
+        name='orders-delivery-barcode'),
+    url(r'^delivery/by_barcode/(?P<barcode>.+)/$', 'get_article_by_barcode',
+        name='orders-delivery-barcode'),
 )
 
 urlpatterns += patterns('orders.views.ajax',
@@ -58,6 +63,8 @@ urlpatterns += patterns('orders.views.ajax',
         name='orders-api-check-supplier'),
     url(r'^api/delete_order/$', 'delete_order', name='orders-api-del-order'),
     url(r'^api/find_supplier/$', 'find_supplier', name='orders-api-find-supp'),
+    url(r'^api/delivery/save_barcode/$', 'save_barcode',
+        name='orders-api-save-barcode'),
 )
 
 urlpatterns += patterns('orders.views.pdf',

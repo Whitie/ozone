@@ -229,3 +229,16 @@ def delete_order(req, data):
         msg = u'Fehler beim Löschen: {0}'.format(unicode(e))
         ok = False
     return dict(msg=msg, ok=ok)
+
+
+@json_rpc
+def save_barcode(req, data):
+    try:
+        article = Article.objects.get(id=data['art_id'])
+        article.barcode = data['barcode']
+        article.save()
+        return dict(msg=u'Barcode {0} gespeichert für Artikel {1}.'.format(
+            article.barcode, article.name), saved=True)
+    except Article.DoesNotExist:
+        return dict(msg=u'Fehler! Barcode konnte nicht gespeichert werden.',
+            saved=False)

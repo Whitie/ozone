@@ -1,0 +1,73 @@
+{% extends "index.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="row-fluid">
+    <div class="span4 offset1">
+        <form onsubmit="return get_orders();" class="form-inline">
+            <div class="input-prepend">
+                <span class="add-on"><i class="icon-barcode"> </i></span>
+                <input type="text" id="barcode" placeholder="{% trans "Scan barcode..." %}">
+                <button type="submit" class="btn">
+                    <i class="icon-forward"> </i>
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="span4 offset1" id="result">
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+function _get_orders(bc) {
+    var url = '/orders/delivery/by_barcode/'+bc+'/';
+    $.get(url, function(result) {
+        $('#result').empty();
+        $('#result').html(result);
+    });
+}
+
+function get_orders() {
+    var bc = $('#barcode').val();
+    _get_orders(bc);
+    return false;
+}
+
+function save_barcode() {
+    var bc = $('#new_bc').val();
+    var art_id = parseInt($('#new_art option:selected').val());
+    var data = {'art_id': art_id, 'barcode': bc};
+    $.ajax({
+        'url': '{% url "orders-api-save-barcode" %}',
+        'async': false,
+        'type': 'POST',
+        'data': {'_JSON_': JSON.stringify(data)},
+        'dataType': 'json',
+        'success': function(res) {
+            add_update_message(res['msg']);
+            if (res['saved'] == false) {
+                return false;
+            }
+        }
+    });
+    _get_orders(bc);
+    return false;
+}
+
+function save_delivery() {
+    var oid = $('#order option:selected').val();
+    var _count = COUNTS[oid][0];
+    var _delivered = COUNTS[oid][1];
+    var max = _count - _delivered;
+    var count = parseInt($('#count').val());
+    if (count > max) {
+        alert('Die gelieferte Menge darf nicht größer '+max+' sein!');
+        $('#count').val(max);
+        return false;
+    }
+    return false;
+}
+</script>
+{% endblock %}

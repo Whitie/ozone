@@ -1,0 +1,22 @@
+{% load i18n %}
+
+<h3>{{ article.name }} <small>{{ orders|length }} {% trans "open order(s)" %}</small></h3>
+<form onsubmit="return save_delivery();">
+    <label for="order">{% trans "Please select order and enter count." %}</label>
+    <select size="1" id="order">
+        <option value="0">----</option>
+        {% for o in orders %}
+        <option value="{{ o.id }}">{{ o.ordered|date:"SHORT_DATE_FORMAT" }}, {% trans "Ordered" %}: {{ o.count }}, {% trans "Delivered" %}: {{ o.delivered }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <label for="count">{% trans "Delivered" %}</label>
+    <input type="text" id="count" class="input-mini">
+    <br>
+    <button type="submit" class="btn">{% trans "Check in" %}</button>
+</form>
+<script>
+var COUNTS = {
+    {% for o in orders %}'{{ o.id }}': [{{ o.count }}, {{ o.delivered }}]{% if not forloop.last %},{% endif %}{% endfor %}
+    };
+</script>
