@@ -41,4 +41,4 @@ def index(req):
         dorders.append(o)
     ctx = dict(page_title=_(u'Delivery'), menus=menus, orders=orders,
         dorders=dorders, dt=True, need_ajax=True)
-    return render(req, 'orders/delivery.html', ctx, app=u'orders')
+    return render(req, 'orders/delivery/index.html', ctx, app=u'orders')
