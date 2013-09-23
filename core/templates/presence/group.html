@@ -34,6 +34,9 @@
             <button class="btn" type="button" onclick="update_all();" title="{% trans "Sets the presence for all EMPTY fields." %}">
                 {% trans "Set now" %}
             </button>
+            <button class="btn btn-warning" type="button" onclick="toggle_lateness();">
+                {% trans "Show/hide lateness" %}
+            </button>
         </form>
     </div>
 </div>
@@ -60,9 +63,9 @@
             <td><select id="p_{{ d.id }}"  title="{{ d.get_entry_display }}" class="{{ d.date|date:"Y-m-d" }} input-mini" name="presence" size="1" onchange="update_day({{ d.id }});">
                     {% for e in choices %}<option value="{{ e }}"{% if e == d.entry %} selected="selected"{% endif %}>{{ e }}</option>{% endfor %}
                 </select>
+                {% if d.note %}<a href="#" title="{{ d.note }}" class="tt">*</a>{% endif %}
                 <br>
                 <input id="l_{{ d.id }}" title="{% trans "Enter lateness here." %}" class="input-mini" type="text" size="2" maxlength="3"{% if d.lateness %} style="border:1px solid red;"{% endif %} name="lateness" value="{% if d.lateness %}{{ d.lateness }}{% endif %}" onchange="lateness_changed({{ d.id }});">
-                {% if d.note %}<a href="#" title="{{ d.note }}" class="tt">*</a>{% endif %}
             </td>
             {% endfor %}
             <td>{{ s.lastname }}</td>
@@ -112,7 +115,13 @@ $(function() {
     /*datatable_options['sScrollY'] = '150%';*/
     datatable_options['bScrollCollapse'] = true;
     var dtable = $('#dtable').dataTable(datatable_options);
+    /* Hide lateness input fields*/
+    $('input[id^=l_]').hide();
 });
+
+function toggle_lateness() {
+    $('input[id^=l_]').toggle();
+}
 
 function update_day(did) {
     var day_id = did;
