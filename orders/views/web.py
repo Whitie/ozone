@@ -323,8 +323,9 @@ def list_printouts(req):
         for o in oday.orders.all():
             oday.price += o.price()
             oday.count += 1
-    ctx = dict(page_title=_(u'List of all printouts'), menus=menus,
-        odays=odays)
+    ctx = dict(page_title=_(u'List of all printouts'),
+        subtitle=_(u'By orderday'),
+        menus=menus, odays=odays)
     return render(req, 'orders/list_printouts.html', ctx, app=u'orders')
 
 
