@@ -62,7 +62,9 @@ function add_accident() {
         $('body').append(res);
         $('#add_accident').modal({'show': true});
         $('#datetimepicker').datetimepicker({
-            'language': 'de-DE'
+            'language': 'de',
+            'pickSeconds': false,
+            'weekStart': 1
         });
     });
 }

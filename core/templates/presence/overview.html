@@ -25,8 +25,20 @@
         {% if userconfig.pstudents %}
         <form class="form-inline" method="post" action="{% url "core-presence-own" %}">
             {% csrf_token %}
-            {% trans "From" %} <input type="text" class="dateWidget" name="start" size="16" />
-            {% trans "to" %} <input type="text" class="dateWidget" name="end" size="16" />
+            {% trans "From" %}
+            <div class="datetimepicker input-append date">
+                <input class="input-small" data-format="dd.MM.yyyy" type="text" name="start">
+                <span class="add-on">
+                    <i data-time-icon="icon-time" data-date-icon="icon-calendar"> </i>
+                </span>
+            </div>
+            {% trans "to" %}
+            <div class="datetimepicker input-append date">
+                <input class="input-small" data-format="dd.MM.yyyy" type="text" name="end">
+                <span class="add-on">
+                    <i data-time-icon="icon-time" data-date-icon="icon-calendar"> </i>
+                </span>
+            </div>
             <input class="btn" type="submit" value="{% trans "Show" %}" />
             <a class="btn btn-warning tt" title="{% trans "Edit" %}" href="{% url "core-presence-select-groups" %}"><i class="icon-edit"> </i></a>
         </form>
@@ -64,8 +76,20 @@
                 <td>
                   <form action="{% url "core-presence-group" g.id %}" method="post" onsubmit="return disable_btn('btn_{{ g.id }}');">
                     {% csrf_token %}
-                    {% trans "From" %} <input type="text" class="dateWidget" name="start" size="16" />
-                    {% trans "to" %} <input type="text" class="dateWidget" name="end" size="16" />
+                    {% trans "From" %}
+                    <div class="datetimepicker input-append date">
+                        <input class="input-small" data-format="dd.MM.yyyy" type="text" name="start">
+                        <span class="add-on">
+                            <i data-time-icon="icon-time" data-date-icon="icon-calendar"> </i>
+                        </span>
+                    </div>
+                    {% trans "to" %}
+                    <div class="datetimepicker input-append date">
+                        <input class="input-small" data-format="dd.MM.yyyy" type="text" name="end">
+                        <span class="add-on">
+                            <i data-time-icon="icon-time" data-date-icon="icon-calendar"> </i>
+                        </span>
+                    </div>
                     <input class="btn" type="submit" id="btn_{{ g.id }}" value="{% trans "Show" %}" />
                   </form>
                 </td>
@@ -96,12 +120,12 @@ $(function() {
     setTimeout(function() {
         $('.time_msg').alert('close');
         }, 3000);
-    $('.dateWidget').each(function() {
-        var dp = $(this);
-        dp.datepicker({
-            'format': 'dd.mm.yyyy',
-            'weekStart': 1,
-            'viewMode': 'years'
+    $('.datetimepicker').each(function() {
+        var dtp = $(this);
+        dtp.datetimepicker({
+            'language': 'de',
+            'pickTime': false,
+            'weekStart': 1
         });
     });
     datatable_options['bPaginate'] = false;
