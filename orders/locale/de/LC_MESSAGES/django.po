@@ -7,15 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-24 11:28+0200\n"
-"PO-Revision-Date: 2012-10-16 09:06+0100\n"
+"POT-Creation-Date: 2013-09-24 21:28+0200\n"
+"PO-Revision-Date: 2013-09-24 21:33+0100\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.5.7\n"
 
 #: feeds.py:13 templates/orders/index.html:47
 msgid "Latest Orders"
@@ -59,7 +60,8 @@ msgstr ", UNVOLLSTÄNDIG."
 #: feeds.py:61
 #, python-brace-format
 msgid "Ordered: {ocount}x {odate} by {users}, delivered: {count}x {date}{comp}"
-msgstr "Bestellt: {ocount}x {odate} von {users}, geliefert: {count}x {date}{comp}"
+msgstr ""
+"Bestellt: {ocount}x {odate} von {users}, geliefert: {count}x {date}{comp}"
 
 #: feeds.py:70 templates/orders/index.html:53
 msgid "My Latest Deliveries"
@@ -375,7 +377,7 @@ msgid "Orderdays"
 msgstr "Bestelltage"
 
 #: templates/orders/add_oday.html:13 templates/orders/manage_orders.html:52
-#: templates/orders/manage_orders.html:70
+#: templates/orders/manage_orders.html:70 templates/orders/move_order.html:33
 #: templates/orders/new_supplier.html:19
 #: templates/orders/delivery/new_bc.html:14
 #: templates/orders/ratings/edit.html:15 templates/orders/ratings/edit.html:30
@@ -409,8 +411,8 @@ msgstr "Ja"
 msgid "No"
 msgstr "Nein"
 
-#: templates/orders/delete.html:14 templates/orders/select_article.html:21
-#: templates/orders/select_article.html:28
+#: templates/orders/delete.html:14 templates/orders/select_article.html:24
+#: templates/orders/select_article.html:31
 msgid "Next"
 msgstr "Weiter"
 
@@ -476,22 +478,23 @@ msgstr "Art.-Nr."
 msgid "Orderer"
 msgstr "Besteller"
 
-#: templates/orders/manage_order.html:41 templates/orders/myorders.html:73
-#: templates/orders/orderday.html:28
-msgid "Delete"
-msgstr "Löschen"
+#: templates/orders/manage_order.html:41 templates/orders/myorders.html:36
+#: templates/orders/old_orders.html:17
+msgid "Actions"
+msgstr "Aktionen"
 
 #: templates/orders/manage_order.html:56 templates/orders/manage_order.html:73
 msgid "Only correct typos here!"
 msgstr "Bitte nur Schreibfehler hier korrigieren!"
 
-#: templates/orders/manage_order.html:137 templates/orders/orderday.html:67
+#: templates/orders/manage_order.html:137
+msgid "Move order to other order day and set state to NEW."
+msgstr ""
+"Verschiebe Bestellung auf anderen Bestelltag und setze den Status auf NEU,"
+
+#: templates/orders/manage_order.html:145 templates/orders/orderday.html:67
 msgid "Delete order now."
 msgstr "Bestellung jetzt löschen"
-
-#: templates/orders/manage_order.html:143 templates/orders/orderday.html:73
-msgid "Not possible"
-msgstr "Nicht möglich"
 
 #: templates/orders/manage_orders.html:10
 msgid "Select Order Day"
@@ -525,9 +528,9 @@ msgstr "Bestellung machen"
 msgid "Accept / Reject orders"
 msgstr "Bestellungen akzeptieren / zurückweisen"
 
-#: templates/orders/myorders.html:36 templates/orders/old_orders.html:17
-msgid "Actions"
-msgstr "Aktionen"
+#: templates/orders/move_order.html:32 templates/orders/new_supplier.html:20
+msgid "Cancel"
+msgstr "Abbruch"
 
 #: templates/orders/myorders.html:44
 msgid "Send"
@@ -549,6 +552,10 @@ msgstr "Neu bestellen"
 msgid "Now"
 msgstr "Sofort"
 
+#: templates/orders/myorders.html:73 templates/orders/orderday.html:28
+msgid "Delete"
+msgstr "Löschen"
+
 #: templates/orders/myorders.html:80
 msgid "No orders in this state!"
 msgstr "Keine Bestellungen in diesem Status vorhanden."
@@ -560,10 +567,6 @@ msgstr "Nach oben"
 #: templates/orders/new_supplier.html:9
 msgid "Enter data"
 msgstr "Lieferantendaten eingeben"
-
-#: templates/orders/new_supplier.html:20
-msgid "Cancel"
-msgstr "Abbruch"
 
 #: templates/orders/old_orders.html:9
 msgid "Article Name"
@@ -602,6 +605,10 @@ msgstr "Bestellt von"
 msgid "Single price"
 msgstr "Einzelpreis"
 
+#: templates/orders/orderday.html:73
+msgid "Not possible"
+msgstr "Nicht möglich"
+
 #: templates/orders/orderday.html:119
 msgid "Count was not changed. Aborting."
 msgstr "Anzahl wurde nicht geändert. Abbruch."
@@ -626,7 +633,11 @@ msgstr "Interner Ausdruck"
 msgid "Order old article"
 msgstr "Bereits vorhandenen Artikel bestellen"
 
-#: templates/orders/select_article.html:27
+#: templates/orders/select_article.html:16
+msgid "This search is also responsible for barcodes."
+msgstr "Diese Suche berücksichtigt auch Strichcodes."
+
+#: templates/orders/select_article.html:30
 msgid "Order new article"
 msgstr "Neuen Artikel bestellen"
 
@@ -722,7 +733,8 @@ msgstr "offene Bestellung(en)"
 
 #: templates/orders/delivery/known_bc.html:12
 msgid "Please select order and enter count."
-msgstr "Bitte wählen Sie die Bestellung und geben Sie die gelieferte Anzahl ein."
+msgstr ""
+"Bitte wählen Sie die Bestellung und geben Sie die gelieferte Anzahl ein."
 
 #: templates/orders/delivery/known_bc.html:24
 msgid "Check in"
@@ -734,7 +746,8 @@ msgstr "Strichcode unbekannt"
 
 #: templates/orders/delivery/new_bc.html:6
 msgid "Please select article for this barcode or scan next."
-msgstr "Bitte wählen Sie den passenden Artikel oder scannen Sie den nächsten Artikel."
+msgstr ""
+"Bitte wählen Sie den passenden Artikel oder scannen Sie den nächsten Artikel."
 
 #: templates/orders/ratings/edit.html:6 views/web.py:376
 msgid "Edit Rating"
@@ -952,4 +965,3 @@ msgstr "Bewertungen verwalten"
 #: views/web.py:409
 msgid "Sums by Cost"
 msgstr "Summen nach Kostenstellen"
-
