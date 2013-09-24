@@ -59,29 +59,41 @@ def is_special_day(date, include_weekend=False):
         return False
 
 
+def get_special_day_name(date):
+    _reversed = {y(date.year): x for x, y in special_days.items()}
+    return _reversed.get(date, '')
+
+
 def test():
     import unittest
 
     class SpecialDaysTest(unittest.TestCase):
+
         def test_fester_Feiertag(self):
-            d = _date(2015, 12,25)
+            d = _date(2015, 12, 25)
             d2 = special_days['Erster Weihnachtstag'](2015)
             self.assertEqual(d, d2)
+
         def test_ist_Feiertag_1(self):
             d = _date(2012, 12, 26)
             self.assertTrue(is_special_day(d))
+
         def test_ist_Feiertag_2(self):
             d = _date(2020, 5, 1)
             self.assertTrue(is_special_day(d))
+
         def test_ist_kein_Feiertag(self):
             d = _date(2013, 5, 14)
             self.assertFalse(is_special_day(d))
+
         def test_ist_Wochenende(self):
             d = _date(2013, 5, 18)
             self.assertTrue(is_special_day(d, include_weekend=True))
+
         def test_ist_Ostersonntag_1(self):
             d = _date(2014, 4, 20)
             self.assertEqual(d, easter_sunday(2014))
+
         def test_ist_Ostersonntag_2(self):
             d = _date(2020, 4, 12)
             self.assertEqual(d, easter_sunday(2020))
@@ -100,4 +112,3 @@ if __name__ == '__main__':
                 name, date.strftime('%d.%m.%Y'), DAYS[date.weekday()])
     else:
         test()
-

@@ -6,6 +6,8 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
 from django.conf import settings
 
+import core.utils.special_days_ger as sdg
+
 from core.models import StudentGroup, PresenceDay, Student
 
 
@@ -34,6 +36,10 @@ def get_presence_day(day, student, in_past):
         pday, created = PresenceDay.objects.get_or_create(student=student,
             date=day)
         if created:
+            if sdg.is_special_day(day):
+                pday.entry = u'FT'
+                pday.note = sdg.get_special_day_name(day)
+                pday.instructor = User.objects.get(username='admin')
             pday.save()
         return pday
 
