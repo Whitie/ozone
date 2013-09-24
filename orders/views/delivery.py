@@ -55,15 +55,23 @@ def delivery_by_barcode(req):
 @permission_required('orders.can_order')
 def get_article_by_barcode(req, barcode):
     bc = barcode.strip()
-    orders = Order.objects.select_related().filter(state=u'ordered',
-        article__barcode=bc).order_by('ordered')
-    if orders:
-        for o in orders:
-            o.delivered = 0
-            for d in DeliveredOrder.objects.filter(order=o):
-                o.delivered += d.count
-        ctx = dict(orders=orders, article=orders[0].article)
-        return render(req, 'orders/delivery/known_bc.html', ctx)
+    try:
+        article = Article.objects.get(barcode=bc)
+    except Article.DoesNotExist:
+        article = None
+    if article is not None:
+        orders = Order.objects.select_related().filter(state=u'ordered',
+            article=article).order_by('ordered')
+        if orders:
+            for o in orders:
+                o.delivered = 0
+                for d in DeliveredOrder.objects.filter(order=o):
+                    o.delivered += d.count
+            ctx = dict(orders=orders, article=article, olen=len(orders))
+            return render(req, 'orders/delivery/known_bc.html', ctx)
+        else:
+            ctx = dict(article=article)
+            return render(req, 'orders/delivery/error.html', ctx)
     else:
         articles = Article.objects.filter(order__state=u'ordered',
             barcode=u'').order_by('name')

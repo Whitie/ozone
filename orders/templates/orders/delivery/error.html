@@ -1,0 +1,7 @@
+<h3>Fehler</h3>
+<p>
+    Der Strichcode ({{ article.barcode }}) gehört zu Artikel {{ article.name }},
+    aber es existiert keine offene Bestellung zu diesem Artikel.<br>
+    Bitte buchen Sie den Wareneingang über die
+    <a href="{% url "orders-delivery" %}">normale Seite</a>.
+</p>

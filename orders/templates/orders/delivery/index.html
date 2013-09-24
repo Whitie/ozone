@@ -5,6 +5,9 @@
 <div class="row-fluid">
     <div class="span12">
         <h2>{% trans "Open Orders" %}</h2>
+        <a href="{% url "orders-delivery-barcode" %}" class="btn btn-mini btn-info">
+            {% trans "Delivery by barcode" %}
+        </a>
         <table class="table table-striped dTable">
             <thead>
                 <th>{% trans "Ordered" %}</th>

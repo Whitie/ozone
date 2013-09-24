@@ -44,9 +44,13 @@ def update_article_count(req, order_id, count):
 @json_view
 def get_articles(req):
     term = req.GET.get('term')
-    articles = [{'value': x.id, 'label': x.name, 'desc': x.short_desc()}
-                for x in Article.objects.filter(
-                    name__icontains=term).order_by('name')]
+    query = Q(name__icontains=term) | Q(barcode__istartswith=term)
+    articles = [{
+        'value': x.id,
+        'label': u'{0} ({1})'.format(x.name, x.barcode),
+        'desc': x.short_desc()
+        } for x in Article.objects.filter(query).order_by('name')
+    ]
     return articles
 
 

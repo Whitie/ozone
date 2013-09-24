@@ -30,7 +30,8 @@ class OrderDayForm(forms.Form):
 class BaseOrderForm(forms.Form):
     count = _wid.IntegerField5(label=_(u'Count'))
     art_name = forms.CharField(label=_(u'Article'), max_length=100)
-    art_supplier_name = forms.CharField(label=_(u'Supplier'), max_length=100)
+    art_supplier_name = forms.CharField(label=_(u'Supplier'), max_length=100,
+        widget=forms.TextInput(attrs={'autocomplete': 'off'}))
     art_supplier_id = forms.IntegerField(widget=forms.HiddenInput)
     art_id = forms.CharField(label=_(u'Identifier'), max_length=50,
         required=False)

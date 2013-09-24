@@ -1,7 +1,14 @@
 {% load i18n %}
 
 <h3>{{ article.name }} <small>{{ orders|length }} {% trans "open order(s)" %}</small></h3>
-<form onsubmit="return save_delivery();">
+<form onsubmit="return save_delivery({{ olen }});">
+    {% if olen == 1 %}
+    {% with o=orders|first %}
+    <label for="_order">{% trans "Order" %}</label>
+    <input id="_order" class="input-xlarge uneditable-input" value="{{ o.ordered|date:"SHORT_DATE_FORMAT" }}, {% trans "Ordered" %}: {{ o.count }}, {% trans "Delivered" %}: {{ o.delivered }}">
+    <input type="hidden" id="order" value="{{ o.id }}">
+    {% endwith %}
+    {% else %}
     <label for="order">{% trans "Please select order and enter count." %}</label>
     <select size="1" id="order">
         <option value="0">----</option>
@@ -9,6 +16,7 @@
         <option value="{{ o.id }}">{{ o.ordered|date:"SHORT_DATE_FORMAT" }}, {% trans "Ordered" %}: {{ o.count }}, {% trans "Delivered" %}: {{ o.delivered }}</option>
         {% endfor %}
     </select>
+    {% endif %}
     <br>
     <label for="count">{% trans "Delivered" %}</label>
     <input type="text" id="count" class="input-mini">
