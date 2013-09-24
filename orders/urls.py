@@ -22,6 +22,7 @@ urlpatterns = patterns('orders.views.web',
     url(r'^myorders/$', 'myorders', name='orders-myorders'),
     url(r'^old/$', 'show_old_orders', name='orders-old'),
     url(r'^list/printouts/$', 'list_printouts', name='orders-list-printouts'),
+    url(r'^order/move/$', 'move_order', name='orders-move-order'),
 
     # Company Rating
     url(r'^rating/$', 'company_rating', name='orders-rating'),
@@ -65,6 +66,7 @@ urlpatterns += patterns('orders.views.ajax',
     url(r'^api/find_supplier/$', 'find_supplier', name='orders-api-find-supp'),
     url(r'^api/delivery/save_barcode/$', 'save_barcode',
         name='orders-api-save-barcode'),
+    url(r'^api/order/move/$', 'move_order', name='orders-api-move-order'),
 )
 
 urlpatterns += patterns('orders.views.pdf',

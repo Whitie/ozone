@@ -430,3 +430,11 @@ def ctrl_by_cost(req):
         _ctx = dict(costs=l, start=start, end=end)
         ctx.update(_ctx)
     return render(req, 'orders/controlling/bycost.html', ctx, app=u'orders')
+
+
+def move_order(req):
+    oday = OrderDay.objects.get(id=int(req.GET.get('oday_id')))
+    order = Order.objects.get(id=int(req.GET.get('oid')))
+    odays = OrderDay.objects.filter(day__gt=oday.day).order_by('day')
+    ctx = dict(odays=odays, oday=oday, order=order)
+    return render(req, 'orders/move_order.html', ctx)

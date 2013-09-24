@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.0beta1\n"
+"Project-Id-Version: 3.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-09-24 11:28+0200\n"
 "PO-Revision-Date: 2012-10-16 09:06+0100\n"
@@ -18,60 +18,57 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: feeds.py:13 templates/orders/index.html:47
-#, fuzzy
 msgid "Latest Orders"
 msgstr "Letzte Bestellung"
 
 #: feeds.py:15
 msgid "Shows the last 10 orders made."
-msgstr ""
+msgstr "Zeigt die letzten 10 Bestellungen an."
 
 #: feeds.py:21
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{article}, {date}"
-msgstr "Artikelname"
+msgstr "{article} vom {date}"
 
 #: feeds.py:26
 #, python-brace-format
 msgid "Order: {order}, State: {state}"
-msgstr ""
+msgstr "Bestellung: {order}, Status: {state}"
 
 #: feeds.py:35 templates/orders/index.html:59
-#, fuzzy
 msgid "Latest Deliveries"
-msgstr "Lieferungen"
+msgstr "Letzte Lieferungen"
 
 #: feeds.py:37
 msgid "Shows the last 20 deliveries."
-msgstr ""
+msgstr "Zeigt die letzten 20 Lieferungen."
 
 #: feeds.py:43
 #, python-brace-format
 msgid "{date}, Article: {article}"
-msgstr ""
+msgstr "{date}, Artikel: {article}"
 
 #: feeds.py:50
 msgid ", order complete."
-msgstr ""
+msgstr ", Bestellung komplett."
 
 #: feeds.py:52
 msgid ", INCOMPLETE."
-msgstr ""
+msgstr ", UNVOLLSTÄNDIG."
 
 #: feeds.py:61
 #, python-brace-format
 msgid "Ordered: {ocount}x {odate} by {users}, delivered: {count}x {date}{comp}"
-msgstr ""
+msgstr "Bestellt: {ocount}x {odate} von {users}, geliefert: {count}x {date}{comp}"
 
 #: feeds.py:70 templates/orders/index.html:53
-#, fuzzy
 msgid "My Latest Deliveries"
-msgstr "Lieferungen"
+msgstr "Meine letzten Lieferungen"
 
 #: feeds.py:76
 #, python-brace-format
 msgid "Latest 10 deliveries for {0}."
-msgstr ""
+msgstr "Letzte 10 Lieferungen für {0}."
 
 #: forms.py:23
 msgid "Next Orderday"
@@ -419,14 +416,13 @@ msgstr "Weiter"
 
 #: templates/orders/extra_order.html:18
 msgid "Currently saved orders"
-msgstr ""
+msgstr "Bisher eingegebene Bestellungen"
 
 #: templates/orders/extra_order.html:32 templates/orders/manage_order.html:21
 msgid "Generate printouts"
 msgstr "Ausdrucke (PDF) generieren"
 
 #: templates/orders/index.html:9
-#, fuzzy
 msgid "Add new order day"
 msgstr "Neuen Bestelltag hinzufügen"
 
@@ -451,13 +447,12 @@ msgid "Feeds"
 msgstr ""
 
 #: templates/orders/index.html:70
-#, fuzzy
 msgid "Last deliveries"
-msgstr "Lieferungen"
+msgstr "Letzte Lieferungen"
 
 #: templates/orders/index.html:71
 msgid "for"
-msgstr ""
+msgstr "für"
 
 #: templates/orders/list_printouts.html:11
 #: templates/orders/manage_order.html:7 templates/orders/manage_order.html:81
@@ -491,9 +486,8 @@ msgid "Only correct typos here!"
 msgstr "Bitte nur Schreibfehler hier korrigieren!"
 
 #: templates/orders/manage_order.html:137 templates/orders/orderday.html:67
-#, fuzzy
 msgid "Delete order now."
-msgstr "Bestellung löschen"
+msgstr "Bestellung jetzt löschen"
 
 #: templates/orders/manage_order.html:143 templates/orders/orderday.html:73
 msgid "Not possible"
@@ -520,7 +514,6 @@ msgid "List of all printouts"
 msgstr "Liste aller Ausdrucke"
 
 #: templates/orders/manage_orders.html:35
-#, fuzzy
 msgid "Select Representatives"
 msgstr "Vertretung auswählen"
 
@@ -534,7 +527,7 @@ msgstr "Bestellungen akzeptieren / zurückweisen"
 
 #: templates/orders/myorders.html:36 templates/orders/old_orders.html:17
 msgid "Actions"
-msgstr ""
+msgstr "Aktionen"
 
 #: templates/orders/myorders.html:44
 msgid "Send"
@@ -557,22 +550,20 @@ msgid "Now"
 msgstr "Sofort"
 
 #: templates/orders/myorders.html:80
-#, fuzzy
 msgid "No orders in this state!"
-msgstr "Keine Bestellungen in dieser Zeitspanne gefunden."
+msgstr "Keine Bestellungen in diesem Status vorhanden."
 
 #: templates/orders/myorders.html:93
 msgid "Go to top"
-msgstr ""
+msgstr "Nach oben"
 
 #: templates/orders/new_supplier.html:9
-#, fuzzy
 msgid "Enter data"
 msgstr "Lieferantendaten eingeben"
 
 #: templates/orders/new_supplier.html:20
 msgid "Cancel"
-msgstr ""
+msgstr "Abbruch"
 
 #: templates/orders/old_orders.html:9
 msgid "Article Name"
@@ -621,7 +612,7 @@ msgstr "FAX-Ausdrucke"
 
 #: templates/orders/printouts.html:10
 msgid "Position(s)"
-msgstr ""
+msgstr "Position(en)"
 
 #: templates/orders/printouts.html:12 templates/orders/printouts.html.py:25
 msgid "Generate PDF"
@@ -678,21 +669,19 @@ msgstr "Keine Bestellungen in dieser Zeitspanne gefunden."
 
 #: templates/orders/delivery/barcodes.html:10
 msgid "Scan barcode..."
-msgstr ""
+msgstr "Strichcode scannen..."
 
 #: templates/orders/delivery/barcodes.html:18
-#, fuzzy
 msgid "Normal delivery"
-msgstr "Wareneingang"
+msgstr "Normaler Wareneingang"
 
 #: templates/orders/delivery/index.html:7 views/web.py:79
 msgid "Open Orders"
 msgstr "Offene Bestellungen"
 
 #: templates/orders/delivery/index.html:9
-#, fuzzy
 msgid "Delivery by barcode"
-msgstr "Gelieferte Bestellung"
+msgstr "Wareneingang über Strichcode erfassen"
 
 #: templates/orders/delivery/index.html:18
 #: templates/orders/delivery/index.html:66
@@ -705,12 +694,11 @@ msgstr "Ausstehend"
 
 #: templates/orders/delivery/index.html:44
 msgid "ALL"
-msgstr ""
+msgstr "ALLE"
 
 #: templates/orders/delivery/index.html:58
-#, fuzzy
 msgid "Delivered last 2 weeks"
-msgstr "Lieferungen der letzten 30 Tage"
+msgstr "Lieferungen der letzten 2 Wochen"
 
 #: templates/orders/delivery/index.html:67
 msgid "Avg. time to delivery"
@@ -729,27 +717,24 @@ msgid "Maximum count that can be delivered is"
 msgstr "Maximale Liefermenge beträgt"
 
 #: templates/orders/delivery/known_bc.html:3
-#, fuzzy
 msgid "open order(s)"
-msgstr "Offene Bestellungen"
+msgstr "offene Bestellung(en)"
 
 #: templates/orders/delivery/known_bc.html:12
-#, fuzzy
 msgid "Please select order and enter count."
-msgstr "Bitte wählen Sie den Bestelltag zum bearbeiten aus"
+msgstr "Bitte wählen Sie die Bestellung und geben Sie die gelieferte Anzahl ein."
 
 #: templates/orders/delivery/known_bc.html:24
 msgid "Check in"
-msgstr ""
+msgstr "Eingang speichern"
 
 #: templates/orders/delivery/new_bc.html:3
 msgid "Barcode not known"
-msgstr ""
+msgstr "Strichcode unbekannt"
 
 #: templates/orders/delivery/new_bc.html:6
-#, fuzzy
 msgid "Please select article for this barcode or scan next."
-msgstr "Bitte wählen Sie den Bestelltag zum bearbeiten aus"
+msgstr "Bitte wählen Sie den passenden Artikel oder scannen Sie den nächsten Artikel."
 
 #: templates/orders/ratings/edit.html:6 views/web.py:376
 msgid "Edit Rating"
@@ -901,28 +886,26 @@ msgstr ""
 "Hier klicken, um berechnete Bewertung als Gesamtbewertung zu übernehmen."
 
 #: views/delivery.py:50
-#, fuzzy
 msgid "By barcode"
-msgstr "Strichcode"
+msgstr "Über Strichcode"
 
 #: views/pdf.py:155
-#, fuzzy
 msgid "PDF-Printouts"
-msgstr "Ausdrucke"
+msgstr "PDF-Ausdrucke"
 
 #: views/pdf.py:156 views/web.py:285
 #, python-brace-format
 msgid "for {0}"
-msgstr ""
+msgstr "für {0}"
 
 #: views/web.py:30
 msgid "Next order days"
 msgstr "Nächste Bestelltage"
 
 #: views/web.py:33
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Next in {0} days"
-msgstr "Nächste Bestelltage"
+msgstr "Nächster in {0} Tagen"
 
 #: views/web.py:56
 msgid "All ordered articles"
@@ -931,12 +914,11 @@ msgstr "Alle bestellten Artikel"
 #: views/web.py:57
 #, python-brace-format
 msgid "Since {0}"
-msgstr ""
+msgstr "Seit {0}"
 
 #: views/web.py:131
-#, fuzzy
 msgid "New Order"
-msgstr "Neuer Bestelltag"
+msgstr "Neue Bestellung"
 
 #: views/web.py:132
 msgid "Sum of costs must be 100!"
@@ -952,14 +934,12 @@ msgid "Make order"
 msgstr "Bestellen"
 
 #: views/web.py:284
-#, fuzzy
 msgid "Edit Orders"
-msgstr "Bestellungen bearbeiten für"
+msgstr "Bestellungen bearbeiten"
 
 #: views/web.py:327
-#, fuzzy
 msgid "By orderday"
-msgstr "Bestelltage"
+msgstr "Nach Bestelltag"
 
 #: views/web.py:386
 msgid "Company Rating Summary"
@@ -973,68 +953,3 @@ msgstr "Bewertungen verwalten"
 msgid "Sums by Cost"
 msgstr "Summen nach Kostenstellen"
 
-#~ msgid "The supplier must be chosen by click!"
-#~ msgstr "Der Lieferant muss durch Klicken ausgewählt werden!"
-
-#~ msgid "Klick to enter message."
-#~ msgstr "Klicken, um eine Nachricht einzugeben."
-
-#~ msgid "Changes"
-#~ msgstr "Änderungen"
-
-#~ msgid "Error"
-#~ msgstr "Fehler"
-
-#~ msgid "Printouts by day"
-#~ msgstr "Ausdrucke nach Bestelltag"
-
-#~ msgid "All changes will be saved automatically."
-#~ msgstr "Alle Änderungen werden automatisch gespeichert."
-
-#~ msgid "Orders for"
-#~ msgstr "Bestellungen für"
-
-#~ msgid "Not ordered yet"
-#~ msgstr "Noch nicht bestellt"
-
-#~ msgid ""
-#~ "Supplier not valid. Please choose one from the list or add a new one "
-#~ msgstr ""
-#~ "Lieferant nicht gültig. Bitte wählen Sie einen aus der Liste oder fügen "
-#~ "Sie vorher einen neuen hinzu."
-
-#~ msgid "Edit"
-#~ msgstr "Bearbeiten"
-
-#~ msgid "Change"
-#~ msgstr "Ändern"
-
-#~ msgid "Generate PDF-Files for"
-#~ msgstr "PDF-Dateien für"
-
-#~ msgid "This may take some time!"
-#~ msgstr "Dieser Vorgang kann einige Zeit dauern!"
-
-#~ msgid "%s selected."
-#~ msgstr "%s ausgewählt."
-
-#~ msgid "Cannot delete foreign order!"
-#~ msgstr "Fremde Bestellungen können nicht gelöscht werden!"
-
-#~ msgid "Order (ID: %s) deleted."
-#~ msgstr "Bestellung (ID: %s) gelöscht."
-
-#~ msgid "Nothing deleted. Cancelled by user."
-#~ msgstr "Es wurde nichts gelöscht. Benutzerabbruch."
-
-#~ msgid "The user you specified is not valid."
-#~ msgstr "Der angegebene Benutzer ist nicht gültig."
-
-#~ msgid "New orderday %s added."
-#~ msgstr "Neuer Bestelltag %s hinzugefügt."
-
-#~ msgid "Please correct the form."
-#~ msgstr "Bitte korrigieren Sie das Formular."
-
-#~ msgid "Company Rating Help"
-#~ msgstr "Lieferantenbewertung Hilfe"

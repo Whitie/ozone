@@ -11,9 +11,9 @@ from django.contrib.auth.models import Permission
 from django.template import Context
 from django.template.loader import get_template
 
-from core.utils import json_view, json_rpc
+from core.utils import json_view, json_rpc, render
 from core.models import Company
-from orders.models import Order, Article, DeliveredOrder
+from orders.models import Order, Article, DeliveredOrder, OrderDay
 from orders.views import helper as h
 
 
@@ -246,3 +246,15 @@ def save_barcode(req, data):
     except Article.DoesNotExist:
         return dict(msg=u'Fehler! Barcode konnte nicht gespeichert werden.',
             saved=False)
+
+
+@json_rpc
+def move_order(req, data):
+    new_oday = OrderDay.objects.get(id=data['oday_id'])
+    order = Order.objects.get(id=data['oid'])
+    order.order_day = new_oday
+    order.state = u'new'
+    order.memo = u'Bestellung verschoben von {0}'.format(
+        unicode(req.user.get_profile()))
+    order.save()
+    return dict()

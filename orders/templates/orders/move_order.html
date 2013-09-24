@@ -1,0 +1,35 @@
+{% load i18n %}
+<div id="move_order" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="edit_label" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 id="edit_label">Bestellung verschieben</h3>
+    </div>
+    <div class="modal-body">
+        {% if odays %}
+        <p>Verschiebe Bestellung für {{ order.article.name }} vom {{ oday.day }} auf:</p>
+        <form class="form-horizontal">
+            {% csrf_token %}
+            <input type="hidden" id="order" value="{{ order.id }}">
+            <div class="control-group">
+                <label class="control-label" for="new_oday">
+                    Neuer Bestelltag:
+                </label>
+                <div class="controls">
+                    <select id="new_oday" size="1">
+                        {% for o in odays %}
+                        <option value="{{ o.id }}">{{ o }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </form>
+        {% else %}
+        <input type="hidden" id="order" value="0">
+        <p>Keine Bestelltage in der Zukunft angelegt!</p>
+        {% endif %}
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning" data-dismiss="modal" aria-hidden="true">{% trans "Cancel" %}</button>
+        <button class="btn btn-primary" onclick="save_moved_order();">{% trans "Save" %}</button>
+    </div>
+</div>

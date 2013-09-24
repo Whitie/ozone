@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Ozone 2.0.1\n"
+"Project-Id-Version: Ozone 3.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-09-24 11:28+0200\n"
 "PO-Revision-Date: 2013-01-16 08:50+0100\n"
@@ -43,7 +43,7 @@ msgstr "Letzte Änderung"
 
 #: admin.py:257 templates/accidents/index.html:24
 msgid "Injured"
-msgstr ""
+msgstr "Verletzter"
 
 #: forms.py:14
 msgid "Mon"
@@ -96,7 +96,7 @@ msgstr "Firmenname"
 
 #: forms.py:69
 msgid ">- Select company first -<"
-msgstr ""
+msgstr ">- Firma zuerst auswählen -<"
 
 #: forms.py:122 templates/colleagues/list.html:9
 #: templates/companies/list.html:23 templates/students/list.html:26
@@ -343,9 +343,8 @@ msgid "Presences"
 msgstr "Anwesenheiten"
 
 #: menu.py:23 views/web.py:662
-#, fuzzy
 msgid "Accidents"
-msgstr "Aktive Azubis"
+msgstr "Unfälle"
 
 #: menu.py:24
 msgid "Archive"
@@ -389,43 +388,39 @@ msgstr "News schreiben"
 
 #: models.py:55
 msgid "Organization Name"
-msgstr ""
+msgstr "Name der Organisation"
 
 #: models.py:56
-#, fuzzy
 msgid "Organization Short Name"
-msgstr "Kürzel"
+msgstr "Kürzel der Organisation"
 
 #: models.py:58
 msgid "PDFLatex"
-msgstr ""
+msgstr "PDF Latex"
 
 #: models.py:59
 msgid "Path to pdflatex executable."
-msgstr ""
+msgstr "Pfad zu pdflatex(.exe)"
 
 #: models.py:61
 msgid "Latex Commandline Options"
-msgstr ""
+msgstr "Latex Optionen"
 
 #: models.py:63 models.py:166 templates/companies/details.html:16
 msgid "Fax"
 msgstr "Fax"
 
 #: models.py:64
-#, fuzzy
 msgid "Logo"
-msgstr "Abmelden"
+msgstr "Logo"
 
 #: models.py:70
-#, fuzzy
 msgid "Configuration"
-msgstr "Mehr Informationen"
+msgstr "Konfiguration"
 
 #: models.py:71
-#, fuzzy
 msgid "Configurations"
-msgstr "Keine Kooperationen"
+msgstr "Konfigurationen"
 
 #: models.py:76 models.py:164 models.py:654
 #: templates/colleagues/phonelist.html:11 templates/students/groups.html:19
@@ -571,7 +566,7 @@ msgstr "Anfangsdatum"
 
 #: models.py:316
 msgid "School Number"
-msgstr "Klasse"
+msgstr "Schulklasse"
 
 #: models.py:319
 msgid "Job Short"
@@ -775,22 +770,21 @@ msgid "Sonstige"
 msgstr ""
 
 #: models.py:655
-#, fuzzy
 msgid "Roomnumber"
-msgstr "Klasse"
+msgstr "Raumnummer"
 
 #: models.py:664 models.py:677 templates/accidents/details.html:64
 #: templates/accidents/index.html:25
 msgid "Place"
-msgstr ""
+msgstr "Ort"
 
 #: models.py:665
 msgid "Places"
-msgstr ""
+msgstr "Orte"
 
 #: models.py:670
 msgid "Date / Time"
-msgstr ""
+msgstr "Datum / Zeit"
 
 #: models.py:674
 msgid "Verletzter Azubi"
@@ -841,14 +835,12 @@ msgid "Bemerkungen"
 msgstr ""
 
 #: models.py:706
-#, fuzzy
 msgid "Accident Entry"
-msgstr "Eintrag hinzufügen"
+msgstr "Unfalleintrag"
 
 #: models.py:707
-#, fuzzy
 msgid "Accident Entries"
-msgstr "Meine Einträge"
+msgstr "Unfalleinträge"
 
 #: templates/error.html:9 templatetags/ozone_tags.py:21
 msgid "Error"
@@ -881,27 +873,27 @@ msgstr "Leere Anwesenheitstage löschen"
 
 #: templates/iadmin.html:34
 msgid "Empty latex build dir"
-msgstr ""
+msgstr "Temporäres Latex-Verzeichnis leeren"
 
 #: templates/iadmin.html:46
 msgid "Ozone 3.0 migration"
-msgstr ""
+msgstr "Ozone 3.0 Migration"
 
 #: templates/iadmin.html:46
 msgid "use once"
-msgstr ""
+msgstr "nur einmal benutzen"
 
 #: templates/iadmin.html:48
 msgid "Migrate presence from '*' to 'A'."
-msgstr ""
+msgstr "Migriere Anwesenheit von '*' zu 'A'."
 
 #: templates/iadmin.html:50 templates/iadmin.html.py:55
 msgid "Migrate"
-msgstr ""
+msgstr "Migrieren"
 
 #: templates/iadmin.html:53
 msgid "Remove whitespace before and after article identifiers."
-msgstr ""
+msgstr "Leerzeichen vor und hinter Artikelnummern löschen."
 
 #: templates/index.html:18
 msgid "Posted on"
@@ -913,11 +905,11 @@ msgstr "von"
 
 #: templates/index.html:32
 msgid "Newer"
-msgstr ""
+msgstr "Neuer"
 
 #: templates/index.html:35
 msgid "Older"
-msgstr ""
+msgstr "Älter"
 
 #: templates/index.html:46
 msgid "No News found."
@@ -928,26 +920,24 @@ msgid "Login"
 msgstr "Anmelden"
 
 #: templates/accidents/add.html:5
-#, fuzzy
 msgid "Add accident"
-msgstr "Azubi hinzufügen"
+msgstr "Neuen Unfall aufnehmen"
 
 #: templates/accidents/add.html:11
 msgid "Persons involved"
-msgstr ""
+msgstr "Beteiligte Personen"
 
 #: templates/accidents/add.html:14 templates/accidents/details.html:45
 msgid "Date / time of accident"
-msgstr ""
+msgstr "Datum / Zeit des Unfalls"
 
 #: templates/accidents/add.html:52 templates/accidents/add.html.py:63
-#, fuzzy
 msgid "Separate more than one name with a comma."
 msgstr "Mehrere Namen durch Komma trennen."
 
 #: templates/accidents/add.html:69
 msgid "Place and violation"
-msgstr ""
+msgstr "Ort und Verletzung"
 
 #: templates/accidents/add.html:114 templates/colleagues/add.html:50
 #: templates/students/details.html:62
@@ -956,7 +946,7 @@ msgstr "Verschiedenes"
 
 #: templates/accidents/add.html:144 templates/students/edit_short.html:29
 msgid "Cancel"
-msgstr ""
+msgstr "Abbruch"
 
 #: templates/accidents/add.html:145 templates/colleagues/add.html:60
 #: templates/colleagues/profile.html:21 templates/companies/add_note.html:15
@@ -967,7 +957,6 @@ msgid "Save"
 msgstr "Speichern"
 
 #: templates/accidents/details.html:9
-#, fuzzy
 msgid "Generate report"
 msgstr "Ausdruck generieren"
 
@@ -980,51 +969,48 @@ msgid "Personal data"
 msgstr "Persönliche Daten"
 
 #: templates/accidents/details.html:42 views/web.py:670
-#, fuzzy
 msgid "Accident"
-msgstr "Aktive Azubis"
+msgstr "Unfall"
 
 #: templates/accidents/details.html:49
 msgid "Added"
-msgstr ""
+msgstr "Eingetragen"
 
 #: templates/accidents/details.html:53 templates/accidents/index.html:27
 msgid "Added by"
-msgstr ""
+msgstr "Eingetragen von"
 
 #: templates/accidents/details.html:57 templates/accidents/index.html:26
 msgid "Violation"
-msgstr ""
+msgstr "Verletzung"
 
 #: templates/accidents/details.html:71
 msgid "Witnesses"
-msgstr ""
+msgstr "Zeugen"
 
 #: templates/accidents/details.html:75
 msgid "First helper or doctor"
-msgstr ""
+msgstr "Ersthelfer und/oder Arzt"
 
 #: templates/accidents/details.html:79
-#, fuzzy
 msgid "First aid"
-msgstr "Vorname"
+msgstr "Erste-Hilfe-Maßnahmen"
 
 #: templates/accidents/details.html:83
 msgid "Used material"
-msgstr ""
+msgstr "Benutztes Material"
 
 #: templates/accidents/details.html:87
 msgid "Comment"
-msgstr ""
+msgstr "Bemerkung"
 
 #: templates/accidents/index.html:8
-#, fuzzy
 msgid "Add new accident"
-msgstr "Neuen externen Dozenten hinzufügen"
+msgstr "Neuen Unfall aufnehmen"
 
 #: templates/accidents/index.html:13
 msgid "Accidents statistics"
-msgstr ""
+msgstr "Unfallstatistik"
 
 #: templates/accidents/index.html:34 templates/students/group_detail.html:28
 #: templates/students/group_detail.html:29 templates/students/groups.html:31
@@ -1041,7 +1027,7 @@ msgstr "Adresse"
 
 #: templates/colleagues/birthdays.html:8
 msgid "Display: next"
-msgstr ""
+msgstr "Anzeigen: Nächste"
 
 #: templates/colleagues/birthdays.html:13
 msgid "days"
@@ -1126,15 +1112,15 @@ msgstr "Keine alten Bemerkungen."
 
 #: templates/companies/details.html:6
 msgid "Attention!"
-msgstr ""
+msgstr "Achtung!"
 
 #: templates/companies/details.html:15 templates/students/details.html:9
 msgid "P"
-msgstr ""
+msgstr "T"
 
 #: templates/companies/details.html:16
 msgid "F"
-msgstr ""
+msgstr "F"
 
 #: templates/companies/details.html:22
 msgid "Homepage"
@@ -1202,9 +1188,8 @@ msgstr "Gehe zu Seite"
 
 #: templates/companies/list_all.html:75 templates/students/list_all.html:61
 #: templates/students/add/base.html:23
-#, fuzzy
 msgid "Next"
-msgstr "Nächste Seite"
+msgstr "Weiter"
 
 #: templates/companies/list_all.html:84 templates/students/list_all.html:70
 msgid "Page"
@@ -1215,7 +1200,6 @@ msgid "of"
 msgstr "von"
 
 #: templates/journal/add.html:7
-#, fuzzy
 msgid ""
 "\n"
 "        For the following groups a journal already exist.\n"
@@ -1234,7 +1218,6 @@ msgid "Enter data for new journal"
 msgstr "Daten für neues Tagebuch eingeben"
 
 #: templates/journal/add_entry.html:13
-#, fuzzy
 msgid "New entry"
 msgstr "Neuer Eintrag"
 
@@ -1305,7 +1288,7 @@ msgstr "Klicken Sie hier, zum Download"
 
 #: templates/news/add.html:11
 msgid "New Message"
-msgstr ""
+msgstr "Neuer Artikel"
 
 #: templates/presence/edit.html:21
 msgid "Last change by"
@@ -1316,9 +1299,8 @@ msgid "Saved"
 msgstr "Gesichert"
 
 #: templates/presence/generate_pdf.html:17
-#, fuzzy
 msgid "Settings"
-msgstr "Bewertungen"
+msgstr "Einstellungen"
 
 #: templates/presence/generate_pdf.html:27
 msgid "Apply"
@@ -1359,7 +1341,7 @@ msgstr "Jetzt setzen"
 
 #: templates/presence/group.html:38
 msgid "Show/hide lateness"
-msgstr ""
+msgstr "Verspätungen anzeigen/ausblenden"
 
 #: templates/presence/group.html:60
 msgid "Click here to enter notes."
@@ -1378,9 +1360,8 @@ msgid "The first call of a list can take some time!"
 msgstr "Der erste Aufruf einer Liste kann einige Zeit dauern!"
 
 #: templates/presence/overview.html:24
-#, fuzzy
 msgid "Own list"
-msgstr "Alte Listen"
+msgstr "Eigene Liste"
 
 #: templates/presence/overview.html:28 templates/presence/overview.html:79
 msgid "From"
@@ -1391,9 +1372,8 @@ msgid "to"
 msgstr "bis"
 
 #: templates/presence/overview.html:46
-#, fuzzy
 msgid "Create"
-msgstr "Erstellt"
+msgstr "Erstellen"
 
 #: templates/presence/overview.html:57
 msgid "Old lists"
@@ -1418,7 +1398,7 @@ msgstr "Keine Gruppen gefunden."
 
 #: templates/students/details.html:10
 msgid "M"
-msgstr ""
+msgstr "M"
 
 #: templates/students/details.html:24
 msgid "Notice in Emergency"
@@ -1433,14 +1413,12 @@ msgid "Years old"
 msgstr "Jahre alt"
 
 #: templates/students/details.html:31
-#, fuzzy
 msgid "Click here to edit presence"
-msgstr "Klicken Sie hier, um Bemerkungen einzugeben."
+msgstr "Klicken Sie hier, um Anwesenheiten zu bearbeiten"
 
 #: templates/students/details.html:34
-#, fuzzy
 msgid "All saved presence days"
-msgstr "Leere Anwesenheitstage löschen"
+msgstr "Alle gespeicherten Anwesenheitstage"
 
 #: templates/students/details.html:35
 msgid "Total days of absense"
@@ -1448,7 +1426,7 @@ msgstr "Fehltage gesamt"
 
 #: templates/students/details.html:39
 msgid "Holiday"
-msgstr ""
+msgstr "Urlaub"
 
 #: templates/students/details.html:42
 msgid "Illness days"
@@ -1459,13 +1437,12 @@ msgid "Not excused"
 msgstr "Nicht entschuldigt"
 
 #: templates/students/details.html:49
-#, fuzzy
 msgid "Latenesses"
-msgstr "Verspätung"
+msgstr "Verspätungen"
 
 #: templates/students/details.html:53
 msgid "minutes"
-msgstr ""
+msgstr "Minuten"
 
 #: templates/students/details.html:59
 msgid "No presence found for"
@@ -1489,9 +1466,8 @@ msgid "No Picture set."
 msgstr "Kein Bild vorhanden."
 
 #: templates/students/edit_short.html:5
-#, fuzzy
 msgid "Edit student"
-msgstr "Azubi hinzufügen"
+msgstr "Azubi bearbeiten"
 
 #: templates/students/group_detail.html:23 templates/students/groups.html:21
 msgid "Begin"
@@ -1513,7 +1489,12 @@ msgid_plural ""
 "                %(students)s students have finished yet.\n"
 "                "
 msgstr[0] ""
+"\n"
+"                Ein Azubi hat die Ausbildung bereits beendet.\n"
+"                "
 msgstr[1] ""
+"\n"
+"                %(students)s haben die Ausbildung bereits beendet.\n"
 
 #: templates/students/groups.html:9
 msgid "Add Group"
@@ -1537,12 +1518,11 @@ msgstr "Erweiterte Suche"
 
 #: templates/students/list.html:46
 msgid "Full edit"
-msgstr ""
+msgstr "Alles bearbeiten"
 
 #: templates/students/list.html:47
-#, fuzzy
 msgid "Short edit"
-msgstr "Kürzel"
+msgstr "Kurzbearbeitung"
 
 #: templates/students/list.html:63 templates/students/list_all.html:47
 msgid "No students found."
@@ -1553,50 +1533,44 @@ msgid "Result"
 msgstr "Ergebnis"
 
 #: templates/students/search.html:55
-#, fuzzy
 msgid "No results found."
-msgstr "Keine Ergebnisse gefunden"
+msgstr "Keine Ergebnisse gefunden."
 
 #: templates/students/add/apply.html:7
-#, fuzzy
 msgid "General"
-msgstr "Erstellt"
+msgstr "Allgemein"
 
 #: templates/students/add/apply.html:20
-#, fuzzy
 msgid "Test Data"
-msgstr "Testdatum"
+msgstr "Einstellungstest"
 
 #: templates/students/add/base.html:13
 msgid "Bold"
-msgstr ""
+msgstr "Fettgedruckte"
 
 #: templates/students/add/base.html:19
-#, fuzzy
 msgid "First step"
-msgstr "Vorname"
+msgstr "Erster Schritt"
 
 #: templates/students/add/base.html:20
 msgid "Prev step"
-msgstr ""
+msgstr "Voriger Schritt"
 
 #: templates/students/add/job.html:7
 msgid "Job Data"
-msgstr ""
+msgstr "Berufsdaten"
 
 #: templates/students/add/job.html:18
-#, fuzzy
 msgid "House Data"
-msgstr "Daten eingeben"
+msgstr "Hausdaten"
 
 #: templates/students/add/personal.html:30
-#, fuzzy
 msgid "Contact Data"
-msgstr "Kontakt"
+msgstr "Kontaktdaten"
 
 #: templates/students/add/success.html:13
 msgid "Print datasheet (PDF)"
-msgstr ""
+msgstr "Datenblatt drucken (PDF)"
 
 #: templatetags/ozone_tags.py:21
 #, python-format
@@ -1613,19 +1587,17 @@ msgid "Ozone Error"
 msgstr "Ozone Software Fehler"
 
 #: views/add_student.py:41
-#, fuzzy
 msgid "Add new Student"
 msgstr "Azubi hinzufügen"
 
 #: views/add_student.py:42
 #, python-brace-format
 msgid "Step: {0}/{1}"
-msgstr ""
+msgstr "Schritt: {0}/{1}"
 
 #: views/add_student.py:68
-#, fuzzy
 msgid "New student added"
-msgstr "Keine Azubis gefunden."
+msgstr "Neuer Azubi hinzugefügt"
 
 #: views/add_student.py:69
 #, python-brace-format
@@ -1645,9 +1617,9 @@ msgid "Accessible Journals"
 msgstr "Verfügbare Tagebücher"
 
 #: views/journal.py:40
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Media for Entry ID: {0}"
-msgstr "Medien für Eintrag mit ID"
+msgstr "Medien für Eintrag mit ID: {0}"
 
 #: views/journal.py:60
 msgid "Add new Journal for Group"
@@ -1658,9 +1630,9 @@ msgid "Add Entry"
 msgstr "Eintrag hinzufügen"
 
 #: views/journal.py:131
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Edit Rights for {0}"
-msgstr "Rechte bearbeiten"
+msgstr "Rechte bearbeiten für {0}"
 
 #: views/pdf.py:164
 msgid "Presence PDF-Generation"
@@ -1679,19 +1651,19 @@ msgid "Add external"
 msgstr "Externen Dozenten hinzufügen"
 
 #: views/web.py:147
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Colleagues (internal): {0}"
-msgstr "Kollegen (intern)"
+msgstr "Kollegen (intern): {0}"
 
 #: views/web.py:150
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Colleagues (external): {0}"
-msgstr "Dozenten (extern)"
+msgstr "Dozenten (extern): {0}"
 
 #: views/web.py:152
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Colleagues (internal and external): {0}"
-msgstr "Kollegen (intern) / Dozenten (extern)"
+msgstr "Kollegen (intern) / Dozenten (extern): {0}"
 
 #: views/web.py:179
 msgid "Add News"
@@ -1707,78 +1679,76 @@ msgid "Details: %s"
 msgstr "Details: %s"
 
 #: views/web.py:275
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Companies: {0} ({1})"
-msgstr "Firmen"
+msgstr "Firmen: {0} ({1})"
 
 #: views/web.py:288
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Companies with students ({n})"
-msgstr "Firmen mit Azubis"
+msgstr "Firmen mit Azubis ({n})"
 
 #: views/web.py:291
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Companies ({n})"
-msgstr "Firmen"
+msgstr "Firmen ({n})"
 
 #: views/web.py:337
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Students Archive: {s} ({n})"
-msgstr "Azubi-Archiv"
+msgstr "Azubi-Archiv: {s} ({n})"
 
 #: views/web.py:338
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Students: {s} ({n})"
-msgstr "Azubi(s)"
+msgstr "Azubi(s): {s} ({n})"
 
 #: views/web.py:359
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "List of all students ({0})"
-msgstr "Liste aller Azubis"
+msgstr "Liste aller Azubis ({0})"
 
 #: views/web.py:383
 msgid "Search Student"
 msgstr "Azubi suchen"
 
 #: views/web.py:402
-#, fuzzy
 msgid "Groups - Overview"
-msgstr "Überblick Gruppen"
+msgstr "Übersicht Gruppen"
 
 #: views/web.py:420
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Group - {name} ({nr})"
-msgstr "Gruppenname"
+msgstr "Gruppe - {name} ({nr})"
 
 #: views/web.py:423
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Group - {name}"
-msgstr "Gruppenname"
+msgstr "Gruppe - {name}"
 
 #: views/web.py:450
-#, fuzzy
 msgid "Presence Overview"
-msgstr "Überblick Gruppen"
+msgstr "Übersicht Anwesenheiten"
 
 #: views/web.py:485
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Presence for Group {0}"
-msgstr "Anwesenheiten für Gruppe"
+msgstr "Anwesenheiten für Gruppe {0}"
 
 #: views/web.py:499
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Presence - {0}"
-msgstr "Anwesenheit"
+msgstr "Anwesenheit - {0}"
 
 #: views/web.py:512
-#, fuzzy, python-format
+#, python-format
 msgid "Presences %s"
-msgstr "Anwesenheit %s"
+msgstr "Anwesenheiten %s"
 
 #: views/web.py:540
 #, python-brace-format
 msgid "Birthdays, next {0} days"
-msgstr ""
+msgstr "Geburtstage in den nächsten {0} Tagen"
 
 #: views/web.py:582
 msgid "PIL is not installed."
@@ -1790,105 +1760,13 @@ msgstr "Nicht unterstütztes Strichcode-Format."
 
 #: views/web.py:610
 msgid "Edit own presence list"
-msgstr ""
+msgstr "Eigene Anwesenheitsliste bearbeiten"
 
 #: views/web.py:647
-#, fuzzy
 msgid "My Presence"
-msgstr "Anwesenheit"
+msgstr "Eigene Anwesenheiten"
 
 #: views/web.py:662
 msgid "This year."
-msgstr ""
+msgstr "Dieses Jahr."
 
-#~ msgid "Read News"
-#~ msgstr "News lesen"
-
-#~ msgid "Tasks"
-#~ msgstr "Aufgaben"
-
-#~ msgid "previous"
-#~ msgstr "vorherige"
-
-#~ msgid "next"
-#~ msgstr "nächste"
-
-#~ msgid "Admin"
-#~ msgstr "Administration"
-
-#~ msgid "Internal Admin"
-#~ msgstr "Interne Aufgaben"
-
-#~ msgid "prev"
-#~ msgstr "vorherige"
-
-#~ msgid "Next %(d)s days"
-#~ msgstr "Nächste %(d)s Tage"
-
-#~ msgid "Show next"
-#~ msgstr "Nächste anzeigen"
-
-#~ msgid "Click to edit"
-#~ msgstr "Klicken Sie hier, zum Bearbeiten"
-
-#~ msgid "Phonelist"
-#~ msgstr "Telefonliste"
-
-#~ msgid "Attention: Supplier is blocked!"
-#~ msgstr "Achtung: Lieferant ist gesperrt!"
-
-#~ msgid "Previous page"
-#~ msgstr "Vorherige Seite"
-
-#~ msgid "Rights for Journal"
-#~ msgstr "Rechte für Tagebuch"
-
-#~ msgid "State"
-#~ msgstr "Status"
-
-#~ msgid "Changes"
-#~ msgstr "Änderungen"
-
-#~ msgid "All except holiday."
-#~ msgstr "Alles außer Urlaub."
-
-#~ msgid "Overview"
-#~ msgstr "Überblick"
-
-#~ msgid "Click for details"
-#~ msgstr "Klicken für Details"
-
-#~ msgid "Show Media"
-#~ msgstr "Medien anzeigen"
-
-#~ msgid "Add Journal"
-#~ msgstr "Tagebuch hinzufügen"
-
-#~ msgid "Ozone Home"
-#~ msgstr "Ozone Startseite"
-
-#~ msgid "Filter Colleagues"
-#~ msgstr "Kollegen / Dozenten filtern"
-
-#~ msgid "All Companies"
-#~ msgstr "Alle Firmen"
-
-#~ msgid "Group Detail"
-#~ msgstr "Details Gruppe"
-
-#~ msgid "Presence for Student"
-#~ msgstr "Anwesenheiten für Azubi"
-
-#~ msgid "Next Birthdays"
-#~ msgstr "Nächste Geburtstage"
-
-#~ msgid "Memo"
-#~ msgstr "Memo"
-
-#~ msgid "Memos"
-#~ msgstr "Memos"
-
-#~ msgid "(%(counter)s Student)"
-#~ msgid_plural "(%(counter)s Students)"
-#~ msgstr[0] "(%(counter)s Azubi)"
-#~ msgstr[1] "(%(counter)s Azubis)"

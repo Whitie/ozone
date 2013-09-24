@@ -12,6 +12,9 @@
                 <label class="control-label" for="id_article">{% trans "Article" %}</label>
                 <div class="controls">
                     <input type="text" id="id_article" name="article" data-provide="typeahead" autocomplete="off">
+                    <span class="help-block">
+                        {% trans "This search is also responsible for barcodes." %}
+                    </span>
                     <input type="hidden" id="id_article_id" name="article_id">
                     <p id="article-description"></p>
                 </div>

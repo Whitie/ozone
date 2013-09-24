@@ -38,7 +38,7 @@
                     <th>{% trans "Supplier" %}</th>
                     <th>{% trans "Orderer" %}</th>
                     <th>{% trans "State" %}</th>
-                    <th>{% trans "Delete" %}</th>
+                    <th>{% trans "Actions" %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -133,6 +133,14 @@
                     {% endif %}
                     </td>
                     <td style="text-align:center;">
+                        {% if perms.orders.can_change_orderstate and o.state in states %}
+                        <span class="tt" title="{% trans 'Move order to other order day and set state to NEW.' %}">
+                            <button type="button" class="btn btn-warning btn-mini"
+                                onclick="move_order({{ oday.id }}, {{ o.id }});">
+                                <i class="icon-circle-arrow-right"> </i>
+                            </button>
+                        </span>
+                        {% endif %}
                         {% if o.state in states %}
                         <span class="tt" title="{% trans "Delete order now." %}">
                             <button type="button" class="btn btn-danger btn-mini"
@@ -140,7 +148,7 @@
                                 <i class="icon-remove icon-white"> </i>
                             </button>
                         </span>
-                        {% else %}{% trans "Not possible" %}{% endif %}
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}
@@ -157,6 +165,33 @@ $(function() {
     datatable_options['bPaginate'] = false;
     var oTable = $('.dtable').dataTable(datatable_options);
 });
+
+function move_order(oday_id, oid) {
+    var data = {'oday_id': oday_id, 'oid': oid};
+    $.get('{% url "orders-move-order" %}', data, function(ret) {
+            $('body').append(ret);
+            $('#move_order').modal({'show': true});
+        }
+    );
+}
+
+function save_moved_order() {
+    var oid = parseInt($('#order').val());
+    if (oid == 0) {
+        $('#move_order').modal('hide').remove();
+        add_update_message('Verschieben abgebrochen!');
+    } else {
+        var oday_id = parseInt($('#new_oday option:selected').val());
+        var data = {'oday_id': oday_id, 'oid': oid};
+        $.post('{% url "orders-api-move-order" %}',
+            {'_JSON_': JSON.stringify(data)},
+            function(ret) {
+                $('#move_order').modal('hide').remove();
+                location.reload();
+            }
+        );
+    }
+}
 
 function color_sum() {
     var fullcost = parseFloat($('#sum').text().replace(',', '.'));
