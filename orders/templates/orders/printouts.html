@@ -7,7 +7,7 @@
         <h3>{% trans "Fax printouts" %}</h3>
         <ul>
             {% for s in supplier %}
-            <li><strong>{{ s.name }} ({{ s.ocount }})</strong>
+            <li><strong>{{ s.name }} ({{ s.ocount }} {% trans "Position(s)" %}: {{ s.osum|floatformat:2 }}{{ CURRENCY_SYM }})</strong>
                 <button class="btn" type="button" id="but_{{ s.id }}" onclick="generate_external({{ oday.id }}, {{ s.id }});">
                     {% trans "Generate PDF" %}
                 </button>

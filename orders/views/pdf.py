@@ -4,6 +4,7 @@ import codecs
 import os
 
 from datetime import date
+from decimal import Decimal
 
 from django.core.files.base import ContentFile
 from django.views.decorators.http import require_POST
@@ -141,8 +142,12 @@ def generate_pdf(req):
     orders = get_orders(oday)
     supplier = []
     for s in [x[0].article.supplier for x in orders]:
-        s.ocount = Order.objects.filter(article__supplier=s, order_day=oday,
-            state__in=[u'accepted', u'ordered']).count()
+        s.ocount = 0
+        s.osum = Decimal()
+        for o in Order.objects.filter(article__supplier=s, order_day=oday,
+            state__in=[u'accepted', u'ordered']):
+            s.ocount += 1
+            s.osum += o.price()
         supplier.append(s)
     supplier_ids = [x[0].article.supplier.id for x in orders]
     req.session['extra_orders'] = []
