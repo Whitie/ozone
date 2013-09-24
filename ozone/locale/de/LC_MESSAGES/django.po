@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0beta1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-16 09:07+0100\n"
+"POT-Creation-Date: 2013-09-24 11:28+0200\n"
 "PO-Revision-Date: 2012-09-20 08:47+0100\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,74 +17,103 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: base_templates/403.html:6
+#: base_templates/403.html:9
 msgid "Permission denied"
 msgstr "Zugriff verweigert"
 
-#: base_templates/403.html:9
+#: base_templates/403.html:11
+#, fuzzy
 msgid ""
 "Please contact the administrator if you have to access\n"
-"the requested site."
+"                the requested site."
 msgstr ""
 "Bitte wenden Sie sich an den Administrator, wenn Sie Zugriff\n"
 "auf diese Seite benötigen."
 
-#: base_templates/404.html:6
+#: base_templates/404.html:8
 msgid "Page not found"
 msgstr "Seite nicht gefunden"
 
-#: base_templates/404.html:8
-#, python-format
-msgid ""
-"\n"
-"The requested path (%(request_path)s) is not known.\n"
+#: base_templates/404.html:9
+#, fuzzy, python-format
+msgid "The requested path (%(request_path)s) is not known."
 msgstr ""
 "\n"
 "Die angegebene Adresse (%(request_path)s) existiert nicht.\n"
 
-#: base_templates/500.html:6
+#: base_templates/500.html:8
 msgid "Error"
 msgstr "Fehler"
 
-#: base_templates/500.html:6
+#: base_templates/500.html:8
 msgid "Internal Server Error"
 msgstr "Interner Server Fehler"
 
-#: base_templates/500.html:8
+#: base_templates/500.html:9
 msgid "Full information about the error was mailed to the admin."
 msgstr ""
 "Die kompletten Informationen über diesen Fehler wurden an den Administrator "
 "geschickt."
 
-#: base_templates/beta.html:4
+#: base_templates/beta.html:7
 msgid "Attention, this function must be tested. Please do not use it yet!"
 msgstr ""
 "Achtung, diese Funktion befindet sich im Test. Bitte noch nicht benutzen!"
 
-#: base_templates/layout.html:14
-msgid "Home"
-msgstr "Startseite"
+#: base_templates/layout.html:18
+msgid "Changes"
+msgstr ""
 
-#: base_templates/layout.html:15
-msgid "Ordersystem"
-msgstr "Bestellsystem"
-
-#: base_templates/layout.html:21
+#: base_templates/topmenu.html:17
 msgid "Logged in as"
 msgstr "Angemeldet als"
 
-#: base_templates/layout.html:52
-msgid "Click here to view a list of recent changes."
-msgstr "Klicken Sie hier, für eine Liste der letzten Änderungen (extern)."
+#: base_templates/topmenu.html:22
+msgid "Logout"
+msgstr ""
+
+#: base_templates/topmenu.html:24
+msgid "Profile"
+msgstr ""
+
+#: base_templates/topmenu.html:26
+msgid "Internal Admin"
+msgstr ""
+
+#: base_templates/topmenu.html:31
+msgid "Login"
+msgstr ""
+
+#: base_templates/topmenu.html:38
+msgid "Home"
+msgstr "Startseite"
+
+#: base_templates/topmenu.html:43
+msgid "Ordersystem"
+msgstr "Bestellsystem"
+
+#: base_templates/topmenu.html:49
+msgid "Admin"
+msgstr ""
+
+#: base_templates/topmenu.html:55
+msgid "Help"
+msgstr ""
 
 #: base_templates/admin/base_site.html:4
 msgid "Ozone site admin"
 msgstr "Ozone Administrationsseite"
 
-#: base_templates/admin/base_site.html:8
-msgid "Click here to go back to Ozone startpage."
-msgstr "Hier klicken, um zur Startseite zu gelangen."
-
-#: base_templates/admin/base_site.html:9
+#: base_templates/admin/base_site.html:7
 msgid "Ozone administration"
 msgstr "Ozone Administration"
+
+#: base_templates/admin/base_site.html:8
+msgid "Ozone Home"
+msgstr ""
+
+#~ msgid "Click here to view a list of recent changes."
+#~ msgstr "Klicken Sie hier, für eine Liste der letzten Änderungen (extern)."
+
+#~ msgid "Click here to go back to Ozone startpage."
+#~ msgstr "Hier klicken, um zur Startseite zu gelangen."

@@ -23,10 +23,10 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(_PATH, 'ozone.db'),
-        'USER': '',
-        'PASSWORD': '',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'ozone_test',
+        'USER': 'bbz',
+        'PASSWORD': 'AMI64ga',
         'HOST': '',
         'PORT': '',
     }
