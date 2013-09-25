@@ -11,12 +11,12 @@
                 {% trans "Job" %}: {{ group.job }} ({{ group.job_short }})
                 {% if perms.core.change_studentgroup %}
                 <a class="btn btn-warning" href="{% url "admin:core_studentgroup_change" group.id %}">
-                    <i class="icon-edit"></i> {% trans "Edit" %}
+                    <i class="icon-edit"> </i> {% trans "Edit" %}
                 </a>
                 {% endif %}
                 {% if perms.core.delete_studentgroup %}
                 <a class="btn btn-danger pull-right" href="{% url "admin:core_studentgroup_delete" group.id %}">
-                    <i class="icon-trash"></i> {% trans "Delete" %}
+                    <i class="icon-trash"> </i> {% trans "Delete" %}
                 </a>
                 {% endif %}
             </h3>
@@ -30,13 +30,15 @@
                     {{ s.birthdate|date:"DATE_FORMAT" }}
                     ({% blocktrans with age=s.age %}Age: {{ age }} Years{% endblocktrans %})
                     {% if perms.core.change_student %}
-                    <a class="btn btn-mini btn-warning" href="{% url "admin:core_student_change" s.id %}">
-                        <i class="icon-edit"></i> {% trans "Edit" %}
+                    <a class="btn btn-mini btn-warning tt" href="{% url "admin:core_student_change" s.id %}" title="{% trans 'Edit' %}">
+                        <i class="icon-edit"> </i>
                     </a>
                     {% endif %}
                     {% if perms.core.delete_student %}
-                    <button type="button" class="btn btn-mini btn-danger pull-right" onclick="delete_student({{ s.id }}, '{{ s.lastname }}, {{ s.firstname }}');">
-                        <i class="icon-trash"></i> {% trans "Delete" %}
+                    <button type="button" class="btn btn-mini btn-danger pull-right tt"
+                        onclick="delete_student({{ s.id }}, '{{ s.lastname }}, {{ s.firstname }}');"
+                        title="{% trans 'Delete' %}">
+                        <i class="icon-trash"> </i>
                     </button>
                     {% endif %}
                 </li>

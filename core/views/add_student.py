@@ -39,8 +39,8 @@ class StudentWizard(SessionWizardView):
     def get_context_data(self, form, **kw):
         ctx = super(StudentWizard, self).get_context_data(form=form, **kw)
         _ctx = dict(page_title=_(u'Add new Student'),
-            subtitle=_(u'Step: {0}/{1}'.format(self.steps.step1,
-                self.steps.count)), menus=menus, dp=True, need_ajax=True)
+            subtitle=u'Schritt: {0}/{1}'.format(self.steps.step1,
+                self.steps.count), menus=menus, dp=True, need_ajax=True)
         ctx.update(_ctx)
         return ctx
 
