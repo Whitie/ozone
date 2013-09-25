@@ -10,6 +10,7 @@ syntax: glob
 *.pdf
 *.aux
 *.log
+.directory
 log/*
 build/*
 ozone/media/*
