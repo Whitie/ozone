@@ -85,7 +85,7 @@ def add_entry(req, gid):
                 media = JournalMedia.objects.create(entry=entry, media=f)
                 media.save()
             messages.success(req, u'Neuer Eintrag wurde gespeichert.')
-            return redirect('core-add-entry', jid)
+            return redirect('core-add-entry', int(gid))
         else:
             messages.error(req, u'Bitte füllen Sie die Pflichtfelder aus.')
     else:
