@@ -56,7 +56,7 @@ def delivery_by_barcode(req):
 def get_article_by_barcode(req, barcode):
     bc = barcode.strip()
     try:
-        article = Article.objects.get(barcode=bc)
+        article = Article.objects.select_related().get(barcode=bc)
     except Article.DoesNotExist:
         article = None
     if article is not None:

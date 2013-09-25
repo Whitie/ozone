@@ -302,7 +302,7 @@ def add_oday(req):
             oday.save()
             messages.success(req,
                 u'Neuer Bestelltag %s hinzugefügt.' % unicode(oday))
-            return redirect('orders-manage')
+            return redirect('orders-add-oday')
         else:
             messages.error(req, u'Bitte korrigieren Sie das Formular.')
     else:
@@ -310,7 +310,7 @@ def add_oday(req):
         form.fields['user'].choices = h.get_user_choices()
     odays = h.get_next_odays(True)
     ctx = dict(page_title=_(u'Add new orderday'), menus=menus, form=form,
-        odays=[unicode(x) for x in odays])
+        odays=[unicode(x) for x in odays], dp=True)
     return render(req, 'orders/add_oday.html', ctx, app=u'orders')
 
 

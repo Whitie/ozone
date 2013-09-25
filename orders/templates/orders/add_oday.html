@@ -2,34 +2,48 @@
 {% load i18n %}
 
 {% block content %}
-<h2 class="headline">{% trans "New Orderday" %}</h2>
-<div style="width:40%;margin:5px auto;">
-<p>{% trans "Orderdays" %}: {{ odays|join:" | " }}</p>
-<form action="{% url "orders-add-oday" %}" method="post">
-{% csrf_token %}
-{% for f in form %}
-<p>{{ f.label_tag }}: {{ f }}</p>
-{% endfor %}
-<p><input type="submit" value="{% trans "Save" %}" /></p>
-</form>
+<div class="row-fluid">
+    <div class="span5">
+        <form action="{% url "orders-add-oday" %}" method="post">
+            {% csrf_token %}
+            <fieldset>
+                <legend>{% trans "Input" %}</legend>
+                {{ form.day.label_tag }}
+                <div id="daypicker" class="input-append">
+                    <input type="text" name="day" id="id_day" data-format="dd.MM.yyyy">
+                    <span class="add-on">
+                        <i data-time-icon="icon-time" data-date-icon="icon-calendar"> </i>
+                    </span>
+                </div>
+                {{ form.user.label_tag }}
+                {{ form.user }}
+                <br>
+                <button type="submit" class="btn">{% trans "Save" %}</button>
+            </fieldset>
+        </form>
+    </div>
+    <div class="span5">
+        <h3>{% trans "Orderdays" %}</h3>
+        <ul>
+            {% for od in odays %}
+            <li>{{ od }}</li>
+            {% empty %}
+            <li>{% trans "No orderdays found." %}</li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
 
-<script type="text/javascript">
-$(document).ready(function() {
-    var options = {
-        'dateFormat': 'dd.mm.yy',
-        'dayNamesMin': ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
-        'monthNames': ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
-                       'Juli', 'August', 'September', 'Oktober', 'November',
-                       'Dezember'],
-        'showWeek': true,
-        'firstDay': 1,
-        'weekHeader': 'Wo',
-        'minDate': '+0',
-        'nextText': '{% trans "next" %}',
-        'prevText': '{% trans "prev" %}'
-    };
-    $('#id_day').datepicker(options);
-});
+{% endblock %}
+
+{% block additional_js %}
+<script>
+$(function() {
+    $('#daypicker').datetimepicker({
+        'language': 'de',
+        'pickTime': false,
+        'weekStart': 1
+    });
+})
 </script>
 {% endblock %}

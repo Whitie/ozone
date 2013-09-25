@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load i18n %}
 
 {% block head %}{% endblock %}
 
@@ -15,7 +14,7 @@
             <!-- Update messages -->
             <div class="well hide" id="upd_container">
                 <button type="button" class="close" id="upd_close">&times;</button>
-                <h3>{% trans "Changes" %}</h3>
+                <h3>Änderungen</h3>
                 <ul id="upd_messages">
                 </ul>
             </div>
@@ -53,7 +52,7 @@
             <small>
                 Ozone Version {{ VERSION }},
                 &copy; <time datetime="2011">2011</time> - <time datetime="2013">2013</time>
-                by Thorsten Weimann <a href="mailto:weimann@ymail.com?subject=Ozone%20Feedback"><i class="icon-envelope"></i></a>.
+                by Thorsten Weimann<a href="mailto:weimann@ymail.com?subject=Ozone%20Feedback"> <i class="icon-envelope"> </i></a>.
             </small>
         </p>
     </footer>

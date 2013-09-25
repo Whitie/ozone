@@ -180,6 +180,12 @@ class Company(CommonInfo):
             return u'{0} ({1})'.format(self.name, self.short_name)
         return self.name
 
+    @property
+    def short(self):
+        if self.short_name:
+            return self.short_name
+        return self.name
+
     def active_students(self):
         return self.students.filter(finished=False).count()
 
