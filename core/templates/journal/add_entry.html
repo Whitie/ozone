@@ -6,7 +6,7 @@
 {% block content %}
 <div class="row-fluid">
     <div class="span4 offset1">
-        <form action="{% url "core-add-entry" journal.id %}" method="post" enctype="multipart/form-data">
+        <form action="{% url "core-add-entry" journal.group.id %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="hidden" name="journal_id" id="journal_id" value="{{ journal.id }}" />
             <fieldset>
