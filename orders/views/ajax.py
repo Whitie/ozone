@@ -142,8 +142,8 @@ def _send_status_mail(user, order, template):
     for u in order.users.all():
         if u.email:
             tpl = get_template('orders/mail/' + template)
-            body = tpl.render(Context({'user': user, 'order': order,
-                'orderer': u}))
+            ctx = dict(user=user, order=order, orderer=u)
+            body = tpl.render(Context(ctx))
             send_mail(u'Statusänderung Ihrer Bestellung',
                 body, 'dms@bbz-chemie.de', [u.email], fail_silently=True)
 
