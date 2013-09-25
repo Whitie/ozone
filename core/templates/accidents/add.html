@@ -5,6 +5,10 @@
         <h3 id="edit_label">{% trans "Add accident" %}</h3>
     </div>
     <div class="modal-body">
+        <p>Felder mit <i class="icon-exclamation-sign"> </i> sind Pflichtfelder. Bitte bei
+            Verletzter nur Azubi <strong>oder</strong> Mitarbeiter angeben.
+            Bitte bis ganz unten scrollen!
+        </p>
         <form id="accident_form" class="form-horizontal">
             {% csrf_token %}
             <fieldset>
