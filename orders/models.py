@@ -79,9 +79,9 @@ class Cost(models.Model):
         verbose_name_plural = _(u'Costs')
 
 
-STATE_CHOICES = ((u'new', _(u'New')), (u'accepted', _(u'Accepted')),
-    (u'rejected', _(u'Rejected')), (u'ordered', _(u'Ordered')),
-    (u'delivered', _(u'Delivered')))
+STATE_CHOICES = ((u'new', u'Neu'), (u'accepted', u'Akzeptiert'),
+    (u'rejected', u'Zurückgewiesen'), (u'ordered', u'Bestellt'),
+    (u'delivered', u'Geliefert'))
 
 _mapper = dict(
     new=(u'success', u'icon-plus'),

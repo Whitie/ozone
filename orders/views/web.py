@@ -17,7 +17,7 @@ from core.forms import CompanyRatingForm
 from orders.forms import (OrderForm, ShortSupplierForm,
                           OrderDayForm, BaseOrderForm, SummarizeForm)
 from orders.models import (OrderDay, Order, Article, Cost, CostOrder, _mapper,
-                           DeliveredOrder)
+                           DeliveredOrder, STATE_CHOICES)
 from orders.views import helper as h
 from orders.menu import menus
 
@@ -151,8 +151,8 @@ def ask_order(req):
 def myorders(req):
     _orders = req.user.order_set.select_related().all()
     orders = []
-    for s in u'delivered', u'new', u'accepted', u'ordered', u'rejected':
-        state = dict(name=s, btn=_mapper[s][0], icon=_mapper[s][1])
+    for s, disp in STATE_CHOICES:
+        state = dict(name=s, disp=disp, btn=_mapper[s][0], icon=_mapper[s][1])
         tmp = []
         ids = set()
         for o in _orders.filter(state=s).order_by('article__name', '-added'):
