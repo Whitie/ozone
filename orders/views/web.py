@@ -54,7 +54,7 @@ def show_old_orders(req):
     except:
         dt = u''
     ctx = dict(page_title=_(u'All ordered articles'), menus=menus,
-        orders=orders, dt=True, subtitle=_(u'Since {0}'.format(dt)))
+        orders=orders, dt=True, subtitle=u'Seit {0}'.format(dt))
     return render(req, 'orders/old_orders.html', ctx, app=u'orders')
 
 

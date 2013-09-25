@@ -7,7 +7,7 @@
         <a name="top"></a>
         {% for state, ods in orders %}
         <a class="btn btn-{{ state.btn }}" href="#{{ state.name }}">
-            <i class="icon-white {{ state.icon }}"> </i> {% trans state.name|title %}
+            <i class="icon-white {{ state.icon }}"> </i> {% trans state.name %}
         </a>
         {% endfor %}
     </div>
@@ -17,7 +17,7 @@
 <div class="row-fluid">
     <div class="span10">
         <button type="button" class="btn btn-{{ state.btn }} btn-large pull-right">
-            <i class="icon-white {{ state.icon }}"> </i> {% trans state.name|title %}
+            <i class="icon-white {{ state.icon }}"> </i> {% trans state.name %}
         </button>
     </div>
 </div>
