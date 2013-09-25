@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.translation import ugettext as _
 
 from orders.models import DeliveredOrder, Order, Article
+from orders.views import helper as h
 from orders.menu import menus
 from core.utils import render
 
@@ -55,6 +56,7 @@ def delivery_by_barcode(req):
 @permission_required('orders.can_order')
 def get_article_by_barcode(req, barcode):
     bc = barcode.strip()
+    bc = h.extract_barcode(bc)
     try:
         article = Article.objects.select_related().get(barcode=bc)
     except Article.DoesNotExist:

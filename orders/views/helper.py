@@ -126,3 +126,12 @@ def get_company_data_for_rating_user(user):
                 c.last_rate = None
         user.to_rate = companies
     return user
+
+
+def extract_barcode(code):
+    code_lower = code.lower()
+    if code_lower.startswith('roth'):
+        for c in code.split('!'):
+            if u'.' in c and len(c) > 4:
+                return c.upper()
+    return code
