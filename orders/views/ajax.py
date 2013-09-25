@@ -11,7 +11,7 @@ from django.contrib.auth.models import Permission
 from django.template import Context
 from django.template.loader import get_template
 
-from core.utils import json_view, json_rpc, render
+from core.utils import json_view, json_rpc
 from core.models import Company
 from orders.models import Order, Article, DeliveredOrder, OrderDay
 from orders.views import helper as h
@@ -138,6 +138,16 @@ def change_order(req, data):
     return dict(msg=msg, diff=float(diff))
 
 
+def _send_status_mail(user, order, template):
+    for u in order.users.all():
+        if u.email:
+            tpl = get_template('orders/mail/' + template)
+            body = tpl.render(Context({'user': user, 'order': order,
+                'orderer': u}))
+            send_mail(u'Statusänderung Ihrer Bestellung',
+                body, 'dms@bbz-chemie.de', [u.email], fail_silently=True)
+
+
 @require_POST
 @json_rpc
 def update_state(req, data):
@@ -149,6 +159,10 @@ def update_state(req, data):
         diff = order.count * order.article.price
     elif old_state in (u'new', u'accepted') and order.state == u'rejected':
         diff = order.count * order.article.price * -1
+        try:
+            _send_status_mail(req.user, order, u'order_rejected.txt')
+        except Exception as e:
+            print e
     else:
         diff = 0.0
     msg = (u'Status für %(art)s auf %(state)s gesetzt.' %
@@ -251,10 +265,11 @@ def save_barcode(req, data):
 @json_rpc
 def move_order(req, data):
     new_oday = OrderDay.objects.get(id=data['oday_id'])
-    order = Order.objects.get(id=data['oid'])
+    order = Order.objects.select_related().get(id=data['oid'])
+    old_oday = order.order_day
     order.order_day = new_oday
     order.state = u'new'
-    order.memo = u'Bestellung verschoben von {0}'.format(
-        unicode(req.user.get_profile()))
     order.save()
+    order.old_oday = old_oday
+    _send_status_mail(req.user, order, 'order_moved.txt')
     return dict()

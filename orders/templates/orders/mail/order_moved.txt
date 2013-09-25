@@ -1,0 +1,14 @@
+Liebe(r) {{ orderer.get_profile }},
+
+Ihre Bestellung
+
+    {{ order.count }}x {{ order.article.name }} - {{ 
+order.article.supplier.short }}, {{ order.article.ident }}
+
+wurde gerade durch {{ user.get_profile }} von Bestelltag {{ order.old_oday }}
+auf Bestelltag {{ order.order_day }} verschoben.
+
+Dies ist eine automatische Nachricht, bitte nicht direkt darauf antworten.
+
+
+bbz Bestellsystem
