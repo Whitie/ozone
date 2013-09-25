@@ -1,5 +1,3 @@
-{% load url from future %}
-{% load i18n %}
 {% load staticfiles %}
 
 <!-- Header - Navigationbar on top -->
@@ -13,46 +11,49 @@
                 <div class="btn-group pull-right">
                     {% if user.is_authenticated %}
                     <button class="btn dropdown-toggle btn-primary" data-toggle="dropdown">
-                        <i class="icon-user icon-whitie"></i>
-                        {% trans "Logged in as" %} {{ userprofile }}
+                        <i class="icon-user icon-white"> </i>
+                        Angemeldet als {{ userprofile }}
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
                         <li><a href="{% url "core-logout" %}">
-                            <i class="icon-off"></i> {% trans "Logout" %}</a>
+                            <i class="icon-off"> </i> Abmelden</a>
                         </li>
-                        <li><a href="{% url "core-profile" %}">{% trans "Profile" %}</a></li>
+                        <li><a href="{% url "core-profile" %}">Benutzerprofil</a></li>
                         {% if user.is_superuser %}
-                        <li><a href="{% url "core-admin" %}">{% trans "Internal Admin" %}</a></li>
+                        <li><a href="{% url "core-admin" %}">Interne Aufgaben</a></li>
                         {% endif %}
                     </ul>
                     {% else %}
                     <a class="btn btn-primary" href="{% url "core-login" %}">
-                        <i class="icon-user icon-white"></i> {% trans "Login" %}</a>
+                        <i class="icon-user icon-white"></i> Anmelden</a>
                     {% endif %}
                 </div>
 
                 <ul class="nav">
-                    <li{% ifequal app "core" %} class="active"{% endifequal %}>
+                    <li{% if app == "core" %} class="active"{% endif %}>
                         <a href="{% url "core-index" %}">
-                            <i class="icon-home icon-white"></i> {% trans "Home" %}</a>
+                            <i class="icon-home icon-white"> </i> Startseite</a>
                     </li>
                     <li class="divider-vertical"></li>
-                    <li{% ifequal app "orders" %} class="active"{% endifequal %}>
+                    <li{% if app == "orders" %} class="active"{% endif %}>
                         <a href="{% url "orders-index" %}">
-                            <i class="icon-shopping-cart icon-white"></i> {% trans "Ordersystem" %}</a>
+                            <i class="icon-shopping-cart icon-white"> </i> Bestellsystem</a>
                     </li>
                     <li class="divider-vertical"></li>
                     {% if user.is_staff %}
                     <li>
                         <a href="{% url "admin:index" %}">
-                            <i class="icon-wrench icon-white"></i> {% trans "Admin" %}</a>
+                            <i class="icon-wrench icon-white"> </i>
+                            Administration
+                            <i class="icon-globe icon-white"> </i>
+                        </a>
                     </li>
                     <li class="divider-vertical"></li>
                     {% endif %}
                     <li>
-                        <a href="http://217.91.188.203:8001/docs/bbz_datenbank/index.html" target="_blank">
-                            {% trans "Help" %} <i class="icon-globe icon-white"></i></a>
+                        <a href="http://archie2:8001/docs/bbz_datenbank/index.html" target="_blank">
+                            Hilfe <i class="icon-globe icon-white"> </i></a>
                     </li>
                 </ul>
             </div>
