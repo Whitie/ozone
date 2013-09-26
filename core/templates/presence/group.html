@@ -114,6 +114,13 @@ $(function() {
     datatable_options['sScrollX'] = '100%';
     /*datatable_options['sScrollY'] = '150%';*/
     datatable_options['bScrollCollapse'] = true;
+    datatable_options['aoColumns'] = [
+        null,
+        null,
+        null,
+        {% for d in days %}{'sWidth': '80px'},{% endfor %}
+        null
+    ];
     var dtable = $('#dtable').dataTable(datatable_options);
     /* Hide lateness input fields*/
     $('input[id^=l_]').hide();
@@ -154,7 +161,7 @@ function update_all() {
 }
 
 function lateness_changed(did) {
-    $('#p_'+did+'').val('*').attr('selected', 'selected');
+    $('#p_'+did+'').val('A').attr('selected', 'selected');
     update_day(did);
 }
 </script>
