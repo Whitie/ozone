@@ -631,7 +631,7 @@ def mypresence(req):
     else:
         start = end = None
     _d = date.today()
-    d = date(_d.year, _d.month, 1)
+    d = _d - timedelta(days=7)
     start = utils.get_date(start, d)
     end = utils.get_date(end, _d)
     if start > end:

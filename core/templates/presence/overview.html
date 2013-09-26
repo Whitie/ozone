@@ -23,7 +23,7 @@
     <div class="span8 offset1">
         <h3>{% trans "Own list" %}</h3>
         {% if userconfig.pstudents %}
-        <form class="form-inline" method="post" action="{% url "core-presence-own" %}">
+        <form class="form-inline" method="post" action="{% url "core-presence-own" %}" onsubmit="disable_btn('own_pr');">
             {% csrf_token %}
             {% trans "From" %}
             <div class="datetimepicker input-append date">
@@ -39,7 +39,7 @@
                     <i data-time-icon="icon-time" data-date-icon="icon-calendar"> </i>
                 </span>
             </div>
-            <input class="btn" type="submit" value="{% trans "Show" %}" />
+            <input id="own_pr" class="btn" type="submit" value="{% trans "Show" %}" />
             <a class="btn btn-warning tt" title="{% trans "Edit" %}" href="{% url "core-presence-select-groups" %}"><i class="icon-edit"> </i></a>
         </form>
         {% else %}

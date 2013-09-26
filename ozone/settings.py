@@ -21,12 +21,13 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+# Always set this in local_settings.py
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'ozone_test',
-        'USER': 'bbz',
-        'PASSWORD': 'AMI64ga',
+        'ENGINE': '',
+        'NAME': '',
+        'USER': '',
+        'PASSWORD': '',
         'HOST': '',
         'PORT': '',
     }
