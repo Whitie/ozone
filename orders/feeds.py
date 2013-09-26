@@ -18,13 +18,13 @@ class LatestOrdersFeed(Feed):
         return Order.objects.order_by('-added')[:10]
 
     def item_title(self, item):
-        title = _(u'{article}, {date}'.format(article=unicode(item.article),
-            date=item.added.strftime(settings.DEFAULT_DATETIME_FORMAT)))
+        title = u'{article}, {date}'.format(article=unicode(item.article),
+            date=item.added.strftime(settings.DEFAULT_DATETIME_FORMAT))
         return title
 
     def item_description(self, item):
-        desc = _(u'Order: {order}, State: {state}'.format(
-            order=unicode(item), state=item.get_state_display()))
+        desc = u'Bestellung: {order}, Status: {state}'.format(
+            order=unicode(item), state=item.get_state_display())
         return desc
 
     def item_link(self, item):
@@ -40,16 +40,16 @@ class LatestDeliveriesFeed(Feed):
         return DeliveredOrder.objects.order_by('-date')[:20]
 
     def item_title(self, item):
-        title = _(u'{date}, Article: {article}'.format(
+        title = u'{date}, Artikel: {article}'.format(
             date=item.date.strftime(settings.DEFAULT_DATE_FORMAT),
-            article=unicode(item.order.article)))
+            article=unicode(item.order.article))
         return title
 
     def item_description(self, item):
         if item.order.is_complete():
-            comp = _(u', order complete.')
+            comp = u', Bestellung vollständig.'
         else:
-            comp = _(u', INCOMPLETE.')
+            comp = u', UNVOLLSTÄNDIG.'
         data = dict(
             ocount=item.order.count,
             odate=item.order.ordered.strftime(settings.DEFAULT_DATE_FORMAT),
@@ -58,8 +58,8 @@ class LatestDeliveriesFeed(Feed):
             date=item.date.strftime(settings.DEFAULT_DATE_FORMAT),
             comp=comp,
         )
-        desc = _(u'Ordered: {ocount}x {odate} by {users}, delivered: {count}x '
-            u'{date}{comp}'.format(**data))
+        desc = (u'Bestellt: {ocount}x {odate} von {users}, geliefert: '
+            u'{count}x {date}{comp}'.format(**data))
         return desc
 
     def item_link(self, item):
