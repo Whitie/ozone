@@ -47,7 +47,7 @@ def get_articles(req):
     query = Q(name__icontains=term) | Q(barcode__istartswith=term)
     articles = [{
         'value': x.id,
-        'label': u'{0} ({1})'.format(x.name, x.barcode),
+        'label': u'{0} ({1}, {2})'.format(x.name, x.ident, x.barcode),
         'desc': x.short_desc()
         } for x in Article.objects.filter(query).order_by('name')
     ]

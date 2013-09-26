@@ -4,14 +4,14 @@
 
 {% block content %}
 <div class="row-fluid">
-    <div class="span5">
+    <div class="span6">
         <h3>{% trans "Order old article" %}</h3>
-        <form action="{% url "orders-ask" %}" method="post" class="form-horizontal">
+        <form action="{% url "orders-ask" %}" method="post">
             {% csrf_token %}
             <div class="control-group">
                 <label class="control-label" for="id_article">{% trans "Article" %}</label>
                 <div class="controls">
-                    <input type="text" id="id_article" name="article" data-provide="typeahead" autocomplete="off">
+                    <input type="text" class="input-xxlarge" id="id_article" name="article" data-provide="typeahead" autocomplete="off">
                     <span class="help-block">
                         {% trans "This search is also responsible for barcodes." %}
                     </span>
@@ -26,7 +26,7 @@
             </div>
         </form>
     </div>
-    <div class="span4">
+    <div class="span3">
         <h3>{% trans "Order new article" %}</h3>
         <a class="btn" href="{% url "orders-order" %}">{% trans "Next" %}</a>
     </div>
