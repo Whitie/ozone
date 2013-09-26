@@ -10,7 +10,7 @@ sys.path.insert(0, EXT_DIR)
 
 # Django settings for ozone project.
 
-VERSION = '2.99.6'
+VERSION = '2.99.7'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -329,16 +329,7 @@ except IOError:
 # Global hacks
 EXCLUDE_FROM_COMPANY_LIST = {'short_name': u'Alle'}
 
-# Try to import the production settings
-
-try:
-    from production_settings import *
-except ImportError:
-    print 'No production settings imported.'
-
-# Try to import local (testing) settings
-# Be sure to remove local_settings.py[c] on production environment
-
+# Try to import local settings
 try:
     from local_settings import *
 except ImportError:
