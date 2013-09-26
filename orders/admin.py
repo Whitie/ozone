@@ -2,6 +2,7 @@
 
 from django.contrib import admin
 
+from orders.views.helper import extract_barcode
 from orders.models import *
 
 
@@ -22,6 +23,11 @@ class ArticleAdmin(admin.ModelAdmin):
     ordering = ('supplier__name', 'name')
     search_fields = ('name', 'supplier__name', 'ident')
     save_on_top = True
+
+    def save_model(self, req, obj, form, change):
+        if getattr(obj, 'barcode', ''):
+            obj.barcode = extract_barcode(obj.barcode)
+        obj.save()
 
 
 class OrderAdmin(admin.ModelAdmin):

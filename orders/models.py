@@ -41,8 +41,8 @@ class Article(models.Model):
     ident = models.CharField(_(u'Identifier'), max_length=50,
         help_text=_(u'Article number'), blank=True)
     barcode = models.CharField(_(u'Barcode'), max_length=40, blank=True,
-        help_text=(u'Achtung, bei Roth entspricht der Strichcode der '
-                   u'Artikelnummer (nicht mit Scanner eingeben).'))
+        help_text=(u'Achtung, Strichcode über Scanner immer als Letztes '
+            u'eingeben.'))
     quantity = models.CharField(_(u'Quantity'), max_length=20, blank=True)
     price = models.DecimalField(_(u'Price'), max_digits=8, decimal_places=2,
         blank=True)
