@@ -93,7 +93,7 @@ STATICFILES_DIRS = (
 )
 
 # URL which holds the logo of the ozone page
-LOGO_URL = STATIC_URL + 'img/logo.png'
+LOGO_URL = STATIC_URL + 'img/bbzlogo.png'
 
 # Session configuration
 SESSION_SAVE_EVERY_REQUEST = True
@@ -149,7 +149,7 @@ INSTALLED_APPS = (
     'active_directory',
     'core',
     'orders',
-    'desktop',
+#    'desktop',
     'south',
 )
 
