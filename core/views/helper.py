@@ -38,7 +38,7 @@ def get_presence_day(day, student, in_past):
         if created:
             if sdg.is_special_day(day):
                 pday.entry = u'FT'
-                pday.note = sdg.get_special_day_name(day)
+                #pday.note = sdg.get_special_day_name(day)
                 pday.instructor = User.objects.get(username='admin')
             pday.save()
         return pday
