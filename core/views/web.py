@@ -272,8 +272,8 @@ def list_companies(req, startchar=''):
             companies = Company.objects.select_related().filter(
                 name__istartswith=startchar)
     companies = companies.exclude(**settings.EXCLUDE_FROM_COMPANY_LIST)
-    ptitle = _(u'Companies: {0} ({1})'.format(startchar or '-',
-        companies.count()))
+    ptitle = u'Firmen: {0} ({1})'.format(startchar or '-',
+        companies.count())
     ctx = dict(page_title=ptitle, companies=companies, menus=menus,
         chars=string.ascii_uppercase, form=form, single_view=False)
     return render(req, 'companies/list.html', ctx)
@@ -285,10 +285,10 @@ def list_all_companies(req, only_with_students=False):
         ).exclude(**settings.EXCLUDE_FROM_COMPANY_LIST).order_by('name')
     if only_with_students:
         company_list = [x for x in q if x.has_students()]
-        title = _(u'Companies with students ({n})')
+        title = u'Firmen mit Azubis ({n})'
     else:
         company_list = list(q)
-        title = _(u'Companies ({n})')
+        title = u'Firmen ({n})'
     paginator = Paginator(company_list, 15)
     try:
         page = int(req.GET.get('page', '1'))
@@ -334,8 +334,10 @@ def list_students(req, startchar='', archive=False):
                 lastname__istartswith=startchar)
     students = [h.get_presence_details(s) for s in
                 students.filter(finished=archive)]
-    title = _(u'Students Archive: {s} ({n})') if archive \
-        else _(u'Students: {s} ({n})')
+    if archive:
+        title = u'Azubis Archiv: {s} ({n})'
+    else:
+        title = u'Azubis: {s} ({n})'
     ctx = dict(page_title=title.format(s=startchar or '-', n=len(students)),
         students=students, menus=menus,
         archive=archive, startchar=startchar, chars=string.ascii_uppercase,
@@ -356,8 +358,8 @@ def list_all_students(req):
         students = paginator.page(page)
     except (EmptyPage, InvalidPage):
         students = paginator.page(paginator.num_pages)
-    ctx = dict(page_title=_(u'List of all students ({0})'.format(
-            students.paginator.count)),
+    ctx = dict(page_title=u'Alle Azubis ({0})'.format(
+            students.paginator.count),
         menus=menus, students=students, page=page, start=(page - 1) * 30 + 1)
     return render(req, 'students/list_all.html', ctx)
 
