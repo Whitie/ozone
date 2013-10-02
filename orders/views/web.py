@@ -27,7 +27,7 @@ from orders.menu import menus
 def index(req):
     inc = req.user.has_perm('orders.can_order')
     odays = list(h.get_next_odays(inc))
-    ctx = dict(page_title=u'Nächste Bestelltage', odays=odays, menus=menus)
+    ctx = dict(page_title=u'Bestelltage', odays=odays, menus=menus)
     if odays:
         diff = odays[0].day - date.today()
         ctx['subtitle'] = u'Nächster in {0} Tag(en)'.format(diff.days)
@@ -281,8 +281,8 @@ def manage_order(req, oday_id):
         o.sum_price = o.count * o.article.price
         o.costlist = [u'%s: %d%%' % (unicode(x.cost), x.percent) for x in
                       CostOrder.objects.filter(order=o)]
-    ctx = dict(page_title=_(u'Edit Orders'), menus=menus, oday=oday,
-        subtitle=_(u'for {0}'.format(unicode(oday))), need_ajax=True, dt=True,
+    ctx = dict(page_title=u'Bestellungen bearbeiten', menus=menus, oday=oday,
+        subtitle=u'für {0}'.format(unicode(oday)), need_ajax=True, dt=True,
         orders=orders, states=(u'new', u'accepted', u'rejected'),
         order_sum=order_sum, suppliers=h.get_supplier_choices())
     return render(req, 'orders/manage_order.html', ctx, app=u'orders')
