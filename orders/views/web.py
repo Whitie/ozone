@@ -27,10 +27,10 @@ from orders.menu import menus
 def index(req):
     inc = req.user.has_perm('orders.can_order')
     odays = list(h.get_next_odays(inc))
-    ctx = dict(page_title=_(u'Next order days'), odays=odays, menus=menus)
+    ctx = dict(page_title=u'Nächste Bestelltage', odays=odays, menus=menus)
     if odays:
         diff = odays[0].day - date.today()
-        ctx['subtitle'] = _(u'Next in {0} days'.format(diff.days))
+        ctx['subtitle'] = u'Nächster in {0} Tag(en)'.format(diff.days)
     oday_count = len(odays)
     if oday_count < 2 and inc:
         if oday_count == 1:
