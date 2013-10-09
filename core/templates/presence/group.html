@@ -153,7 +153,7 @@ function update_all() {
     var date = $('#p_all_day :selected').val();
     var entry = $('#p_all :selected').val();
     $('select.'+date).each(function(index) {
-        if ($(this).val() == '') {
+        if ($(this).val() == '' || entry == '') {
             $(this).val(entry);
             $(this).change();
         }

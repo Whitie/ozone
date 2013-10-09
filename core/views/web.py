@@ -484,7 +484,7 @@ def presence_for_group(req, gid):
     _students = h.sort_students_for_presence(group.students)
     students = h.get_presence(_students, start, end)
     days = (start + timedelta(days=x) for x in xrange(dt.days + 1))
-    ctx = dict(page_title=_(u'Presence for Group {0}'.format(unicode(group))),
+    ctx = dict(page_title=u'Anwesenheit für Gruppe {0}'.format(unicode(group)),
         group=group, students=students, menus=menus, start=start, end=end,
         days=[x for x in days if x.weekday() not in (5, 6)],
         choices=[x[0] for x in PRESENCE_CHOICES], legend=PRESENCE_CHOICES[1:],
@@ -498,7 +498,7 @@ def presence_edit(req, student_id):
     start = req.session.get('presence_start', date.today())
     end = req.session.get('presence_end', date.today())
     student, days = h.get_presence([_student], start, end)[0]
-    ctx = dict(page_title=_(u'Presence - {0}'.format(unicode(student))),
+    ctx = dict(page_title=u'Anwesenheit - {0}'.format(unicode(student)),
         menus=menus, student=student, days=days, start=start, end=end,
         choices=PRESENCE_CHOICES, dt=True, need_ajax=True)
     return render(req, 'presence/edit.html', ctx)
@@ -511,8 +511,8 @@ def presence_printouts(req, job):
     jobs = StudentGroup.objects.values_list('job', flat=True)
     jobs = list(set(jobs))
     jobs.sort()
-    ctx = dict(page_title=_(u'Presences %s' % job), menus=menus, jobs=jobs,
-        groups=groups)
+    ctx = dict(page_title=u'Anwesenheiten {0}'.format(job),
+        menus=menus, jobs=jobs, groups=groups)
     return render(req, 'presence/list_printouts.html', ctx)
 
 

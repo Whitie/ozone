@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from datetime import date, timedelta
+from datetime import timedelta
 
-from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
 from django.conf import settings
 
@@ -11,37 +10,26 @@ import core.utils.special_days_ger as sdg
 from core.models import StudentGroup, PresenceDay, Student
 
 
-def get_presence_day(day, student, in_past):
-    """Get one presence day for one student. If day is in the future it will
-    be created. If day is in the past and don't exists the return value is
-    None.
+def get_presence_day(day, student):
+    """Get one presence day for one student. If day do not exist it will
+    be created.
 
     :parameters:
         day : date
             Date (day) to get the PresenceDay object for.
         student : Student
             Student object to get the presence day for.
-        in_past : bool
-            Indicates if day is in the past.
 
-    :returns: PresenceDay object or None
+    :returns: PresenceDay object
     """
-    if in_past:
-        try:
-            pday = PresenceDay.objects.get(student=student, date=day)
-            return pday
-        except PresenceDay.DoesNotExist:
-            return
-    else:
-        pday, created = PresenceDay.objects.get_or_create(student=student,
-            date=day)
-        if created:
-            if sdg.is_special_day(day):
-                pday.entry = u'FT'
-                #pday.note = sdg.get_special_day_name(day)
-                pday.instructor = User.objects.get(username='admin')
-            pday.save()
-        return pday
+    pday, created = PresenceDay.objects.get_or_create(student=student,
+        date=day)
+    if created:
+        if sdg.is_special_day(day):
+            pday.entry = u'FT'
+            pday.instructor = User.objects.get(username='admin')
+        pday.save()
+    return pday
 
 
 def get_presence(students, start, end):
@@ -60,20 +48,15 @@ def get_presence(students, start, end):
     """
     l = []
     dt = end - start
-    past = end < date.today()
     for s in students:
         tmp = []
         for i in range(dt.days + 1):
             d = start + timedelta(days=i)
             if d.weekday() not in (5, 6):
-                day = get_presence_day(d, s, past)
+                day = get_presence_day(d, s)
                 if day is not None:
                     tmp.append(day)
-        if not past:
-            l.append((s, tmp))
-        else:
-            if tmp and any([x.entry for x in tmp]):
-                l.append((s, tmp))
+        l.append((s, tmp))
     return l
 
 
@@ -150,7 +133,7 @@ def get_presence_details(student):
 
 
 def get_studentgroups():
-    return [(0, _(u'All Groups'))] + [(x.id, x.name()) for x in
+    return [(0, u'Alle Gruppen')] + [(x.id, x.name()) for x in
                                       StudentGroup.objects.all()]
 
 
