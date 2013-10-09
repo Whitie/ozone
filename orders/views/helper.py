@@ -129,9 +129,17 @@ def get_company_data_for_rating_user(user):
 
 
 def extract_barcode(code):
-    code_lower = code.strip('\r\n').lower()
+    code_lower = code.strip('\r\n ').lower()
     if code_lower.startswith('roth'):
+        # Roth
         for c in code.split('!'):
             if u'.' in c and len(c) > 4:
                 return c.upper()
+    if u',' in code_lower or u';' in code_lower:
+        # Maybe Sigma Aldrich
+        if u',' in code_lower:
+            c = code_lower.split(u',')[0].strip()
+        else:
+            c = code_lower.split(u';')[0].strip()
+        return c.upper()
     return code
