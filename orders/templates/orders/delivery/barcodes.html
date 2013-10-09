@@ -79,6 +79,7 @@ function save_delivery(olen) {
                       'Die gelieferte Menge darf nicht größer <strong>'
                       +max+'</strong> sein!');
         $('#count').val(max);
+        $('#count').focus();
         return false;
     } else {
         var data = {'oid': parseInt(oid), 'count': count};
@@ -88,6 +89,7 @@ function save_delivery(olen) {
                 add_update_message(ret['msg']);
                 $('#result').empty();
                 $('#barcode').val('');
+                $('#barcode').focus();
             }
         );
     }
