@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from datetime import timedelta
+from datetime import date, timedelta
 
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -48,6 +48,7 @@ def get_presence(students, start, end):
     """
     l = []
     dt = end - start
+    past = end < date.today() - timedelta(days=7)
     for s in students:
         tmp = []
         for i in range(dt.days + 1):
@@ -56,6 +57,11 @@ def get_presence(students, start, end):
                 day = get_presence_day(d, s)
                 if day is not None:
                     tmp.append(day)
+        if past and not any([x.entry for x in tmp]):
+            for d in tmp:
+                d.entry = u'/'
+                d.instructor = User.objects.get(username='admin')
+                d.save()
         l.append((s, tmp))
     return l
 
