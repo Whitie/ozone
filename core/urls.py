@@ -71,6 +71,9 @@ urlpatterns = patterns('core.views.web',
     # Excel integration
     url(r'^group/export_excel/(?P<gid>\d+)/$', 'export_group_excel',
         name='core-group-to-excel'),
+    # JSON Export
+    url(r'^group/export_json/(?P<gid>\d+)/$', 'export_group_json',
+        name='core-group-to-json'),
     # Barcode generation (not used yet)
     url(r'^barcode/(?P<format>[a-z]{3,4})/(?P<barcode>.+)/$', 'barcode',
         name='barcode'),

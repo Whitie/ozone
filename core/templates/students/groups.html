@@ -43,6 +43,9 @@
                     <a class="btn btn-mini btn-warning tt" title="{% trans "Presence" %}" href="{% url "core-presence-group" g.id %}">
                         <i class="icon-list-alt"></i>
                     </a>
+                    <a class="btn btn-mini tt" title="JSON-Export" href="{% url "core-group-to-json" g.id %}">
+                        <i class="icon-folder-open"></i>
+                    </a>
                 </td>
             </tr>
             {% endfor %}

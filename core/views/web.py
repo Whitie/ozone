@@ -5,6 +5,7 @@ import os
 import time
 
 from datetime import date, timedelta
+from json import dumps
 
 from django.http import HttpResponse
 from django.conf import settings
@@ -570,8 +571,27 @@ def export_group_excel(req, gid):
         response = HttpResponse(fp.read(), content_type='application/vnd.'
             'openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = 'attachment; filename="{0}.xlsx"'.format(
-        unicode(group))
+        group.name())
     os.remove(dest)
+    return response
+
+
+@login_required
+def export_group_json(req, gid):
+    group = StudentGroup.objects.select_related().get(id=int(gid))
+    exp = dict(job=group.job, name=group.name())
+    students = []
+    for s in group.students.filter(finished=False).order_by('lastname'):
+        students.append({
+            'lastname': s.lastname,
+            'firstname': s.firstname,
+            'birthdate': s.birthdate.strftime('%Y-%m-%d'),
+            'barcode': s.barcode,
+        })
+    exp['students'] = students
+    response = HttpResponse(dumps(exp), content_type='application/json')
+    response['Content-Disposition'] = 'attachment; filename="{0}.json"'.format(
+        group.name())
     return response
 
 
