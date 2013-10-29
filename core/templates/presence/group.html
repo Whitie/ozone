@@ -63,7 +63,11 @@
             <td><select id="p_{{ d.id }}"  title="{{ d.get_entry_display }}" class="{{ d.date|date:"Y-m-d" }} input-mini" name="presence" size="1" onchange="update_day({{ d.id }});">
                     {% for e in choices %}<option value="{{ e }}"{% if e == d.entry %} selected="selected"{% endif %}>{{ e }}</option>{% endfor %}
                 </select>
-                {% if d.note %}<a href="#" title="{{ d.note }}" class="tt">*</a>{% endif %}
+                {% if d.note or d.lateness %}
+                <a href="#" title="{{ d.note }}{% if d.note and d.lateness %}<br>{% endif %}{% if d.lateness %}Verspätung: <span class='text-error'><b>{{ d.lateness }}min</b></span>{% endif %}" class="tt">
+                    <b>*</b>
+                </a>
+                {% endif %}
                 <br>
                 <input id="l_{{ d.id }}" title="{% trans "Enter lateness here." %}" class="input-mini" type="text" size="2" maxlength="3"{% if d.lateness %} style="border:1px solid red;"{% endif %} name="lateness" value="{% if d.lateness %}{{ d.lateness }}{% endif %}" onchange="lateness_changed({{ d.id }});">
             </td>
