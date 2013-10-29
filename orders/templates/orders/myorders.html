@@ -41,10 +41,10 @@
                 <tr>
                     <td>
                         {% if o.ordered %}
-                        <span class="tt" title="{% trans "Send" %}: {{ o.ordered|date }}">
-                            {{ o.added|date:"SHORT_DATE_FORMAT" }}
+                        <span class="tt" title="{% trans "Send" %}: {{ o.ordered|date:'Y-m-d' }}">
+                            {{ o.added|date:'Y-m-d' }}
                         </span>
-                        {% else %}{{ o.added|date:"SHORT_DATE_FORMAT" }}{% endif %}
+                        {% else %}{{ o.added|date:'Y-m-d' }}{% endif %}
                     </td>
                     <td style="text-align:center;">{{ o.count }}</td>
                     <td>
