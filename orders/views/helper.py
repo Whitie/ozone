@@ -136,10 +136,17 @@ def extract_barcode(code):
             if u'.' in c and len(c) > 4:
                 return c.upper()
     if u',' in code_lower or u';' in code_lower:
-        # Maybe Sigma Aldrich
+        # Maybe Sigma Aldrich, Th. Geyer, Machery-Nagel
         if u',' in code_lower:
             c = code_lower.split(u',')[0].strip()
         else:
             c = code_lower.split(u';')[0].strip()
+            # Machery-Nagel
+            if c.startswith(u'91'):
+                try:
+                    Article.objects.get(ident=c[2:])
+                    c = c[2:]
+                except Article.DoesNotExist:
+                    pass
         return c.upper()
     return code
