@@ -32,9 +32,10 @@
                 {{ form.art_q }}{{ form.art_q.errors }}
             </div>
             <div class="input-prepend input-append">
-                <span class="add-on">{{ form.art_price.label }}</span>
+                <span class="add-on">Einzelpreis</span>
                 {{ form.art_price }}{{ form.art_price.errors }}
                 <span class="add-on">{{ CURRENCY_SYM }}</span>
+                <span id="fullprice" class="add-on">Gesamtpreis: -</span>
             </div>
         </div>
         <div class="controls controls-row">
@@ -60,6 +61,19 @@
 
 {% block additional_js %}
 <script type="text/javascript">
+function update_price() {
+    var count = $('#id_count').val();
+    var price = $('#id_art_price').val();
+    if (count == '' || price == '') {
+        $('#fullprice').text('Gesamtpreis: -');
+    } else {
+        full = Number(count) * Number(price.replace(',', '.'));
+        $('#fullprice').text(
+            'Gesamtpreis: '+full.toFixed(2)+' {{ CURRENCY_SYM }}'
+        );
+    }
+}
+
 $(function() {
     $.getJSON('{% url "orders-api-article" article_id %}', function(data) {
         $.each(data, function(key, val) {
@@ -71,6 +85,13 @@ $(function() {
             $('#memo').toggle();
         }
     );
+    $('#id_count').keyup(function() {
+        update_price();
+    });
+    $('#id_art_price').keyup(function() {
+        update_price();
+    });
+    update_price();
 });
 $(function() {
     var options = {
@@ -99,5 +120,7 @@ $(function() {
     };
     $('#id_art_supplier_name').typeahead(options);
 });
+{% block form_js %}{% endblock %}
 </script>
 {% endblock %}
+

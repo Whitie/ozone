@@ -116,14 +116,18 @@ function get_sum() {
 
 function update_sum() {
     var sum = get_sum();
-    var color = '';
-    $('#sum').text(sum);
+    var but = $('#obutton');
     if (sum != 100) {
-        color = 'red';
+        but.text('Kostenstellen: '+sum);
+        but.attr('disabled', 'disabled');
+        but.removeClass('btn-success');
+        but.addClass('btn-danger disabled');
     } else {
-        color = 'green';
+        but.text('Jetzt bestellen');
+        but.removeAttr('disabled');
+        but.removeClass('btn-danger disabled');
+        but.addClass('btn-success');
     }
-    $('#sum').css({'color': color});
 }
 
 function check_costs() {

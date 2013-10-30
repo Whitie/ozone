@@ -8,7 +8,7 @@
 {% block formextra %}
 <div class="row-fluid">
     <div class="span10">
-        <legend>{% trans "Costs" %} <span id="sum" style="font-weight:bold;"></span></legend>
+        <legend>Kostenstellen eingeben</legend>
         <div class="controls controls-row">
             {% for c in costs %}
             <div class="input-prepend">
@@ -22,8 +22,11 @@
 </div>
 <div class="row-fluid">
     <div class="span6 offset2">
-        <button type="submit" class="btn btn-success">{% trans "Order now" %}</button>
+        <button id="obutton" type="submit" class="btn btn-danger btn-block disabled" disabled>
+            Kostenstellen: 0
+        </button>
     </div>
 </div>
 </form>
 {% endblock %}
+
