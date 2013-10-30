@@ -2,26 +2,31 @@
 {% load i18n %}
 
 {% block formtag %}
-<form method="post" action="{% url "orders-order" %}" onsubmit="return check_form('{% url "orders-api-check-supplier" %}');">
+<form class="form-horizontal" method="post" action="{% url "orders-order" %}" onsubmit="return check_form('{% url "orders-api-check-supplier" %}');">
 {% endblock %}
 
 {% block formextra %}
-<div class="row-fluid">
-    <div class="span10">
-        <legend>Kostenstellen eingeben</legend>
-        <div class="controls controls-row">
-            {% for c in costs %}
-            <div class="input-prepend">
-                <span class="add-on">{{ c|rjust:"9" }}</span>
-                <input type="text" name="cost_{{ c.ident }}" maxlength="3" size="3"
+    <div class="span4 offset1">
+        <legend>Kostenstellen</legend>
+        <table class="table">
+        {% for c in costs %}
+        {% cycle '<tr>' '' %}
+            <td>
+                <div class="input-prepend">
+                    <span class="add-on">{{ c|rjust:"9" }}</span>
+                    <input type="text" name="cost_{{ c.ident }}" maxlength="3" size="3"
                     value="0" onkeyup="update_sum()" class="costs input-mini">
-            </div>
-            {% endfor %}
-        </div>
+                </div>
+            </td>
+        {% cycle '' '</tr>' %}
+        {% endfor %}
+        </tr>
+        </table>
     </div>
 </div>
+
 <div class="row-fluid">
-    <div class="span6 offset2">
+    <div class="span5 offset2">
         <button id="obutton" type="submit" class="btn btn-danger btn-block disabled" disabled>
             Kostenstellen: 0
         </button>

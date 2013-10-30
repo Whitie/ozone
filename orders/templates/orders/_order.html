@@ -6,57 +6,97 @@
 {% csrf_token %}
 {{ form.art_supplier_id }}
 <div class="row-fluid">
-    <div class="span10">
-        <legend>{% trans "Order" %}</legend>
-        <div class="controls controls-row">
-            <div class="input-prepend">
-                <span class="add-on">{{ form.count.label }}</span>
+    <div class="span4">
+        <legend>Bestellung</legend>
+        <div class="control-group">
+            <label class="control-label" for="id_count">
+                {{ form.count.label }}
+            </label>
+            <div class="controls">
                 {{ form.count }}{{ form.count.errors }}
             </div>
-            <div class="input-prepend">
-                <span class="add-on">{{ form.art_name.label }}</span>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="id_art_name">
+                {{ form.art_name.label }}
+            </label>
+            <div class="controls">
                 {{ form.art_name }}{{ form.art_name.errors }}
             </div>
-            <div class="input-prepend">
-                <span class="add-on">{{ form.art_supplier_name.label }}</span>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="id_art_supplier">
+                {{ form.art_supplier_name.label }}
+            </label>
+            <div class="controls"> 
                 {{ form.art_supplier_name }}{{ form.art_supplier_name.errors }}
             </div>
         </div>
-        <div class="controls controls-row">
-            <div class="input-prepend">
-                <span class="add-on">{{ form.art_id.label }}</span>
+        <div class="control-group">
+            <label class="control-label" for="id_art_id">
+                {{ form.art_id.label }}
+            </label>
+            <div class="controls">
                 {{ form.art_id }}{{ form.art_id.errors }}
             </div>
-            <div class="input-prepend">
-                <span class="add-on">{{ form.art_q.label_tag }}</span>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="id_art_q">
+                {{ form.art_q.label_tag }}
+            </label>
+            <div class="controls">
                 {{ form.art_q }}{{ form.art_q.errors }}
             </div>
-            <div class="input-prepend input-append">
-                <span class="add-on">Einzelpreis</span>
-                {{ form.art_price }}{{ form.art_price.errors }}
-                <span class="add-on">{{ CURRENCY_SYM }}</span>
-                <span id="fullprice" class="add-on">Gesamtpreis: -</span>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="id_art_price">
+                {{ form.art_price.label }}
+            </label>
+            <div class="controls">
+                <div class="input-append">
+                    {{ form.art_price }}
+                    <span class="add-on">{{ CURRENCY_SYM }}</span>
+                </div>
             </div>
         </div>
-        <div class="controls controls-row">
-            {% if not extra %}
-            <div class="input-prepend">
-                <span class="add-on">{{ form.oday.label }}</span>
-                {{ form.oday }}{{ form.oday.errors }}
+        <div class="control-group">
+            <label class="control-label">Gesamtpreis</label>
+            <div class="controls">
+                <span id="fullprice" class="uneditable-input">-</span>
             </div>
-            {% endif %}
-            <button type="button" class="btn btn-inverse" id="memo_trigger">{{ form.memo.label }}</button>
-            <span style="display:none;position:absolute;z-index:3;" id="memo">{{ form.memo }}</span>
-            <label class="checkbox inline" for="id_exam">
-                {{ form.exam }} {{ form.exam.label }}
+        </div>
+        {% if not extra %}
+        <div class="control-group">
+            <label class="control-label" for="id_oday">
+                {{ form.oday.label }}
             </label>
-            <label class="checkbox inline" for="id_repair">
-                {{ form.repair }} {{ form.repair.label }}
-            </label>
+            <div class="controls">
+                {{ form.oday }}
+            </div>
+        </div>
+        {% endif %}
+        <div class="control-group">
+            <div class="controls">
+                <button type="button" class="btn btn-inverse tt" id="memo_trigger" title="Hier können Sie dem Besteller eine Nachricht hinterlassen.">
+                    Memo
+                </button>
+                <span style="display:none;position:absolute;z-index:3;" id="memo">
+                    {{ form.memo }}
+                </span>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <label class="checkbox" for="id_exam">
+                    {{ form.exam }} {{ form.exam.label }}
+                </label>
+                <label class="checkbox" for="id_repair">
+                    {{ form.repair }} {{ form.repair.label }}
+                </label>
+            </div>
         </div>
     </div>
-</div>
-{% block formextra %}{% endblock %}
+    {% block formextra %}{% endblock %}
 {% endblock %}
 
 {% block additional_js %}
@@ -65,11 +105,10 @@ function update_price() {
     var count = $('#id_count').val();
     var price = $('#id_art_price').val();
     if (count == '' || price == '') {
-        $('#fullprice').text('Gesamtpreis: -');
+        $('#fullprice').text('-');
     } else {
         full = Number(count) * Number(price.replace(',', '.'));
-        $('#fullprice').text(
-            'Gesamtpreis: '+full.toFixed(2)+' {{ CURRENCY_SYM }}'
+        $('#fullprice').text(full.toFixed(2)+' {{ CURRENCY_SYM }}'
         );
     }
 }
@@ -78,6 +117,7 @@ $(function() {
     $.getJSON('{% url "orders-api-article" article_id %}', function(data) {
         $.each(data, function(key, val) {
             $("#id_" + key).val(val);
+            update_price();
         });
     });
     $('#memo_trigger').click(
@@ -91,7 +131,6 @@ $(function() {
     $('#id_art_price').keyup(function() {
         update_price();
     });
-    update_price();
 });
 $(function() {
     var options = {

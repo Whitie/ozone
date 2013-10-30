@@ -2,12 +2,15 @@
 {% load i18n %}
 
 {% block formtag %}
-<form method="post" action="{% url "orders-extra-order" %}">
+<form class="form-horizontal" method="post" action="{% url "orders-extra-order" %}">
 {% endblock %}
 {% block formextra %}
+</div>
 <div class="row-fluid">
-    <div class="span6 offset2">
-        <button type="submit" class="btn btn-success">{% trans "Order now" %}</button>
+    <div class="span5 offset2">
+        <button type="submit" class="btn btn-success">
+            {% trans "Order now" %}
+        </button>
     </div>
 </div>
 </form>
@@ -24,12 +27,14 @@
     </div>
 </div>
 <div class="row-fluid">
-    <div class="span6 offset2">
+    <div class="span4 offset3">
         <form action="{% url "orders-genpdf" %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="oday_id" value="{{ oday_id }}">
             <input type="hidden" name="header" value="Haustechnik">
-            <button type="submit" class="btn">{% trans "Generate printouts" %}</button>
+            <button type="submit" class="btn">
+                {% trans "Generate printouts" %}
+            </button>
         </form>
     </div>
 </div>
