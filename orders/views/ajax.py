@@ -45,6 +45,7 @@ def update_article_count(req, order_id, count):
 def get_articles(req):
     term = req.GET.get('term')
     query = Q(name__icontains=term) | Q(barcode__istartswith=term)
+    query |= Q(ident__istartswith=term)
     articles = [{
         'value': x.id,
         'label': u'{0} ({1}, {2})'.format(x.name, x.ident, x.barcode),
