@@ -86,36 +86,40 @@ def get_article_by_barcode(req, barcode):
         return render(req, 'orders/delivery/new_bc.html', ctx)
 
 
+def _export(ids):
+    now = datetime.now()
+    choice = DeliveredOrder.objects.select_related().filter(
+        id__in=ids).order_by('date')
+    if choice.count():
+        fp = StringIO()
+        writer = csv.writer(fp, dialect=csv.excel, delimiter=';')
+        name = now.strftime('Toxolution_Export_%Y-%m-%d_%H%M%S.csv')
+        for c in choice:
+            o = c.order
+            a = c.order.article
+            tmp = [c.date.strftime('%Y-%m-%d'), a.name, a.ident,
+                a.supplier.name, o.count, a.quantity, float(a.price),
+                a.barcode]
+            row = []
+            for x in tmp:
+                if isinstance(x, unicode):
+                    row.append(x.encode('latin1'))
+                else:
+                    row.append(x)
+            writer.writerow(row)
+            c.exported = True
+            c.save()
+        resp = HttpResponse(fp.getvalue(), content_type='text/csv')
+        resp['Content-Disposition'] = 'attachment; filename="{0}"'.format(
+            name)
+        return resp
+
+
 @permission_required('orders.can_order')
 def export_to_csv(req):
     if req.method == 'POST':
         ids = map(int, req.POST.getlist('export'))
-        now = datetime.now()
-        choice = DeliveredOrder.objects.select_related().filter(
-            id__in=ids).order_by('date')
-        if choice.count():
-            fp = StringIO()
-            writer = csv.writer(fp, dialect=csv.excel, delimiter=';')
-            name = now.strftime('Toxolution_Export_%Y-%m-%d_%H%M%S.csv')
-            for c in choice:
-                o = c.order
-                a = c.order.article
-                tmp = [c.date.strftime('%Y-%m-%d'), a.name, a.ident,
-                    a.supplier.name, o.count, a.quantity, float(a.price),
-                    a.barcode]
-                row = []
-                for x in tmp:
-                    if isinstance(x, unicode):
-                        row.append(x.encode('latin1'))
-                    else:
-                        row.append(x)
-                writer.writerow(row)
-                c.exported = True
-                c.save()
-            resp = HttpResponse(fp.getvalue(), content_type='text/csv')
-            resp['Content-Disposition'] = 'attachment; filename="{0}"'.format(
-                name)
-            return resp
+        return _export(ids)
     to_export = DeliveredOrder.objects.select_related().filter(
         exported=False, order__article__tox_control=True).order_by('date')
     ctx = dict(page_title=u'Toxolution Export', menus=menus,
