@@ -16,10 +16,11 @@ class OrderDayAdmin(admin.ModelAdmin):
 
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('name', 'supplier', 'ident', 'quantity', 'price')
+    list_display = ('name', 'supplier', 'ident', 'quantity', 'price',
+        'tox_control', 'id')
     list_display_links = ('name',)
-    list_editable = ('ident', 'quantity', 'price')
-    list_filter = ('supplier__name',)
+    list_editable = ('ident', 'quantity', 'price', 'tox_control')
+    list_filter = ('supplier__name', 'tox_control')
     ordering = ('supplier__name', 'name')
     search_fields = ('name', 'supplier__name', 'ident')
     save_on_top = True
@@ -41,10 +42,10 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class DeliveredOrderAdmin(admin.ModelAdmin):
-    list_display = ('order', 'count', 'date', 'user')
+    list_display = ('order', 'count', 'date', 'user', 'exported')
     list_display_links = ('order',)
     list_editable = ('count',)
-    list_filter = ('order', 'date')
+    list_filter = ('order', 'date', 'exported')
     search_fields = ('order__article__name',)
     ordering = ('-order__ordered', '-date')
 

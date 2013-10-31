@@ -87,6 +87,13 @@
         </div>
         <div class="control-group">
             <div class="controls">
+                {% if not article_id %}
+                <label class="checkbox" for="id_tox">
+                    {{ form.tox }} <b>{{ form.tox.label }}</b>
+                </label>
+                {% else %}
+                <input type="hidden" name="tox" id="id_tox">
+                {% endif %}
                 <label class="checkbox" for="id_exam">
                     {{ form.exam }} {{ form.exam.label }}
                 </label>

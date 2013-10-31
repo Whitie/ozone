@@ -46,6 +46,8 @@ class Article(models.Model):
     quantity = models.CharField(_(u'Quantity'), max_length=20, blank=True)
     price = models.DecimalField(_(u'Price'), max_digits=8, decimal_places=2,
         blank=True)
+    tox_control = models.BooleanField(u'Von Toxolution kontrolliert',
+        default=True)
 
     def __unicode__(self):
         return u'{0} ({1})'.format(self.name, self.short_desc())
@@ -149,6 +151,8 @@ class DeliveredOrder(models.Model):
     count = models.PositiveIntegerField(_(u'Count'))
     date = models.DateField(_(u'Date'), auto_now_add=True)
     user = models.ForeignKey(User, verbose_name=_(u'User'))
+    exported = models.BooleanField(u'Nach Toxolution exportiert',
+        default=False)
 
     def __unicode__(self):
         return u'{0}x {1} {2}'.format(self.count,

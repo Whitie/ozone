@@ -96,11 +96,14 @@ def order(req, article_id=0):
             company = Company.objects.get(id=cleaned['art_supplier_id'])
             costs = h.get_costs(req.POST)
             art, created = Article.objects.get_or_create(
-                name=cleaned['art_name'], ident=cleaned['art_id'].strip(),
-                price=h.get_price(cleaned['art_price']))
+                supplier=company, ident=cleaned['art_id'].strip())
             if created:
+                art.name = cleaned['art_name']
                 art.quantity = cleaned['art_q']
-                art.supplier = company
+                art.tox_control = cleaned['tox']
+                art.save()
+            if art.price != cleaned['art_price'] and cleaned['art_price']:
+                art.price = cleaned['art_price']
                 art.save()
             order = Order.objects.create(count=cleaned['count'], article=art,
                 order_day=OrderDay.objects.get(id=int(cleaned['oday'])))
