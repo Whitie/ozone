@@ -102,8 +102,9 @@ def order(req, article_id=0):
                 art.quantity = cleaned['art_q']
                 art.tox_control = cleaned['tox']
                 art.save()
-            if art.price != cleaned['art_price'] and cleaned['art_price']:
-                art.price = cleaned['art_price']
+            _price = h.get_price(cleaned['art_price'])
+            if _price and art.price != _price:
+                art.price = _price
                 art.save()
             order = Order.objects.create(count=cleaned['count'], article=art,
                 order_day=OrderDay.objects.get(id=int(cleaned['oday'])))
