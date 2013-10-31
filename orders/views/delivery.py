@@ -103,7 +103,7 @@ def _export(ids):
             row = []
             for x in tmp:
                 if isinstance(x, unicode):
-                    row.append(x.encode('latin1'))
+                    row.append(x.encode('latin1', errors='replace'))
                 else:
                     row.append(x)
             writer.writerow(row)
