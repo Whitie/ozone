@@ -42,6 +42,7 @@ urlpatterns += patterns('orders.views.delivery',
         name='orders-delivery-barcode'),
     url(r'^delivery/by_barcode/(?P<barcode>.+)/$', 'get_article_by_barcode',
         name='orders-delivery-barcode'),
+    url(r'^delivery/csv_export/$', 'export_to_csv', name='orders-csv-export'),
 )
 
 urlpatterns += patterns('orders.views.ajax',

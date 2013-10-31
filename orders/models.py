@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import date
+from decimal import Decimal
 
 from django.db import models
 from django.conf import settings
@@ -45,7 +46,7 @@ class Article(models.Model):
             u'eingeben.'))
     quantity = models.CharField(_(u'Quantity'), max_length=20, blank=True)
     price = models.DecimalField(_(u'Price'), max_digits=8, decimal_places=2,
-        blank=True)
+        blank=True, null=True, default=Decimal())
     tox_control = models.BooleanField(u'Von Toxolution kontrolliert',
         default=True)
 
