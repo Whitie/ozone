@@ -1,45 +1,44 @@
 {% extends "index.html" %}
+{% load url from future %}
 {% load i18n %}
-{% load staticfiles %}
 
 {% block content %}
-<h2 class="headline">{% trans "Phonelist" %}</h2>
-
-<div style="width:50%;margin:5px auto;">
-<table id="dataTable">
-    <thead>
-        <tr>
-            <th>{% trans "Name" %}</th>
-            <th>{% trans "Private" %}</th>
-            <th>{% trans "Mobile" %}</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for p in profiles %}
-    <tr>
-        <td>{{ p.user.last_name }}, {{ p.user.first_name }}</td>
-        <td>{{ p.phone }}</td>
-        <td>{{ p.mobile }}</td>
-    </tr>
-    {% endfor %}
-    </tbody>
-</table>
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <table class="dTable table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>{% trans "Name" %}</th>
+                    <th>{% trans "Private" %}</th>
+                    <th>{% trans "Mobile" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for p in profiles %}
+            <tr>
+                <td>{{ p.user.last_name }}, {{ p.user.first_name }}</td>
+                <td>{{ p.phone }}</td>
+                <td>{{ p.mobile }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 
-<div style="width:50%;margin:10px auto;text-align:center;">
-    <a href="{% url core-pdf-phonelist %}">{% trans "Printout" %}</a>
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <a class="btn btn-info" href="{% url "core-pdf-phonelist" %}">{% trans "Printout" %}</a>
+    </div>
 </div>
 
+{% endblock %}
+
+{% block additional_js %}
 <script>
-$(document).ready(function() {
-  var oTable = $('#dataTable').dataTable({
-    "bJQueryUI": true,
-    "bPaginate": false,
-    "bAutoWidth": true,
-    "oLanguage": {
-      "sUrl": "{% static "i18n/de_DE.txt" %}"
-    }
-  });
+$(function() {
+    datatable_options['bPaginate'] = false;
+    $('.dTable').dataTable(datatable_options);
 });
 </script>
 {% endblock %}

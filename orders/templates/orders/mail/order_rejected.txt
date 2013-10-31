@@ -1,0 +1,12 @@
+Liebe(r) {{ orderer.get_profile }},
+
+Ihre Bestellung
+
+    {{ order.count }}x {{ order.article.name }} - {{ order.article.supplier.short }}, {{ order.article.ident }}
+
+wurde gerade durch {{ user.get_profile }} abgelehnt.
+
+Dies ist eine automatische Nachricht, bitte nicht direkt darauf antworten.
+
+
+bbz Bestellsystem

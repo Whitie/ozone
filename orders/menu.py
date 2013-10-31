@@ -12,6 +12,7 @@ order_menu = Menu(_(u'Orders'),
     ('orders-add-supplier', _(u'Add new Supplier')),
     ('orders-extra-order', _(u'Extra Order')),
     ('orders-delivery', _(u'Delivery')),
+    ('orders-csv-export', u'Toxolution Export'),
     ('orders-manage', _(u'Manage Orders')),
 )
 

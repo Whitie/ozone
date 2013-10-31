@@ -15,7 +15,7 @@
 
 \ihead[]{bbz Chemie}
 \chead[]{}
-\ohead[]{\today}
+\ohead[]{Erzeugt: \today}
 
 \ifoot[]{}
 \cfoot[]{Seite \thepage{} von \pageref{LastPage}}
@@ -30,8 +30,8 @@
 \subsection*{Anwesenheitsliste(% if not empty %)\\(( company.name|te ))(% endif %)}
 
 \begin{tabular}{p{10cm}p{10cm}l}
-Berufsgruppe: (( group.name()|te )) & Ausbildungsjahr: (( edu_year )) & Zeitraum: (( timespan|te ))\\
-Klasse: (( group.school_nr|te )) & Ausbildungsabschnitt: & Berufsschultage: (( schooldays|join(', ')|te ))\\
+Berufsgruppe: (% if group %)(( group.name()|te ))(% endif %) & Ausbildungsjahr: (( edu_year )) & Zeitraum: (( timespan|te ))\\
+Klasse: (% if group %)(( group.school_nr|te ))(% endif %) & Ausbildungsabschnitt: & Berufsschultage: (( schooldays|join(', ')|te ))\\
 Ausbilder/in: (( instructor|te )) & (( course|te )) & \\
 \end{tabular}
 

@@ -1,64 +1,94 @@
 {% extends "index.html" %}
 {% load i18n %}
-{% load staticfiles %}
 
 {% block content %}
-<h2 class="headline">{% trans "Orders for" %} {{ userprofile }}</h2>
-{% if orders %}
-<table id="dataTable">
-    <thead>
-        <tr>
-            <th>{% trans "Ordered" %}</th>
-            <th>{% trans "Count" %}</th>
-            <th>{% trans "Article" %}</th>
-            <th>{% trans "Quantity" %}</th>
-            <th>{% trans "Price" %}</th>
-            <th>{% trans "Supplier" %}</th>
-            <th>{% trans "State" %}</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for o in orders %}
-        <tr>
-            <td title="{% if o.ordered %}{% trans "Send" %}: {{ o.ordered|date }}{% else %}{% trans "Not ordered yet" %}{% endif %}">
-                {{ o.added|date:"SHORT_DATE_FORMAT" }}
-            </td>
-            <td style="text-align:center;">{{ o.count }}</td>
-            <td title="{% trans "Ident Number" %}: {{ o.article.ident }}">
-                {{ o.article.name }}</td>
-            <td>{{ o.article.quantity }}</td>
-            <td style="text-align:right;" title="{% trans "Single Price" %}!">
-                {{ o.article.fullprice }}</td>
-            <td>{{ o.article.supplier }}</td>
-            <td title="{{ o.get_state_display }}" style="text-align:center;">
-                <img src="{{ o.state_icon }}" alt="{{ o.state }}" />
-            </td>
-            <td><a href="{% url orders-order o.article.id %}">{% trans "ReOrder" %}</a>
-                {% if perms.orders.extra_order %}
-                <a href="{% url orders-extra-order o.article.id %}">{% trans "Now" %}</a>
-                {% endif %}
-            </td>
-        </tr>
+<div class="row-fluid">
+    <div class="span8 offset1 centered">
+        <a name="top"></a>
+        {% for state, ods in orders %}
+        <a class="btn btn-{{ state.btn }}" href="#{{ state.name }}">
+            <i class="icon-white {{ state.icon }}"> </i> {{ state.disp }}
+        </a>
         {% endfor %}
-    </tbody>
-</table>
+    </div>
+</div>
 
-<script>
-$(function() {
-  var oTable = $('#dataTable').dataTable({
-    "bJQueryUI": true,
-    "bPaginate": true,
-    "oLanguage": {
-      "sUrl": "{% static "i18n/de_DE.txt" %}"
-    }
-  });
-  $(document).tooltip();
-});
-</script>
+{% for state, ods in orders %}
+<div class="row-fluid">
+    <div class="span10">
+        <button type="button" class="btn btn-{{ state.btn }} btn-large pull-right">
+            <i class="icon-white {{ state.icon }}"> </i> {{ state.disp }}
+        </button>
+    </div>
+</div>
+<a name="{{ state.name }}"></a>
+<div class="row-fluid">
+    <div class="span10">
+        <table class="table table-striped dataTable">
+            <thead>
+                <tr>
+                    <th>{% trans "Ordered" %}</th>
+                    <th>{% trans "Count" %}</th>
+                    <th>{% trans "Article" %}</th>
+                    <th>{% trans "Quantity" %}</th>
+                    <th>{% trans "Price" %}</th>
+                    <th>{% trans "Supplier" %}</th>
+                    <th>{% trans "Actions" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for o in ods %}
+                <tr>
+                    <td>
+                        {% if o.ordered %}
+                        <span class="tt" title="{% trans "Send" %}: {{ o.ordered|date:'Y-m-d' }}">
+                            {{ o.added|date:'Y-m-d' }}
+                        </span>
+                        {% else %}{{ o.added|date:'Y-m-d' }}{% endif %}
+                    </td>
+                    <td style="text-align:center;">{{ o.count }}</td>
+                    <td>
+                        <span class="tt" title="{% trans "Ident Number" %}: {{ o.article.ident }}">
+                            {{ o.article.name }}
+                        </span>
+                    </td>
+                    <td>{{ o.article.quantity }}</td>
+                    <td style="text-align:right;">
+                        <span class="tt" title="{% trans "Single Price" %}!">
+                            {{ o.article.fullprice }}
+                        </span>
+                    </td>
+                    <td>{{ o.article.supplier }}</td>
+                    <td>
+                        <a class="btn btn-mini" href="{% url "orders-order" o.article.id %}">
+                            <i class="icon-shopping-cart"> </i> {% trans "ReOrder" %}
+                        </a>
+                        {% if perms.orders.extra_order %}
+                        <a class="btn btn-mini btn-warning" href="{% url "orders-extra-order" o.article.id %}">
+                            {% trans "Now" %}
+                        </a>
+                        {% endif %}
+                        {% if state.name == "rejected" %}
+                        <button type="button" class="btn btn-danger btn-mini" onclick="delete_order({{ o.id }}, '{{ o.article.name }}');">
+                            <i class="icon-remove icon-white"> </i> {% trans "Delete" %}
+                        </button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endfor %}
 
-{% else %}
-<p>{% trans "No orders found." %}</p>
-{% endif %}
-
+<div class="row-fluid">
+    <div class="span10 centered">
+        <a class="btn" href="#top">
+            <i class="icon-arrow-up"> </i>
+            {% trans "Go to top" %}
+            <i class="icon-arrow-up"> </i>
+        </a>
+    </div>
+</div>
 {% endblock %}

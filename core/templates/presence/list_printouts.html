@@ -1,16 +1,35 @@
 {% extends "index.html" %}
+{% load url from future %}
 {% load i18n %}
 
 {% block content %}
-<h2 class="headline">{% trans "Old lists" %}</h2>
-{% for j in jobs %}<a href="{% url core-presence-printouts j %}">{{ j }}</a>{% if not forloop.last %} | {% endif %}{% endfor %}
+<div class="row-fluid">
+    <div class="span8 offset1 centered">
+        {% trans "Job" %}:{% for j in jobs %}
+        <a class="btn btn-mini btn-info" href="{% url "core-presence-printouts" j %}">{{ j }}</a>
+        {% endfor %}
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span8 offset1 centered">
+        {% trans "Group" %}:{% for g in groups %}
+        <a class="btn btn-mini btn-info" href="#{{ g }}">{{ g }}</a>
+        {% endfor %}
+    </div>
+</div>
+
+
 {% for g in groups %}
-<h3>{{ g }}</h3>
-<ul>
-    {% for p in g.presence_printouts.all %}
-    <li><a href="{{ p.pdf.url }}">{{ p.date|date:"F Y" }} ({{ p.company.name }})</a></li>
-    {% endfor %}
-</ul>
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <a id="{{ g }}"><h3>{{ g }}</h3></a>
+        <ul>
+            {% for p in g.presence_printouts.all %}
+            <li><a href="{{ p.pdf.url }}">{{ p.date|date:"F Y" }} ({{ p.company.name }})</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 {% endfor %}
 
 {% endblock %}

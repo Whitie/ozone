@@ -1,13 +1,13 @@
 {% load i18n %}
 
-<h3 class="headline">{{ p.name_prefix }} {{ u.last_name }}, {{ u.first_name }}</h3>
-<p>
-{{ p.street }}<br />
-{{ p.zip_code }} {{ p.city }}<br />
-{{ p.country }}
-</p>
+<h3>{{ p.name_prefix }} {{ u.last_name }}, {{ u.first_name }}</h3>
+<address>
+    {{ p.street|default:"-" }}<br>
+    {{ p.zip_code }} {{ p.city|default:"-" }}<br>
+    {{ p.country|default:"-" }}<br>
+</address>
 
-<table>
+<table class="table">
     <tr>
         <th style="text-align:right;">{% trans "Phone" %}:</th>
         <td style="width:20px;"></td>

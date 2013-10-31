@@ -126,3 +126,27 @@ def get_company_data_for_rating_user(user):
                 c.last_rate = None
         user.to_rate = companies
     return user
+
+
+def extract_barcode(code):
+    code_lower = code.strip('\r\n ').lower()
+    if code_lower.startswith('roth'):
+        # Roth
+        for c in code.split('!'):
+            if u'.' in c and len(c) > 4:
+                return c.upper()
+    if u',' in code_lower or u';' in code_lower:
+        # Maybe Sigma Aldrich, Th. Geyer, Machery-Nagel
+        if u',' in code_lower:
+            c = code_lower.split(u',')[0].strip()
+        else:
+            c = code_lower.split(u';')[0].strip()
+            # Machery-Nagel
+            if c.startswith(u'91'):
+                try:
+                    Article.objects.get(ident=c[2:])
+                    c = c[2:]
+                except Article.DoesNotExist:
+                    pass
+        return c.upper()
+    return code

@@ -5,75 +5,168 @@
 {% block formtag %}{% endblock %}
 {% csrf_token %}
 {{ form.art_supplier_id }}
-<table style="border:1px solid blue;margin:5px auto;">
-<tr>
-    <th>{{ form.count.label_tag }}:</th>
-    <td>{{ form.count }}{{ form.count.errors }}</td>
-    <th>{{ form.art_name.label_tag }}:</th>
-    <td>{{ form.art_name }}{{ form.art_name.errors }}</td>
-    <th>{{ form.art_supplier_name.label_tag }}:</th>
-    <td title="{% trans "The supplier must be chosen by click!" %}">
-        {{ form.art_supplier_name }}
-        {{ form.art_supplier_name.errors }}
-    </td>
-</tr>
-<tr>
-    <th>{{ form.art_id.label_tag }}:</th>
-    <td>{{ form.art_id }}{{ form.art_id.errors }}</td>
-    <th>{{ form.art_q.label_tag }}:</th>
-    <td>{{ form.art_q }}{{ form.art_q.errors }}</td>
-    <th title="{{ cur_msg }}">{{ form.art_price.label_tag }}:</th>
-    <td>{{ form.art_price }}{{ CURRENCY_SYM }}{{ form.art_price.errors }}</td>
-</tr>
-<tr>
-    {% if extra %}<th></th><td></td>{% else %}
-    <th>{{ form.oday.label_tag }}:</th>
-    <td>{{ form.oday }}{{ form.oday.errors }}</td>
-    {% endif %}
-    <th title="{% trans "Klick to enter message." %}" id="memo_cell">
-        {% trans "Memo" %}
-    </th>
-    <td><span style="display:none;position:absolute;z-index:3;" id="memo_field">
-        {{ form.memo }}</span>
-    </td>
-    <th></th>
-    <td></td>
-</tr>
-<tr>
-    <th>{{ form.exam.label_tag }}:</th>
-    <td>{{ form.exam }}{{ form.exam.errors }}</td>
-    <th>{{ form.repair.label_tag }}:</th>
-    <td>{{ form.repair }}{{ form.repair.errors }}</td>
-    <th></th>
-    <td></td>
-</tr>
-</table>
-{% block formextra %}{% endblock %}
+<div class="row-fluid">
+    <div class="span4">
+        <legend>Bestellung</legend>
+        <div class="control-group">
+            <label class="control-label" for="id_count">
+                {{ form.count.label }}
+            </label>
+            <div class="controls">
+                {{ form.count }}{{ form.count.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="id_art_name">
+                {{ form.art_name.label }}
+            </label>
+            <div class="controls">
+                {{ form.art_name }}{{ form.art_name.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="id_art_supplier">
+                {{ form.art_supplier_name.label }}
+            </label>
+            <div class="controls"> 
+                {{ form.art_supplier_name }}{{ form.art_supplier_name.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="id_art_id">
+                {{ form.art_id.label }}
+            </label>
+            <div class="controls">
+                {{ form.art_id }}{{ form.art_id.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="id_art_q">
+                {{ form.art_q.label_tag }}
+            </label>
+            <div class="controls">
+                {{ form.art_q }}{{ form.art_q.errors }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="id_art_price">
+                {{ form.art_price.label }}
+            </label>
+            <div class="controls">
+                <div class="input-append">
+                    {{ form.art_price }}
+                    <span class="add-on">{{ CURRENCY_SYM }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Gesamtpreis</label>
+            <div class="controls">
+                <span id="fullprice" class="uneditable-input">-</span>
+            </div>
+        </div>
+        {% if not extra %}
+        <div class="control-group">
+            <label class="control-label" for="id_oday">
+                {{ form.oday.label }}
+            </label>
+            <div class="controls">
+                {{ form.oday }}
+            </div>
+        </div>
+        {% endif %}
+        <div class="control-group">
+            <div class="controls">
+                <button type="button" class="btn btn-inverse tt" id="memo_trigger" title="Hier können Sie dem Besteller eine Nachricht hinterlassen.">
+                    Memo
+                </button>
+                <span style="display:none;position:absolute;z-index:3;" id="memo">
+                    {{ form.memo }}
+                </span>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                {% if not article_id %}
+                <label class="checkbox" for="id_tox">
+                    {{ form.tox }} <b>{{ form.tox.label }}</b>
+                </label>
+                {% else %}
+                <input type="hidden" name="tox" id="id_tox">
+                {% endif %}
+                <label class="checkbox" for="id_exam">
+                    {{ form.exam }} {{ form.exam.label }}
+                </label>
+                <label class="checkbox" for="id_repair">
+                    {{ form.repair }} {{ form.repair.label }}
+                </label>
+            </div>
+        </div>
+    </div>
+    {% block formextra %}{% endblock %}
+{% endblock %}
 
+{% block additional_js %}
 <script type="text/javascript">
+function update_price() {
+    var count = $('#id_count').val();
+    var price = $('#id_art_price').val();
+    if (count == '' || price == '') {
+        $('#fullprice').text('-');
+    } else {
+        full = Number(count) * Number(price.replace(',', '.'));
+        $('#fullprice').text(full.toFixed(2)+' {{ CURRENCY_SYM }}'
+        );
+    }
+}
+
 $(function() {
-    $.getJSON('{% url orders-api-article article_id %}', function(data) {
+    $.getJSON('{% url "orders-api-article" article_id %}', function(data) {
         $.each(data, function(key, val) {
             $("#id_" + key).val(val);
+            update_price();
         });
     });
-    $(document).tooltip();
+    $('#memo_trigger').click(
+        function() {
+            $('#memo').toggle();
+        }
+    );
+    $('#id_count').keyup(function() {
+        update_price();
+    });
+    $('#id_art_price').keyup(function() {
+        update_price();
+    });
 });
 $(function() {
-    $('#id_art_supplier_name').autocomplete({
-        minLength: 1,
-        source: '{% url orders-api-suppliers %}',
-        select: function(event, ui) {
-            $('#id_art_supplier_id').val(ui.item.value);
-            $('#id_art_supplier_name').val(ui.item.label);
-            return false;
-            }
-        });
+    var options = {
+        'source': function(query, process) {
+            suppliers = [];
+            map = {};
+            return $.ajax({
+                'url': '{% url "orders-api-suppliers" %}',
+                'type': 'get',
+                'data': {'term': query},
+                'dataType': 'json',
+                'success': function(data) {
+                    $.each(data, function(i, sup) {
+                        map[sup['label']] = sup;
+                        suppliers.push(sup['label']);
+                    });
+                    return process(suppliers);
+                }
+            });
+        },
+        'updater': function(item) {
+            var obj = map[item];
+            $('#id_art_supplier_id').val(obj['value']);
+            return item;
+        }
+    };
+    $('#id_art_supplier_name').typeahead(options);
 });
-
-$('#memo_cell').click(function() {
-    $('#memo_field').toggle();
-});
+{% block form_js %}{% endblock %}
 </script>
-{% block jsextra %}{% endblock %}
 {% endblock %}
+

@@ -1,0 +1,30 @@
+{% extends "index.html" %}
+{% load i18n %}
+
+{% block content %}
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ wizard.management_form }}
+    <div class="row-fluid">
+        {% block form %}{% endblock %}
+    </div>
+    <div class="row-fluid">
+        <div class="span6 offset3">
+            <p>{% trans "<strong>Bold</strong> fields are required!" %}</p>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span6 offset2 centered">
+            {% if wizard.steps.prev %}
+            <button class="btn btn-info" name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">{% trans "First step" %}</button>
+            <button class="btn btn-info" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% trans "Prev step" %}</button>
+            {% endif %}
+            <button class="btn btn-primary" type="submit">
+                {% if wizard.steps.next %}{% trans "Next" %}{% else %}{% trans "Save" %}{% endif %}
+            </button>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block additional_js %}{% endblock %}

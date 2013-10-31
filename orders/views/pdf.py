@@ -4,15 +4,15 @@ import codecs
 import os
 
 from datetime import date
+from decimal import Decimal
 
 from django.core.files.base import ContentFile
-from django.shortcuts import render
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import permission_required
 from django.utils.translation import ugettext_lazy as _
 
 from core import latex
-from core.utils import json_rpc
+from core.utils import json_rpc, render
 from core.models import Company, PDFPrintout
 from orders.models import Order, OrderDay, Printout, Cost, CostOrder
 from orders.views import helper as h
@@ -142,15 +142,20 @@ def generate_pdf(req):
     orders = get_orders(oday)
     supplier = []
     for s in [x[0].article.supplier for x in orders]:
-        s.ocount = Order.objects.filter(article__supplier=s, order_day=oday,
-            state__in=[u'accepted', u'ordered']).count()
+        s.ocount = 0
+        s.osum = Decimal()
+        for o in Order.objects.filter(article__supplier=s, order_day=oday,
+            state__in=[u'accepted', u'ordered']):
+            s.ocount += 1
+            s.osum += o.price()
         supplier.append(s)
     supplier_ids = [x[0].article.supplier.id for x in orders]
     req.session['extra_orders'] = []
     req.session['oday_id'] = None
-    ctx = dict(page_title=_(u'Printouts'), menus=menus, oday=oday,
+    ctx = dict(page_title=_(u'PDF-Printouts'), menus=menus, oday=oday,
+        subtitle=_(u'for {0}'.format(unicode(oday))), need_ajax=True,
         ids=supplier_ids, supplier=supplier, header=header)
-    return render(req, 'orders/printouts.html', ctx)
+    return render(req, 'orders/printouts.html', ctx, app=u'orders')
 
 
 @require_POST

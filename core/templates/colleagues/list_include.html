@@ -1,10 +1,12 @@
+{% load url from future %}
 {% load i18n %}
 {% load staticfiles %}
 
 <li>{{ forloop.counter }}) {{ p.name_prefix }} {{ p.user.last_name }}, {{ p.user.first_name }}
     {% if perms.auth.change_user %}
-    <a title="{% trans "Click to edit" %}" href="/admin/core/userprofile/{{ p.id }}/">
-    <img src="{% static "img/edit.png" %}" /></a>
-    <img title="{% trans "More information" %}" src="{% static "img/info.png" %}" onclick="show_info({{ p.user.id }});" />
+    <a class="btn btn-mini btn-warning" href="{% url "admin:core_userprofile_change" p.id %}">
+    <i class="icon-edit"></i> {% trans "Edit" %}</a>
+    <a class="btn btn-mini btn-primary" href="#" onclick="show_info({{ p.user.id }});">
+        <i class="icon-info-sign icon-white"></i> {% trans "Info" %}</a>
     {% endif %}
 </li>

@@ -2,23 +2,29 @@
 {% load i18n %}
 
 {% block content %}
-<h2 class="headline">{% trans "Enter supplier data" %}</h2>
-<form method="post" action="{% url orders-add-supplier %}" onsubmit="clean();">
-{% csrf_token %}
-<table style="border:1px solid blue;margin:5px auto;">
-{% for f in form %}
-<tr>
-    <th style="text-align:right;">{{ f.label_tag }}:{{ f.errors }}</th>
-    <td>{{ f }}</td>
-</tr>
-{% endfor %}
-<tr>
-    <td></td>
-    <td><input type="submit" value="{% trans "Save" %}" /></td>
-</tr>
-</table>
-</form>
+<div class="row-fluid">
+    <div class="span6 offset1">
+        <form onsubmit="clean();" class="form-horizontal" method="post" action="{% url "orders-add-supplier" %}">
+            {% csrf_token %}
+            <legend>{% trans "Enter data" %}</legend>
+            {% for f in form %}
+            <div class="control-group{% if f.errors %} error{% endif %}">
+                <label class="control-label" for="{{ f.auto_id }}">
+                    {{ f.label }}
+                </label>
+                <div class="controls">{{ f }}</div>
+            </div>
+            {% endfor %}
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success">{% trans "Save" %}</button>
+                <button type="reset" class="btn">{% trans "Cancel" %}</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
 
+{% block additional_js %}
 <script type="text/javascript">
 function clean() {
     var web = $('#id_web').val();
@@ -27,6 +33,21 @@ function clean() {
     }
     return true;
 }
+
+$(document).ready(function() {
+    var sname = $('#id_name');
+    sname.attr('autocomplete', 'off');
+    var options = {
+        'source': function(query, process) {
+            $.post('{% url "orders-api-find-supp" %}',
+                {'_JSON_': JSON.stringify({'supp_name': query})},
+                function(res) {
+                    return process(res['supps']);
+                });
+        }
+    };
+    sname.typeahead(options);
+})
 </script>
 
 {% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <form method="post" action="{% url 'orders-csv-export' %}">
+        {% csrf_token %}
+        <table class="table table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th>Lieferung vom</th>
+                    <th>Artikel</th>
+                    <th>Menge</th>
+                    <th>Einheit</th>
+                    <th>Exportieren</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in to_export %}
+                <tr>
+                    <td>{{ t.date|date:'Y-m-d' }}</td>
+                    <td>{{ t.order.article.name }}</td>
+                    <td>{{ t.count }}</td>
+                    <td>{{ t.order.article.quantity }}</td>
+                    <td>
+                        <input type="checkbox" name="export" value="{{ t.id }}" checked>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="form-actions">
+            <button type="submit" class="btn">Jetzt Exportieren</button>
+        </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

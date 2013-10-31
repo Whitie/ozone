@@ -10,7 +10,7 @@ sys.path.insert(0, EXT_DIR)
 
 # Django settings for ozone project.
 
-VERSION = '2.2.4'
+VERSION = '2.99.13'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -21,10 +21,11 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+# Always set this in local_settings.py
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(_PATH, 'ozone.db'),
+        'ENGINE': '',
+        'NAME': '',
         'USER': '',
         'PASSWORD': '',
         'HOST': '',
@@ -93,7 +94,7 @@ STATICFILES_DIRS = (
 )
 
 # URL which holds the logo of the ozone page
-LOGO_URL = STATIC_URL + 'img/logo.png'
+LOGO_URL = STATIC_URL + 'img/bbzlogo.png'
 
 # Session configuration
 SESSION_SAVE_EVERY_REQUEST = True
@@ -141,6 +142,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     # Uncomment the next line to enable the admin:
+    'bootstrap_admin',
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
@@ -148,6 +150,8 @@ INSTALLED_APPS = (
     'active_directory',
     'core',
     'orders',
+    'desktop',
+    'south',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -286,11 +290,11 @@ AD_CACHE_TIME = 8 * 60 * 60
 ###############################################################################
 
 # Latex settings ##############################################################
+# Deprecated (moved to configuration model), will be removed in 3.1
 LATEX = {
     'pdflatex': (r'P:/Portable/latex-portable/miktex-portable/miktex'
                  r'/bin/pdflatex.exe'),
     'options': ['-interaction=nonstopmode'],
-    'outdir': r'C:/Windows/temp',  # Deprecated
     'build_dir': os.path.abspath(os.path.join(_PATH, '..', '_latex_build')),
     'fromfax': u'030 / 6 77 44 53',
     'fromphone': u'030 / 67 00 04-0',
@@ -298,6 +302,8 @@ LATEX = {
     'fromaddress': u'Adlergestell 333, 12489 Berlin',
     'fromlogo': u'P:/container/bbz-tools/ozone/ozone/static/img/bbzlogo.png',
 }
+
+LATEX_BUILD_DIR = os.path.abspath(os.path.join(_PATH, '..', '_latex_build'))
 
 ###############################################################################
 
@@ -309,7 +315,9 @@ try:
     with open(SECRET_FILE) as fp:
         SECRET_KEY = fp.read().strip()
 except IOError:
-    SECRET_KEY = os.urandom(40)
+    # Hack for django 1.5 to ensure only ascii in SECRET_KEY
+    from base64 import b64encode
+    SECRET_KEY = b64encode(os.urandom(50))
     with open(SECRET_FILE, 'w') as fp:
         fp.write(SECRET_KEY)
     try:
@@ -319,16 +327,10 @@ except IOError:
 
 ###############################################################################
 
-# Try to import the production settings
+# Global hacks
+EXCLUDE_FROM_COMPANY_LIST = {'short_name': u'Alle'}
 
-try:
-    from production_settings import *
-except ImportError:
-    print 'No production settings imported.'
-
-# Try to import local (testing) settings
-# Be sure to remove local_settings.py[c] on production environment
-
+# Try to import local settings
 try:
     from local_settings import *
 except ImportError:

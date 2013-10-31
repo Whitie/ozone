@@ -1,0 +1,41 @@
+{% extends "students/add/base.html" %}
+{% load i18n %}
+
+{% block form %}
+<div class="span3 offset2">
+    <fieldset>
+        <legend>{% trans "General" %}</legend>
+        {{ wizard.form.school_education.label_tag }}
+        {{ wizard.form.school_education }}
+        {{ wizard.form.applied_to.label_tag }}
+        {{ wizard.form.applied_to }}
+        {{ wizard.form.forwarded_to.label_tag }}
+        {{ wizard.form.forwarded_to }}
+        {{ wizard.form.jobs.label_tag }}
+        {{ wizard.form.jobs }}
+    </fieldset>
+</div>
+<div class="span3">
+    <fieldset>
+        <legend>{% trans "Test Data" %}</legend>
+        {{ wizard.form.test_result.label_tag }}
+        {{ wizard.form.test_result }}
+        {{ wizard.form.test_date.label_tag }}
+        {{ wizard.form.test_date }}
+        {{ wizard.form.suit_phrase.label_tag }}
+        {{ wizard.form.suit_phrase }}
+    </fieldset>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+$(function() {
+  $('#id_apply-test_date').datepicker({
+    'format': 'dd.mm.yyyy',
+    'weekStart': 1,
+    'viewMode': 'years'
+  });
+});
+</script>
+{% endblock %}

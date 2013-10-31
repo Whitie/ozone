@@ -8,6 +8,12 @@ from core.utils import named
 from core.models import *
 
 
+class ConfigurationAdmin(admin.ModelAdmin):
+    list_display = ('name', 'short_name', 'phone', 'fax', 'pdflatex')
+    list_display_links = ('name',)
+    list_editable = ('short_name', 'phone', 'fax', 'pdflatex')
+
+
 class ContactAdmin(admin.ModelAdmin):
     list_display = ('name_prefix', 'lastname', 'firstname', 'company',
                     'function', 'phone', 'email')
@@ -238,6 +244,26 @@ class JournalMediaAdmin(admin.ModelAdmin):
     list_filter = ('entry',)
 
 
+class AccidentEntryAdmin(admin.ModelAdmin):
+    list_display = ('date_time', 'get_injured', 'place', 'violation',
+        'notify')
+    list_display_links = ('date_time',)
+    list_editable = ('notify', 'violation')
+    list_filter = ('date_time', 'place', 'violation', 'notify')
+    search_fields = ('student__lastname', 'employee__last_name', 'witness',
+        'helper', 'violation', 'violation_def')
+    ordering = ('-date_time', 'place__name')
+
+    @named(_(u'Injured'))
+    def get_injured(self, obj):
+        return unicode(obj.injured)
+
+    def save_model(self, req, obj, form, change):
+        if getattr(obj, 'added_by', None) is None:
+            obj.added_by = req.user
+        obj.save()
+
+
 admin.site.register(News, NewsAdmin)
 admin.site.register(Part, PartAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
@@ -247,7 +273,6 @@ admin.site.register(CooperationContract, CooperationContractAdmin)
 admin.site.register(CompanyRating, CompanyRatingAdmin)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(StudentGroup, StudentGroupAdmin)
-#admin.site.register(Memo, MemoAdmin)
 admin.site.register(PresenceDay, PresenceDayAdmin)
 admin.site.register(Note, NoteAdmin)
 admin.site.register(PresencePrintout, PresencePrintoutAdmin)
@@ -255,4 +280,7 @@ admin.site.register(PDFPrintout)
 admin.site.register(PedagogicJournal, PedagogicJournalAdmin)
 admin.site.register(JournalEntry, JournalEntryAdmin)
 admin.site.register(JournalMedia, JournalMediaAdmin)
+admin.site.register(Configuration, ConfigurationAdmin)
 admin.site.register(InternalHelp)
+admin.site.register(Place)
+admin.site.register(AccidentEntry, AccidentEntryAdmin)

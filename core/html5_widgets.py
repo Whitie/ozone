@@ -6,21 +6,27 @@ from django.forms import fields, widgets
 class SearchInput5(widgets.Input):
     input_type = 'search'
 
+
 class EmailInput5(widgets.Input):
     input_type = 'email'
+
 
 class URLInput5(widgets.Input):
     input_type = 'url'
 
+
 class DateInput5(widgets.DateInput):
     input_type = 'date'
+
 
 class DateTimeInput5(widgets.DateTimeInput):
     input_type = 'datetime'
     format = '%Y-%m-%dT%H:%M:%SZ'
 
+
 class TimeInput5(widgets.TimeInput):
     input_type = 'time'
+
 
 class NumberInput5(widgets.Input):
     input_type = 'number'
@@ -36,19 +42,22 @@ class NumberInput5(widgets.Input):
             attrs['step'] = step
         super(NumberInput5, self).__init__(attrs)
 
+
 class RangeInput5(NumberInput5):
     input_type = 'range'
 
 
 class IntegerField5(fields.IntegerField):
 
-    def __init__(self, max_value=None, min_value=None, step='any', *args, **kw):
+    def __init__(self, max_value=None, min_value=None, step='any',
+                 *args, **kw):
         fields.IntegerField.__init__(self, max_value, min_value, *args, **kw)
         self.widget = NumberInput5(min=min_value, max=max_value, step=step)
 
+
 class IntegerRangeField5(IntegerField5):
 
-    def __init__(self, max_value=None, min_value=None, step='any', *args, **kw):
+    def __init__(self, max_value=None, min_value=None, step='any',
+                 *args, **kw):
         IntegerField5.__init__(self, max_value, min_value, step, *args, **kw)
         self.widget = RangeInput5(min=min_value, max=max_value, step=step)
-

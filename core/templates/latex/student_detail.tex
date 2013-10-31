@@ -1,0 +1,62 @@
+\documentclass[a5paper, oneside, landscape]{scrartcl}
+
+%Standard:
+\usepackage[ngerman]{babel}
+\usepackage[applemac]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{float}
+
+%Einstellung der Seitenränder
+\usepackage[left=1.5cm,right=1.5cm,top=1.2cm,bottom=1.5cm,includeheadfoot]{geometry}
+
+%Kopf- und Fußzeile
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+%Kopfzeile: Fach
+\fancyhead[L]{(( s.lastname|te )), (( s.firstname|te )) Geb. (( birthdate ))}
+
+%Linie oben
+\renewcommand{\headrulewidth}{0.5pt}
+
+%Dokument:
+\begin{document}
+\begin{minipage}{13cm}
+\section*{Kontakt}
+(( s.street|te ))\\
+(( s.zip_code|te )) (( s.city|te ))\\
+Tel. (( s.phone|te ))\\
+Mobil (( s.mobile|te ))\\
+Im Notfall zu benachrichtigen: (( s.emergency|te ))
+
+\section*{bbz}
+Betrieb: (( s.company.name|te ))\\
+Gruppe: (( s.group.name()|te ))\\
+Schrank: (( s.cabinet|te ))\\
+Schl"ussel: (( s.key|te ))
+
+\section*{Bildung}
+Schulbildung: (( s.get_school_education_display()|te ))\\
+Eignung: (( s.get_suit_phrase_display()|te ))
+
+\end{minipage}
+\begin{minipage}{1cm}
+%platz zwischen den minipages
+\end{minipage}
+\begin{minipage}[u]{4cm}
+	(% if s.picture %)
+	\begin{figure}
+		\includegraphics[width=3cm]{(( s.picture.path|pe ))}
+		\caption{(( s.lastname|te )), (( s.firstname|te ))}
+	\end{figure}
+	(% else %)
+	\textbf{Kein Bild vorhanden.}
+	(% endif %)
+	\begin{figure}
+		\includegraphics[width=3cm]{(( s._barcode.path|pe ))}
+		\caption{(( s.barcode|te ))}
+	\end{figure}
+\end{minipage}
+
+\end{document}

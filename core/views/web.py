@@ -4,11 +4,12 @@ import string
 import os
 import time
 
-from datetime import datetime, date, timedelta
+from datetime import date, timedelta
+from json import dumps
 
 from django.http import HttpResponse
 from django.conf import settings
-from django.shortcuts import redirect, get_object_or_404, render
+from django.shortcuts import redirect, get_object_or_404
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
@@ -20,10 +21,12 @@ from django.db.models import Q
 from django.core.exceptions import PermissionDenied
 
 from core import utils
+from core.utils import render
 from core.models import (News, Company, Student, StudentGroup, Contact, Note,
-    UserProfile, PresenceDay, PRESENCE_CHOICES)
+    UserProfile, PresenceDay, PRESENCE_CHOICES, AccidentEntry)
 from core.forms import (NewsForm, SearchForm, StudentSearchForm, NoteForm,
-                        ProfileForm, NewUserForm, ExtendedSearchForm)
+                        ProfileForm, NewUserForm, ExtendedSearchForm,
+                        StudentEditForm, AccidentForm)
 from core.views import helper as h
 from core.menu import menus
 from barcode.codex import Code39
@@ -54,7 +57,7 @@ def index(req):
         news = paginator.page(page)
     except (EmptyPage, InvalidPage):
         news = paginator.page(paginator.num_pages)
-    ctx = dict(page_title=_(u'Ozone Home'), menus=menus, news=news)
+    ctx = dict(page_title=_(u'News'), menus=menus, news=news)
     return render(req, 'index.html', ctx)
 
 
@@ -62,7 +65,8 @@ def index(req):
 def internal_admin(req):
     if not req.user.is_superuser:
         raise PermissionDenied
-    ctx = dict(page_title=_(u'Internal Admin Page'), menus=menus)
+    ctx = dict(page_title=_(u'Internal Admin Page'), menus=menus,
+        need_ajax=True)
     return render(req, 'iadmin.html', ctx)
 
 
@@ -75,7 +79,7 @@ def edit_profile(req):
         messages.success(req, u'Alle Änderungen gespeichert.')
     else:
         form = ProfileForm(instance=profile)
-    ctx = dict(page_title=_(u'My Profile'), menus=menus, form=form)
+    ctx = dict(page_title=_(u'My Profile'), menus=menus, form=form, dp=True)
     return render(req, 'colleagues/profile.html', ctx)
 
 
@@ -84,7 +88,7 @@ def internal_phonelist(req):
     profiles = UserProfile.objects.select_related().filter(external=False
         ).exclude(user__username='admin').order_by('user__last_name')
     ctx = dict(page_title=_(u'Internal Phonelist'), menus=menus,
-        profiles=profiles)
+        profiles=profiles, dt=True)
     return render(req, 'colleagues/phonelist.html', ctx)
 
 
@@ -131,7 +135,8 @@ def add_colleague(req):
             messages.error(req, u'Bitte korrigieren Sie die Eingaben.')
     else:
         form = NewUserForm()
-    ctx = dict(page_title=_(u'Add external'), menus=menus, form=form)
+    ctx = dict(page_title=_(u'Add external'), menus=menus, form=form,
+        dp=True)
     return render(req, 'colleagues/add.html', ctx)
 
 
@@ -140,9 +145,13 @@ def filter_colleagues(req, filter):
     q = UserProfile.objects.select_related().exclude(user__username='admin')
     if filter == 'internal':
         q = q.filter(external=False)
+        ptitle = _(u'Colleagues (internal): {0}')
     elif filter == 'external':
         q = q.filter(external=True)
-    ctx = dict(page_title=_(u'Filter Colleagues'), menus=menus,
+        ptitle = _(u'Colleagues (external): {0}')
+    else:
+        ptitle = _(u'Colleagues (internal and external): {0}')
+    ctx = dict(page_title=ptitle.format(q.count()), menus=menus, dt=True,
         coll=q.order_by('user__last_name'), filter=filter)
     return render(req, 'colleagues/filter.html', ctx)
 
@@ -209,6 +218,10 @@ def do_login(req):
                 p = user.get_profile()
                 if user.is_active and p.can_login:
                     login(req, user)
+                    if user.is_superuser:
+                        count = utils.remove_old_sessions()
+                        messages.success(req,
+                            u'{0} alte Sitzungen gelöscht'.format(count))
                     messages.success(req, u'Login akzeptiert.')
                     return redirect(next_page)
                 else:
@@ -226,12 +239,12 @@ def do_login(req):
 def do_logout(req):
     logout(req)
     messages.success(req, u'Erfolgreich abgemeldet.')
-    return redirect('/')
+    return redirect('core-index')
 
 
 @login_required
-def company_details(req, id):
-    company = Company.objects.get(pk=int(id))
+def company_details(req, company_id):
+    company = Company.objects.get(pk=int(company_id))
     students = company.students.select_related().filter(finished=False
         ).order_by('group__job', 'lastname')
     ctx = dict(page_title=_(u'Details: %s' % company.name), menus=menus,
@@ -259,20 +272,25 @@ def list_companies(req, startchar=''):
         else:
             companies = Company.objects.select_related().filter(
                 name__istartswith=startchar)
-    ctx = dict(page_title=_(u'Companies'), companies=companies, menus=menus,
-        startchar=startchar, chars=string.ascii_uppercase, form=form,
-        single_view=False)
+    companies = companies.exclude(**settings.EXCLUDE_FROM_COMPANY_LIST)
+    ptitle = u'Firmen: {0} ({1})'.format(startchar or '-',
+        companies.count())
+    ctx = dict(page_title=ptitle, companies=companies, menus=menus,
+        chars=string.ascii_uppercase, form=form, single_view=False)
     return render(req, 'companies/list.html', ctx)
 
 
 @login_required
 def list_all_companies(req, only_with_students=False):
-    q = Company.objects.select_related().all().order_by('name')
+    q = Company.objects.select_related().all(
+        ).exclude(**settings.EXCLUDE_FROM_COMPANY_LIST).order_by('name')
     if only_with_students:
-        companie_list = [x for x in q if x.has_students()]
+        company_list = [x for x in q if x.has_students()]
+        title = u'Firmen mit Azubis ({n})'
     else:
-        companie_list = list(q)
-    paginator = Paginator(companie_list, 15)
+        company_list = list(q)
+        title = u'Firmen ({n})'
+    paginator = Paginator(company_list, 15)
     try:
         page = int(req.GET.get('page', '1'))
     except ValueError:
@@ -281,8 +299,9 @@ def list_all_companies(req, only_with_students=False):
         companies = paginator.page(page)
     except (EmptyPage, InvalidPage):
         companies = paginator.page(paginator.num_pages)
-    ctx = dict(page_title=_(u'All Companies'), companies=companies,
-        menus=menus, only_with_students=only_with_students, single_view=False,
+    ctx = dict(page_title=title.format(n=len(company_list)),
+        companies=companies, menus=menus,
+        only_with_students=only_with_students, single_view=False,
         page=page, start=(page - 1) * 15 + 1)
     return render(req, 'companies/list_all.html', ctx)
 
@@ -314,18 +333,16 @@ def list_students(req, startchar='', archive=False):
         else:
             students = Student.objects.select_related().filter(
                 lastname__istartswith=startchar)
-    students = students.filter(finished=archive)
-    for s in students:
-        q = s.presence_days.filter(entry=u'K')
-        s.ill = q.count()
-        s.ex = q.filter(excused=True).count()
-        s.nex = s.ill - s.ex
-        s.all_days = s.presence_days.filter(entry__in=[u'T', u'F', u'K', u'|']
-            ).count()
-    title = _(u'Students Archive') if archive else _(u'Students')
-    ctx = dict(page_title=title, students=students, menus=menus,
+    students = [h.get_presence_details(s) for s in
+                students.filter(finished=archive)]
+    if archive:
+        title = u'Azubis Archiv: {s} ({n})'
+    else:
+        title = u'Azubis: {s} ({n})'
+    ctx = dict(page_title=title.format(s=startchar or '-', n=len(students)),
+        students=students, menus=menus,
         archive=archive, startchar=startchar, chars=string.ascii_uppercase,
-        form=form)
+        form=form, need_ajax=True)
     return render(req, 'students/list.html', ctx)
 
 
@@ -342,15 +359,18 @@ def list_all_students(req):
         students = paginator.page(page)
     except (EmptyPage, InvalidPage):
         students = paginator.page(paginator.num_pages)
-    ctx = dict(page_title=_(u'List of all students'), menus=menus,
-        students=students, page=page, start=(page - 1) * 30 + 1)
+    ctx = dict(page_title=u'Alle Azubis ({0})'.format(
+            students.paginator.count),
+        menus=menus, students=students, page=page, start=(page - 1) * 30 + 1)
     return render(req, 'students/list_all.html', ctx)
 
 
 @login_required
 def search_student(req):
     students = None
+    result = False
     if req.method == 'POST':
+        result = True
         form = ExtendedSearchForm(req.POST)
         if form.is_valid():
             cd = form.cleaned_data
@@ -363,16 +383,27 @@ def search_student(req):
             students = Student.objects.select_related().filter(search)
     else:
         form = ExtendedSearchForm({'search_for_1': u'lastname'})
-    ctx = dict(page_title=_(u'Extended Search'), menus=menus, form=form,
-        students=students)
+    ctx = dict(page_title=_(u'Search Student'), menus=menus,
+        form=form, students=students, result=result, need_ajax=True)
     return render(req, 'students/search.html', ctx)
+
+
+@permission_required('core.change_student')
+def edit_student(req, sid):
+    s = Student.objects.get(id=int(sid))
+    initial = dict(cabinet=s.cabinet, key=s.key, exam_1=s.exam_1,
+        exam_2=s.exam_2, finished=s.finished)
+    form = StudentEditForm(initial=initial)
+    ctx = dict(student=s, form=form)
+    return render(req, 'students/edit_short.html', ctx)
 
 
 @login_required
 def list_groups(req):
     g = StudentGroup.objects.select_related().all()
     groups = [x for x in g if not x.finished()]
-    ctx = dict(page_title=_(u'Groups'), groups=groups, menus=menus)
+    ctx = dict(page_title=_(u'Groups - Overview'), groups=groups, menus=menus,
+        dt=True)
     return render(req, 'students/groups.html', ctx)
 
 
@@ -388,7 +419,12 @@ def group_details(req, gid):
     except StudentGroup.DoesNotExist:
         messages.error(req, u'Gruppe (ID: %d) existiert nicht.' % gid)
         return redirect('core-groups')
-    ctx = dict(page_title=_(u'Group Detail'), group=group, menus=menus)
+    if group.school_nr:
+        ptitle = _(u'Group - {name} ({nr})'.format(name=group.name(),
+            nr=group.school_nr))
+    else:
+        ptitle = _(u'Group - {name}'.format(name=group.name()))
+    ctx = dict(page_title=ptitle, group=group, menus=menus, need_ajax=True)
     return render(req, 'students/group_detail.html', ctx)
 
 
@@ -414,8 +450,8 @@ def presence_overview(req):
             g.pdays = PresenceDay.objects.filter(student__group=g,
                 date__month=last_month, date__year=lyear).exclude(q2).count()
         groups.append((j, gr))
-    ctx = dict(page_title=_(u'Group Overview'), groups=groups, menus=menus,
-        month=last_month, jobs=jobs)
+    ctx = dict(page_title=_(u'Presence Overview'), groups=groups, menus=menus,
+        month=last_month, jobs=jobs, dp=True, dt=True)
     return render(req, 'presence/overview.html', ctx)
 
 
@@ -436,40 +472,24 @@ def presence_for_group(req, gid):
     except StudentGroup.DoesNotExist:
         messages.error(req, u'Gruppe (ID: %d) existiert nicht.' % gid)
         return redirect('core-presence')
-    if end is None:
-        end = date.today()
-    else:
-        try:
-            end = datetime.strptime(end, '%d.%m.%Y').date()
-        except ValueError:
-            messages.error(req, u'Das Enddatum (%r) ist nicht im Format '
-                                u'TT.MM.YYYY.' % end)
-            return redirect('core-presence')
-    if start is None:
-        d = date.today()
-        start = date(d.year, d.month, 1)
-    else:
-        try:
-            start = datetime.strptime(start, '%d.%m.%Y').date()
-        except ValueError:
-            messages.error(req, u'Das Startdatum (%r) ist nicht im Format '
-                                u'TT.MM.YYYY.' % start)
-            return redirect('core-presence')
+    _d = date.today()
+    d = _d - timedelta(days=7)
+    start = utils.get_date(start, d)
+    end = utils.get_date(end, _d)
     if start > end:
         messages.error(req, u'Das Enddatum liegt vor dem Startdatum!')
         return redirect('core-presence')
     req.session['presence_start'] = start
     req.session['presence_end'] = end
     dt = end - start
-    _students = group.students.filter(finished=False).order_by(
-        'company__short_name', 'lastname')
+    _students = h.sort_students_for_presence(group.students)
     students = h.get_presence(_students, start, end)
     days = (start + timedelta(days=x) for x in xrange(dt.days + 1))
-    ctx = dict(page_title=_(u'Presence for Group'), group=group,
-        students=students, menus=menus, start=start, end=end,
+    ctx = dict(page_title=u'Anwesenheit für Gruppe {0}'.format(unicode(group)),
+        group=group, students=students, menus=menus, start=start, end=end,
         days=[x for x in days if x.weekday() not in (5, 6)],
         choices=[x[0] for x in PRESENCE_CHOICES], legend=PRESENCE_CHOICES[1:],
-        today=date.today())
+        today=date.today(), dt=True, need_ajax=True)
     return render(req, 'presence/group.html', ctx)
 
 
@@ -479,9 +499,9 @@ def presence_edit(req, student_id):
     start = req.session.get('presence_start', date.today())
     end = req.session.get('presence_end', date.today())
     student, days = h.get_presence([_student], start, end)[0]
-    ctx = dict(page_title=_(u'Presence for Student'), menus=menus,
-        student=student, days=days, start=start, end=end,
-        choices=PRESENCE_CHOICES)
+    ctx = dict(page_title=u'Anwesenheit - {0}'.format(unicode(student)),
+        menus=menus, student=student, days=days, start=start, end=end,
+        choices=PRESENCE_CHOICES, dt=True, need_ajax=True)
     return render(req, 'presence/edit.html', ctx)
 
 
@@ -492,8 +512,8 @@ def presence_printouts(req, job):
     jobs = StudentGroup.objects.values_list('job', flat=True)
     jobs = list(set(jobs))
     jobs.sort()
-    ctx = dict(page_title=_(u'Presence %s' % job), menus=menus, jobs=jobs,
-        groups=groups)
+    ctx = dict(page_title=u'Anwesenheiten {0}'.format(job),
+        menus=menus, jobs=jobs, groups=groups)
     return render(req, 'presence/list_printouts.html', ctx)
 
 
@@ -503,22 +523,26 @@ def get_next_birthdays(req):
     choice = [7, 14, 30, 90, 180]
     start = date.today()
     today = (start.month, start.day)
+    start = start - timedelta(days=10)
     dates = [start + timedelta(days=x) for x in xrange(days)]
     users = []
     students = []
     for d in dates:
         for p in UserProfile.objects.select_related(
             ).filter(birthdate__month=d.month, birthdate__day=d.day):
-            p.today = (p.birthdate.month, p.birthdate.day) == today
+            p.bsclass = utils.get_birthday_color(
+                (p.birthdate.month, p.birthdate.day), today)
             p.bdate = d
             users.append(p)
         for s in Student.objects.select_related(
             ).filter(birthdate__month=d.month, birthdate__day=d.day):
-            s.today = (s.birthdate.month, s.birthdate.day) == today
+            s.bsclass = utils.get_birthday_color(
+                (s.birthdate.month, s.birthdate.day), today)
             s.bdate = d
             students.append(s)
-    ctx = dict(page_title=_(u'Next Birthdays'), menus=menus, users=users,
-        students=students, choice=choice, days=days, today=start)
+    ctx = dict(page_title=_(u'Birthdays, next {0} days'.format(days)),
+        menus=menus, users=users, students=students, choice=choice, days=days,
+        today=start)
     return render(req, 'colleagues/birthdays.html', ctx)
 
 
@@ -547,8 +571,27 @@ def export_group_excel(req, gid):
         response = HttpResponse(fp.read(), content_type='application/vnd.'
             'openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = 'attachment; filename="{0}.xlsx"'.format(
-        unicode(group))
+        group.name())
     os.remove(dest)
+    return response
+
+
+@login_required
+def export_group_json(req, gid):
+    group = StudentGroup.objects.select_related().get(id=int(gid))
+    exp = dict(job=group.job, name=group.name())
+    students = []
+    for s in group.students.filter(finished=False).order_by('lastname'):
+        students.append({
+            'lastname': s.lastname,
+            'firstname': s.firstname,
+            'birthdate': s.birthdate.strftime('%Y-%m-%d'),
+            'barcode': s.barcode,
+        })
+    exp['students'] = students
+    response = HttpResponse(dumps(exp), content_type='application/json')
+    response['Content-Disposition'] = 'attachment; filename="{0}.json"'.format(
+        group.name())
     return response
 
 
@@ -567,3 +610,102 @@ def barcode(req, format, barcode=''):
     except KeyError:
         return utils.error(req, _('Unsupported barcode format.'))
     return response
+
+
+# Functions for user defined presence list (one per user)
+
+@login_required
+def select_groups(req):
+    jobs = StudentGroup.objects.values_list('job', flat=True)
+    jobs = list(set(jobs))
+    jobs.sort()
+    groups = []
+    for j in jobs:
+        g = StudentGroup.objects.filter(job=j).order_by('-start_date')
+        groups.append((j, [x for x in g if x.active_count()]))
+    profile = req.user.get_profile()
+    config = profile.config()
+    pgroups = config.get('pgroups', [])
+    students = Student.objects.select_related().filter(
+        group__id__in=pgroups, finished=False).order_by(
+            'group__job_short', 'lastname')
+    ctx = dict(page_title=_(u'Edit own presence list'), menus=menus, jobs=jobs,
+        groups=groups, need_ajax=True, students=students)
+    return render(req, 'presence/select_groups.html', ctx)
+
+
+@login_required
+def mystudents(req):
+    profile = req.user.get_profile()
+    config = profile.config()
+    pgroups = config.get('pgroups', [])
+    students = Student.objects.select_related().filter(
+        group__id__in=pgroups, finished=False).order_by(
+            'group__job_short', 'lastname')
+    return render(req, 'presence/studentlist.html', {'students': students})
+
+
+@login_required
+def mypresence(req):
+    if req.method == 'POST':
+        start = req.POST['start'] or None
+        end = req.POST['end'] or None
+    else:
+        start = end = None
+    _d = date.today()
+    d = _d - timedelta(days=7)
+    start = utils.get_date(start, d)
+    end = utils.get_date(end, _d)
+    if start > end:
+        messages.error(req, u'Das Enddatum liegt vor dem Startdatum!')
+        return redirect('core-presence')
+    req.session['presence_start'] = start
+    req.session['presence_end'] = end
+    dt = end - start
+    _studs = h.get_students(req.user)
+    _students = h.sort_students_for_presence(_studs)
+    students = h.get_presence(_students, start, end)
+    days = (start + timedelta(days=x) for x in xrange(dt.days + 1))
+    ctx = dict(page_title=_(u'My Presence'),
+        students=students, menus=menus, start=start, end=end,
+        days=[x for x in days if x.weekday() not in (5, 6)],
+        choices=[x[0] for x in PRESENCE_CHOICES], legend=PRESENCE_CHOICES[1:],
+        today=date.today(), dt=True, need_ajax=True)
+    return render(req, 'presence/group.html', ctx)
+
+
+# Views for accidents
+
+@login_required
+def accidents_index(req):
+    today = date.today()
+    accidents = AccidentEntry.objects.filter(date_time__year=today.year
+        ).order_by('-date_time')
+    ctx = dict(page_title=_(u'Accidents'), subtitle=_(u'This year.'),
+        accidents=accidents, menus=menus, dp=True, need_ajax=True)
+    return render(req, 'accidents/index.html', ctx)
+
+
+@login_required
+def accident_details(req, id):
+    accident = AccidentEntry.objects.select_related().get(pk=int(id))
+    ctx = dict(page_title=_(u'Accident'), ac=accident, menus=menus,
+        subtitle=accident.date_time.strftime(settings.DEFAULT_DATETIME_FORMAT))
+    if accident.is_employee:
+        ctx['pr'] = accident.employee.get_profile()
+    return render(req, 'accidents/details.html', ctx)
+
+
+@login_required
+def accidents_statistics(req):
+    pass
+
+
+@login_required
+def accident_add(req):
+    form = AccidentForm()
+    form.fields['student'].queryset = Student.objects.filter(
+        finished=False).order_by('lastname')
+    form.fields['employee'].queryset = User.objects.exclude(
+        username='admin').order_by('last_name')
+    return render(req, 'accidents/add.html', {'form': form})

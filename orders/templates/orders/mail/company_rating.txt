@@ -1,10 +1,12 @@
-Lieber {{ user.get_profile }},
+Liebe(r) {{ user.get_profile }},
+
 bitte bewerten Sie die folgenden Lieferanten:
     {% for c in user.to_rate %}
     - {{ c.name }} (Letzte Bewertung: {% if c.last_rate %}{{ c.last_rate|date:"d.m.Y" }}{% else %}noch keine{% endif %})
     {% endfor %}
 
-Bewertungen können unter https://archie:8003{% url orders-rating %} gemacht werden.
+Bewertungen können unter http://archie3:8003{% url orders-rating %} gemacht 
+werden.
 
 Dies ist eine automatische Nachricht, bitte nicht direkt darauf antworten.
 

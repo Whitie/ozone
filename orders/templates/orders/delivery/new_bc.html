@@ -1,0 +1,15 @@
+{% load i18n %}
+
+<h3>{% trans "Barcode not known" %} <small>{{ barcode }}</small></h3>
+<form onsubmit="return save_barcode();">
+    <input type="hidden" id="new_bc" value="{{ barcode }}">
+    <label for="new_art">{% trans "Please select article for this barcode or scan next." %}</label>
+    <select size="1" id="new_art">
+        <option value="0">----</option>
+        {% for a in articles %}
+        <option value="{{ a.id }}">{{ a.name}} ({{ a.ident }})</option>
+        {% endfor %}
+    </select>
+    <br>
+    <button type="submit" class="btn">{% trans "Save" %}</button>
+</form>

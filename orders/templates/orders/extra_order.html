@@ -2,26 +2,42 @@
 {% load i18n %}
 
 {% block formtag %}
-<form method="post" action="{% url orders-extra-order %}">
+<form class="form-horizontal" method="post" action="{% url "orders-extra-order" %}">
 {% endblock %}
 {% block formextra %}
-<div style="margin:5px auto;width:10%;text-align:center;">
-<input type="submit" value="{% trans "Order now" %}" />
+</div>
+<div class="row-fluid">
+    <div class="span5 offset2">
+        <button type="submit" class="btn btn-success">
+            {% trans "Order now" %}
+        </button>
+    </div>
 </div>
 </form>
 
 {% if orders %}
-<ul>
-    {% for o in orders %}
-    <li>{{ o }}, {{ o.article.supplier }}</li>
-    {% endfor %}
-</ul>
-<form action="{% url orders-genpdf %}" method="post">
-{% csrf_token %}
-<input type="hidden" name="oday_id" value="{{ oday_id }}" />
-<input type="hidden" name="header" value="Haustechnik" />
-<p><input type="submit" value="{% trans "Generate printouts" %}" /></p>
-</form>
+<div class="row-fluid">
+    <div class="span6">
+        <h3>{% trans "Currently saved orders" %}:</h3>
+        <ol>
+            {% for o in orders %}
+            <li>{{ o }}, {{ o.article.supplier }}</li>
+            {% endfor %}
+        </ol>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span4 offset3">
+        <form action="{% url "orders-genpdf" %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="oday_id" value="{{ oday_id }}">
+            <input type="hidden" name="header" value="Haustechnik">
+            <button type="submit" class="btn">
+                {% trans "Generate printouts" %}
+            </button>
+        </form>
+    </div>
+</div>
 {% endif %}
 
 {% endblock %}

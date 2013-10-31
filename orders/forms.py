@@ -27,24 +27,22 @@ class OrderDayForm(forms.Form):
         coerce=get_user, empty_value=AnonymousUser())
 
 
-class OrderOldForm(forms.Form):
-    article_name = forms.CharField(label=_('Article'), max_length=100)
-    article_id = forms.IntegerField(widget=forms.HiddenInput)
-
-
 class BaseOrderForm(forms.Form):
     count = _wid.IntegerField5(label=_(u'Count'))
     art_name = forms.CharField(label=_(u'Article'), max_length=100)
-    art_supplier_name = forms.CharField(label=_(u'Supplier'), max_length=100)
+    art_supplier_name = forms.CharField(label=_(u'Supplier'), max_length=100,
+        widget=forms.TextInput(attrs={'autocomplete': 'off'}))
     art_supplier_id = forms.IntegerField(widget=forms.HiddenInput)
-    art_id = forms.CharField(label=_(u'Identifier'), max_length=50,
+    art_id = forms.CharField(label=u'Artikelnummer', max_length=50,
         required=False)
     art_q = forms.CharField(label=_(u'Quantity'), max_length=20)
-    art_price = forms.CharField(label=_(u'Price'), required=False)
+    art_price = forms.CharField(label=_(u'Price'), required=False,
+        widget=forms.TextInput(attrs={'autocomplete': 'off'}))
     memo = forms.CharField(label=_(u'Memo'), widget=forms.Textarea,
         required=False)
     exam = forms.BooleanField(label=_(u'Exam'), required=False)
     repair = forms.BooleanField(label=_(u'Repair'), required=False)
+    tox = forms.BooleanField(label=u'Muss in Toxolution', required=False)
 
 
 class OrderForm(BaseOrderForm):

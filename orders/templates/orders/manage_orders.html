@@ -3,87 +3,88 @@
 {% load staticfiles %}
 
 {% block content %}
-<h2 class="headline">{% trans "Select Order Day" %}</h2>
-<div style="text-align:center;">
-<form action="{% url orders-manage %}" method="post">
-{% csrf_token %}
-<p>{% trans "Please select the order day do you want to edit" %}:
-    <select name="oday" size="1">
-        {% for o in odays %}
-        <option value="{{ o.id }}">{{ o }}</option>
-        {% endfor %}
-    </select>
-    <input type="submit" value="{% trans "Select" %}" />
-</p>
-</form>
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <form class="form-inline" action="{% url "orders-manage" %}" method="post">
+            {% csrf_token %}
+            <legend>{% trans "Select Order Day" %}</legend>
+            <label for="select_oday">
+                {% trans "Please select the order day do you want to edit" %}:
+            </label>
+            <select name="oday" size="1" id="select_oday">
+                {% for o in odays %}
+                <option value="{{ o.id }}">{{ o }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn">{% trans "Select" %}</button>
+        </form>
+        <hr>
+    </div>
 </div>
-<hr />
-<div style="text-align:center;">
-<a href="{% url orders-add-oday %}">{% trans "Add new orderday" %}</a> |
-<a href="{% url orders-list-printouts %}">{% trans "List of all printouts" %}</a>
+
+<div class="row-fluid">
+    <div class="span8 offset1 centered">
+        <a class="btn btn-success" href="{% url "orders-add-oday" %}">{% trans "Add new orderday" %}</a>
+        <a class="btn btn-primary" href="{% url "orders-list-printouts" %}">{% trans "List of all printouts" %}</a>
+        <hr>
+    </div>
 </div>
-<hr />
-<h2 class="headline">{% trans "Select Representative" %}</h2>
-<div id="update_message"></div>
-<div style="text-align:center;">
-<table style="border:1px solid blue;margin:5px auto;">
-    <tr>
-        {% if perms.orders.can_order %}
-        <th>{% trans "Make orders" %}:</th>
-        {% endif %}
-        {% if perms.order.can_change_orderstate %}
-        <th>{% trans "Accept / Reject orders" %}:</th>
-        {% endif %}
-    </tr>
-    <tr>
-        {% if perms.orders.can_order %}
-        <td>
+
+<div class="row-fluid">
+    <div class="span4 offset1">
+        <h3>{% trans "Select Representatives" %}</h3>
+    </div>
+</div>
+
+<div class="row-fluid">
+    {% if perms.orders.can_order %}
+    <div class="span4 offset1">
+        <form>
+            <legend>{% trans "Make orders" %}:</legend>
             <select name="can_order" id="can_order" size="5" multiple="multiple">
                 {% for ou in users %}
                 <option value="{{ ou.id }}"{% if ou.username in can_order %}
                     selected="selected"{% endif %}>{{ ou.get_profile }}</option>
                 {% endfor %}
             </select>
-        </td>
-        {% endif %}
-        {% if perms.order.can_change_orderstate %}
-        <td>
+            <div class="form-actions">
+                <button type="button" class="btn btn-warning" onclick="save_changes('can_order');">
+                    <i class="icon-white icon-check"> </i> {% trans "Save" %}
+                </button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+    {% if perms.order.can_change_orderstate %}
+    <div class="span4 offset1">
+        <form>
+            <legend>{% trans "Accept / Reject orders" %}:</legend>
             <select name="can_change_orderstate" id="can_change_orderstate" size="5" multiple="multiple">
                 {% for cu in users %}
                 <option value="{{ cu.id }}"{% if cu.username in can_change %}
                     selected="selected"{% endif %}>{{ cu.get_profile }}</option>
                 {% endfor %}
             </select>
-        </td>
-        {% endif %}
-    </tr>
-    <tr>
-        {% if perms.orders.can_order %}
-        <td>
-            <input type="button" value="{% trans "Save" %}" onclick="save_changes('can_order');" />
-        </td>
-        {% endif %}
-        {% if perms.order.can_change_orderstate %}
-        <td>
-            <input type="button" value="{% trans "Save" %}" onclick="save_changes('can_change_orderstate');" />
-        </td>
-        {% endif %}
-    </tr>
-</table>
+            <div class="form-actions">
+                <button type="button" class="btn btn-warning" onclick="save_changes('can_change_orderstate');">
+                    <i class="icon-white icon-check"> </i> {% trans "Save" %}
+                </button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
 </div>
+{% endblock %}
 
+{% block additional_js %}
 <script type="text/javascript">
 function save_changes(action_type) {
     var users = $('#'+action_type).val() || [];
-    var url = '{% url orders-api-repr %}';
+    var url = '{% url "orders-api-repr" %}';
     var dat = {'type': action_type, 'users': users};
     $.post(url, dat, function(data) {
-        $('#update_message').text(data['msg']).toggle('slow');
-        setTimeout(function() {
-                $('#update_message').text('').toggle('slow');
-            }, 5000);
+        add_update_message(data['msg']);
     });
 }
 </script>
-
 {% endblock %}

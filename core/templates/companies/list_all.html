@@ -1,66 +1,89 @@
 {% extends "index.html" %}
+{% load url from future %}
 {% load i18n %}
 {% load ozone_tags %}
 
 {% block content %}
-<h2 class="headline">
-{% if only_with_students %}
-  {% trans "Companies with students" %}
-{% else %}
-  {% trans "Companies" %}
-{% endif %} ({{ companies.paginator.count }})
-</h2>
+<div class="row-fluid">
+    <div class="offset2 span6 centered">
+    {% if not only_with_students %}
+        <a class="btn btn-mini btn-primary" href="{% url "core-companies-with-students" %}">
+            {% trans "List only companies with students" %}
+        </a>
+    {% else %}
+        <a class="btn btn-mini btn-primary" href="{% url "core-companies-all" %}">
+            {% trans "Show all companies" %}
+        </a>
+    {% endif %}
 
-<div style="width:60%;text-align:center;margin:5px auto;">
-{% if not only_with_students %}
-<a href="{% url core-companies-with-students %}">
-  {% trans "List only companies with students" %}</a>
-{% else %}
-<a href="{% url core-companies-all %}">
-  {% trans "Show all companies" %}</a>
-{% endif %}
-{% if companies.paginator.num_pages > 1 %}
-<form action="" method="get">
-<p>{% trans "Go to page" %}: <select name="page" size="1">
-    {% for num in companies.paginator.page_range %}
-    <option value="{{ num }}"{% if page == num %} selected="selected"{% endif %}>{{ num }}</option>
-    {% endfor %}
-    </select>
-    <input type="submit" value="{% trans "go" %}" />
-</p>
-</form>
-{% endif %}
+    {% if companies.paginator.num_pages > 1 %}
+        <div class="btn-group">
+            <a class="btn btn-mini btn-info dropdown-toggle" data-toggle="dropdown" href="#">
+                {% trans "Go to page" %} <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                {% for num in companies.paginator.page_range %}
+                <li{% if page == num %} class="disabled"{% endif %}>
+                    <a href="?page={{ num }}">{{ num }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    </div>
 </div>
 
-{% if companies %}
-<div id="accordion" style="width:60%;margin:0px auto;">
-  {% for i, c in companies|enumerate:start %}
-  <h3><a href="#">{{ i }}) {{ c }}</a></h3>
-  <div class="details">{% include "companies/details.html" %}</div>
-  {% endfor %}
+<div class="row-fluid">
+    <div class="offset2 span6">
+        {% if companies %}
+        <div id="accordion1" class="accordion">
+            {% for i, c in companies|enumerate:start %}
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse{{ i }}">
+                        {{ i }}. {{ c.short_name }}
+                    </a>
+                </div>
+                <div id="collapse{{ i }}" class="accordion-body collapse{% if forloop.first %} in{% endif %}">
+                    <div class="accordion-inner">
+                        {% if not single_view %}
+                        <a class="btn btn-mini btn-primary" href="{% url "core-company-detail" c.id %}">
+                        {% trans "Open on separate page" %}</a>
+                        {% endif %}
+                        {% include "companies/details.html" %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="well centered">
+            <h3>{% trans "No companies found." %}</h3>
+        </div>
+        {% endif %}
+    </div>
 </div>
-<div style="text-align:center;"><p>
-    {% if companies.has_previous %}
-    <a href="?page={{ companies.previous_page_number }}">{% trans "Previous page" %}</a>
-    {% endif %}
-    {% trans "Page" %} {{ companies.number }} {% trans "of" %} {{ companies.paginator.num_pages }}.
-    {% if companies.has_next %}
-    <a href="?page={{ companies.next_page_number }}">{% trans "Next page" %}</a>
-    {% endif %}
-</p></div>
-{% else %}
-<h3>{% trans "No companies found." %}</h3>
-{% endif %}
 
-<script type="text/javascript">
-$(document).ready(function(){
-  $("#accordion").accordion({
-    animated: 'bounceslide',
-    collapsible: true,
-    heightStyle: 'content',
-    active: false
-  });
-});
-</script>
+{% if companies.has_other_pages %}
+<div class="row-fluid">
+    <div class="span6 offset2">
+        <ul class="pager">
+            <li class="previous{% if not companies.has_previous %} disabled{% endif %}">
+                <a href="?page={{ companies.previous_page_number }}">&larr; {% trans "Back" %}</a>
+            </li>
+            <li class="next{% if not companies.has_next %} disabled{% endif %}">
+                <a href="?page={{ companies.next_page_number }}">{% trans "Next" %} &rarr;</a>
+            </li>
+        </ul>
+    </div>
+</div>
+{% endif %}
+<div class="row-fluid">
+    <div class="span6 offset2 centered">
+        <span class="badge badge-info">
+            {% trans "Page" %} {{ companies.number }} {% trans "of" %} {{ companies.paginator.num_pages }}
+        </span>
+    </div>
+</div>
 
 {% endblock %}

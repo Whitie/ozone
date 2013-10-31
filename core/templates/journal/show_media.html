@@ -3,18 +3,16 @@
 {% load staticfiles %}
 
 {% block content %}
-<h2 class="headline">{% trans "Media for Entry ID" %}: {{ entry.id }}</h2>
-<p>{% if entry.event %}{{ entry.event }}: {% endif %}{{ entry.text }}</p>
-<p>{% trans "By" %}: {{ entry.created_by.get_profile }}</p>
-{% for m in entry.media.all %}
-<h3><a href="{{ m.media.url }}" title="{% trans "Click to download" %}">
-{{ m.media.name }}</a> ({{ m.media.size }} Bytes)</h3>
-{{ m.get_html_tag }}
-{% endfor %}
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <p>{% if entry.event %}<strong>{{ entry.event }}:</strong> {% endif %}{{ entry.text }}</p>
+        <p><strong>{% trans "By" %}:</strong> {{ entry.created_by.get_profile }}</p>
+        {% for m in entry.media.all %}
+        <h3><a href="{{ m.media.url }}" title="{% trans "Click to download" %}" class="tt">
+        {{ m.media.name }}</a> ({{ m.media.size }} Bytes)</h3>
+        {{ m.get_html_tag }}
+        {% endfor %}
+    </div>
+</div>
 
-<script type="text/javascript">
-$(function() {
-    $(document).tooltip();
-})
-</script>
 {% endblock %}

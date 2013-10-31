@@ -38,7 +38,7 @@
         {% for c in companies %}
         <tr>
             <td title="{{ c.short_name }}">{% if perms.core.summarize %}
-                <a href="{% url orders-rate c.id %}">{{ c.name }}</a>{% else %}{{ c.name }}{% endif %}
+                <a href="{% url "orders-rate" c.id %}">{{ c.name }}</a>{% else %}{{ c.name }}{% endif %}
             </td>
             <td>{{ c.raterlist|join:", " }}</td>
             <td title="{% trans "All ratings" %}: {{ c.whole_ratings }}">
@@ -73,7 +73,7 @@ $(document).ready(function() {
   });
 });
 function rating_pdf() {
-    $.post('{% url orders-pdf-rating-printout %}', function(ret_data) {
+    $.post('{% url "orders-pdf-rating-printout" %}', function(ret_data) {
         var s = '<a href="'+ret_data['url']+'">'+ret_data['filename']
                +' ('+ret_data['size']+' Bytes)</a>';
         $('#pdf_printout').append(s);
@@ -81,7 +81,7 @@ function rating_pdf() {
 }
 function take_rating(cid, rating) {
     var post_data = {'company_id': parseInt(cid), 'rating': rating};
-    $.post('{% url orders-api-takerating %}',
+    $.post('{% url "orders-api-takerating" %}',
         {'_JSON_': JSON.stringify(post_data)},
         function(data) {
             $('#update_message').text(data['msg']).toggle('slow');

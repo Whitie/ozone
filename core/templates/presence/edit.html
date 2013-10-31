@@ -1,75 +1,79 @@
 {% extends "index.html" %}
+{% load url from future %}
 {% load i18n %}
-{% load staticfiles %}
 
 {% block content %}
-<h2 class="headline">{% trans "Presence" %} - {{ student }}</h2>
-<h2 class="headline">
-  {{ start|date:"DATE_FORMAT" }} - {{ end|date:"DATE_FORMAT" }}
-</h2>
-
-<div style="margin:5px auto;text-align:center;width:75%;">
-<table id="dataTable">
-    <thead>
-        <tr>
-            <th>{% trans "Date" %}</th>
-            <th>{% trans "Presence" %}</th>
-            <th>{% trans "Lateness" %}</th>
-            <th>{% trans "Note" %}</th>
-            <th>{% trans "Last change by" %}</th>
-            <th>{% trans "State" %}</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for d in days %}
-        <form>
-        <tr>
-            <td>{{ d.date|date:"SHORT_DATE_FORMAT" }}</td>
-            <td>
-                <select id="presence_{{ d.id }}" size="1" onchange="update_day({{ d.id }});">
-                {% for s, l in choices %}<option value="{{ s }}"{% if s == d.entry %} selected="selected"{% endif %}>{{ s }} ({{ l }})</option>{% endfor %}
-                </select>
-            </td>
-            <td>
-                <input style="text-align:right;{% if d.lateness %}border:1px solid red;{% endif %}" type="text" size="2" maxlength="3"
-                    id="lateness_{{ d.id }}" onchange="lateness_changed({{ d.id }});" {% if d.lateness %}value="{{ d.lateness }}" {% endif %}/>
-            </td>
-            <td><input type="text" size="25" maxlength="25" id="note_{{ d.id }}" value="{{ d.note }}" onchange="update_day({{ d.id }});" /></td>
-            <td id="instructor_{{ d.id }}">{{ d.instructor.get_profile|default:"-" }}</td>
-            <td style="color:green;font-weight:bold;" id="state_{{ d.id }}"></td>
-        </tr>
-        </form>
-        {% endfor %}
-    </tbody>
-</table>
-</form>
-<form action="{% url core-presence-group student.group.id %}" method="post">
-{% csrf_token %}
-<input type="hidden" name="start" value="{{ start|date:"d.m.Y" }}" />
-<input type="hidden" name="end" value="{{ end|date:"d.m.Y" }}" />
-<input type="submit" value="{% trans "Back" %}" />
-</form>
+<div class="row-fluid">
+    <div class="span8 offset1 centered" id="head">
+        <h3>{{ start|date:"DATE_FORMAT" }} - {{ end|date:"DATE_FORMAT" }}</h3>
+    </div>
 </div>
 
+<div class="row-fluid">
+    <div class="span8 offset1 centered">
+        <table class="dTable table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>{% trans "Date" %}</th>
+                    <th>{% trans "Presence" %}</th>
+                    <th>{% trans "Lateness" %}</th>
+                    <th>{% trans "Note" %}</th>
+                    <th>{% trans "Last change by" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for d in days %}
+                <form>
+                <tr>
+                    <td>{{ d.date|date:"SHORT_DATE_FORMAT" }}</td>
+                    <td>
+                        <select id="presence_{{ d.id }}" size="1" onchange="update_day({{ d.id }});">
+                        {% for s, l in choices %}<option value="{{ s }}"{% if s == d.entry %} selected="selected"{% endif %}>{{ s }} ({{ l }})</option>{% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <input class="input-mini" style="text-align:right;{% if d.lateness %}border:1px solid red;{% endif %}" type="text" size="2" maxlength="3"
+                            id="lateness_{{ d.id }}" onchange="lateness_changed({{ d.id }});" {% if d.lateness %}value="{{ d.lateness }}" {% endif %}/>
+                    </td>
+                    <td><input type="text" size="25" maxlength="25" id="note_{{ d.id }}" value="{{ d.note }}" onchange="update_day({{ d.id }});" /></td>
+                    <td id="instructor_{{ d.id }}">{{ d.instructor.get_profile|default:"-" }}</td>
+                </tr>
+                </form>
+                {% endfor %}
+            </tbody>
+        </table>
+        <form action="{% url "core-presence-group" student.group.id %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="start" value="{{ start|date:"d.m.Y" }}" />
+            <input type="hidden" name="end" value="{{ end|date:"d.m.Y" }}" />
+            <input class="btn btn-info" type="submit" value="{% trans "Back" %}" />
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
 <script>
-$(document).ready(function() {
-  var oTable = $('#dataTable').dataTable({
-    "bJQueryUI": true,
-    "bPaginate": false,
-    "oLanguage": {
-      "sUrl": "{% static "i18n/de_DE.txt" %}"
-    }
-  });
-  $('a[title]').qtip();
+$(function() {
+    datatable_options['bPaginate'] = false;
+    datatable_options['bSort'] = false;
+    datatable_options['bFilter'] = false;
+    $('.dTable').each(function() {
+        var t = $(this);
+        t.dataTable(datatable_options);
+    });
 });
 
 function update_day(did) {
+    var msg = '<div class="alert alert-success saved">'+
+              '<button type="button" class="close" data-dismiss="alert">&times;</button>'+
+              '{% trans "Saved" %}</div>';
     var entry = $('#presence_'+did+' :selected').val();
     var late = $('#lateness_'+did).val();
     var note = $('#note_'+did).val();
     json_data = {'day_id': did, 'entry': entry, 'lateness': parseInt(late),
                  'note': note};
-    $.post('{% url core-api-presence-update-day %}',
+    $.post('{% url "core-api-presence-update-day" %}',
         {'_JSON_': JSON.stringify(json_data)},
         function(ret_data) {
             $('#instructor_'+did).text(ret_data['instructor']);
@@ -79,16 +83,16 @@ function update_day(did) {
                 } else {
                     $('#lateness_'+did).css('border', '');
                 }
-                $('#state_'+did).text('{% trans "Saved" %}');
+                $('#head').append(msg);
                 setTimeout(function() {
-                    $('#state_'+did).text('');
-                }, 2000);
+                    $('.saved').alert('close');
+                }, 5000);
             }
         });
 }
 
 function lateness_changed(did) {
-    $('#presence_'+did+'').val('*').attr('selected', 'selected');
+    $('#presence_'+did+'').val('A').attr('selected', 'selected');
     update_day(did);
 }
 </script>

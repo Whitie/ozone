@@ -5,10 +5,12 @@ syntax: glob
 *.db
 *.geany
 *.komodo*
-*.secret
+*.secr*
+*.dir*
 *.pdf
 *.aux
 *.log
+.directory
 log/*
 build/*
 ozone/media/*

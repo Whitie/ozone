@@ -1,0 +1,53 @@
+{% extends "students/add/base.html" %}
+{% load i18n %}
+
+{% block form %}
+<div class="span3 offset2">
+    <fieldset>
+        <legend>{% trans "Personal Data" %}</legend>
+        <label for="{{ wizard.form.sex.auto_id }}">
+            <strong>{{ wizard.form.sex.label }}</strong>
+        </label>
+        {{ wizard.form.sex }}
+        <label for="{{ wizard.form.lastname.auto_id }}">
+            <strong>{{ wizard.form.lastname.label }}</strong>
+        </label>
+        {{ wizard.form.lastname }} {{ wizard.form.lastname.errors }}
+        <label for="{{ wizard.form.firstname.auto_id }}">
+            <strong>{{ wizard.form.firstname.label }}</strong>
+        </label>
+        {{ wizard.form.firstname }} {{ wizard.form.firstname.errors }}
+        <label for="{{ wizard.form.birthdate.auto_id }}">
+            <strong>{{ wizard.form.birthdate.label }}</strong>
+        </label>
+        {{ wizard.form.birthdate }} {{ wizard.form.birthdate.errors }}
+        {{ wizard.form.emergency.label_tag }}
+        {{ wizard.form.emergency }}
+    </fieldset>
+</div>
+<div class="span3">
+    <fieldset>
+        <legend>{% trans "Contact Data" %}</legend>
+        {{ wizard.form.street.label_tag }}
+        {{ wizard.form.street }}
+        {{ wizard.form.zip_code.label_tag }}
+        {{ wizard.form.zip_code }}
+        {{ wizard.form.city.label_tag }}
+        {{ wizard.form.city }}
+        {{ wizard.form.country.label_tag }}
+        {{ wizard.form.country }}
+    </fieldset>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+$(function() {
+  $('#id_personal-birthdate').datepicker({
+    'format': 'dd.mm.yyyy',
+    'weekStart': 1,
+    'viewMode': 'years'
+  });
+});
+</script>
+{% endblock %}

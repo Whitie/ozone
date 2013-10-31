@@ -3,6 +3,7 @@
 from decimal import Decimal
 from smtplib import SMTPException
 
+from django.db.models import Q
 from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
 from django.contrib.auth.models import User
@@ -12,7 +13,7 @@ from django.template.loader import get_template
 
 from core.utils import json_view, json_rpc
 from core.models import Company
-from orders.models import Order, Article, DeliveredOrder
+from orders.models import Order, Article, DeliveredOrder, OrderDay
 from orders.views import helper as h
 
 
@@ -20,8 +21,11 @@ from orders.views import helper as h
 def update_article_count(req, order_id, count):
     order_id, count = int(order_id), int(count)
     order = Order.objects.select_related().get(id=order_id)
+    price = order.article.price
     old_count = order.count
     order.count = count
+    new_price = count * price
+    price_diff = new_price - old_count * price
     try:
         u = order.users.get(id=req.user.id)
     except:
@@ -33,15 +37,21 @@ def update_article_count(req, order_id, count):
     if u is None:
         msg.append(u'Benutzer %s wurde hinzugefügt.' % req.user.username)
     user = [x.username for x in order.users.all()]
-    return dict(msg=u' '.join(msg), user=u', '.join(user))
+    return dict(msg=u' '.join(msg), user=u', '.join(user),
+        price_diff=float(price_diff), new_price=float(new_price))
 
 
 @json_view
 def get_articles(req):
     term = req.GET.get('term')
-    articles = [{'value': x.id, 'label': x.name, 'desc': x.short_desc()}
-                for x in Article.objects.filter(
-                    name__icontains=term).order_by('name')]
+    query = Q(name__icontains=term) | Q(barcode__istartswith=term)
+    query |= Q(ident__istartswith=term)
+    articles = [{
+        'value': x.id,
+        'label': u'{0} ({1}, {2})'.format(x.name, x.ident, x.barcode),
+        'desc': x.short_desc()
+        } for x in Article.objects.filter(query).order_by('name')
+    ]
     return articles
 
 
@@ -51,6 +61,16 @@ def get_suppliers(req):
     sup = [{'value': x.id, 'label': x.name} for x in Company.objects.filter(
         name__icontains=term, rate=True).order_by('name')]
     return sup
+
+
+@require_POST
+@json_rpc
+def find_supplier(req, data):
+    s = data['supp_name']
+    supps = Company.objects.filter(
+        Q(name__istartswith=s) | Q(name__icontains=s) | Q(name__iendswith=s)
+    ).values_list('name', flat=True).order_by('name')
+    return dict(supps=list(supps))
 
 
 @json_view
@@ -100,6 +120,7 @@ def change_order(req, data):
     except Company.DoesNotExist:
         supplier = None
     article = order.article
+    old_price = article.price * order.count
     try:
         price = Decimal(data['price'].replace(u',', u'.'))
         article.name = data['art_name']
@@ -112,20 +133,42 @@ def change_order(req, data):
     article.save()
     order.count = data['count']
     order.save()
+    diff = article.price * order.count - old_price
     msg = (u'Alle Änderungen an Bestellung: %(name)s (ID: %(id)d) '
            u'gespeichert.' % {'name': article.name, 'id': order.id})
-    return {'msg': msg}
+    return dict(msg=msg, diff=float(diff))
+
+
+def _send_status_mail(user, order, template):
+    for u in order.users.all():
+        if u.email:
+            tpl = get_template('orders/mail/' + template)
+            ctx = dict(user=user, order=order, orderer=u)
+            body = tpl.render(Context(ctx))
+            send_mail(u'Statusänderung Ihrer Bestellung',
+                body, 'dms@bbz-chemie.de', [u.email], fail_silently=False)
 
 
 @require_POST
 @json_rpc
 def update_state(req, data):
     order = Order.objects.select_related().get(id=data['order_id'])
+    old_state = order.state
     order.state = data['state']
     order.save()
+    if old_state == u'rejected' and order.state in (u'new', u'accepted'):
+        diff = order.count * order.article.price
+    elif old_state in (u'new', u'accepted') and order.state == u'rejected':
+        diff = order.count * order.article.price * -1
+        try:
+            _send_status_mail(req.user, order, u'order_rejected.txt')
+        except Exception as e:
+            print e
+    else:
+        diff = 0.0
     msg = (u'Status für %(art)s auf %(state)s gesetzt.' %
-           {'art': order.article.name, 'state': order.state})
-    return {'msg': msg}
+           {'art': order.article.name, 'state': order.get_state_display()})
+    return dict(msg=msg, new_state=order.state, diff=float(diff))
 
 
 @require_POST
@@ -191,3 +234,43 @@ def check_supplier_id(req, data):
         return dict(result=True)
     except Company.DoesNotExist:
         return dict(result=False)
+
+
+@require_POST
+@json_rpc
+def delete_order(req, data):
+    order = Order.objects.get(id=data['oid'])
+    try:
+        order.delete()
+        msg = u''
+        ok = True
+    except Exception as e:
+        msg = u'Fehler beim Löschen: {0}'.format(unicode(e))
+        ok = False
+    return dict(msg=msg, ok=ok)
+
+
+@json_rpc
+def save_barcode(req, data):
+    try:
+        article = Article.objects.get(id=data['art_id'])
+        article.barcode = data['barcode']
+        article.save()
+        return dict(msg=u'Barcode {0} gespeichert für Artikel {1}.'.format(
+            article.barcode, article.name), saved=True)
+    except Article.DoesNotExist:
+        return dict(msg=u'Fehler! Barcode konnte nicht gespeichert werden.',
+            saved=False)
+
+
+@json_rpc
+def move_order(req, data):
+    new_oday = OrderDay.objects.get(id=data['oday_id'])
+    order = Order.objects.select_related().get(id=data['oid'])
+    old_oday = order.order_day
+    order.order_day = new_oday
+    order.state = u'new'
+    order.save()
+    order.old_oday = old_oday
+    _send_status_mail(req.user, order, 'order_moved.txt')
+    return dict()

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import date
+from decimal import Decimal
 
 from django.db import models
 from django.conf import settings
@@ -40,10 +41,14 @@ class Article(models.Model):
         blank=True, null=True)
     ident = models.CharField(_(u'Identifier'), max_length=50,
         help_text=_(u'Article number'), blank=True)
-    barcode = models.CharField(_(u'Barcode'), max_length=40, blank=True)
+    barcode = models.CharField(_(u'Barcode'), max_length=40, blank=True,
+        help_text=(u'Achtung, Strichcode über Scanner immer als Letztes '
+            u'eingeben.'))
     quantity = models.CharField(_(u'Quantity'), max_length=20, blank=True)
     price = models.DecimalField(_(u'Price'), max_digits=8, decimal_places=2,
-        blank=True)
+        blank=True, null=True, default=Decimal())
+    tox_control = models.BooleanField(u'Von Toxolution kontrolliert',
+        default=True)
 
     def __unicode__(self):
         return u'{0} ({1})'.format(self.name, self.short_desc())
@@ -77,9 +82,17 @@ class Cost(models.Model):
         verbose_name_plural = _(u'Costs')
 
 
-STATE_CHOICES = ((u'new', _(u'New')), (u'accepted', _(u'Accepted')),
-    (u'rejected', _(u'Rejected')), (u'ordered', _(u'Ordered')),
-    (u'delivered', _(u'Delivered')))
+STATE_CHOICES = ((u'new', u'Neu'), (u'accepted', u'Akzeptiert'),
+    (u'rejected', u'Zurückgewiesen'), (u'ordered', u'Bestellt'),
+    (u'delivered', u'Geliefert'))
+
+_mapper = dict(
+    new=(u'success', u'icon-plus'),
+    accepted=(u'primary', u'icon-ok'),
+    rejected=(u'danger', u'icon-ban-circle'),
+    ordered=(u'info', u'icon-shopping-cart'),
+    delivered=(u'inverse', u'icon-inbox'),
+)
 
 
 class Order(models.Model):
@@ -112,7 +125,10 @@ class Order(models.Model):
             return 0.0
 
     def state_icon(self):
-        return u'{0}img/{1}.png'.format(settings.STATIC_URL, self.state)
+        return _mapper[self.state][1]
+
+    def state_btn(self):
+        return _mapper[self.state][0]
 
     def is_complete(self):
         delivered = sum([x.count for x in
@@ -136,6 +152,8 @@ class DeliveredOrder(models.Model):
     count = models.PositiveIntegerField(_(u'Count'))
     date = models.DateField(_(u'Date'), auto_now_add=True)
     user = models.ForeignKey(User, verbose_name=_(u'User'))
+    exported = models.BooleanField(u'Nach Toxolution exportiert',
+        default=False)
 
     def __unicode__(self):
         return u'{0}x {1} {2}'.format(self.count,

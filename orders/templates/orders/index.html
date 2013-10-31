@@ -2,18 +2,90 @@
 {% load i18n %}
 
 {% block content %}
-<h2 class="headline">{% trans "Next order days" %}</h2>
-<ul>
-    {% for d in odays %}
-    <li{% if forloop.first %} style="font-weight:bold;" {% endif %}> 
-        <a href="{% url orders-detail d.id %}" title="{% trans "Click for details." %}">
-        {{ d.day|date:"DATE_FORMAT" }}</a>,
-        {% trans "Responsible user" %}: {{ d.user.get_profile }},
-        {% trans "Open orders" %}: {{ d.orders.count }}
-    </li>
-    {% empty %}
-    <li>{% trans "No order day found." %}</li>
-    {% endfor %}
-</ul>
+{% if perms.orders.can_order %}
+<div class="row-fluid">
+    <div class="span10 centered">
+        <a class="btn btn-success" href="{% url "orders-add-oday" %}">
+            {% trans "Add new order day" %}
+        </a>
+        <br><br>
+    </div>
+</div>
+{% endif %}
+<div class="row-fluid">
+    <div class="span6 offset2">
+        {% if odays %}
+        <table class="table table-striped">
+            <tr>
+                <th>{% trans "Date" %}</th>
+                <th>{% trans "Responsible user" %}</th>
+                <th>{% trans "Open orders" %}</th>
+            </tr>
+            {% for d in odays %}
+            <tr>
+                <td>
+                    <a class="btn btn-mini btn-info tt" href="{% url "orders-detail" d.id %}" title="{% trans "Click for details." %}">
+                        {{ d.day|date:"DATE_FORMAT" }}
+                    </a>
+                </td>
+                <td>{{ d.user.get_profile }}</td>
+                <td style="text-align:center;">{{ d.orders.count }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <div class="well well-small">
+            <h3>{% trans "No order day found." %}</h3>
+        </div>
+        {% endif %}
+    </div>
+    <div class="span2 offset1">
+        <div class="well centered">
+            <h3>{% trans "Feeds" %}</h3>
+            <p class="text-right">
+                <a href="{% url "orders-feed-latest" %}">
+                    {% trans "Latest Orders" %}
+                </a>
+            </p>
+            {% if user.is_authenticated %}
+            <p class="text-right">
+                <a href="{% url "orders-feed-latest-delivery" user.id %}">
+                    {% trans "My Latest Deliveries" %}
+                </a>
+            </p>
+            {% endif %}
+            <p class="text-right">
+                <a href="{% url "orders-feed-latest-delivery" %}">
+                    {% trans "Latest Deliveries" %}
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+
+{% if deliveries %}
+<div class="row-fluid">
+    <div class="span6 offset2">
+        <h3>
+            {% trans "Last deliveries" %}
+            {% if user.is_authenticated %}{% trans "for" %} {{ user.get_profile }}{% endif %}
+        </h3>
+        <table class="table table-striped">
+            <tr>
+                <th>{% trans "Date" %}</th>
+                <th>{% trans "Article" %}</th>
+                <th>{% trans "Delivered" %}</th>
+            </tr>
+            {% for d in deliveries %}
+            <tr>
+                <td>{{ d.date|date:"DATE_FORMAT" }}</td>
+                <td>{{ d.order.count }}x {{ d.order.article }}</td>
+                <td style="text-align:center;">{{ d.count }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endif %}
 {% endblock %}
 

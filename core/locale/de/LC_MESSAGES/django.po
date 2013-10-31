@@ -5,987 +5,1045 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Ozone 2.0.1\n"
+"Project-Id-Version: Ozone 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-16 09:07+0100\n"
-"PO-Revision-Date: 2013-01-16 08:50+0100\n"
+"POT-Creation-Date: 2013-09-25 11:13+0200\n"
+"PO-Revision-Date: 2013-09-25 11:14+0100\n"
 "Last-Translator: Thorsten Weimann <weimann@bbz-chemie.de>\n"
 "Language-Team: LANGUAGE <weimann@bbz-chemie.de>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 1.5.7\n"
 
-#: admin.py:45
-#: admin.py:101
-#: templates/presence/generate_pdf.html:38
+#: admin.py:51 admin.py:107 templates/presence/generate_pdf.html:62
 msgid "Student(s)"
 msgstr "Azubi(s)"
 
-#: admin.py:154
-#: forms.py:20
-#: forms.py:146
-#: models.py:123
-#: models.py:190
-#: models.py:321
-#: templates/colleagues/detail.html:22
-#: templates/colleagues/filter.html:38
-#: templates/companies/details.html:61
-#: templates/students/details.html:19
+#: admin.py:160 forms.py:21 forms.py:203 forms.py:230 models.py:170
+#: models.py:243 models.py:383 templates/colleagues/detail.html:22
+#: templates/colleagues/filter.html:48 templates/companies/details.html:51
+#: templates/students/details.html:27
 msgid "Email"
 msgstr "Email"
 
-#: admin.py:190
-#: models.py:41
-#: models.py:215
-#: models.py:231
-#: templates/menu.html:15
+#: admin.py:196 models.py:88 models.py:268 models.py:284
 msgid "User"
 msgstr "Benutzer"
 
-#: admin.py:202
-#: models.py:390
+#: admin.py:208 models.py:452
 msgid "Instructors"
 msgstr "Ausbilder"
 
-#: admin.py:227
-#: templates/journal/myentries.html:24
+#: admin.py:233 templates/journal/myentries.html:23
 msgid "Last Edit"
 msgstr "Letzte Änderung"
 
-#: forms.py:13
+#: admin.py:257 templates/accidents/index.html:24
+msgid "Injured"
+msgstr "Verletzter"
+
+#: forms.py:14
 msgid "Mon"
 msgstr "Mo"
 
-#: forms.py:13
+#: forms.py:14
 msgid "Tue"
 msgstr "Di"
 
-#: forms.py:13
+#: forms.py:14
 msgid "Wed"
 msgstr "Mi"
 
-#: forms.py:14
+#: forms.py:15
 msgid "Thu"
 msgstr "Do"
 
-#: forms.py:14
+#: forms.py:15
 msgid "Fri"
 msgstr "Fr"
 
-#: forms.py:18
-#: forms.py:136
-#: models.py:186
-#: models.py:313
-#: templates/colleagues/filter.html:33
-#: templates/presence/group.html:32
-#: templates/presence/group.html.py:37
+#: forms.py:19 forms.py:193 forms.py:216 models.py:239 models.py:375
+#: templates/colleagues/filter.html:43 templates/presence/group.html:48
+#: templates/presence/group.html.py:53 templates/presence/group.html:78
+#: templates/presence/group.html.py:83
 msgid "Lastname"
 msgstr "Nachname"
 
-#: forms.py:19
-#: forms.py:137
-#: models.py:187
-#: models.py:314
-#: templates/colleagues/filter.html:34
-#: templates/presence/group.html:33
+#: forms.py:20 forms.py:194 forms.py:217 models.py:240 models.py:376
+#: templates/colleagues/filter.html:44 templates/presence/group.html:49
+#: templates/presence/group.html.py:79
 msgid "Firstname"
 msgstr "Vorname"
 
-#: forms.py:21
+#: forms.py:22
 msgid "Cabinet Nr."
 msgstr "Schranknr."
 
-#: forms.py:22
+#: forms.py:23
 msgid "Key Nr."
 msgstr "Schlüsselnr."
 
-#: forms.py:23
+#: forms.py:24
 msgid "Barcode"
 msgstr "Strichcode"
 
-#: forms.py:24
+#: forms.py:25
 msgid "Company Name"
 msgstr "Firmenname"
 
-#: forms.py:68
-#: templates/colleagues/list.html:29
-#: templates/companies/list.html:20
-#: templates/companies/list.html.py:21
-#: templates/students/list.html:22
-#: templates/students/list.html.py:23
-#: templates/students/search.html:10
-#: templates/students/search.html.py:12
+#: forms.py:69
+msgid ">- Select company first -<"
+msgstr ">- Firma zuerst auswählen -<"
+
+#: forms.py:122 templates/colleagues/list.html:9
+#: templates/companies/list.html:23 templates/students/list.html:26
+#: templates/students/search.html:10 templates/students/search.html.py:13
 msgid "Search"
 msgstr "Suchen"
 
-#: forms.py:81
+#: forms.py:137
 msgid "and"
 msgstr "und"
 
-#: forms.py:81
+#: forms.py:137
 msgid "or"
 msgstr "oder"
 
-#: forms.py:90
-#: models.py:216
+#: forms.py:147 models.py:269
 msgid "Subject"
 msgstr "Betreff"
 
-#: forms.py:91
-#: forms.py:131
-#: models.py:91
-#: models.py:217
-#: models.py:415
-#: models.py:572
+#: forms.py:148 forms.py:188 models.py:138 models.py:270 models.py:477
+#: models.py:633
 msgid "Text"
 msgstr "Text"
 
-#: forms.py:98
-#: models.py:233
+#: forms.py:155 models.py:286
 msgid "Good Quality"
 msgstr "Qualität der Ware"
 
-#: forms.py:100
-#: models.py:234
+#: forms.py:157 models.py:287
 msgid "Delivery Time"
 msgstr "Lieferzeit"
 
-#: forms.py:102
-#: models.py:235
+#: forms.py:159 models.py:288
 msgid "Quality"
 msgstr "Liefertreue"
 
-#: forms.py:104
-#: models.py:236
+#: forms.py:161 models.py:289
 msgid "Price"
 msgstr "Preis"
 
-#: forms.py:106
-#: models.py:237
+#: forms.py:163 models.py:290
 msgid "Service"
 msgstr "Kundenservice"
 
-#: forms.py:108
-#: models.py:238
+#: forms.py:165 models.py:291
 msgid "Attainability"
 msgstr "Erreichbarkeit"
 
-#: forms.py:110
-#: models.py:239
+#: forms.py:167 models.py:292
 msgid "Documentation"
 msgstr "Dokumentation"
 
-#: forms.py:112
-#: models.py:127
-#: models.py:240
-#: templates/companies/details.html:35
+#: forms.py:169 models.py:174 models.py:293
+#: templates/companies/details.html:25
 msgid "Rating"
 msgstr "Bewertung"
 
-#: forms.py:113
-#: models.py:173
-#: models.py:224
-#: models.py:243
-#: models.py:506
-#: templates/companies/details.html:38
-#: templates/presence/edit.html:18
+#: forms.py:170 models.py:226 models.py:277 models.py:296 models.py:569
+#: templates/companies/details.html:28 templates/presence/edit.html:20
 msgid "Note"
 msgstr "Bemerkung"
 
-#: forms.py:114
+#: forms.py:171
 msgid "This field is required if you rate with \"B\"."
 msgstr "Dieses Feld muss bei \"B\" Bewertungen ausgefüllt werden."
 
-#: forms.py:119
-#: models.py:507
-#: templates/presence/generate_pdf.html:28
+#: forms.py:176 models.py:570 templates/presence/generate_pdf.html:36
 msgid "Instructor"
 msgstr "Ausbilder"
 
-#: forms.py:121
-#: templates/presence/generate_pdf.html:29
+#: forms.py:178 templates/presence/generate_pdf.html:37
 msgid "Course"
 msgstr "Kurs"
 
-#: forms.py:122
-#: templates/presence/generate_pdf.html:30
+#: forms.py:179 templates/presence/generate_pdf.html:38
 msgid "School days"
 msgstr "Schultage"
 
-#: forms.py:124
+#: forms.py:181
 msgid "Include supported days"
 msgstr "Geförderte Tage aufdrucken"
 
-#: forms.py:129
-#: models.py:382
-#: models.py:412
-#: models.py:499
-#: templates/journal/myentries.html:12
+#: forms.py:186 models.py:444 models.py:474 models.py:562
+#: templates/journal/myentries.html:11
 msgid "Student"
 msgstr "Azubi"
 
-#: forms.py:130
-#: models.py:414
-#: models.py:429
-#: templates/journal/myentries.html:14
+#: forms.py:187 models.py:476 models.py:491
+#: templates/journal/myentries.html:13
 msgid "Event"
 msgstr "Ereignis"
 
-#: forms.py:135
-#: models.py:42
-#: models.py:185
+#: forms.py:192 models.py:89 models.py:238
 msgid "Name Prefix"
 msgstr "Anrede"
 
-#: forms.py:139
-#: models.py:18
-#: templates/companies/details.html:25
-#: templates/students/details.html:26
+#: forms.py:196 forms.py:221 models.py:44
 msgid "Street"
 msgstr "Straße"
 
-#: forms.py:141
-#: models.py:19
+#: forms.py:198 forms.py:223 models.py:45
 msgid "Zip Code"
 msgstr "Postleitzahl"
 
-#: forms.py:143
-#: models.py:20
-#: templates/companies/details.html:26
-#: templates/students/details.html:27
+#: forms.py:200 forms.py:225 models.py:46
 msgid "City"
 msgstr "Stadt"
 
-#: forms.py:144
-#: models.py:21
-#: templates/companies/details.html:27
-#: templates/students/details.html:28
+#: forms.py:201 forms.py:226 models.py:47
 msgid "Country"
 msgstr "Land"
 
-#: forms.py:147
-#: models.py:22
-#: models.py:189
-#: templates/colleagues/detail.html:12
-#: templates/colleagues/filter.html:36
-#: templates/companies/details.html:28
-#: templates/companies/details.html:59
-#: templates/students/details.html:22
+#: forms.py:204 forms.py:228 models.py:48 models.py:242
+#: templates/colleagues/detail.html:12 templates/colleagues/filter.html:46
+#: templates/companies/details.html:15 templates/companies/details.html:49
+#: templates/students/details.html:9
 msgid "Phone"
 msgstr "Festnetz"
 
-#: forms.py:148
-#: models.py:45
-#: models.py:322
-#: templates/colleagues/detail.html:17
-#: templates/colleagues/filter.html:37
-#: templates/colleagues/phonelist.html:14
-#: templates/students/details.html:23
+#: forms.py:205 forms.py:229 models.py:92 models.py:384
+#: templates/colleagues/detail.html:17 templates/colleagues/filter.html:47
+#: templates/colleagues/phonelist.html:13 templates/students/details.html:10
 msgid "Mobile"
 msgstr "Mobil"
 
-#: forms.py:149
-#: models.py:44
-#: models.py:316
+#: forms.py:206 forms.py:219 models.py:91 models.py:378
+#: templates/accidents/details.html:30 templates/accidents/details.html:38
 #: templates/colleagues/detail.html:27
 msgid "Birthdate"
 msgstr "Geburtstag"
 
-#: forms.py:151
-#: models.py:48
-#: templates/colleagues/detail.html:37
-#: templates/colleagues/filter.html:35
+#: forms.py:208 models.py:95 templates/colleagues/detail.html:37
+#: templates/colleagues/filter.html:45
 msgid "Subjects"
 msgstr "Fächer"
 
-#: forms.py:153
-#: models.py:50
+#: forms.py:210 models.py:97
 msgid "Can Login"
 msgstr "Kann sich anmelden"
+
+#: forms.py:218 models.py:377
+msgid "Sex"
+msgstr "Geschlecht"
+
+#: forms.py:231 models.py:379
+msgid "Notice in emergency"
+msgstr "Im Notfall zu benachrichtigen"
+
+#: forms.py:236 models.py:355 models.py:387 models.py:450 models.py:588
+#: templates/journal/list.html:10 templates/journal/myentries.html:10
+#: templates/presence/list_printouts.html:15
+#: templates/presence/overview.html:67 templates/students/details.html:17
+msgid "Group"
+msgstr "Gruppe"
+
+#: forms.py:238 models.py:214 models.py:220 models.py:244 models.py:282
+#: models.py:385 models.py:584 templates/companies/view_company.html:9
+#: templates/presence/group.html:47 templates/presence/group.html.py:77
+#: templates/students/details.html:18
+msgid "Company"
+msgstr "Firma"
+
+#: forms.py:240 models.py:233 models.py:414
+msgid "Cooperation Contract"
+msgstr "Kooperationsvertrag"
+
+#: forms.py:242 forms.py:268 models.py:389 templates/students/details.html:64
+msgid "Cabinet"
+msgstr "Schrank"
+
+#: forms.py:244 forms.py:270 models.py:390 templates/students/details.html:65
+msgid "Key"
+msgstr "Schlüssel"
+
+#: forms.py:245 models.py:381 templates/students/details.html:87
+msgid "Picture"
+msgstr "Bild"
+
+#: forms.py:249 models.py:391
+msgid "School Education"
+msgstr "Schulbildung"
+
+#: forms.py:251 models.py:393
+msgid "Applied to"
+msgstr "Beworben bei"
+
+#: forms.py:253 models.py:395
+msgid "Forwarded to"
+msgstr "Weitergeleitet an"
+
+#: forms.py:255 models.py:397
+msgid "Jobs"
+msgstr "Berufe"
+
+#: forms.py:256 models.py:399
+msgid "Test Result"
+msgstr "Testergebnis"
+
+#: forms.py:258 models.py:401
+msgid "Test Date"
+msgstr "Testdatum"
+
+#: forms.py:260 models.py:402
+msgid "Suit phrase"
+msgstr "Berufseignung"
+
+#: forms.py:271 models.py:404 templates/students/details.html:74
+msgid "Exam 1"
+msgstr "Abschlußprüfung Teil 1"
+
+#: forms.py:273 models.py:408 templates/students/details.html:77
+msgid "Exam 2"
+msgstr "Abschlußprüfung Teil 2"
+
+#: forms.py:275 models.py:416
+msgid "Finished"
+msgstr "Aus-/Weiterbildung beendet"
 
 #: menu.py:17
 msgid "Core"
 msgstr "Hauptmenü"
 
-#: menu.py:18
-#: models.py:162
-#: templates/companies/list_all.html:10
-#: templates/presence/generate_pdf.html:35
-#: views/web.py:262
+#: menu.py:18 models.py:215 templates/presence/generate_pdf.html:59
 msgid "Companies"
 msgstr "Firmen"
 
-#: menu.py:19
-#: models.py:383
-#: templates/colleagues/birthdays.html:30
-#: templates/students/groups.html:19
-#: templates/students/list_all.html:6
-#: views/web.py:325
+#: menu.py:19 models.py:445 templates/colleagues/birthdays.html:33
+#: templates/presence/select_groups.html:24
+#: templates/presence/select_groups.html:36
+#: templates/presence/studentlist.html:4 templates/students/groups.html:22
 msgid "Students"
 msgstr "Azubis"
 
-#: menu.py:20
-#: models.py:294
-#: views/web.py:375
+#: menu.py:20 models.py:356
 msgid "Groups"
 msgstr "Gruppen"
 
-#: menu.py:21
-#: templates/colleagues/birthdays.html:17
-#: views/web.py:97
+#: menu.py:21 templates/colleagues/birthdays.html:21 views/web.py:100
 msgid "Colleagues"
 msgstr "Kollegen / Dozenten"
 
-#: menu.py:22
-#: models.py:518
-#: templates/presence/overview.html:6
+#: menu.py:22 models.py:579
 msgid "Presences"
 msgstr "Anwesenheiten"
 
-#: menu.py:23
+#: menu.py:23 views/web.py:662
+msgid "Accidents"
+msgstr "Unfälle"
+
+#: menu.py:24
 msgid "Archive"
 msgstr "Archiv"
 
-#: menu.py:26
-#: templates/journal/list.html:6
+#: menu.py:27
 msgid "Journals"
 msgstr "Tagebücher"
 
-#: menu.py:27
+#: menu.py:28
 msgid "My Entries"
 msgstr "Meine Einträge"
 
-#: menu.py:28
+#: menu.py:29
 msgid "Add new Journal"
 msgstr "Neues Tagebuch"
 
-#: menu.py:29
+#: menu.py:30
 msgid "Manage Journals"
 msgstr "Tagebücher verwalten"
 
-#: menu.py:32
+#: menu.py:33
 msgid "Extra"
 msgstr "Extra"
 
-#: menu.py:33
+#: menu.py:34
 msgid "Coming Birthdays"
 msgstr "Nächste Geburtstage"
 
-#: menu.py:34
-#: views/web.py:86
+#: menu.py:35 views/web.py:89
 msgid "Internal Phonelist"
 msgstr "Interne Telefonliste"
 
-#: menu.py:37
-#: models.py:102
-#: models.py:103
-#: templates/index.html:9
+#: menu.py:38 models.py:149 models.py:150 views/web.py:59
 msgid "News"
 msgstr "Aktuelle Meldungen"
-
-#: menu.py:38
-msgid "Read News"
-msgstr "News lesen"
 
 #: menu.py:39
 msgid "Write News"
 msgstr "News schreiben"
 
-#: models.py:29
-#: models.py:117
-#: templates/colleagues/phonelist.html:12
-#: templates/companies/view_company.html:7
-#: templates/students/groups.html:16
-msgid "Name"
-msgstr "Name"
+#: models.py:55
+msgid "Organization Name"
+msgstr "Name der Organisation"
 
-#: models.py:30
-msgid "Description"
-msgstr "Beschreibung"
+#: models.py:56
+msgid "Organization Short Name"
+msgstr "Kürzel der Organisation"
 
-#: models.py:36
-#: models.py:46
-#: templates/colleagues/detail.html:32
-msgid "Part"
-msgstr "Abteilung"
+#: models.py:58
+msgid "PDFLatex"
+msgstr "PDF Latex"
 
-#: models.py:37
-msgid "Parts"
-msgstr "Abteilungen"
+#: models.py:59
+msgid "Path to pdflatex executable."
+msgstr "Pfad zu pdflatex(.exe)"
 
-#: models.py:49
-msgid "Separate two or more subjects with a comma."
-msgstr "Mehrere Fächer bitte durch Komma trennen."
+#: models.py:61
+msgid "Latex Commandline Options"
+msgstr "Latex Optionen"
 
-#: models.py:51
-#: templates/colleagues/filter.html:20
-#: templates/colleagues/filter.html:23
-#: templates/colleagues/list.html:17
-msgid "External"
-msgstr "Extern"
-
-#: models.py:85
-#: templates/menu.html:19
-msgid "Profile"
-msgstr "Profil"
-
-#: models.py:86
-msgid "Profiles"
-msgstr "Profile"
-
-#: models.py:90
-#: models.py:559
-msgid "Title"
-msgstr "Titel"
-
-#: models.py:92
-#: models.py:169
-#: models.py:214
-#: models.py:501
-#: models.py:526
-#: templates/journal/myentries.html:13
-#: templates/presence/edit.html:15
-msgid "Date"
-msgstr "Datum"
-
-#: models.py:93
-msgid "Author"
-msgstr "Autor"
-
-#: models.py:94
-msgid "Public"
-msgstr "Öffentlich"
-
-#: models.py:109
-msgid "A) useable"
-msgstr "A) benutzbar"
-
-#: models.py:110
-msgid "B) useable with restrictions"
-msgstr "B) benutzbar mit Einschränkungen"
-
-#: models.py:111
-msgid "C) not useable"
-msgstr "C) nicht benutzbar"
-
-#: models.py:112
-msgid "D) more ratings needed"
-msgstr "D) mehr Bewertungen erforderlich"
-
-#: models.py:118
-msgid "Short Name"
-msgstr "Kürzel"
-
-#: models.py:119
-#: templates/companies/details.html:29
+#: models.py:63 models.py:166 templates/companies/details.html:16
 msgid "Fax"
 msgstr "Fax"
 
-#: models.py:120
-#: templates/companies/details.html:30
+#: models.py:64
+msgid "Logo"
+msgstr "Logo"
+
+#: models.py:70
+msgid "Configuration"
+msgstr "Konfiguration"
+
+#: models.py:71
+msgid "Configurations"
+msgstr "Konfigurationen"
+
+#: models.py:76 models.py:164 models.py:660
+#: templates/colleagues/phonelist.html:11 templates/students/groups.html:19
+msgid "Name"
+msgstr "Name"
+
+#: models.py:77
+msgid "Description"
+msgstr "Beschreibung"
+
+#: models.py:83 models.py:93 templates/colleagues/detail.html:32
+msgid "Part"
+msgstr "Abteilung"
+
+#: models.py:84
+msgid "Parts"
+msgstr "Abteilungen"
+
+#: models.py:96
+msgid "Separate two or more subjects with a comma."
+msgstr "Mehrere Fächer bitte durch Komma trennen."
+
+#: models.py:98 templates/colleagues/filter.html:16
+#: templates/colleagues/filter.html:23 templates/colleagues/list.html:30
+msgid "External"
+msgstr "Extern"
+
+#: models.py:132
+msgid "Profile"
+msgstr "Profil"
+
+#: models.py:133
+msgid "Profiles"
+msgstr "Profile"
+
+#: models.py:137 models.py:620
+msgid "Title"
+msgstr "Titel"
+
+#: models.py:139 models.py:222 models.py:267 models.py:564 models.py:587
+#: templates/accidents/index.html:23 templates/journal/myentries.html:12
+#: templates/presence/edit.html:17
+msgid "Date"
+msgstr "Datum"
+
+#: models.py:140
+msgid "Author"
+msgstr "Autor"
+
+#: models.py:141
+msgid "Public"
+msgstr "Öffentlich"
+
+#: models.py:156
+msgid "A) useable"
+msgstr "A) benutzbar"
+
+#: models.py:157
+msgid "B) useable with restrictions"
+msgstr "B) benutzbar mit Einschränkungen"
+
+#: models.py:158
+msgid "C) not useable"
+msgstr "C) nicht benutzbar"
+
+#: models.py:159
+msgid "D) more ratings needed"
+msgstr "D) mehr Bewertungen erforderlich"
+
+#: models.py:165
+msgid "Short Name"
+msgstr "Kürzel"
+
+#: models.py:167 templates/companies/details.html:20
 msgid "Customer Number"
 msgstr "Kundennummer"
 
-#: models.py:122
+#: models.py:169
 msgid "Web"
 msgstr "Web"
 
-#: models.py:124
+#: models.py:171
 msgid "Rate"
 msgstr "Bewerten"
 
-#: models.py:126
+#: models.py:173
 msgid "Rating Users"
 msgstr "Bewerter"
 
-#: models.py:129
+#: models.py:176
 msgid "Rating Note"
 msgstr "Bemerkung (Bewertung)"
 
-#: models.py:161
-#: models.py:167
-#: models.py:191
-#: models.py:229
-#: models.py:323
-#: models.py:523
-#: templates/presence/group.html:31
-#: templates/students/details.html:8
-msgid "Company"
-msgstr "Firma"
-
-#: models.py:170
-#: models.py:271
-#: templates/students/groups.html:17
+#: models.py:223 models.py:324 templates/presence/list_printouts.html:8
+#: templates/students/group_detail.html:11 templates/students/groups.html:20
 msgid "Job"
 msgstr "Beruf"
 
-#: models.py:171
+#: models.py:224
 msgid "Full-Cooperation"
 msgstr "Vollkooperation"
 
-#: models.py:172
+#: models.py:225
 msgid "Active"
 msgstr "Aktiv"
 
-#: models.py:180
-#: models.py:352
-msgid "Cooperation Contract"
-msgstr "Kooperationsvertrag"
-
-#: models.py:181
-#: templates/companies/details.html:77
+#: models.py:234 templates/companies/details.html:68
+#: templates/companies/details.html:71
 msgid "Cooperation Contracts"
 msgstr "Kooperationsverträge"
 
-#: models.py:188
+#: models.py:241
 msgid "Function"
 msgstr "Funktion"
 
-#: models.py:207
-#: models.py:212
-#: templates/colleagues/add.html:24
+#: models.py:260 models.py:265 templates/colleagues/add.html:37
 msgid "Contact"
 msgstr "Kontakt"
 
-#: models.py:208
+#: models.py:261
 msgid "Contacts"
 msgstr "Kontakte"
 
-#: models.py:225
-#: templates/companies/details.html:64
+#: models.py:278 templates/companies/details.html:54
 msgid "Notes"
 msgstr "Bemerkungen"
 
-#: models.py:242
+#: models.py:295
 msgid "Rated"
 msgstr "Bewertet"
 
-#: models.py:257
+#: models.py:310
 msgid "Company Rating"
 msgstr "Lieferantenbewertung"
 
-#: models.py:258
+#: models.py:311
 msgid "Company Ratings"
 msgstr "Lieferantenbewertungen"
 
-#: models.py:268
+#: models.py:321
 msgid "Start Date"
 msgstr "Anfangsdatum"
 
-#: models.py:269
+#: models.py:322
 msgid "School Number"
-msgstr "Klasse"
+msgstr "Schulklasse"
 
-#: models.py:272
+#: models.py:325
 msgid "Job Short"
 msgstr "Berufskürzel"
 
-#: models.py:273
+#: models.py:326
 msgid "This field will be converted to uppercase."
 msgstr "Dieses Feld wird in Großbuchstaben umgewandelt."
 
-#: models.py:274
+#: models.py:327
 msgid "Suffix"
 msgstr "Namenszusatz"
 
-#: models.py:277
+#: models.py:330
 msgid "Groupname"
 msgstr "Gruppenname"
 
-#: models.py:293
-#: models.py:325
-#: models.py:388
-#: models.py:527
-#: templates/journal/myentries.html:11
-#: templates/presence/overview.html:19
-#: templates/students/details.html:7
-msgid "Group"
-msgstr "Gruppe"
-
-#: models.py:298
+#: models.py:360
 msgid "Male"
 msgstr "Männlich"
 
-#: models.py:298
+#: models.py:360
 msgid "Female"
 msgstr "Weiblich"
 
-#: models.py:315
-msgid "Sex"
-msgstr "Geschlecht"
-
-#: models.py:317
-msgid "Notice in emergency"
-msgstr "Im Notfall zu benachrichtigen"
-
-#: models.py:319
-#: templates/students/details.html:72
-msgid "Picture"
-msgstr "Bild"
-
-#: models.py:327
-#: templates/students/details.html:49
-msgid "Cabinet"
-msgstr "Schrank"
-
-#: models.py:328
-#: templates/students/details.html:50
-msgid "Key"
-msgstr "Schlüssel"
-
-#: models.py:329
-msgid "School Education"
-msgstr "Schulbildung"
-
-#: models.py:331
-msgid "Applied to"
-msgstr "Beworben bei"
-
-#: models.py:332
-#: models.py:334
+#: models.py:394 models.py:396
 msgid "Separate two or more names with a comma."
 msgstr "Mehrere Namen durch Komma trennen."
 
-#: models.py:333
-msgid "Forwarded to"
-msgstr "Weitergeleitet an"
-
-#: models.py:335
-msgid "Jobs"
-msgstr "Berufe"
-
-#: models.py:336
+#: models.py:398
 msgid "Separate two or more jobs with a comma."
 msgstr "Mehrere Berufe durch Komma trennen."
 
-#: models.py:337
-msgid "Test Result"
-msgstr "Testergebnis"
-
-#: models.py:339
-msgid "Test Date"
-msgstr "Testdatum"
-
-#: models.py:340
-msgid "Suit phrase"
-msgstr "Berufseignung"
-
-#: models.py:342
-#: templates/students/details.html:59
-msgid "Exam 1"
-msgstr "Abschlußprüfung Teil 1"
-
-#: models.py:344
+#: models.py:406
 msgid "Exam 1 weight"
 msgstr "Wichtung AP Teil 1"
 
-#: models.py:346
-#: templates/students/details.html:62
-msgid "Exam 2"
-msgstr "Abschlußprüfung Teil 2"
-
-#: models.py:354
-msgid "Finished"
-msgstr "Aus-/Weiterbildung beendet"
-
-#: models.py:392
-#: models.py:416
+#: models.py:454 models.py:478
 msgid "Created"
 msgstr "Erstellt"
 
-#: models.py:401
+#: models.py:463
 msgid "Pedagogic Journal"
 msgstr "Pädagogisches Tagebuch"
 
-#: models.py:402
+#: models.py:464
 msgid "Pedagogic Journals"
 msgstr "Pädagogische Tagebücher"
 
-#: models.py:410
+#: models.py:472
 msgid "Journal"
 msgstr "Tagebuch"
 
-#: models.py:417
+#: models.py:479
 msgid "Created by"
 msgstr "Erstellt von"
 
-#: models.py:420
+#: models.py:482
 msgid "Last edit"
 msgstr "Letzte Änderung"
 
-#: models.py:439
-#: models.py:454
+#: models.py:501 models.py:516
 msgid "Journal Entry"
 msgstr "Tagebucheintrag"
 
-#: models.py:440
+#: models.py:502
 msgid "Journal Entries"
 msgstr "Tagebucheinträge"
 
-#: models.py:457
-#: templates/journal/myentries.html:16
+#: models.py:519 templates/journal/myentries.html:15
 msgid "Media"
 msgstr "Medien"
 
-#: models.py:502
-#: templates/journal/myentries.html:15
+#: models.py:565 templates/journal/myentries.html:14
 msgid "Entry"
 msgstr "Eintrag"
 
-#: models.py:504
-#: templates/presence/edit.html:17
+#: models.py:567 templates/presence/edit.html:19
 msgid "Lateness"
 msgstr "Verspätung"
 
-#: models.py:505
-#: templates/students/details.html:39
+#: models.py:568
 msgid "Excused"
 msgstr "Entschuldigt"
 
-#: models.py:517
-#: templates/presence/edit.html:6
-#: templates/presence/edit.html.py:16
-#: templates/students/details.html:32
-#: templates/students/groups.html:37
+#: models.py:578 templates/presence/edit.html:18
+#: templates/students/details.html:32 templates/students/details.html.py:37
+#: templates/students/details.html:40 templates/students/details.html.py:44
+#: templates/students/details.html:47 templates/students/groups.html:43
 msgid "Presence"
 msgstr "Anwesenheit"
 
-#: models.py:525
-#: models.py:545
+#: models.py:586 models.py:606
 msgid "PDF-File"
 msgstr "PDF-Datei"
 
-#: models.py:529
-#: models.py:546
+#: models.py:590 models.py:607
 msgid "Generated"
 msgstr "Erstellt"
 
-#: models.py:536
-#: templates/colleagues/phonelist.html:30
+#: models.py:597 templates/colleagues/phonelist.html:31
 msgid "Printout"
 msgstr "Ausdruck"
 
-#: models.py:537
+#: models.py:598
 msgid "Printouts"
 msgstr "Ausdrucke"
 
-#: models.py:544
+#: models.py:605
 msgid "Category"
 msgstr "Kategorie"
 
-#: models.py:553
+#: models.py:614
 msgid "General Printout"
 msgstr "Allgemeiner Ausdruck"
 
-#: models.py:554
+#: models.py:615
 msgid "General Printouts"
 msgstr "Allgemeine Ausdrucke"
 
-#: models.py:560
+#: models.py:621
 msgid "Used for the title attribute of the help dialog."
 msgstr "Wird für das title Attribut des Hilfe-Dialogs benutzt."
 
-#: models.py:561
+#: models.py:622
 msgid "Identifier"
 msgstr "Identifizierung"
 
-#: models.py:562
-msgid "Help for the same topic in another language must define exactly the same identifier."
-msgstr "Hilfe für das selbe Thema in einer anderen Sprache muss dieselbe Identifizierung haben."
+#: models.py:623
+msgid ""
+"Help for the same topic in another language must define exactly the same "
+"identifier."
+msgstr ""
+"Hilfe für das selbe Thema in einer anderen Sprache muss dieselbe "
+"Identifizierung haben."
 
-#: models.py:564
+#: models.py:625
 msgid "Language"
 msgstr "Sprache"
 
-#: models.py:565
+#: models.py:626
 msgid "Lookup is done via istartswith."
-msgstr "Abfrage berücksichtigt nur den Anfang und keine Groß- und Kleinschreibung (istartswith)."
+msgstr ""
+"Abfrage berücksichtigt nur den Anfang und keine Groß- und Kleinschreibung "
+"(istartswith)."
 
-#: models.py:566
+#: models.py:627
 msgid "Dialog width"
 msgstr "Dialogbreite"
 
-#: models.py:567
+#: models.py:628
 msgid "Width of the help dialog."
 msgstr "Breite in Pixel des Hilfe-Dialogs."
 
-#: models.py:568
+#: models.py:629
 msgid "Opener class"
 msgstr "Öffner Klasse"
 
-#: models.py:569
-msgid "CSS class of the element which gets the click event to open the help dialog (jQuery notation)."
-msgstr "CSS Klasse des Elements, dass zum Öffnen des Dialogs mit dem Klick-Ereignis versehen wird (jQuery Schreibweise)."
+#: models.py:630
+msgid ""
+"CSS class of the element which gets the click event to open the help dialog "
+"(jQuery notation)."
+msgstr ""
+"CSS Klasse des Elements, dass zum Öffnen des Dialogs mit dem Klick-Ereignis "
+"versehen wird (jQuery Schreibweise)."
 
-#: models.py:572
+#: models.py:633
 msgid "Main help text. You can use HTML here."
 msgstr "Haupt Hilfetext. Hier kann HTML verwendet werden."
 
-#: models.py:583
+#: models.py:644
 msgid "Internal Help"
 msgstr "Interne Hilfe"
 
-#: models.py:584
+#: models.py:645
 msgid "Internal Helps"
 msgstr "Interne Hilfen"
 
-#: utils.py:56
-msgid "An internal server error occured."
-msgstr "Der Server hat einen internen Fehler."
+#: models.py:650
+msgid "Wegeunfall"
+msgstr ""
 
-#: utils.py:57
-msgid "Ozone Error"
-msgstr "Ozone Software Fehler"
+#: models.py:651
+msgid "Schnittverletzung"
+msgstr ""
 
-#: templates/error.html:5
-#: templatetags/ozone_tags.py:21
+#: models.py:652
+msgid "Verbrennung"
+msgstr ""
+
+#: models.py:653
+msgid "Augenverletzung"
+msgstr ""
+
+#: models.py:654
+msgid "Verätzung"
+msgstr ""
+
+#: models.py:655
+msgid "Sonstige"
+msgstr ""
+
+#: models.py:661
+msgid "Roomnumber"
+msgstr "Raumnummer"
+
+#: models.py:670 models.py:683 templates/accidents/details.html:64
+#: templates/accidents/index.html:25
+msgid "Place"
+msgstr "Ort"
+
+#: models.py:671
+msgid "Places"
+msgstr "Orte"
+
+#: models.py:676
+msgid "Date / Time"
+msgstr "Datum / Zeit"
+
+#: models.py:680
+msgid "Verletzter Azubi"
+msgstr ""
+
+#: models.py:682
+msgid "Verletzter Mitarbeiter"
+msgstr ""
+
+#: models.py:685
+msgid "Ort (genauer)"
+msgstr ""
+
+#: models.py:686
+msgid "Verletzung"
+msgstr ""
+
+#: models.py:688
+msgid "Genaue Verletzung und Ursache"
+msgstr ""
+
+#: models.py:689
+msgid "Meldepflichtig"
+msgstr ""
+
+#: models.py:690
+msgid "Zeugen"
+msgstr ""
+
+#: models.py:690
+msgid "Bitte die Nachnamen der Zeugen durch Komma getrennt hier eingeben."
+msgstr ""
+
+#: models.py:692
+msgid "Ersthelfer oder Arzt"
+msgstr ""
+
+#: models.py:693
+msgid "Erste-Hilfe-Maßnahmen/Behandlung"
+msgstr ""
+
+#: models.py:694
+msgid "Benutztes Material"
+msgstr ""
+
+#: models.py:695
+msgid "Bemerkungen"
+msgstr ""
+
+#: models.py:712
+msgid "Accident Entry"
+msgstr "Unfalleintrag"
+
+#: models.py:713
+msgid "Accident Entries"
+msgstr "Unfalleinträge"
+
+#: templates/error.html:9 templatetags/ozone_tags.py:21
 msgid "Error"
 msgstr "Fehler"
 
-#: templates/error.html:8
+#: templates/error.html:11
 msgid "Please contact the administrator."
 msgstr "Bitte wenden Sie sich an die Administratoren."
 
-#: templates/error.html:9
-#: templates/presence/edit.html:50
-#: templates/presence/group.html:71
+#: templates/error.html:12 templates/companies/list_all.html:72
+#: templates/presence/edit.html:49 templates/presence/group.html:104
+#: templates/students/list_all.html:58
 msgid "Back"
 msgstr "Zurück"
-
-#: templates/iadmin.html:6
-msgid "Tasks"
-msgstr "Aufgaben"
 
 #: templates/iadmin.html:8
 msgid "Clean old sessions"
 msgstr "Alte Sitzungen löschen"
 
-#: templates/iadmin.html:10
-#: templates/iadmin.html.py:17
-#: templates/students/groups.html:38
-#: templates/students/list.html:37
+#: templates/iadmin.html:10 templates/iadmin.html.py:23
+#: templates/iadmin.html:36 templates/students/group_detail.html:19
+#: templates/students/group_detail.html:39 templates/students/list.html:51
+#: templates/students/search.html:43
 msgid "Delete"
 msgstr "Löschen"
 
-#: templates/iadmin.html:15
+#: templates/iadmin.html:21
 msgid "Clean empty presence days"
 msgstr "Leere Anwesenheitstage löschen"
 
-#: templates/index.html:15
+#: templates/iadmin.html:34
+msgid "Empty latex build dir"
+msgstr "Temporäres Latex-Verzeichnis leeren"
+
+#: templates/iadmin.html:46
+msgid "Ozone 3.0 migration"
+msgstr "Ozone 3.0 Migration"
+
+#: templates/iadmin.html:46
+msgid "use once"
+msgstr "nur einmal benutzen"
+
+#: templates/iadmin.html:48
+msgid "Migrate presence from '*' to 'A'."
+msgstr "Migriere Anwesenheit von '*' zu 'A'."
+
+#: templates/iadmin.html:50 templates/iadmin.html.py:55
+msgid "Migrate"
+msgstr "Migrieren"
+
+#: templates/iadmin.html:53
+msgid "Remove whitespace before and after article identifiers."
+msgstr "Leerzeichen vor und hinter Artikelnummern löschen."
+
+#: templates/index.html:18
 msgid "Posted on"
 msgstr "Veröffentlicht am"
 
-#: templates/index.html:17
+#: templates/index.html:20
 msgid "by"
 msgstr "von"
 
-#: templates/index.html:25
-msgid "previous"
-msgstr "vorherige"
-
-#: templates/index.html:27
-#: templates/companies/list_all.html:46
-#: templates/students/list_all.html:33
-msgid "Page"
-msgstr "Seite"
-
-#: templates/index.html:27
-#: templates/companies/list_all.html:46
-#: templates/students/list_all.html:33
-msgid "of"
-msgstr "von"
-
-#: templates/index.html:30
-#: templates/colleagues/add.html:46
-#: templates/colleagues/profile.html:30
-#: templates/presence/overview.html:60
-msgid "next"
-msgstr "nächste"
+#: templates/index.html:32
+msgid "Newer"
+msgstr "Neuer"
 
 #: templates/index.html:35
+msgid "Older"
+msgstr "Älter"
+
+#: templates/index.html:46
 msgid "No News found."
 msgstr "Keine News gefunden."
 
-#: templates/login.html:5
-#: templates/login.html.py:14
-#: templates/menu.html:21
+#: templates/login.html:12 templates/login.html.py:17
 msgid "Login"
 msgstr "Anmelden"
 
-#: templates/menu.html:18
-msgid "Logout"
-msgstr "Abmelden"
+#: templates/accidents/add.html:5
+msgid "Add accident"
+msgstr "Neuen Unfall aufnehmen"
 
-#: templates/menu.html:24
-msgid "Admin"
-msgstr "Administration"
+#: templates/accidents/add.html:11
+msgid "Persons involved"
+msgstr "Beteiligte Personen"
 
-#: templates/menu.html:27
-msgid "Internal Admin"
-msgstr "Interne Aufgaben"
+#: templates/accidents/add.html:14 templates/accidents/details.html:45
+msgid "Date / time of accident"
+msgstr "Datum / Zeit des Unfalls"
 
-#: templates/menu.html:30
-#: templates/journal/add_entry.html:26
-msgid "Help"
-msgstr "Hilfe"
+#: templates/accidents/add.html:52 templates/accidents/add.html.py:63
+msgid "Separate more than one name with a comma."
+msgstr "Mehrere Namen durch Komma trennen."
 
-#: templates/colleagues/add.html:9
-msgid "Enter Data"
-msgstr "Daten eingeben"
+#: templates/accidents/add.html:69
+msgid "Place and violation"
+msgstr "Ort und Verletzung"
 
-#: templates/colleagues/add.html:12
-msgid "Personal Data"
-msgstr "Persönliche Daten"
-
-#: templates/colleagues/add.html:18
-#: templates/students/details.html:24
-msgid "Address"
-msgstr "Adresse"
-
-#: templates/colleagues/add.html:29
-#: templates/students/details.html:47
+#: templates/accidents/add.html:114 templates/colleagues/add.html:50
+#: templates/students/details.html:62
 msgid "Misc"
 msgstr "Verschiedenes"
 
-#: templates/colleagues/add.html:32
-#: templates/colleagues/profile.html:14
-#: templates/companies/add_note.html:15
-#: templates/journal/add.html:19
-#: templates/journal/add_entry.html:27
-#: templates/news/add.html:8
+#: templates/accidents/add.html:144 templates/students/edit_short.html:29
+msgid "Cancel"
+msgstr "Abbruch"
+
+#: templates/accidents/add.html:145 templates/colleagues/add.html:60
+#: templates/colleagues/profile.html:21 templates/companies/add_note.html:15
+#: templates/journal/add.html:29 templates/journal/add_entry.html:27
+#: templates/news/add.html:19 templates/students/edit_short.html:30
+#: templates/students/add/base.html:23
 msgid "Save"
 msgstr "Speichern"
 
-#: templates/colleagues/add.html:47
-#: templates/colleagues/profile.html:31
-#: templates/presence/overview.html:61
-msgid "prev"
-msgstr "vorherige"
+#: templates/accidents/details.html:9
+msgid "Generate report"
+msgstr "Ausdruck generieren"
 
-#: templates/colleagues/birthdays.html:6
-#, python-format
-msgid "Next %(d)s days"
-msgstr "Nächste %(d)s Tage"
+#: templates/accidents/details.html:14
+msgid "Dieser Unfall ist meldepflichtig!"
+msgstr ""
 
-#: templates/colleagues/birthdays.html:9
-msgid "Show next"
-msgstr "Nächste anzeigen"
+#: templates/accidents/details.html:22 templates/colleagues/profile.html:9
+msgid "Personal data"
+msgstr "Persönliche Daten"
+
+#: templates/accidents/details.html:42 views/web.py:670
+msgid "Accident"
+msgstr "Unfall"
+
+#: templates/accidents/details.html:49
+msgid "Added"
+msgstr "Eingetragen"
+
+#: templates/accidents/details.html:53 templates/accidents/index.html:27
+msgid "Added by"
+msgstr "Eingetragen von"
+
+#: templates/accidents/details.html:57 templates/accidents/index.html:26
+msgid "Violation"
+msgstr "Verletzung"
+
+#: templates/accidents/details.html:71
+msgid "Witnesses"
+msgstr "Zeugen"
+
+#: templates/accidents/details.html:75
+msgid "First helper or doctor"
+msgstr "Ersthelfer und/oder Arzt"
+
+#: templates/accidents/details.html:79
+msgid "First aid"
+msgstr "Erste-Hilfe-Maßnahmen"
+
+#: templates/accidents/details.html:83
+msgid "Used material"
+msgstr "Benutztes Material"
+
+#: templates/accidents/details.html:87
+msgid "Comment"
+msgstr "Bemerkung"
+
+#: templates/accidents/index.html:8
+msgid "Add new accident"
+msgstr "Neuen Unfall aufnehmen"
+
+#: templates/accidents/index.html:13
+msgid "Accidents statistics"
+msgstr "Unfallstatistik"
+
+#: templates/accidents/index.html:34 templates/students/group_detail.html:28
+#: templates/students/group_detail.html:29 templates/students/groups.html:31
+msgid "Click for details."
+msgstr "Klicken für Details."
+
+#: templates/accidents/index.html:53
+msgid "No accidents found."
+msgstr "Keine Unfälle gefunden."
+
+#: templates/colleagues/add.html:11 templates/students/add/personal.html:7
+msgid "Personal Data"
+msgstr "Persönliche Daten"
+
+#: templates/colleagues/add.html:24
+msgid "Address"
+msgstr "Adresse"
+
+#: templates/colleagues/birthdays.html:8
+msgid "Display: next"
+msgstr "Anzeigen: Nächste"
 
 #: templates/colleagues/birthdays.html:13
 msgid "days"
 msgstr "Tage"
 
 #: templates/colleagues/birthdays.html:14
-#: templates/companies/list_all.html:29
-#: templates/students/list_all.html:16
 msgid "go"
 msgstr "los"
 
-#: templates/colleagues/birthdays.html:26
-#: templates/colleagues/birthdays.html:39
+#: templates/colleagues/birthdays.html:28
+#: templates/colleagues/birthdays.html:40
 msgid "No person found"
 msgstr "Keine Person gefunden"
 
@@ -997,72 +1055,53 @@ msgstr "Benutzername"
 msgid "Last Login"
 msgstr "Letzte Anmeldung"
 
-#: templates/colleagues/filter.html:8
-msgid "Colleagues (internal and external)"
-msgstr "Kollegen (intern) / Dozenten (extern)"
-
 #: templates/colleagues/filter.html:10
-msgid "Colleagues (internal)"
-msgstr "Kollegen (intern)"
-
-#: templates/colleagues/filter.html:12
-msgid "Colleagues (external)"
-msgstr "Dozenten (extern)"
-
-#: templates/colleagues/filter.html:17
 msgid "Filter"
 msgstr "Filter"
 
-#: templates/colleagues/filter.html:19
-#: templates/colleagues/filter.html:26
-#: templates/colleagues/list.html:8
+#: templates/colleagues/filter.html:13 templates/colleagues/filter.html:30
+#: templates/colleagues/list.html:21
 msgid "Internal"
 msgstr "Interne Mitarbeiter"
 
-#: templates/colleagues/filter.html:22
-#: templates/colleagues/filter.html:25
-#: templates/companies/list.html:11
-#: templates/presence/generate_pdf.html:48
+#: templates/colleagues/filter.html:20 templates/colleagues/filter.html:27
+#: templates/companies/list.html:11 templates/presence/generate_pdf.html:78
 #: templates/students/list.html:12
 msgid "All"
 msgstr "Alle"
 
-#: templates/colleagues/list.html:24
+#: templates/colleagues/list.html:13
 msgid "Add new external"
 msgstr "Neuen externen Dozenten hinzufügen"
 
-#: templates/colleagues/list.html:32
+#: templates/colleagues/list.html:42
 msgid "User Information"
 msgstr "Benutzerinformation"
 
-#: templates/colleagues/list_include.html:6
-msgid "Click to edit"
-msgstr "Klicken Sie hier, zum Bearbeiten"
+#: templates/colleagues/list.html:46
+msgid "OK"
+msgstr ""
 
-#: templates/colleagues/list_include.html:8
-msgid "More information"
-msgstr "Mehr Informationen"
+#: templates/colleagues/list_include.html:8 templates/companies/list.html:42
+#: templates/companies/view_company.html:11
+#: templates/presence/overview.html:43 templates/students/group_detail.html:14
+#: templates/students/group_detail.html:34 templates/students/list.html:46
+#: templates/students/search.html:39
+msgid "Edit"
+msgstr "Bearbeiten"
 
-#: templates/colleagues/phonelist.html:6
-msgid "Phonelist"
-msgstr "Telefonliste"
+#: templates/colleagues/list_include.html:10
+msgid "Info"
+msgstr ""
 
-#: templates/colleagues/phonelist.html:13
+#: templates/colleagues/phonelist.html:12
 msgid "Private"
 msgstr "Privat"
 
-#: templates/colleagues/profile.html:5
-#: views/web.py:78
-msgid "My Profile"
-msgstr "Mein Profil"
-
-#: templates/colleagues/profile.html:6
-msgid "Personal data"
-msgstr "Persönliche Daten"
-
 #: templates/colleagues/profile.html:7
 msgid "This data can only be seen by members of the Management group."
-msgstr "Diese Daten können nur von der Verwaltung eingesehen werden (außer Telefon)."
+msgstr ""
+"Diese Daten können nur von der Verwaltung eingesehen werden (außer Telefon)."
 
 #: templates/companies/add_note.html:6
 msgid "New Note"
@@ -1076,48 +1115,51 @@ msgstr "Alte Bemerkungen"
 msgid "No old notes."
 msgstr "Keine alten Bemerkungen."
 
+#: templates/companies/details.html:6
+msgid "Attention!"
+msgstr "Achtung!"
+
+#: templates/companies/details.html:15 templates/students/details.html:9
+msgid "P"
+msgstr "T"
+
 #: templates/companies/details.html:16
-msgid "Attention: Supplier is blocked!"
-msgstr "Achtung: Lieferant ist gesperrt!"
+msgid "F"
+msgstr "F"
 
-#: templates/companies/details.html:23
-msgid "Open on separate page"
-msgstr "Auf eigener Seite öffnen"
-
-#: templates/companies/details.html:32
+#: templates/companies/details.html:22
 msgid "Homepage"
 msgstr "Homepage"
 
-#: templates/companies/details.html:36
+#: templates/companies/details.html:26
 msgid "Ratings"
 msgstr "Bewertungen"
 
-#: templates/companies/details.html:41
+#: templates/companies/details.html:31
 msgid "Active Students"
 msgstr "Aktive Azubis"
 
-#: templates/companies/details.html:48
+#: templates/companies/details.html:38
 msgid "Years"
 msgstr "Jahre"
 
-#: templates/companies/details.html:53
+#: templates/companies/details.html:43
 msgid "No"
 msgstr "Nein"
 
-#: templates/companies/details.html:64
-#: views/web.py:194
+#: templates/companies/details.html:54 views/web.py:202
 msgid "Add Note"
 msgstr "Bemerkung hinzufügen"
 
-#: templates/companies/details.html:74
+#: templates/companies/details.html:65
 msgid "No contacts defined."
 msgstr "Keine Kontakte angelegt."
 
-#: templates/companies/details.html:83
+#: templates/companies/details.html:75
 msgid "finished"
 msgstr "beendet"
 
-#: templates/companies/details.html:91
+#: templates/companies/details.html:83
 msgid "No Cooperations"
 msgstr "Keine Kooperationen"
 
@@ -1125,321 +1167,351 @@ msgstr "Keine Kooperationen"
 msgid "Add Company"
 msgstr "Firma hinzufügen"
 
-#: templates/companies/list.html:12
-#: templates/students/list.html:14
+#: templates/companies/list.html:15 templates/students/list.html:17
 msgid "Other"
 msgstr "Andere"
 
-#: templates/companies/list.html:26
-#: templates/companies/view_company.html:6
-#: templates/students/groups.html:27
-msgid "Click for details."
-msgstr "Klicken für Details."
+#: templates/companies/list.html:47 templates/companies/list_all.html:51
+msgid "Open on separate page"
+msgstr "Auf eigener Seite öffnen"
 
-#: templates/companies/list.html:30
-#: templates/companies/view_company.html:10
-#: templates/students/group_detail.html:16
-#: templates/students/groups.html:36
-#: templates/students/list.html:33
-msgid "Edit"
-msgstr "Bearbeiten"
-
-#: templates/companies/list.html:35
-#: templates/companies/list_all.html:52
+#: templates/companies/list.html:57 templates/companies/list_all.html:61
 msgid "No companies found."
 msgstr "Keine Firmen gefunden."
 
-#: templates/companies/list_all.html:8
-msgid "Companies with students"
-msgstr "Firmen mit Azubis"
-
-#: templates/companies/list_all.html:17
+#: templates/companies/list_all.html:11
 msgid "List only companies with students"
 msgstr "Nur Firmen mit Azubis auflisten"
 
-#: templates/companies/list_all.html:20
+#: templates/companies/list_all.html:15
 msgid "Show all companies"
 msgstr "Alle Firmen anzeigen"
 
-#: templates/companies/list_all.html:24
-#: templates/students/list_all.html:11
+#: templates/companies/list_all.html:22 templates/students/list_all.html:12
 msgid "Go to page"
 msgstr "Gehe zu Seite"
 
-#: templates/companies/list_all.html:44
-#: templates/students/list_all.html:31
-msgid "Previous page"
-msgstr "Vorherige Seite"
+#: templates/companies/list_all.html:75 templates/students/list_all.html:61
+#: templates/students/add/base.html:23
+msgid "Next"
+msgstr "Weiter"
 
-#: templates/companies/list_all.html:48
-#: templates/students/list_all.html:35
-msgid "Next page"
-msgstr "Nächste Seite"
+#: templates/companies/list_all.html:84 templates/students/list_all.html:70
+msgid "Page"
+msgstr "Seite"
 
-#: templates/journal/add.html:5
-msgid "Add new Journal for Group"
-msgstr "Neues Tagebuch für Gruppe anlegen"
+#: templates/companies/list_all.html:84 templates/students/list_all.html:70
+msgid "of"
+msgstr "von"
 
 #: templates/journal/add.html:7
 msgid ""
-"For the following groups a journal already exist. You can\n"
-"    not create a second one. If you want access to a specific journal,\n"
-"    contact one of the listed instructors."
+"\n"
+"        For the following groups a journal already exist.\n"
+"        You can not create a second one. If you want/need access to a "
+"specific\n"
+"        journal, contact one of the listed instructors.\n"
+"        "
 msgstr ""
+"\n"
 "Für die aufgelisteten Gruppen existiert bereits ein Tagebuch.\n"
-"Es kann kein zweites erstellt werden! Wenn Sie Zugriff auf ein bestimmtes Tagebuch benötigen,\n"
+"Es kann kein zweites erstellt werden! Wenn Sie Zugriff auf ein bestimmtes "
+"Tagebuch benötigen,\n"
 "wenden Sie sich bitte an einen von den aufgelisteten Ausbildern."
 
-#: templates/journal/add.html:15
+#: templates/journal/add.html:24
 msgid "Enter data for new journal"
 msgstr "Daten für neues Tagebuch eingeben"
 
-#: templates/journal/add_entry.html:7
-msgid "New Entry"
+#: templates/journal/add_entry.html:13
+msgid "New entry"
 msgstr "Neuer Eintrag"
 
-#: templates/journal/add_entry.html:14
+#: templates/journal/add_entry.html:22
 msgid "Files"
 msgstr "Dateien"
 
-#: templates/journal/add_entry.html:34
+#: templates/journal/add_entry.html:26
+msgid "Help"
+msgstr "Hilfe"
+
+#: templates/journal/add_entry.html:33
 msgid "Entries for"
 msgstr "Einträge für"
 
 #: templates/journal/list.html:11
-msgid "Click to add entry"
-msgstr "Klicken Sie hier, um einen Eintrag hinzuzufügen"
-
-#: templates/journal/list.html:12
-#: views/journal.py:131
-msgid "Edit Rights"
-msgstr "Rechte bearbeiten"
-
-#: templates/journal/list.html:18
-msgid "Click to show attached media"
-msgstr "Klicken Sie hier, um angehängte Medien anzusehen"
-
-#: templates/journal/list.html:26
-msgid "Add new journal"
-msgstr "Neues Tagebuch"
-
-#: templates/journal/myentries.html:6
 msgid "Entries"
 msgstr "Einträge"
 
-#: templates/journal/myentries.html:30
-#: templates/presence/overview.html:33
+#: templates/journal/list.html:12 templates/students/groups.html:24
+msgid "Actions"
+msgstr "Aktionen"
+
+#: templates/journal/list.html:25
+msgid "Click to show attached media"
+msgstr "Klicken Sie hier, um angehängte Medien anzusehen"
+
+#: templates/journal/list.html:32
+msgid "Click to add entry"
+msgstr "Klicken Sie hier, um einen Eintrag hinzuzufügen"
+
+#: templates/journal/list.html:35
+msgid "Edit Rights"
+msgstr "Rechte bearbeiten"
+
+#: templates/journal/list.html:46
+msgid "Add new journal"
+msgstr "Neues Tagebuch"
+
+#: templates/journal/myentries.html:29 templates/presence/overview.html:42
+#: templates/presence/overview.html:93
 msgid "Show"
 msgstr "Anzeigen"
 
-#: templates/journal/rights.html:5
-msgid "Rights for Journal"
-msgstr "Rechte für Tagebuch"
-
-#: templates/journal/rights.html:6
+#: templates/journal/rights.html:8
 msgid "Instructors with access"
 msgstr "Ausbilder mit Zugriffsrecht"
 
-#: templates/journal/rights.html:15
+#: templates/journal/rights.html:18
 msgid "Select instructors to remove"
 msgstr "Wählen Sie Ausbilder zum Entfernen"
 
-#: templates/journal/rights.html:22
+#: templates/journal/rights.html:25
 msgid "Select intructors to add"
 msgstr "Wählen Sie Ausbilder zum Hinzufügen"
 
-#: templates/journal/rights.html:29
+#: templates/journal/rights.html:32
 msgid "Change"
 msgstr "Ändern"
 
-#: templates/journal/show_media.html:6
-msgid "Media for Entry ID"
-msgstr "Medien für Eintrag mit ID"
-
-#: templates/journal/show_media.html:8
+#: templates/journal/show_media.html:9
 msgid "By"
 msgstr "von"
 
-#: templates/journal/show_media.html:10
+#: templates/journal/show_media.html:11
 msgid "Click to download"
 msgstr "Klicken Sie hier, zum Download"
 
-#: templates/presence/edit.html:19
+#: templates/news/add.html:11
+msgid "New Message"
+msgstr "Neuer Artikel"
+
+#: templates/presence/edit.html:21
 msgid "Last change by"
 msgstr "Letzte Änderung von"
 
-#: templates/presence/edit.html:20
-msgid "State"
-msgstr "Status"
-
-#: templates/presence/edit.html:82
+#: templates/presence/edit.html:70
 msgid "Saved"
 msgstr "Gesichert"
 
-#: templates/presence/generate_pdf.html:23
+#: templates/presence/generate_pdf.html:17
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: templates/presence/generate_pdf.html:27
 msgid "Apply"
 msgstr "Übernehmen"
 
-#: templates/presence/generate_pdf.html:39
-#: templates/presence/generate_pdf.html:49
+#: templates/presence/generate_pdf.html:65
+#: templates/presence/generate_pdf.html:81
 msgid "Generate Printout"
 msgstr "Ausdruck generieren"
 
-#: templates/presence/generate_pdf.html:41
+#: templates/presence/generate_pdf.html:70
 msgid "Generated printouts"
 msgstr "Generierte Ausdrucke"
 
-#: templates/presence/generate_pdf.html:54
+#: templates/presence/generate_pdf.html:87
 msgid "Back to overview"
 msgstr "Zurück zur Übersicht"
 
-#: templates/presence/group.html:12
+#: templates/presence/group.html:13 templates/presence/group.html.py:18
 msgid "Print empty page for"
 msgstr "Leere Anwesenheitsliste erstellen für"
 
-#: templates/presence/group.html:14
+#: templates/presence/group.html:15
 msgid "Print filled page for"
 msgstr "Abschlussliste erzeugen für"
 
-#: templates/presence/group.html:18
+#: templates/presence/group.html:27
 msgid "Set presence for all"
 msgstr "Anwesenheit für ganze Gruppe setzen"
 
-#: templates/presence/group.html:25
-msgid "Set now"
-msgstr "Jetzt setzen"
-
-#: templates/presence/group.html:25
+#: templates/presence/group.html:34
 msgid "Sets the presence for all EMPTY fields."
 msgstr "Setzt die Anwesenheit für alle LEEREN Felder."
 
-#: templates/presence/group.html:44
+#: templates/presence/group.html:35
+msgid "Set now"
+msgstr "Jetzt setzen"
+
+#: templates/presence/group.html:38
+msgid "Show/hide lateness"
+msgstr "Verspätungen anzeigen/ausblenden"
+
+#: templates/presence/group.html:60
 msgid "Click here to enter notes."
 msgstr "Klicken Sie hier, um Bemerkungen einzugeben."
 
-#: templates/presence/group.html:51
+#: templates/presence/group.html:68
 msgid "Enter lateness here."
 msgstr "Verspätungen hier in Minuten eingeben."
 
-#: templates/presence/group.html:64
+#: templates/presence/group.html:93
 msgid "Legend"
 msgstr "Legende"
 
-#: templates/presence/group.html:74
-msgid "Changes"
-msgstr "Änderungen"
-
-#: templates/presence/list_printouts.html:5
-#: templates/presence/overview.html:14
-msgid "Old lists"
-msgstr "Alte Listen"
-
-#: templates/presence/overview.html:8
+#: templates/presence/overview.html:10
 msgid "The first call of a list can take some time!"
 msgstr "Der erste Aufruf einer Liste kann einige Zeit dauern!"
 
-#: templates/presence/overview.html:20
-msgid "Show list by date"
-msgstr "Liste für Datum anzeigen"
+#: templates/presence/overview.html:24
+msgid "Own list"
+msgstr "Eigene Liste"
 
-#: templates/presence/overview.html:21
-msgid "Finished lists / Information"
-msgstr "Fertige Listen / Informationen"
-
-#: templates/presence/overview.html:31
+#: templates/presence/overview.html:28 templates/presence/overview.html:79
 msgid "From"
 msgstr "Von"
 
-#: templates/presence/overview.html:32
+#: templates/presence/overview.html:35 templates/presence/overview.html:86
 msgid "to"
 msgstr "bis"
 
-#: templates/presence/overview.html:39
+#: templates/presence/overview.html:46
+msgid "Create"
+msgstr "Erstellen"
+
+#: templates/presence/overview.html:57
+msgid "Old lists"
+msgstr "Alte Listen"
+
+#: templates/presence/overview.html:68
+msgid "Show list by date"
+msgstr "Liste für Datum anzeigen"
+
+#: templates/presence/overview.html:69
+msgid "Finished lists / Information"
+msgstr "Fertige Listen / Informationen"
+
+#: templates/presence/overview.html:99
 msgid "Presence days for month"
 msgstr "Anwesenheitstage für Monat"
 
-#: templates/presence/overview.html:46
+#: templates/presence/overview.html:110
+#: templates/presence/select_groups.html:31
 msgid "No groups found."
 msgstr "Keine Gruppen gefunden."
 
-#: templates/students/details.html:16
+#: templates/students/details.html:10
+msgid "M"
+msgstr "M"
+
+#: templates/students/details.html:24
 msgid "Notice in Emergency"
 msgstr "Im Notfall zu benachrichtigen"
 
-#: templates/students/details.html:17
+#: templates/students/details.html:25
 msgid "Birthday"
 msgstr "Geburtstag"
 
-#: templates/students/details.html:18
+#: templates/students/details.html:26
 msgid "Years old"
 msgstr "Jahre alt"
 
+#: templates/students/details.html:31
+msgid "Click here to edit presence"
+msgstr "Klicken Sie hier, um Anwesenheiten zu bearbeiten"
+
 #: templates/students/details.html:34
-msgid "All except holiday."
-msgstr "Alles außer Urlaub."
+msgid "All saved presence days"
+msgstr "Alle gespeicherten Anwesenheitstage"
 
 #: templates/students/details.html:35
 msgid "Total days of absense"
 msgstr "Fehltage gesamt"
 
-#: templates/students/details.html:37
+#: templates/students/details.html:39
+msgid "Holiday"
+msgstr "Urlaub"
+
+#: templates/students/details.html:42
 msgid "Illness days"
 msgstr "Krankheitstage"
 
-#: templates/students/details.html:38
+#: templates/students/details.html:46
 msgid "Not excused"
 msgstr "Nicht entschuldigt"
 
-#: templates/students/details.html:44
+#: templates/students/details.html:49
+msgid "Latenesses"
+msgstr "Verspätungen"
+
+#: templates/students/details.html:53
+msgid "minutes"
+msgstr "Minuten"
+
+#: templates/students/details.html:59
 msgid "No presence found for"
 msgstr "Keine Anwesenheit gefunden für"
 
-#: templates/students/details.html:55
+#: templates/students/details.html:70
 msgid "Test"
 msgstr "Test"
 
-#: templates/students/details.html:56
-#: templates/students/details.html.py:59
-#: templates/students/details.html:62
-#: templates/students/details.html.py:65
+#: templates/students/details.html:71 templates/students/details.html.py:74
+#: templates/students/details.html:77 templates/students/details.html.py:80
 msgid "Points"
 msgstr "Punkte"
 
-#: templates/students/details.html:65
+#: templates/students/details.html:80
 msgid "Final Grade"
 msgstr "Abschlußnote"
 
-#: templates/students/details.html:79
+#: templates/students/details.html:91
 msgid "No Picture set."
 msgstr "Kein Bild vorhanden."
 
-#: templates/students/group_detail.html:8
-#: templates/students/groups.html:18
+#: templates/students/edit_short.html:5
+msgid "Edit student"
+msgstr "Azubi bearbeiten"
+
+#: templates/students/group_detail.html:23 templates/students/groups.html:21
 msgid "Begin"
 msgstr "Anfang"
 
-#: templates/students/group_detail.html:20
+#: templates/students/group_detail.html:31
 #, python-format
 msgid "Age: %(age)s Years"
 msgstr "Alter: %(age)s Jahre"
 
-#: templates/students/groups.html:6
-msgid "Overview"
-msgstr "Überblick"
+#: templates/students/group_detail.html:46
+#, python-format
+msgid ""
+"\n"
+"                One student has finished yet.\n"
+"                "
+msgid_plural ""
+"\n"
+"                %(students)s students have finished yet.\n"
+"                "
+msgstr[0] ""
+"\n"
+"                Ein Azubi hat die Ausbildung bereits beendet.\n"
+"                "
+msgstr[1] ""
+"\n"
+"                %(students)s haben die Ausbildung bereits beendet.\n"
+"                "
 
 #: templates/students/groups.html:9
 msgid "Add Group"
 msgstr "Gruppe hinzufügen"
 
-#: templates/students/groups.html:20
+#: templates/students/groups.html:23
 msgid "School Num."
 msgstr "Klassen Nr."
 
-#: templates/students/groups.html:21
-msgid "Actions"
-msgstr "Aktionen"
-
-#: templates/students/groups.html:35
+#: templates/students/groups.html:40
 msgid "Export names to excel"
 msgstr "Namen nach Excel exportieren"
 
@@ -1447,42 +1519,94 @@ msgstr "Namen nach Excel exportieren"
 msgid "Add Student"
 msgstr "Azubi hinzufügen"
 
-#: templates/students/list.html:24
-#: views/web.py:366
+#: templates/students/list.html:27
 msgid "Extended Search"
 msgstr "Erweiterte Suche"
 
-#: templates/students/list.html:29
-#: templates/students/search.html:20
-msgid "Click for details"
-msgstr "Klicken für Details"
+#: templates/students/list.html:46
+msgid "Full edit"
+msgstr "Alles bearbeiten"
 
-#: templates/students/list.html:42
+#: templates/students/list.html:47
+msgid "Short edit"
+msgstr "Kurzbearbeitung"
+
+#: templates/students/list.html:63 templates/students/list_all.html:47
 msgid "No students found."
 msgstr "Keine Azubis gefunden."
 
-#: templates/students/list_all.html:39
-msgid "No students found"
-msgstr "Keine Azubis gefunden."
-
-#: templates/students/search.html:6
-msgid "Search Student"
-msgstr "Azubi suchen"
-
-#: templates/students/search.html:18
+#: templates/students/search.html:21
 msgid "Result"
 msgstr "Ergebnis"
 
-#: templates/students/search.html:25
-msgid "No results found"
-msgstr "Keine Ergebnisse gefunden"
+#: templates/students/search.html:55
+msgid "No results found."
+msgstr "Keine Ergebnisse gefunden."
+
+#: templates/students/add/apply.html:7
+msgid "General"
+msgstr "Allgemein"
+
+#: templates/students/add/apply.html:20
+msgid "Test Data"
+msgstr "Einstellungstest"
+
+#: templates/students/add/base.html:13
+msgid "<strong>Bold</strong> fields are required!"
+msgstr "<strong>Fettgedruckte</strong> Felder sind Pflichtfelder!"
+
+#: templates/students/add/base.html:19
+msgid "First step"
+msgstr "Erster Schritt"
+
+#: templates/students/add/base.html:20
+msgid "Prev step"
+msgstr "Voriger Schritt"
+
+#: templates/students/add/job.html:7
+msgid "Job Data"
+msgstr "Berufsdaten"
+
+#: templates/students/add/job.html:18
+msgid "House Data"
+msgstr "Hausdaten"
+
+#: templates/students/add/personal.html:30
+msgid "Contact Data"
+msgstr "Kontaktdaten"
+
+#: templates/students/add/success.html:13
+msgid "Print datasheet (PDF)"
+msgstr "Datenblatt drucken (PDF)"
 
 #: templatetags/ozone_tags.py:21
 #, python-format
 msgid "<p>No help found for lang %(lang)s and identifier %(id)s.</p>"
-msgstr "<p>Keine Hilfe für Sprache %(lang)s und Identifizierung %(id)s gefunden.</p>"
+msgstr ""
+"<p>Keine Hilfe für Sprache %(lang)s und Identifizierung %(id)s gefunden.</p>"
 
-#: views/helper.py:29
+#: utils/__init__.py:126
+msgid "An internal server error occured."
+msgstr "Der Server hat einen internen Fehler."
+
+#: utils/__init__.py:127 utils/__init__.py:136
+msgid "Ozone Error"
+msgstr "Ozone Software Fehler"
+
+#: views/add_student.py:41
+msgid "Add new Student"
+msgstr "Azubi hinzufügen"
+
+#: views/add_student.py:42
+#, python-brace-format
+msgid "Step: {0}/{1}"
+msgstr "Schritt: {0}/{1}"
+
+#: views/add_student.py:68
+msgid "New student added"
+msgstr "Neuer Azubi hinzugefügt"
+
+#: views/helper.py:153
 msgid "All Groups"
 msgstr "Alle Gruppen"
 
@@ -1495,103 +1619,158 @@ msgid "Accessible Journals"
 msgstr "Verfügbare Tagebücher"
 
 #: views/journal.py:40
-msgid "Show Media"
-msgstr "Medien anzeigen"
+#, python-brace-format
+msgid "Media for Entry ID: {0}"
+msgstr "Medien für Eintrag mit ID: {0}"
 
 #: views/journal.py:60
-msgid "Add Journal"
-msgstr "Tagebuch hinzufügen"
+msgid "Add new Journal for Group"
+msgstr "Neues Tagebuch für Gruppe anlegen"
 
 #: views/journal.py:95
 msgid "Add Entry"
 msgstr "Eintrag hinzufügen"
 
-#: views/pdf.py:147
+#: views/journal.py:131
+#, python-brace-format
+msgid "Edit Rights for {0}"
+msgstr "Rechte bearbeiten für {0}"
+
+#: views/pdf.py:164
 msgid "Presence PDF-Generation"
 msgstr "Anwesenheit PDF-Erzeugung"
 
-#: views/web.py:57
-msgid "Ozone Home"
-msgstr "Ozone Startseite"
-
-#: views/web.py:65
+#: views/web.py:67
 msgid "Internal Admin Page"
 msgstr "Interne Admin Seite"
 
-#: views/web.py:134
+#: views/web.py:81
+msgid "My Profile"
+msgstr "Mein Profil"
+
+#: views/web.py:137
 msgid "Add external"
 msgstr "Externen Dozenten hinzufügen"
 
-#: views/web.py:145
-msgid "Filter Colleagues"
-msgstr "Kollegen / Dozenten filtern"
+#: views/web.py:147
+#, python-brace-format
+msgid "Colleagues (internal): {0}"
+msgstr "Kollegen (intern): {0}"
 
-#: views/web.py:171
+#: views/web.py:150
+#, python-brace-format
+msgid "Colleagues (external): {0}"
+msgstr "Dozenten (extern): {0}"
+
+#: views/web.py:152
+#, python-brace-format
+msgid "Colleagues (internal and external): {0}"
+msgstr "Kollegen (intern) / Dozenten (extern): {0}"
+
+#: views/web.py:179
 msgid "Add News"
 msgstr "News hinzufügen"
 
-#: views/web.py:222
+#: views/web.py:234
 msgid "Login Page"
 msgstr "Anmeldeseite"
 
-#: views/web.py:237
+#: views/web.py:249
 #, python-format
 msgid "Details: %s"
 msgstr "Details: %s"
 
-#: views/web.py:284
-msgid "All Companies"
-msgstr "Alle Firmen"
+#: views/web.py:275
+#, python-brace-format
+msgid "Companies: {0} ({1})"
+msgstr "Firmen: {0} ({1})"
 
-#: views/web.py:325
-msgid "Students Archive"
-msgstr "Azubi-Archiv"
+#: views/web.py:288
+#, python-brace-format
+msgid "Companies with students ({n})"
+msgstr "Firmen mit Azubis ({n})"
 
-#: views/web.py:345
-msgid "List of all students"
-msgstr "Liste aller Azubis"
+#: views/web.py:291
+#, python-brace-format
+msgid "Companies ({n})"
+msgstr "Firmen ({n})"
 
-#: views/web.py:391
-msgid "Group Detail"
-msgstr "Details Gruppe"
+#: views/web.py:337
+#, python-brace-format
+msgid "Students Archive: {s} ({n})"
+msgstr "Azubi-Archiv: {s} ({n})"
 
-#: views/web.py:417
-msgid "Group Overview"
-msgstr "Überblick Gruppen"
+#: views/web.py:338
+#, python-brace-format
+msgid "Students: {s} ({n})"
+msgstr "Azubi(s): {s} ({n})"
 
-#: views/web.py:468
-msgid "Presence for Group"
-msgstr "Anwesenheiten für Gruppe"
+#: views/web.py:359
+#, python-brace-format
+msgid "List of all students ({0})"
+msgstr "Liste aller Azubis ({0})"
 
-#: views/web.py:482
-msgid "Presence for Student"
-msgstr "Anwesenheiten für Azubi"
+#: views/web.py:383
+msgid "Search Student"
+msgstr "Azubi suchen"
 
-#: views/web.py:495
+#: views/web.py:402
+msgid "Groups - Overview"
+msgstr "Übersicht Gruppen"
+
+#: views/web.py:420
+#, python-brace-format
+msgid "Group - {name} ({nr})"
+msgstr "Gruppe - {name} ({nr})"
+
+#: views/web.py:423
+#, python-brace-format
+msgid "Group - {name}"
+msgstr "Gruppe - {name}"
+
+#: views/web.py:450
+msgid "Presence Overview"
+msgstr "Übersicht Anwesenheiten"
+
+#: views/web.py:485
+#, python-brace-format
+msgid "Presence for Group {0}"
+msgstr "Anwesenheiten für Gruppe {0}"
+
+#: views/web.py:499
+#, python-brace-format
+msgid "Presence - {0}"
+msgstr "Anwesenheit - {0}"
+
+#: views/web.py:512
 #, python-format
-msgid "Presence %s"
-msgstr "Anwesenheit %s"
+msgid "Presences %s"
+msgstr "Anwesenheiten %s"
 
-#: views/web.py:520
-msgid "Next Birthdays"
-msgstr "Nächste Geburtstage"
+#: views/web.py:540
+#, python-brace-format
+msgid "Birthdays, next {0} days"
+msgstr "Geburtstage in den nächsten {0} Tagen"
 
-#: views/web.py:561
+#: views/web.py:582
 msgid "PIL is not installed."
 msgstr "PIL ist nicht installiert."
 
-#: views/web.py:568
+#: views/web.py:589
 msgid "Unsupported barcode format."
 msgstr "Nicht unterstütztes Strichcode-Format."
 
-#~ msgid "Memo"
-#~ msgstr "Memo"
+#: views/web.py:610
+msgid "Edit own presence list"
+msgstr "Eigene Anwesenheitsliste bearbeiten"
 
-#~ msgid "Memos"
-#~ msgstr "Memos"
+#: views/web.py:647
+msgid "My Presence"
+msgstr "Eigene Anwesenheiten"
 
-#~ msgid "(%(counter)s Student)"
+#: views/web.py:662
+msgid "This year."
+msgstr "Dieses Jahr."
 
-#~ msgid_plural "(%(counter)s Students)"
-#~ msgstr[0] "(%(counter)s Azubi)"
-#~ msgstr[1] "(%(counter)s Azubis)"
+#~ msgid "Bold"
+#~ msgstr "Fettgedruckte"

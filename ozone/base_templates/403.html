@@ -3,10 +3,14 @@
 {% load staticfiles %}
 
 {% block content %}
-<h2 class="headline">403 - {% trans "Permission denied" %}</h2>
-<div style="width:500px;margin:10px auto;text-align:center;padding:15px;border:1px solid red;">
-<img src="{% static "img/zugriff_verweigert.png" %}" />
-<p>{% blocktrans %}Please contact the administrator if you have to access
-the requested site.{% endblocktrans %}</p>
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <div class="alert alert-error">
+            <h2>403 - {% trans "Permission denied" %}</h2>
+            <img src="{% static "img/zugriff_verweigert.png" %}" />
+            <p>{% blocktrans %}Please contact the administrator if you have to access
+                the requested site.{% endblocktrans %}</p>
+        </div>
+    </div>
 </div>
 {% endblock %}

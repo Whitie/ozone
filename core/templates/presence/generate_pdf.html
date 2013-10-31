@@ -1,61 +1,126 @@
 {% extends "index.html" %}
+{% load url from future %}
 {% load i18n %}
 
 {% block content %}
-<h2 class="headline">{{ group }}</h2>
-<h2 class="headline">{{ ts|date:"F Y" }}</h2>
-<div style="text-align:center;">
-{% if not show %}
-<style type="text/css">
-th {
-    text-align:right;
-}
-td {
-    text-align:left;
-}
-</style>
-<form action="" method="post">
-{% csrf_token %}
-<table style="border:1px solid blue;margin:5px auto;">
-{{ form.as_table }}
-<tr>
-    <td></td>
-    <td><input type="submit" value="{% trans "Apply" %}" /></td>
-</tr>
-</table>
-</form>
-{% else %}
-<p><strong>{% trans "Instructor" %}:</strong> {{ instructor.get_profile }},
-    <strong>{% trans "Course" %}:</strong> {{ course }},
-    <strong>{% trans "School days" %}:</strong> {{ school_days|join:", " }},
-    <strong>Info:</strong> Förderung wird{% if not incl_sup %} <strong>nicht</strong>{% endif %} aufgedruckt.
-</p>
-{% endif %}
+<div class="row-fluid">
+    <div class="span10 centered">
+        <h2>{{ group }}</h2>
+        <h3>{{ ts|date:"F Y" }}</h3>
+    </div>
 </div>
-<h3>{% trans "Companies" %}</h3>
-<ul>
-{% for c in companies %}
-<li><strong>{{ c.name }}</strong> - {{ c.group_count }} {% trans "Student(s)" %}
-    {% if show and perms.core.add_presenceprintout %}<input id="but_{{ c.id }}" type="button" value="{% trans "Generate Printout" %}" onclick="generate_company({{ c.id }});" />{% endif %}
-    <span style="display:none;" id="res_{{ c.id }}"></span>
-    {% if c.currents %}<ul>{% trans "Generated printouts" %}
-        {% for cur in c.currents %}
-        <li><a href="{{ cur.pdf.url }}">{{ cur.pdf.name }}</a></li>
-        {% endfor %}</ul>
-    {% endif %}
-</li>
-{% endfor %}
-<li><strong>{% trans "All" %}</strong>
-    {% if show and perms.core.add_presenceprintout %}<input id="but_all" type="button" value="{% trans "Generate Printout" %}" onclick="generate_all();" />{% endif %}
-    <span style="display:none;" id="res_all"></span>
-</li>
-</ul>
 
-<p><a href="{% url core-presence %}">{% trans "Back to overview" %}</a></p>
+<div class="row-fluid">
+    {% if not show %}
+    <div class="span8 offset1">
+        <form action="" method="post" class="form-horizontal">
+            <legend>{% trans "Settings" %}</legend>
+            {% csrf_token %}
+            {% for f in form %}
+            <div class="control-group">
+                <label class="control-label" for="{{ f.auto_id }}">{{ f.label }}</label>
+                <div class="controls">{{ f }}</div>
+            </div>
+            {% endfor %}
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn">{% trans "Apply" %}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    {% else %}
+
+    <div class="span10 centered">
+        <p><strong>{% trans "Instructor" %}:</strong> {{ instructor.get_profile }},
+            <strong>{% trans "Course" %}:</strong> {{ course }},
+            <strong>{% trans "School days" %}:</strong> {{ school_days|join:", " }},
+            <strong>Info:</strong> Förderung wird{% if not incl_sup %} <strong>nicht</strong>{% endif %} aufgedruckt.
+        </p>
+    </div>
+    {% endif %}
+</div>
 
 {% if show %}
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <div style="width:400px;">
+            <div class="progress progress-striped" id="pbar">
+                <div class="bar" style="width:0%"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <h3>{% trans "Companies" %}</h3>
+        <ul>
+            {% for c in companies %}
+            <li><strong>{{ c.name }}</strong> - {{ c.group_count }} {% trans "Student(s)" %}
+                {% if show and perms.core.add_presenceprintout %}
+                <button class="btn btn-primary btn-mini" id="but_{{ c.id }}" type="button" onclick="generate_company({{ c.id }});">
+                    {% trans "Generate Printout" %}
+                </button>
+                {% endif %}
+                <span style="display:none;" id="res_{{ c.id }}"></span>
+                {% if c.currents %}
+                <ul>{% trans "Generated printouts" %}
+                    {% for cur in c.currents %}
+                    <li><a href="{{ cur.pdf.url }}" class="btn btn-info btn-mini">{{ cur.pdf.name }}</a></li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </li>
+            {% endfor %}
+            <li><strong>{% trans "All" %}</strong>
+                {% if show %}
+                <button class="btn btn-primary btn-mini" id="but_all" type="button" onclick="generate_all();">
+                    {% trans "Generate Printout" %}
+                </button>
+                {% endif %}
+                <span style="display:none;" id="res_all"></span>
+            </li>
+        </ul>
+        <a class="btn btn-info" href="{% url "core-presence" %}">{% trans "Back to overview" %}</a>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block additional_js %}
+{% if show %}
 <script type="text/javascript">
+function start_bar() {
+    var pbar = $('#pbar');
+    var bar = $('.bar');
+    bar.width(0);
+    pbar.addClass('active');
+    var progress = setInterval(function() {
+        var width = bar.width();
+        if (width < 360) {
+            bar.width(width+40);
+        }
+        bar.text(width/4 + '%');
+    }, 1000);
+    return progress;
+}
+
+function stop_bar(progress) {
+    var pbar = $('#pbar');
+    var bar = $('.bar');
+    clearInterval(progress);
+    bar.width(400);
+    bar.text('100%');
+    setTimeout(function() {
+        pbar.removeClass('active');
+    }, 1000);
+}
+
 function generate_company(cid) {
+    var progress = start_bar();
     $('#but_'+cid).attr('disabled', 'disabled');
     var uid = {{ instructor.id }};
     var gid = {{ group.id }};
@@ -66,17 +131,18 @@ function generate_company(cid) {
     var month = {{ month }};
     dat = {'cid': cid, 'uid': uid, 'gid': gid, 'course': course,
         'sdays': sdays, 'year': year, 'month': month, 'incl_sup': incl_sup};
-    $.post('{% url core-api-pdf-presence %}', {'_JSON_': JSON.stringify(dat)},
+    $.post('{% url "core-api-pdf-presence" %}', {'_JSON_': JSON.stringify(dat)},
         function(res_data) {
-            link = '<a href="'+res_data['url']+'">'+res_data['name']+'</a>';
+            link = '<a class="btn btn-info btn-mini" href="'+res_data['url']+'">'+res_data['name']+'</a>';
             $('#res_'+cid).append(link).show();
-            /*$('#but_'+cid).attr('disabled', 'disabled');*/
+            stop_bar(progress);
         }
     );
 }
 
 function generate_all() {
     $('#but_all').attr('disabled', 'disabled');
+    var progress = start_bar();
     var uid = {{ instructor.id }};
     var gid = {{ group.id }};
     var course = '{{ course }}';
@@ -84,13 +150,14 @@ function generate_all() {
     var sdays = ['{{ school_days|join:"', '" }}'];
     var year = {{ year }};
     var month = {{ month }};
-    dat = {'uid': uid, 'gid': gid, 'course': course,
+    dat = {'uid': uid, 'gid': gid, 'course': course, 'cid': 0,
         'sdays': sdays, 'year': year, 'month': month, 'incl_sup': incl_sup};
-    $.post('{% url core-api-pdf-presence-all %}',
+    $.post('{% url "core-api-pdf-presence-all" %}',
         {'_JSON_': JSON.stringify(dat)},
         function(res_data) {
-            link = '<a href="'+res_data['url']+'">'+res_data['name']+'</a>';
+            link = '<a class="btn btn-info btn-mini" href="'+res_data['url']+'">'+res_data['name']+'</a>';
             $('#res_all').append(link).show();
+            stop_bar(progress);
         }
     );
 }

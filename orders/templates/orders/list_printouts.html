@@ -2,33 +2,33 @@
 {% load i18n %}
 
 {% block content %}
-<h2 class="headline">{% trans "Printouts by day" %}</h2>
-<div id="po_accordion">
+{% if odays %}
+<div class="accordion" id="printouts">
     {% for d in odays %}
-    <h3><a href="#">{{ d }}, {% trans "Orders" %}: {{ d.count }},
-        {% trans "Sum" %}: {{ d.price|floatformat:2 }} {{ CURRENCY_SYM }}</a></h3>
-    <div>
-        <ul>
-            {% for p in d.printouts.all %}
-            <li>
-                <a href="{{ p.pdf.url }}">{{ p.company_name }}</a>,
-                {% trans "Generated" %}: {{ p.generated|date:"SHORT_DATETIME_FORMAT" }}
-            </li>
-            {% empty %}
-            <li>{% trans "No printouts for this day found." %}</li>
-            {% endfor %}
-        </ul>
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="printouts" href="#day_{{ forloop.counter }}">
+                {{ d }}, {% trans "Orders" %}: {{ d.count }}, {% trans "Sum" %}: {{ d.price|floatformat:2 }} {{ CURRENCY_SYM }}
+            </a>
+        </div>
+        <div id="day_{{ forloop.counter }}" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <ul>
+                    {% for p in d.printouts.all %}
+                    <li>
+                        <a href="{{ p.pdf.url }}">{{ p.company_name }}</a>,
+                        {% trans "Generated" %}: {{ p.generated|date:"SHORT_DATETIME_FORMAT" }}
+                    </li>
+                    {% empty %}
+                    <li>{% trans "No printouts for this day found." %}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     </div>
-    {% empty %}
-    <h3><a href="#">{% trans "No order day found." %}</a></h3>
-    <div></div>
     {% endfor %}
 </div>
-
-<script type="text/javascript">
-$(document).ready(function() {
-    var options = {'animated': 'bounceslide', 'collapsible': true};
-    $('#po_accordion').accordion(options);
-});
-</script>
+{% else %}
+<h3>{% trans "No order day found." %}</h3>
+{% endif %}
 {% endblock %}

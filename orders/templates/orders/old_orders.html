@@ -3,9 +3,7 @@
 {% load staticfiles %}
 
 {% block content %}
-<h2 class="headline">{% trans "All ordered articles" %}</h2>
-{% if orders %}
-<table id="dataTable">
+<table class="table table-striped dTable">
     <thead>
         <tr>
             <th>{% trans "Article Name" %}</th>
@@ -16,53 +14,60 @@
             <th>{% trans "Last Orderer" %}</th>
             <th>{% trans "Last Order" %}</th>
             <th>{% trans "Sums" %}</th>
-            <th></th>
+            <th>{% trans "Actions" %}</th>
         </tr>
     </thead>
     <tbody>
         {% for o in orders %}
         <tr>
             <td>{{ o.article.name }}</td>
-            <td style="text-align:center;">{{ o.article.ident }}</td>
+            <td style="text-align:center;">
+                <span class="label label-info">{{ o.article.ident }}</span>
+            </td>
             <td>{{ o.article.supplier }}</td>
             <td>{{ o.article.quantity }}</td>
-            <td style="text-align:right;"><a href="" title="{% trans "Sum of all orders" %}: {{ o.sums|floatformat:2 }}{{ CURRENCY_SYM }}">
-                {{ o.article.fullprice }}</a>
+            <td style="text-align:right;">
+                <span class="tt" title="<strong>{% trans "Sum of all orders" %}</strong><br>{{ o.sums|floatformat:2 }}{{ CURRENCY_SYM }}">
+                    {{ o.article.fullprice }}
+                </span>
             </td>
             <td>{{ o.userlist|join:", " }}</td>
-            <td><a href="" title="{% trans "Ordered" %}: {% for d in o.olist %}{{ d|date:"SHORT_DATE_FORMAT" }}{% if not forloop.last %}, {% endif %}{% endfor %}">
-                {{ o.ordered|date:"SHORT_DATE_FORMAT" }}</a>
+            <td>
+                <span class="tt" title="<strong>{% trans "Ordered" %}</strong><br>{% for d in o.olist %}{{ d|date:"SHORT_DATE_FORMAT" }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+                    {{ o.ordered|date:"SHORT_DATE_FORMAT" }}
+                </span>
             </td>
-            <td><a href="" title="{% trans "Orders" %}">{{ o.olist|length }}</a> /
-                <a href="" title="{% trans "Count" %}">{{ o.counts }}</a>
+            <td>
+                <span class="tt" title="{% trans "Orders" %}">
+                    <span class="badge">{{ o.olist|length }}</span>
+                </span>
+                <strong>/</strong>
+                <span class="tt" title="{% trans "Count" %}">
+                    <span class="badge badge-info">{{ o.counts }}</span>
+                </span>
             </td>
-            <td><a href="{% url orders-order o.article.id %}">{% trans "ReOrder" %}</a>
+            <td>
+                <a class="btn btn-mini" href="{% url "orders-order" o.article.id %}">
+                    <i class="icon-shopping-cart"> </i> {% trans "ReOrder" %}
+                </a>
                 {% if perms.orders.extra_order %}
-                <a href="{% url orders-extra-order o.article.id %}">{% trans "Now" %}</a>
+                <a class="btn btn-mini btn-warning" href="{% url "orders-extra-order" o.article.id %}">
+                    {% trans "Now" %}
+                </a>
                 {% endif %}
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+{% endblock %}
 
+{% block additional_js %}
 <script>
 $(document).ready(function() {
-  $(document).tooltip();
-  var oTable = $('#dataTable').dataTable({
-    "bJQueryUI": true,
-    "bPaginate": true,
-    "iDisplayLength": 25,
-    "aLengthMenu": [[25, 50, 100, -1], [25, 50, 100, "{% trans "All" %}"]],
-    "oLanguage": {
-      "sUrl": "{% static "i18n/de_DE.txt" %}"
-    }
-  });
+  datatable_options['iDisplayLength'] = 25;
+  datatable_options['aLengthMenu'] = [[25, 50, 100, -1], [25, 50, 100, "{% trans "All" %}"]];
+  var oTable = $('.dTable').dataTable(datatable_options);
 });
 </script>
-
-{% else %}
-<p>{% trans "No orders found." %}</p>
-{% endif %}
-
 {% endblock %}

@@ -2,10 +2,13 @@
 {% load i18n %}
 
 {% block content %}
-<h2 class="headline">
-    {% trans "Error" %} 500 - {% trans "Internal Server Error" %}
-</h2>
-<h3>{% trans "Full information about the error was mailed to the admin." %}</h3>
-
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <div class="alert alert-error">
+            <h2>{% trans "Error" %} 500 - {% trans "Internal Server Error" %}</h2>
+            <p>{% trans "Full information about the error was mailed to the admin." %}</p>
+        </div>
+    </div>
+</div>
 {% endblock %}
 

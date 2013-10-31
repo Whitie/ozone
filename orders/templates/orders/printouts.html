@@ -2,31 +2,41 @@
 {% load i18n %}
 
 {% block content %}
-<h2 class="headline">{% trans "Generate PDF-Files for" %} {{ oday }}</h2>
-<h3 class="headline">{% trans "This may take some time!" %}</h3>
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <h3>{% trans "Fax printouts" %}</h3>
+        <ul>
+            {% for s in supplier %}
+            <li><strong>{{ s.name }} ({{ s.ocount }} {% trans "Position(s)" %}: {{ s.osum|floatformat:2 }}{{ CURRENCY_SYM }})</strong>
+                <button class="btn" type="button" id="but_{{ s.id }}" onclick="generate_external({{ oday.id }}, {{ s.id }});">
+                    {% trans "Generate PDF" %}
+                </button>
+                <span id="pdf_{{ s.id }}" style="display:none;"></span>
+            </li>
+            {% endfor %}
+        </ul>
+        <hr />
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <h3>{% trans "Internal printout" %}</h3>
+        <button class="btn" type="button" id="but_internal" onclick="generate_internal({{ oday.id }});">
+            {% trans "Generate PDF" %}
+        </button>
+        <span id="pdf_internal" style="display:none;"></span>
+    </div>
+</div>
+{% endblock %}
 
-<h3>{% trans "Fax printouts" %}</h3>
-<ul>
-    {% for s in supplier %}
-    <li><strong>{{ s.name }} ({{ s.ocount }})</strong>
-        <input type="button" value="{% trans "Generate PDF" %}" id="but_{{ s.id }}" onclick="generate_external({{ oday.id }}, {{ s.id }});" />
-        <span id="pdf_{{ s.id }}" style="display:none;"></span>
-    </li>
-    {% endfor %}
-</ul>
-<hr />
-<h3>{% trans "Internal printout" %}</h3>
-<p><input type="button" value="{% trans "Generate PDF" %}" id="but_internal" onclick="generate_internal({{ oday.id }});" />
-    <span id="pdf_internal" style="display:none;"></span>
-</p>
-
+{% block additional_js %}
 <script type="text/javascript">
 function generate_external(oday_id, cid) {
     var container = {'oday_id': oday_id, 'supplier_id': cid,
                      'header': '{{ header }}'};
     $('#but_'+cid).attr('disabled', 'disabled');
     $.post(
-        '{% url orders-api-pdf %}',
+        '{% url "orders-api-pdf" %}',
         {'_JSON_': JSON.stringify(container)},
         function(data) {
             var s = '<a href="'+data['url']+'">'+data['filename']
@@ -40,7 +50,7 @@ function generate_internal(oday_id) {
     var container = {'oday_id': oday_id};
     $('#but_internal').attr('disabled', 'disabled');
     $.post(
-        '{% url orders-api-pdf %}',
+        '{% url "orders-api-pdf" %}',
         {'_JSON_': JSON.stringify(container)},
         function(data) {
             $('<hr />').insertAfter('#external');

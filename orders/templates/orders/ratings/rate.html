@@ -4,9 +4,6 @@
 
 {% block content %}
 <h2 class="headline">{% trans "Companies to rate" %}</h2>
-
-{% include "beta.html" %}
-
 {% for c in companies %}
 <h3 class="company" title="{% trans "Click to rate" %}">
 {{ forloop.counter }}) {{ c.name }} ({% trans "Ratings" %}: {{ c.ratings.count }})
@@ -15,7 +12,7 @@
 {% if c.average %}
 {% trans "Average ratings" %}: {{ c.rating }} ({{ c.average|floatformat:1 }})
 {% endif %}
-<form action="{% url orders-rating %}" method="post">
+<form action="{% url "orders-rating" %}" method="post">
 {% csrf_token %}
 <input type="hidden" name="company_id" value="{{ c.id }}" />
 <table style="border:2px solid green;">

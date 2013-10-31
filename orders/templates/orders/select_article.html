@@ -1,55 +1,70 @@
 {% extends "index.html" %}
+{% load url from future %}
 {% load i18n %}
 
 {% block content %}
-<style>
-#article-label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 1em;
-}
-#article-description {
-    margin: 0;
-    padding: 0;
-}
-</style>
-<h2 class="headline">{% trans "Make order" %}</h2>
-<h3>{% trans "Order old article" %}</h3>
-<form action="{% url orders-ask %}" method="post">
-{% csrf_token %}
-{{ form.as_p }}
-<p id="article-description"></p>
-<input type="submit" value="{% trans "Next" %}" />
-</form>
-<br /><hr /><br />
-<h3>{% trans "Order new article" %}</h3>
-<form action="{% url orders-order %}" method="get">
-<input type="submit" value="{% trans "Next" %}" />
-</form>
+<div class="row-fluid">
+    <div class="span6">
+        <h3>{% trans "Order old article" %}</h3>
+        <form action="{% url "orders-ask" %}" method="post">
+            {% csrf_token %}
+            <div class="control-group">
+                <label class="control-label" for="id_article">{% trans "Article" %}</label>
+                <div class="controls">
+                    <input type="text" class="input-xxlarge" id="id_article" name="article" data-provide="typeahead" autocomplete="off">
+                    <span class="help-block">
+                        Die Suche berücksichtigt auch Strichcodes und
+                        Artikelnummern.
+                    </span>
+                    <input type="hidden" id="id_article_id" name="article_id">
+                    <p id="article-description"></p>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn">{% trans "Next" %}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="span3">
+        <h3>{% trans "Order new article" %}</h3>
+        <a class="btn" href="{% url "orders-order" %}">{% trans "Next" %}</a>
+    </div>
+</div>
+{% endblock %}
 
+{% block additional_js %}
 <script>
 $(function() {
-    $("#id_article_name").autocomplete({
-        minLength: 1,
-        source: '{% url orders-api-articles %}',
-        focus: function(event, ui) {
-            $("#id_article_name").val(ui.item.label);
-            return false;
+    var options = {
+        'source': function(query, process) {
+            articles = [];
+            map = {};
+            return $.ajax({
+                'url': '{% url "orders-api-articles" %}',
+                'type': 'get',
+                'data': {'term': query},
+                'dataType': 'json',
+                'success': function(data) {
+                    $.each(data, function(i, article) {
+                        map[article['label']] = article;
+                        articles.push(article['label']);
+                    });
+                    return process(articles);
+                }
+            });
         },
-        select: function(event, ui) {
-            $("#id_article_name").val(ui.item.label);
-            $("#id_article_id").val( ui.item.value);
-            $("#article-description").html(ui.item.desc);
-            return false;
+        'updater': function(item) {
+            var obj = map[item];
+            $('#article-description').text('');
+            $('#article-description').append(obj['desc']);
+            $('#id_article_id').val(obj['value']);
+            return item;
         }
-    })
-    .data("autocomplete")._renderItem = function(ul, item) {
-        return $("<li></li>")
-            .data("item.autocomplete", item)
-            .append("<a>" + item.label + "<br>" + item.desc + "</a>")
-            .appendTo(ul);
     };
-});
+    $('#id_article').typeahead(options);
+})
 </script>
 {% endblock %}
 

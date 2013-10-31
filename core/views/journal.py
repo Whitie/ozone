@@ -18,7 +18,7 @@ from core.menu import menus
 def my_entries(req):
     entries = JournalEntry.objects.select_related().filter(created_by=req.user
         ).order_by('journal__group', '-created')
-    ctx = dict(page_title=_(u'My Journal Entries'), menus=menus,
+    ctx = dict(page_title=_(u'My Journal Entries'), menus=menus, dt=True,
         entries=entries)
     return render(req, 'journal/myentries.html', ctx)
 
@@ -37,8 +37,8 @@ def list_journals(req):
 @login_required
 def show_media_for_entry(req, entry_id):
     entry = JournalEntry.objects.select_related().get(id=int(entry_id))
-    ctx = dict(page_title=_(u'Show Media'), menus=menus, entry=entry,
-        include_media=True)
+    ctx = dict(page_title=_(u'Media for Entry ID: {0}'.format(entry.id)),
+        menus=menus, entry=entry, include_media=True)
     return render(req, 'journal/show_media.html', ctx)
 
 
@@ -57,8 +57,8 @@ def add_journal(req):
     for j in journals:
         j.userlist = [x.last_name for x in j.instructors.all()]
     form = NewJournalForm()
-    ctx = dict(page_title=_(u'Add Journal'), menus=menus, journals=journals,
-        form=form)
+    ctx = dict(page_title=_(u'Add new Journal for Group'),
+        menus=menus, journals=journals, form=form)
     return render(req, 'journal/add.html', ctx)
 
 
@@ -85,7 +85,7 @@ def add_entry(req, gid):
                 media = JournalMedia.objects.create(entry=entry, media=f)
                 media.save()
             messages.success(req, u'Neuer Eintrag wurde gespeichert.')
-            return redirect('core-add-entry', jid)
+            return redirect('core-add-entry', int(gid))
         else:
             messages.error(req, u'Bitte füllen Sie die Pflichtfelder aus.')
     else:
@@ -93,7 +93,7 @@ def add_entry(req, gid):
         form.fields['student'].choices = h.get_students_for_group(
             journal.group)
     ctx = dict(page_title=_(u'Add Entry'), menus=menus, form=form,
-        journal=journal)
+        journal=journal, need_ajax=True)
     return render(req, 'journal/add_entry.html', ctx)
 
 
@@ -128,6 +128,6 @@ def edit_rights(req, jid):
         return redirect('core-journal-rights', journal.id)
     users = User.objects.exclude(username='admin').exclude(
         id__in=[x.id for x in journal.instructors.all()])
-    ctx = dict(page_title=_(u'Edit Rights'), menus=menus, users=users,
-        journal=journal)
+    ctx = dict(page_title=_(u'Edit Rights for {0}'.format(journal.group)),
+        menus=menus, users=users, journal=journal)
     return render(req, 'journal/rights.html', ctx)

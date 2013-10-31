@@ -1,28 +1,48 @@
 {% extends "index.html" %}
 {% load i18n %}
-{% load staticfiles %}
 
 {% block content %}
-<h2 class="headline">{% trans "Journals" %}</h2>
+<div class="row-fluid">
+    <div class="span10">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>{% trans "Group" %}</th>
+                    <th>{% trans "Entries" %}</th>
+                    <th>{% trans "Actions" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for j in journals %}
+                <tr>
+                    <td>{{ j.group }}</td>
+                    <td>
+                        <ul>
+                            {% for e in j.entries.all %}
+                            <li title="{{ e.created_by.get_profile }}, {{ e.created|date:"SHORT_DATETIME_FORMAT" }}">
+                                [{{ e.student.lastname }}, {{ e.student.firstname }}]
+                                {% if e.event %}{{ e.event }}: {% endif %}{{ e.text }}
+                                {% if e.has_media %}<a href="{% url "core-entry-media" e.id %}" title="{% trans "Click to show attached media" %}">
+                                    <i class="icon-picture"></i></a>{% endif %}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>
+                        <a class="btn btn-mini btn-warning tt" title="{% trans "Click to add entry" %}" href="{% url "core-add-entry" j.group.id %}">
+                            <i class="icon-pencil"></i>
+                        </a>
+                        <a class="btn btn-mini btn-warning tt" title="{% trans "Edit Rights" %}" href="{% url "core-journal-rights" j.id %}">
+                            <i class="icon-eye-open"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
-<ul>
-    {% for j in journals %}
-    <li>
-        <a title="{% trans "Click to add entry" %}" href="{% url core-add-entry j.group.id %}">{{ j.group }}</a>,
-        <a href="{% url core-journal-rights j.id %}">{% trans "Edit Rights" %}</a>
-        <ul>
-            {% for e in j.entries.all %}
-            <li title="{{ e.created_by.get_profile }} {{ e.created|date:"SHORT_DATETIME_FORMAT" }}">
-                [{{ e.student.lastname }}, {{ e.student.firstname }}]
-                {% if e.event %}{{ e.event }}: {% endif %}{{ e.text }}
-                {% if e.has_media %}<a href="{% url core-entry-media e.id %}" title="{% trans "Click to show attached media" %}">
-                    <img src="{% static "img/info.png" %}" /></a>{% endif %}
-            </li>
-            {% endfor %}
-        </ul>
-    </li>
-    {% endfor %}
-</ul>
-<p><a href="{% url core-add-journal %}">{% trans "Add new journal" %}</a></p>
+<a class="btn btn-info" href="{% url "core-add-journal" %}">{% trans "Add new journal" %}</a>
 
 {% endblock %}

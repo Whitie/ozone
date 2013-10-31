@@ -1,56 +1,70 @@
 {% extends "index.html" %}
+{% load url from future %}
 {% load i18n %}
-{% load staticfiles %}
 
 {% block content %}
-<h2 class="headline">{{ startchar|default:"-" }} ({{ students.count }})</h2>
-<div style="width:100%;text-align:center;">
-  {% if perms.core.add_student and not archive %}
-  <a href="/admin/core/student/add/">{% trans "Add Student" %}</a> |
-  {% endif %}
-  {% if not archive %}
-  <a href="{% url core-students-all %}">{% trans "All" %}</a> |
-  {% endif %}
-  <a href="{% if archive %}{% url core-students-archive %}{% else %}{% url core-students %}{% endif %}">{% trans "Other" %}</a> |
-  {% for c in chars %}
-  <a href="{% if archive %}{% url core-students-archive %}{% else %}{% url core-students %}{% endif %}{{ c }}/">{{ c }}</a>
-  {% if not forloop.last %} | {% endif %}
-  {% endfor %}
-  <br />
-  <form action="{% if archive %}{% url core-students-archive %}{% else %}{% url core-students %}{% endif %}" method="post">
-  {% csrf_token %}
-  {% trans "Search" %}: {{ form.group }} {{ form.search }}
-  <input type="submit" value="{% trans "Search" %}" />
-  <a href="{% url core-students-search %}">{% trans "Extended Search" %}</a>
-  </form>
+<div class="row-fluid">
+    <div class="span8 offset1 centered">
+        {% if perms.core.add_student and not archive %}
+        <a class="btn btn-mini btn-success" href="{% url "core-student-add" %}">{% trans "Add Student" %}</a>
+        {% endif %}
+        {% if not archive %}
+        <a class="btn btn-mini" href="{% url "core-students-all" %}">{% trans "All" %}</a>
+        {% endif %}
+        {% for c in chars %}
+        <a class="btn btn-mini" href="{% if archive %}{% url "core-students-archive" c %}{% else %}{% url "core-students" c %}{% endif %}">{{ c }}</a>
+        {% endfor %}
+        <a class="btn btn-mini" href="{% if archive %}{% url "core-students-archive" %}{% else %}{% url "core-students" %}{% endif %}">{% trans "Other" %}</a>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span10 centered">
+        <form action="{% if archive %}{% url "core-students-archive" %}{% else %}{% url "core-students" %}{% endif %}" method="post" class="form-inline">
+            {% csrf_token %}
+            {{ form.group }}
+            {{ form.search }}
+            <button type="submit" class="btn">{% trans "Search" %}</button>
+            <a class="btn btn-info" href="{% url "core-students-search" %}"><i class="icon-search"></i> {% trans "Extended Search" %}</a>
+        </form>
+    </div>
+</div>
+
+<div class="row-fluid">
+    <div class="span8 offset1">
+        {% for s in students %}
+        <a class="btn btn-mini btn-info" href="#student_{{ s.id }}">{{ s.lastname }}</a>
+        {% endfor %}
+    </div>
 </div>
 
 {% for s in students %}
-<h3 title="{% trans "Click for details" %}">
-  {{ forloop.counter }}. {{ s.lastname }}, {{ s.firstname }} ({{ s.company.short_name }})
-  {% if perms.core.change_student %}
-  <a href="/admin/core/student/{{ s.id }}/">
-    <img src="{% static "img/edit.png" %}" title="{% trans "Edit" %}" /></a>
-  {% endif %}
-  {% if perms.core.delete_student %}
-  <a href="/admin/core/student/{{ s.id }}/delete/">
-      <img src="{% static "img/delete.png" %}" title="{% trans "Delete" %}" /></a>
-  {% endif %}
-</h3>
-<div class="details">{% include "students/details.html" %}</div>
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <div class="well"><a id="student_{{ s.id }}"></a>
+            <h3>{{ forloop.counter }}. {{ s.lastname }}, {{ s.firstname }} ({{ s.company.short_name }})
+                {% if perms.core.change_student %}
+                <a class="btn btn-warning tt" title="{% trans "Full edit" %}" href="{% url "admin:core_student_change" s.id %}"><i class="icon-edit"></i> {% trans "Edit" %}</a>
+                <a class="btn btn-warning tt" title="{% trans "Short edit" %}" href="#" onclick="edit_student('{% url "core-student-edit" s.id %}');"><i class="icon-edit"> </i></a>
+                {% endif %}
+                {% if perms.core.delete_student %}
+                <button type="button" class="btn btn-mini btn-danger pull-right" onclick="delete_student({{ s.id }}, '{{ s.lastname }}, {{ s.firstname }}');">
+                    <i class="icon-trash"></i> {% trans "Delete" %}
+                </button>
+                {% endif %}
+            </h3>
+            {% include "students/details.html" %}
+        </div>
+    </div>
+</div>
 {% empty %}
-<h3>{% trans "No students found." %}</h3>
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <div class="well centered">
+            <h3>{% trans "No students found." %}</h3>
+        </div>
+    </div>
+</div>
 {% endfor %}
 
-<script type="text/javascript">
-$(document).ready(function() {
-  $(document).tooltip();
-  $(".details").hide();
-  $("h3").click(function() {
-    $(this).next(".details").slideToggle("slow");
-    return true;
-  });
-});
-</script>
 {% endblock %}
 

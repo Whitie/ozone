@@ -9,9 +9,35 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
+from south.modelsinspector import add_introspection_rules
 
 from audit_log.models.managers import AuditLog
+from audit_log.models import fields
 from core.utils import named
+
+
+# South migration rules
+# Usage:
+# Only for the first migration: manage.py syncdb
+#                               manage.py convert_to_south app
+# Do this for every app you want to have controlled by south
+# For every other installation (after syncing the repo):
+#     manage.py migrate app 0001 --fake
+# After these steps all installations can use normal migrate command:
+#     manage.py schemamigration app --auto (to create the migration)
+#     manage.py migrate app (to apply the migration after sync)
+rules = [(
+    (fields.LastUserField,),
+    [],
+    {
+        'to': ['rel.to', {'default': User}],
+        'null': ['null', {'default': True}],
+    },
+)]
+add_introspection_rules(
+    rules,
+    ['^audit_log\.models\.fields\.LastUserField'],
+)
 
 
 class CommonInfo(models.Model):
@@ -23,6 +49,27 @@ class CommonInfo(models.Model):
 
     class Meta:
         abstract = True
+
+
+class Configuration(CommonInfo):
+    name = models.CharField(_(u'Organization Name'), max_length=100)
+    short_name = models.CharField(_(u'Organization Short Name'),
+        max_length=20, blank=True)
+    pdflatex = models.CharField(_(u'PDFLatex'), max_length=100,
+        default=u'/usr/bin/pdflatex', help_text=_(u'Path to pdflatex '
+        u'executable.'))
+    latex_options = models.CharField(_(u'Latex Commandline Options'),
+        max_length=100, default=u'-interaction=nonstopmode', blank=True)
+    fax = models.CharField(_(u'Fax'), max_length=30, blank=True)
+    logo = models.ImageField(_(u'Logo'), upload_to='pictures', blank=True)
+
+    def __unicode__(self):
+        return self.short_name
+
+    class Meta:
+        verbose_name = _(u'Configuration')
+        verbose_name_plural = _(u'Configurations')
+        get_latest_by = 'id'
 
 
 class Part(models.Model):
@@ -131,6 +178,12 @@ class Company(CommonInfo):
     def __unicode__(self):
         if self.short_name:
             return u'{0} ({1})'.format(self.name, self.short_name)
+        return self.name
+
+    @property
+    def short(self):
+        if self.short_name:
+            return self.short_name
         return self.name
 
     def active_students(self):
@@ -268,7 +321,7 @@ class StudentGroup(models.Model):
     start_date = models.DateField(_(u'Start Date'))
     school_nr = models.CharField(_(u'School Number'), max_length=10,
         blank=True)
-    job = models.CharField(_(u'Job'), max_length=50, blank=True)
+    job = models.CharField(_(u'Job'), max_length=50)
     job_short = models.CharField(_(u'Job Short'), max_length=10,
         help_text=_(u'This field will be converted to uppercase.'))
     suffix = models.CharField(_(u'Suffix'), max_length=1, blank=True,
@@ -281,6 +334,15 @@ class StudentGroup(models.Model):
 
     def __unicode__(self):
         return self.name()
+
+    def active_count(self):
+        return self.active_students().count()
+
+    def active_students(self):
+        return self.students.filter(finished=False)
+
+    def finished_count(self):
+        return self.students.all().count() - self.active_count()
 
     def finished(self):
         return all([x.finished for x in self.students.all()])
@@ -477,7 +539,7 @@ class JournalMedia(models.Model):
 
 PRESENCE_CHOICES = (
     (u'', u'leer'),
-    (u'*', u'anwesend'),
+    (u'A', u'anwesend'),
     (u'T', u'nur telefonisch entschuldigt'),
     (u'|', u'fehlt unentschuldigt'),
     (u'K', u'krank (Nachweis vorhanden)'),
@@ -507,8 +569,6 @@ class PresenceDay(models.Model):
     note = models.CharField(_(u'Note'), max_length=25, blank=True)
     instructor = models.ForeignKey(User, verbose_name=_(u'Instructor'),
         editable=False, null=True, blank=True)
-
-    #audit_log = AuditLog()
 
     def __unicode__(self):
         return u'{0} {1} |{2}|'.format(self.student,
@@ -584,3 +644,72 @@ class InternalHelp(models.Model):
         verbose_name = _(u'Internal Help')
         verbose_name_plural = _(u'Internal Helps')
         ordering = ['ident', 'lang']
+
+
+VIOLATION_CHOICES = (
+    (1, _(u'Wegeunfall')),
+    (2, _(u'Schnittverletzung')),
+    (3, _(u'Verbrennung')),
+    (4, _(u'Augenverletzung')),
+    (5, _(u'Verätzung')),
+    (6, _(u'Sonstige')),
+)
+
+
+class Place(models.Model):
+    name = models.CharField(_(u'Name'), max_length=20, unique=True)
+    room = models.CharField(_(u'Roomnumber'), max_length=10, blank=True)
+
+    def __unicode__(self):
+        if self.room:
+            return u'{0} ({1})'.format(self.name, self.room)
+        else:
+            return self.name
+
+    class Meta:
+        verbose_name = _(u'Place')
+        verbose_name_plural = _(u'Places')
+        ordering = ['name']
+
+
+class AccidentEntry(models.Model):
+    date_time = models.DateTimeField(_(u'Date / Time'))
+    added = models.DateTimeField(auto_now_add=True)
+    added_by = models.ForeignKey(User, editable=False, blank=True, null=True)
+    student = models.ForeignKey(Student, null=True, blank=True,
+        verbose_name=_(u'Verletzter Azubi'), related_name='accidents')
+    employee = models.ForeignKey(User, null=True, blank=True,
+        verbose_name=_(u'Verletzter Mitarbeiter'), related_name='accidents')
+    place = models.ForeignKey(Place, verbose_name=_(u'Place'),
+        related_name='accident_entries')
+    place_def = models.CharField(_(u'Ort (genauer)'), max_length=50, blank=True)
+    violation = models.PositiveSmallIntegerField(_(u'Verletzung'),
+        choices=VIOLATION_CHOICES)
+    violation_def = models.TextField(_(u'Genaue Verletzung und Ursache'))
+    notify = models.BooleanField(_(u'Meldepflichtig'), default=False)
+    witnesses = models.TextField(_('Zeugen'), blank=True, help_text=_(u'Bitte '
+        u'die Nachnamen der Zeugen durch Komma getrennt hier eingeben.'))
+    helper = models.TextField(_(u'Ersthelfer oder Arzt'))
+    first_aid = models.TextField(_(u'Erste-Hilfe-Maßnahmen/Behandlung'))
+    used = models.TextField(_(u'Benutztes Material'), blank=True)
+    comment = models.TextField(_(u'Bemerkungen'), blank=True)
+
+    def __unicode__(self):
+        return u'{0} - {1}'.format(self.get_violation_display(), self.injured)
+
+    @property
+    def injured(self):
+        if self.student is not None:
+            return self.student
+        else:
+            return self.employee
+
+    @property
+    def is_employee(self):
+        return self.student is None
+
+    class Meta:
+        verbose_name = _(u'Accident Entry')
+        verbose_name_plural = _(u'Accident Entries')
+        ordering = ['-date_time']
+        get_latest_by = 'date_time'

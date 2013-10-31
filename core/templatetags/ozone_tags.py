@@ -20,7 +20,7 @@ def show_help(context, help_slug):
     except InternalHelp.DoesNotExist:
         return {'title': _(u'Error'), 'text': _(u'<p>No help found for lang '
             u'%(lang)s and identifier %(id)s.</p>' % {'lang': lang,
-                'id': help_slug}), 'width': 500, 'opener_class': u'.opener'}
+                'ident': help_slug}), 'width': 500, 'opener_class': u'.opener'}
 
 
 @register.filter(name='enumerate')
@@ -32,6 +32,12 @@ def simple_enumerate(value, start=1):
     return enumerate(value, start=start)
 
 
+@register.filter(name='mod')
+def calc_mod(value, modulo=2):
+    return int(value) % int(modulo)
+
+
+# Deprecated since Ozone 3.0, will be removed in 3.1
 @register.tag(name='reverse')
 def do_reverse_url(parser, token):
     try:

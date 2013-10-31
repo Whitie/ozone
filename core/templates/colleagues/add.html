@@ -1,50 +1,76 @@
 {% extends "index.html" %}
+{% load url from future %}
 {% load i18n %}
 
 {% block content %}
-<style type="text/css">
-th { text-align: right; }
-</style>
-
-<h2 class="headline">{% trans "Enter Data" %}</h2>
-<form action="{% url core-user-add %}" method="post">
+<form action="{% url "core-user-add" %}" method="post">
 {% csrf_token %}
-<h3>{% trans "Personal Data" %}</h3>
-<p>{{ form.name_prefix.label_tag }}: {{ form.name_prefix }}
-{{ form.lastname.label_tag }}: {{ form.lastname }} {{ form.lastname.errors }}
-{{ form.firstname.label_tag }}: {{ form.firstname }}
-{{ form.birthdate.label_tag }}: {{ form.birthdate }}
-</p>
-<h3>{% trans "Address" %}</h3>
-<p>{{ form.street.label_tag }}: {{ form.street }}
-{{ form.zip_code.label_tag }}: {{ form.zip_code }}
-{{ form.city.label_tag }}: {{ form.city }}
-{{ form.country.label_tag }}: {{ form.country }}
-</p>
-<h3>{% trans "Contact" %}</h3>
-<p>{{ form.email.label_tag }}: {{ form.email }} {{ form.email.errors }}
-{{ form.phone.label_tag }}: {{ form.phone }}
-{{ form.mobile.label_tag }}: {{ form.mobile }}
-</p>
-<h3>{% trans "Misc" %}</h3>
-<p>{{ form.subjects.label_tag }}: {{ form.subjects }}</p>
-<p>{{ form.can_login.label_tag }}: {{ form.can_login }}</p>
-<p><input type="submit" value="{% trans "Save" %}" /></p>
+    <div class="row-fluid">
+        <div class="span3">
+            <fieldset>
+                <legend>{% trans "Personal Data" %}</legend>
+                {{ form.name_prefix.label_tag }}
+                {{ form.name_prefix }}
+                {{ form.lastname.label_tag }}
+                {{ form.lastname }} {{ form.lastname.errors }}
+                {{ form.firstname.label_tag }}
+                {{ form.firstname }}
+                {{ form.birthdate.label_tag }}
+                {{ form.birthdate }}
+            </fieldset>
+        </div>
+        <div class="span3">
+            <fieldset>
+                <legend>{% trans "Address" %}</legend>
+                {{ form.street.label_tag }}
+                {{ form.street }}
+                {{ form.zip_code.label_tag }}
+                {{ form.zip_code }}
+                {{ form.city.label_tag }}
+                {{ form.city }}
+                {{ form.country.label_tag }}
+                {{ form.country }}
+            </fieldset>
+        </div>
+        <div class="span3">
+            <fieldset>
+                <legend>{% trans "Contact" %}</legend>
+                {{ form.email.label_tag }}
+                {{ form.email }} {{ form.email.errors }}
+                {{ form.phone.label_tag }}
+                {{ form.phone }}
+                {{ form.mobile.label_tag }}
+                {{ form.mobile }}
+            </fieldset>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span3">
+            <fieldset>
+                <legend>{% trans "Misc" %}</legend>
+                {{ form.subjects.label_tag }}
+                {{ form.subjects }}
+                {{ form.can_login.label_tag }}
+                {{ form.can_login }}
+            </fieldset>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span10 centered">
+            <input class="btn btn-primary" type="submit" value="{% trans "Save" %}" />
+        </div>
+    </div>
 </form>
 
+{% endblock %}
+
+{% block additional_js %}
 <script>
 $(function() {
   $('#id_birthdate').datepicker({
-    'dateFormat': 'dd.mm.yy',
-    'dayNamesMin': ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
-    'monthNames': ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
-                   'Juli', 'August', 'September', 'Oktober', 'November',
-                   'Dezember'],
-    'showWeek': false,
-    'firstDay': 1,
-    'weekHeader': 'Wo',
-    'nextText': '{% trans "next" %}',
-    'prevText': '{% trans "prev" %}'
+    'format': 'dd.mm.yyyy',
+    'weekStart': 1,
+    'viewMode': 'years'
   });
 });
 </script>

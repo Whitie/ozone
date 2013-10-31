@@ -1,20 +1,23 @@
 {% extends "layout.html" %}
+{% load url from future %}
 {% load i18n %}
 
 {% block content %}
-<h2 class="headline">{% trans "Login" %}</h2>
-<form method="post" action="{% url core-login %}">
-{% csrf_token %}
-<input type="hidden" name="next" value="{{ next_page }}" />
-<table style="width:50%;margin:5px auto;text-align:left;">
-{{ form }}
-<tr>
-  <th></th>
-  <td>
-    <input type="submit" value="{% trans "Login" %}" />
-  </td>
-</tr>
-</table>
-</form>
+<div class="row-fluid">
+    <div class="span3 offset4">
+        <form method="post" action="{% url "core-login" %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next_page }}" />
+            <fieldset>
+                <legend>{% trans "Login" %}</legend>
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                {{ form.password.label_tag }}
+                {{ form.password }}<br>
+                <button type="submit" class="btn">{% trans "Login" %}</button>
+            </fieldset>
+        </form>
+    </div>
+</div>
 {% endblock %}
 
