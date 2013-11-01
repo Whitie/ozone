@@ -1,3 +1,5 @@
+/* Ozone Javascripts Version 1.0 */
+
 popover_options = {'trigger': 'hover'};
 tooltip_options = {'html': true};
 datatable_options = {

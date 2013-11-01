@@ -114,6 +114,7 @@ def add_representative(req):
 @require_POST
 @json_rpc
 def change_order(req, data):
+    print data
     order = Order.objects.get(id=data['order_id'])
     try:
         supplier = Company.objects.get(id=data['supp_id'])
