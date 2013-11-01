@@ -134,10 +134,11 @@ def change_order(req, data):
     article.save()
     order.count = data['count']
     order.save()
-    diff = article.price * order.count - old_price
+    total = article.price * order.count
+    diff = total - old_price
     msg = (u'Alle Änderungen an Bestellung: %(name)s (ID: %(id)d) '
            u'gespeichert.' % {'name': article.name, 'id': order.id})
-    return dict(msg=msg, diff=float(diff))
+    return dict(msg=msg, diff=float(diff), total=float(total))
 
 
 def _send_status_mail(user, order, template):

@@ -17,7 +17,7 @@
             {% csrf_token %}
             <input type="hidden" name="oday_id" value="{{ oday.id }}">
             <input type="hidden" name="header" value="Chemikalien und Ausbildungsmittel">
-            <button class="btn btn-primary pull-right" type="submit">
+            <button class="btn btn-primary" type="submit">
                 {% trans "Generate printouts" %}
             </button>
         </form>
@@ -52,10 +52,7 @@
                 </td>
                 {% if o.state in states %}
                 <td>
-                    <span class="tt" title="{% trans "Only correct typos here!" %}">
-                        <input class="input-medium" type="text" value="{{ o.article.name }}" name="art_name"
-                            onchange="update_row({{ forloop.counter }});" id="art_name_{{ forloop.counter }}">
-                    </span>
+                    <input class="input-large" type="text" value="{{ o.article.name }}" name="art_name" onchange="update_row({{ forloop.counter }});" id="art_name_{{ forloop.counter }}">
                     <span style="display:none;">{{ o.article.name }}</span>
                 {% else %}
                 <td>{{ o.article.name }}
@@ -69,15 +66,12 @@
                 </td>
                 <td>
                 {% if o.state in states %}
-                    <span class="tt" title="{% trans "Only correct typos here!" %}">
-                        <input class="input-mini" type="text" value="{{ o.article.ident }}" name="art_ident"
-                            onchange="update_row({{ forloop.counter }});" id="art_ident_{{ forloop.counter }}">
-                    </span>
+                    <input class="input-medium" type="text" value="{{ o.article.ident }}" name="art_ident" onchange="update_row({{ forloop.counter }});" id="art_ident_{{ forloop.counter }}">
                 {% else %}{{ o.article.ident }}{% endif %}
                 </td>
                 <td>{{ o.article.quantity }}</td>
                 <td>
-                    <span class="tt" title="{% trans "Sum" %}: {{ o.price|floatformat:2 }}{{ CURRENCY_SYM }}">
+                    <span id="total_{{ forloop.counter }}" class="tt" title="{% trans "Sum" %}: {{ o.price|floatformat:2 }}{{ CURRENCY_SYM }}">
                         {% if o.state in states %}
                         <div class="input-append">
                             <input class="input-mini" type="text" value="{{ o.article.price|floatformat:2 }}"
@@ -212,8 +206,8 @@ function update_row(row) {
     var oid = $('#order_id_'+row).val();
     var count = $('#count_'+row).val();
     var art_name = $('#art_name_'+row).val();
-    var art_ident = $('#art_ident'+row).val();
-    var price = $('#art_price'+row).val();
+    var art_ident = $('#art_ident_'+row).val();
+    var price = $('#art_price_'+row).val();
     var supp_id = $('#supp_'+row+' :selected').val();
     data = {'order_id': parseInt(oid), 'count': parseInt(count),
             'art_name': art_name, 'art_ident': art_ident, 'price': price,
@@ -222,6 +216,9 @@ function update_row(row) {
         function(data) {
             update_sum(data['diff']);
             add_update_message(data['msg']);
+            s = 'Summe: '+data['total'].toFixed(2).toString().replace('.', ',')+
+                '{{ CURRENCY_SYM }}';
+            $('#total_'+row).attr('data-original-title', s);
         });
 }
 
