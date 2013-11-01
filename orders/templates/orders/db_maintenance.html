@@ -12,6 +12,7 @@
                 <tr>
                     <th>Artikelnummer</th>
                     <th>Name</th>
+                    <th>Preis</th>
                     <th>Gebinde</th>
                     <th>Lieferant</th>
                     <th>Behalten</th>
@@ -23,6 +24,7 @@
                 <tr>
                     <td>{{ a.ident }}</td>
                     <td>{{ a.name }}</td>
+                    <td>{{ a.price|floatformat:2 }}</td>
                     <td>{{ a.quantity }}</td>
                     <td>{{ a.supplier.name }}</td>
                     <td><input type="radio" name="keep" value="{{ a.id }}"></td>
@@ -33,6 +35,10 @@
                 {% endfor %}
             </tbody>
         </table>
+        <label class="checkbox">
+            <input type="checkbox" name="edit"> Verbliebenen Artikel
+            anschließend bearbeiten
+        </label>
         <button type="submit" class="btn btn-danger">Doppelte löschen</button>
         </form>
         {% endfor %}
