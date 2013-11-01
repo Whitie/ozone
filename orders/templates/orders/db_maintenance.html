@@ -4,10 +4,10 @@
 <div class="row-fluid">
     <div class="span10">
         {% for art, arts in articles %}
-        <h2>Artikel ({{ arts|length }}): {{ art }}</h2>
+        <h3>Artikel ({{ arts|length }}): {{ art.name }} {{ art.quantity }}</h3>
         <form action="{% url 'orders-admin-delete-articles' %}" method="post">
         {% csrf_token %}
-        <table class="table table-condensed">
+        <table class="table table-condensed table-striped">
             <thead>
                 <tr>
                     <th>Artikelnummer</th>
@@ -43,6 +43,8 @@
         </label>
         <button type="submit" class="btn btn-danger">Doppelte löschen</button>
         </form>
+        {% empty %}
+        <h2>Keine doppelten Artikel gefunden!</h2>
         {% endfor %}
     </div>
 </div>

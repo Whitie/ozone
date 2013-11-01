@@ -450,8 +450,8 @@ def database_maintenance(req):
     known = set()
     articles = []
     for art in Article.objects.all():
-        if art.ident not in known:
-            known.add(art.ident)
+        if art.ident.upper() not in known:
+            known.add(art.ident.upper())
             tmp = [art]
             q = Q(ident__iexact=art.ident)
             q |= Q(ident__icontains=art.ident) & Q(name__icontains=art.name)
@@ -460,7 +460,7 @@ def database_maintenance(req):
             if len(tmp) > 1:
                 articles.append((art, tmp))
     ctx = dict(page_title=u'Finde doppelte Artikel', menus=menus,
-        articles=articles)
+        articles=articles, subtitle=u'{0} vorhanden'.format(len(articles)))
     return render(req, 'orders/db_maintenance.html', ctx, app=u'orders')
 
 
@@ -469,4 +469,24 @@ def delete_articles(req):
     if not req.user.is_superuser:
         messages.error(req, u'Sie dürfen keine Artikel löschen!')
         return redirect('orders-admin-db')
+    keep = int(req.POST.get('keep'))
+    delete = map(int, req.POST.getlist('delete'))
+    edit = int(req.POST.get('edit', 0))
+    if keep in delete:
+        delete.remove(keep)
+    art = Article.objects.get(id=keep)
+    counter = 0
+    for o in Order.objects.filter(article__id__in=delete):
+        o.article = art
+        o.save()
+        counter += 1
+    messages.info(req, u'{0} Bestellung(en) wurde(n) geändert.'.format(
+        counter))
+    q = Article.objects.filter(id__in=delete)
+    counter = q.count()
+    q.delete()
+    messages.info(req, u'{0} Artikel wurde(n) gelöscht.'.format(counter))
+    if edit:
+        return redirect('admin:orders_article_change', art.id)
+    return redirect('orders-admin-db')
 
