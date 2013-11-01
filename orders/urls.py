@@ -33,6 +33,10 @@ urlpatterns = patterns('orders.views.web',
 
     # Controlling
     url(r'^controlling/by_cost/$', 'ctrl_by_cost', name='orders-ctrl-bycost'),
+    # Admin stuff
+    url(r'^db/$', 'database_maintenance', name='orders-admin-db'),
+    url(r'^db/delete_articles/$', 'delete_articles',
+        name='orders-admin-delete-articles'),
 )
 
 # Delivery

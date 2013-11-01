@@ -10,6 +10,8 @@ from django.utils.translation import ugettext as _
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
+from django.db.models import Q
+from django.core.exceptions import PermissionDenied
 
 from core.utils import any_permission_required, render
 from core.models import Company, CompanyRating, PDFPrintout
@@ -442,3 +444,28 @@ def move_order(req):
     odays = OrderDay.objects.filter(day__gt=oday.day).order_by('day')
     ctx = dict(odays=odays, oday=oday, order=order)
     return render(req, 'orders/move_order.html', ctx)
+
+
+def database_maintenance(req):
+    if not req.user.is_superuser:
+        return PermissionDenied
+    known = set()
+    articles = []
+    for art in Article.objects.all():
+        if art.ident not in known:
+            known.add(art.ident)
+            tmp = [art]
+            q = Q(ident__iexact=art.ident)
+            q |= Q(ident__icontains=art.ident) & Q(name__icontains=art.name)
+            for a in Article.objects.exclude(id=art.id).filter(q):
+                tmp.append(a)
+            if len(tmp) > 1:
+                articles.append((art, tmp))
+    ctx = dict(page_title=u'Finde doppelte Artikel', menus=menus,
+        articles=articles)
+    return render(req, 'orders/db_maintenance.html', ctx)
+
+
+def delete_articles(req):
+    print req.POST
+
