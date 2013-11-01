@@ -465,7 +465,6 @@ def database_maintenance(req):
 
 
 def delete_articles(req):
-    print req.POST
     if not req.user.is_superuser:
         messages.error(req, u'Sie dürfen keine Artikel löschen!')
         return redirect('orders-admin-db')
