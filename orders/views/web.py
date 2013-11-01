@@ -11,7 +11,6 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 from django.db.models import Q
-from django.core.exceptions import PermissionDenied
 
 from core.utils import any_permission_required, render
 from core.models import Company, CompanyRating, PDFPrintout
@@ -446,9 +445,8 @@ def move_order(req):
     return render(req, 'orders/move_order.html', ctx)
 
 
+@login_required
 def database_maintenance(req):
-    if not req.user.is_superuser:
-        return PermissionDenied
     known = set()
     articles = []
     for art in Article.objects.all():
@@ -468,4 +466,7 @@ def database_maintenance(req):
 
 def delete_articles(req):
     print req.POST
+    if not req.user.is_superuser:
+        messages.error(req, u'Sie dürfen keine Artikel löschen!')
+        return redirect('orders-admin-db')
 
