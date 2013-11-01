@@ -91,9 +91,11 @@ def _export(ids):
     choice = DeliveredOrder.objects.select_related().filter(
         id__in=ids).order_by('date')
     if choice.count():
-        fp = StringIO()
-        writer = csv.writer(fp, dialect=csv.excel, delimiter=';')
         name = now.strftime('Toxolution_Export_%Y-%m-%d_%H%M%S.csv')
+        resp = HttpResponse(content_type='text/csv')
+        resp['Content-Disposition'] = 'attachment; filename="{0}"'.format(
+            name)
+        writer = csv.writer(resp, dialect=csv.excel, delimiter=';')
         for c in choice:
             o = c.order
             a = c.order.article
@@ -109,9 +111,6 @@ def _export(ids):
             writer.writerow(row)
             c.exported = True
             c.save()
-        resp = HttpResponse(fp.getvalue(), content_type='text/csv')
-        resp['Content-Disposition'] = 'attachment; filename="{0}"'.format(
-            name)
         return resp
 
 
