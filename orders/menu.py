@@ -26,4 +26,9 @@ rating_menu = Menu(_(u'Company Rating'),
     ('orders-rating-manage', _(u'Manage')),
 )
 
-menus = [order_menu, rating_menu, controlling_menu]
+admin_menu = Menu(u'Wartung',
+    ('orders-admin-db', u'Doppelte Artikel löschen'),
+)
+
+menus = [order_menu, rating_menu, controlling_menu, admin_menu]
+

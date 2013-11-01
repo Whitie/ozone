@@ -463,7 +463,7 @@ def database_maintenance(req):
                 articles.append((art, tmp))
     ctx = dict(page_title=u'Finde doppelte Artikel', menus=menus,
         articles=articles)
-    return render(req, 'orders/db_maintenance.html', ctx)
+    return render(req, 'orders/db_maintenance.html', ctx, app=u'orders')
 
 
 def delete_articles(req):

@@ -27,7 +27,9 @@
                     <td>{{ a.price|floatformat:2 }}</td>
                     <td>{{ a.quantity }}</td>
                     <td>{{ a.supplier.name }}</td>
-                    <td><input type="radio" name="keep" value="{{ a.id }}"></td>
+                    <td>
+                        <input type="radio" name="keep" value="{{ a.id }}"{% if forloop.first %} checked{% endif %}>
+                    </td>
                     <td>
                         <input type="checkbox" name="delete" value="{{ a.id }}"{% if not forloop.first %} checked{% endif %}>
                     </td>
@@ -36,7 +38,7 @@
             </tbody>
         </table>
         <label class="checkbox">
-            <input type="checkbox" name="edit"> Verbliebenen Artikel
+            <input type="checkbox" name="edit" value="1"> Verbliebenen Artikel
             anschließend bearbeiten
         </label>
         <button type="submit" class="btn btn-danger">Doppelte löschen</button>
