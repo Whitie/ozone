@@ -7,6 +7,7 @@ from cStringIO import StringIO
 from datetime import date, datetime, timedelta
 
 from django.contrib.auth.decorators import login_required, permission_required
+from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.utils.translation import ugettext as _
 
@@ -112,6 +113,7 @@ def _export(ids):
             c.exported = True
             c.save()
         return resp
+    return redirect('orders-csv-export')
 
 
 @permission_required('orders.can_order')
