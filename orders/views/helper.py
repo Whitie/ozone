@@ -53,6 +53,10 @@ def get_oday_choices(filters):
 
 
 def get_price(value):
+    if isinstance(value, Decimal):
+        return value
+    else:
+        value = str(value)
     if not value.strip():
         return Decimal('0.0')
     value = value.strip().replace(u',', u'.')
@@ -150,3 +154,4 @@ def extract_barcode(code):
                     pass
         return c.upper()
     return code
+
