@@ -3,60 +3,85 @@
 {% load ozone_tags %}
 
 {% block content %}
-<h2 class="headline">{% trans "Companies to rate" %}</h2>
-{% for c in companies %}
-<h3 class="company" title="{% trans "Click to rate" %}">
-{{ forloop.counter }}) {{ c.name }} ({% trans "Ratings" %}: {{ c.ratings.count }})
-</h3>
-<div class="ratingform">
-{% if c.average %}
-{% trans "Average ratings" %}: {{ c.rating }} ({{ c.average|floatformat:1 }})
-{% endif %}
-<form action="{% url "orders-rating" %}" method="post">
-{% csrf_token %}
-<input type="hidden" name="company_id" value="{{ c.id }}" />
-<table style="border:2px solid green;">
-{{ form.as_table }}
-<tr>
-    <th class="opener">{% trans "Help" %}</th>
-    <td><input type="submit" value="{% trans "Save" %}" /></td>
-</tr>
-</table>
-</form>
-</div>
-<p>{% trans "Raters" %}: {% for u in c.rating_users.all %}{{ u }} {% endfor %}</p>
-{% if c.last_ratings %}
-<p>{% trans "Your last ratings" %}:
-    {% for r in c.last_ratings %}
-    <span title="{{ r.note|default:"-" }}" style="background-color:{% cycle "lightblue" "lightcyan" %};">
-        {{ r.rated|date:"SHORT_DATE_FORMAT" }}: {{ r.rating }}
-    </span>
-    {% endfor %}
-</p>
-{% endif %}
-{% endfor %}
-
-<div id="legend">
-    <h3>{% trans "Possible Ratings" %}: 0 - 4</h3>
-    <ul>
-        <li>4 - {% trans "very good" %}</li>
-        <li>3 - {% trans "good" %}</li>
-        <li>2 - {% trans "average" %}</li>
-        <li>1 - {% trans "bad" %}</li>
-        <li>0 - {% trans "very bad" %}</li>
-    </ul>
+<div class="row-fluid">
+    <div class="span12">
+        {% if not companies %}
+        <h3>Sie sind für keinen Lieferanten als Bewerter eingetragen.</h3>
+        {% endif %}
+        <button type="button" class="btn btn-info" id="info-rating">
+            <i class="icon-info-sign"></i> Info
+        </button>
+        <table class="table table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Lieferant</th>
+                    <th>Anzahl Bewertungen</th>
+                    <th>Letzte Bewertungen</th>
+                    <th>&#216; - Bewertungen</th>
+                    <th>Bewerter</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in companies %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ c.name }}</td>
+                    <td>{{ c.ratings.count }}</td>
+                    <td><small>{% for r in c.last_ratings %}
+                        <span class="tt" title="{{ r.note|default:'-' }}" style="background-color:{% cycle 'lightblue' 'lightcyan' %};">
+                            {{ r.rated|date:'SHORT_DATE_FORMAT' }}: {{ r.rating }}
+                        </span>
+                        {% empty %}-{% endfor %}</small>
+                    </td>
+                    <td>{% if c.average %}
+                        {{ c.rating }} ({{ c.average|floatformat:1 }})
+                        {% else %}-{% endif %}
+                    </td>
+                    <td>{{ c.rating_users.all|join:' ' }}</td>
+                    <td><button type="button" class="btn btn-mini btn-warning"
+                        onclick="rate_now('{% url 'orders-rate-form' c.id %}');">
+                            <i class="icon-pencil"></i> Jetzt bewerten
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 
 {% show_help "ratings" %}
+{% endblock %}
 
+{% block additional_js %}
 <script type="text/javascript">
 $(function() {
-  $(".ratingform").hide();
-  $(".company").click(function() {
-    $('#legend').toggle('slow');
-    $(this).next(".ratingform").slideToggle("slow");
-    return true;
+  $("#info-rating").click(function() {
+    $('#help-dialog-ratings').modal({'show': true});
   });
 });
+function rate_now(url) {
+    $.get(url, function(res) {
+        $('body').append(res);
+        $('#rate-form-dlg').modal({'show': true});
+    });
+}
+function save_rating() {
+    var f = $('#rate-form').serializeArray();
+    var pdata = {};
+    $.each(f, function() {
+        pdata[this.name] = this.value;
+    });
+    $.post("{% url 'orders-rating-save' %}", {'_JSON_': JSON.stringify(pdata)},
+        function(res) {
+            $('#rate-form-dlg').modal('hide').remove();
+            location.reload();
+            add_update_message(res['msg']);
+        }
+    );
+    return false;
+}
 </script>
 {% endblock %}

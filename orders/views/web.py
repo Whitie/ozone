@@ -336,28 +336,23 @@ def list_printouts(req):
 
 @login_required
 def company_rating(req):
-    average = None
-    if req.method == 'POST':
-        cid = int(req.POST.get('company_id'))
-        form = CompanyRatingForm(req.POST, auto_id=False)
-        if form.is_valid():
-            company = Company.objects.get(id=cid)
-            rating = CompanyRating.objects.create(company=company,
-                user=req.user, **form.cleaned_data)
-            rating.save()
-            r, average = company.calculate_rating()
-            messages.success(req, u'Bewertung wurde gespeichert.')
-        else:
-            messages.error(req, u'Bitte füllen Sie alle Pflichtfelder aus!')
-    form = CompanyRatingForm(auto_id=False)
     companies = Company.objects.filter(rating_users=req.user)
     for c in companies:
         c.last_ratings = CompanyRating.objects.filter(user=req.user,
             company=c).order_by('-rated')
         c.average = c.calculate_rating()[1]
-    ctx = dict(page_title=_(u'Company Rating'), menus=menus,
-        companies=companies, form=form)
+    ctx = dict(page_title=u'Lieferantenbewertung', menus=menus,
+        companies=companies, subtitle=unicode(req.user.get_profile()),
+        need_ajax=True)
     return render(req, 'orders/ratings/rate.html', ctx, app=u'orders')
+
+
+@login_required
+def show_rate_form(req, cid):
+    form = CompanyRatingForm()
+    company = Company.objects.get(id=int(cid))
+    ctx = dict(form=form, company=company)
+    return render(req, 'orders/ratings/form_dlg.html', ctx, app=u'orders')
 
 
 @permission_required('core.summarize', raise_exception=True)

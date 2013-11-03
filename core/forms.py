@@ -148,7 +148,13 @@ class NoteForm(forms.Form):
     text = forms.CharField(label=_(u'Text'), widget=forms.Textarea)
 
 
-RATINGS = ((0, '0'), (1, '1'), (2, '2'), (3, '3'), (4, '4'))
+RATINGS = (
+    (0, '0 - sehr schlecht'),
+    (1, '1 - schlecht'),
+    (2, '2 - befriedigend'),
+    (3, '3 - gut'),
+    (4, '4 - sehr gut')
+)
 
 
 class CompanyRatingForm(forms.Form):

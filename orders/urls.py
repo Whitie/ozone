@@ -26,6 +26,8 @@ urlpatterns = patterns('orders.views.web',
 
     # Company Rating
     url(r'^rating/$', 'company_rating', name='orders-rating'),
+    url(r'^rating/form/(?P<cid>\d+)/$', 'show_rate_form',
+        name='orders-rate-form'),
     url(r'^rating/summary/$', 'company_rating_summary',
         name='orders-rating-summary'),
     url(r'^rate/(?P<company_id>\d+)/$', 'rate_company', name='orders-rate'),
@@ -72,6 +74,7 @@ urlpatterns += patterns('orders.views.ajax',
     url(r'^api/delivery/save_barcode/$', 'save_barcode',
         name='orders-api-save-barcode'),
     url(r'^api/order/move/$', 'move_order', name='orders-api-move-order'),
+    url(r'^rating/form/save/$', 'save_rating', name='orders-rating-save'),
 )
 
 urlpatterns += patterns('orders.views.pdf',

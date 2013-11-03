@@ -1,0 +1,100 @@
+<div id="rate-form-dlg" class="modal hide fade" tabindex="-1" role="dialog"
+    aria-labelledby="label-company" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"
+            aria-hidden="true">
+            &times;
+        </button>
+        <h3 id="label-company">Bewertung</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" id="rate-form">
+            {% csrf_token %}
+            <legend>{{ company.name }}</legend>
+            <input type="hidden" name="company_id" value="{{ company.id }}">
+            <div class="control-group">
+                <label class="control-label" for="id_good_quality">
+                    {{ form.good_quality.label }}
+                </label>
+                <div class="controls">
+                    {{ form.good_quality }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="id_delivery_time">
+                    {{ form.delivery_time.label }}
+                </label>
+                <div class="controls">
+                    {{ form.delivery_time }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="id_quality">
+                    {{ form.quality.label }}
+                </label>
+                <div class="controls">
+                    {{ form.quality }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="id_price">
+                    {{ form.price.label }}
+                </label>
+                <div class="controls">
+                    {{ form.price }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="id_service">
+                    {{ form.service.label }}
+                </label>
+                <div class="controls">
+                    {{ form.service }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="id_attainability">
+                    {{ form.attainability.label }}
+                </label>
+                <div class="controls">
+                    {{ form.attainability }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="id_documentation">
+                    {{ form.documentation.label }}
+                </label>
+                <div class="controls">
+                    {{ form.documentation }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="id_rating">
+                    {{ form.rating.label }}
+                </label>
+                <div class="controls">
+                    {{ form.rating }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="id_note">
+                    {{ form.note.label }}
+                </label>
+                <div class="controls">
+                    {{ form.note }}
+                    <span class="help-block">{{ form.note.help_text }}</span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning" data-dismiss="modal"
+            aria-hidden="true">
+            Abbruch
+        </button>
+        <button class="btn btn-primary" onclick="save_rating();">
+            Speichern
+        </button>
+    </div>
+</div>
+

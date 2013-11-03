@@ -12,7 +12,8 @@ from django.template import Context
 from django.template.loader import get_template
 
 from core.utils import json_view, json_rpc
-from core.models import Company
+from core.models import Company, CompanyRating
+from core.forms import CompanyRatingForm
 from orders.models import Order, Article, DeliveredOrder, OrderDay
 from orders.views import helper as h
 
@@ -275,3 +276,21 @@ def move_order(req, data):
     order.old_oday = old_oday
     _send_status_mail(req.user, order, 'order_moved.txt')
     return dict()
+
+
+@json_rpc
+def save_rating(req, data):
+    cid = data.pop('company_id')
+    company = Company.objects.get(id=int(cid))
+    form = CompanyRatingForm(data)
+    if form.is_valid():
+        cd = form.cleaned_data
+        rating = CompanyRating.objects.create(company=company,
+            user=req.user, **cd)
+        rating.save()
+        msg = u'Bewertung wurde gespeichert.'
+    else:
+        msg = u'Fehler beim Speichern der Bewertung. Bitte wiederholen.'
+    return dict(msg=msg)
+
+
