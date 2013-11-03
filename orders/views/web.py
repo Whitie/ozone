@@ -409,10 +409,11 @@ def manage_ratings(req):
     return render(req, 'orders/ratings/manage.html', ctx, app=u'orders')
 
 
-@permission_required('orders.controlling', raise_exception=True)
+#@permission_required('orders.controlling', raise_exception=True)
+@login_required
 def ctrl_by_cost(req):
-    ctx = dict(page_title=_(u'Sums by Cost'), menus=menus, costs=[],
-        start=None, end=None)
+    ctx = dict(page_title=u'Nach Kostenstellen', menus=menus, costs=[],
+        start=None, end=None, dp=True, dt=True)
     if req.method == 'POST':
         _start = req.POST.get('start', '')
         _end = req.POST.get('end', '')
@@ -422,9 +423,14 @@ def ctrl_by_cost(req):
             start = datetime.strptime(_start, '%d.%m.%Y').date()
             end = datetime.strptime(_end, '%d.%m.%Y').date()
         d = {}
+        whole = Decimal()
+        chem = Decimal()
         for c in CostOrder.objects.select_related().filter(
             order__ordered__gte=start, order__ordered__lte=end):
             price = Decimal(c.order.count) * c.order.article.price
+            whole += price
+            if c.order.article.tox_control:
+                chem += price
             cost = (c.cost.short_name, c.cost.ident)
             if cost not in d:
                 d[cost] = [Decimal(), Decimal(), 0]
@@ -432,7 +438,12 @@ def ctrl_by_cost(req):
             d[cost][1] += price
             d[cost][2] += 1
         l = sorted(((k, v) for k, v in d.iteritems()), key=lambda x: x[1])
-        _ctx = dict(costs=l, start=start, end=end)
+        if not l:
+            messages.error(req, u'Keine Bestellungen in dieser Zeitspanne '
+                u'gefunden.')
+            return redirect('orders-ctrl-bycost')
+        _ctx = dict(costs=l, start=start, end=end, whole=whole, chem=chem,
+            subtitle=u'{:%d.%m.%Y} - {:%d.%m.%Y}'.format(start, end))
         ctx.update(_ctx)
     return render(req, 'orders/controlling/bycost.html', ctx, app=u'orders')
 
