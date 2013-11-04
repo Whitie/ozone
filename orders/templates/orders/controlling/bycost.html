@@ -30,30 +30,30 @@
 {% if costs %}
 <div class="row-fluid">
     <div class="span8 offset1">
-        <table class="table table-striped dataTable">
+        <table class="table table-striped" id="dt">
             <thead>
-                <tr style="text-align:center;">
-                    <th>Kürzel</th>
+                <tr>
                     <th>Nummer</th>
-                    <th>Summe gewichtet</th>
-                    <th>Gesamtsumme</th>
-                    <th>Anz. Bestellungen</th>
+                    <th>Kürzel</th>
+                    <th>Summe (gewichtet)</th>
+                    <th>% von Gesamt</th>
+                    <th>Bestellungen</th>
                 </tr>
             </thead>
             <tbody>
                 {% for cost, sums in costs %}
                 <tr>
-                    <td style="text-align:center;">{{ cost.0 }}</td>
-                    <td style="text-align:center;">{{ cost.1 }}</td>
-                    <td style="text-align:right;">{{ sums.0|floatformat:2 }} {{ CURRENCY_SYM }}</td>
-                    <td style="text-align:right;">{{ sums.1|floatformat:2 }} {{ CURRENCY_SYM }}</td>
-                    <td style="text-align:center;">{{ sums.2 }}</td>
+                    <td>{{ cost.1 }}</td>
+                    <td>{{ cost.0 }}</td>
+                    <td style="text-align:center;">{{ sums.0|floatformat:2 }} {{ CURRENCY_SYM }}</td>
+                    <td style="text-align:center;">{{ sums.2|floatformat:1 }} %</td>
+                    <td style="text-align:center;">{{ sums.1 }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <h3>Gesamt: {{ whole|floatformat:2 }}{{ CURRENCY_SYM }}, davon
-            Chemikalien: {{ chem|floatformat:2 }}{{ CURRENCY_SYM }}.
+        <h3>Gesamt: {{ whole|floatformat:2 }} {{ CURRENCY_SYM }}, davon
+            Chemikalien: {{ chem|floatformat:2 }} {{ CURRENCY_SYM }}.
         </h3>
     </div>
 </div>
@@ -62,15 +62,18 @@
 
 {% block additional_js %}
 <script>
-$($('.datetimepicker').each(function() {
+$(function() {
+    $('.datetimepicker').each(function() {
         var dtp = $(this);
         dtp.datetimepicker({
             'language': 'de',
             'pickTime': false,
             'weekStart': 1
         });
-    })
-);
+    });
+    datatable_options['bPaginate'] = false;
+    $('#dt').dataTable(datatable_options);
+});
 </script>
 {% endblock %}
 

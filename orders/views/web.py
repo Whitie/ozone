@@ -425,16 +425,18 @@ def ctrl_by_cost(req):
         for c in CostOrder.objects.select_related().filter(
             order__ordered__gte=start, order__ordered__lte=end):
             price = Decimal(c.order.count) * c.order.article.price
-            whole += (c.percent / Decimal(100)) * price
+            weighted = (c.percent / Decimal(100)) * price
+            whole += weighted
             if c.order.article.tox_control:
-                chem += price
+                chem += weighted
             cost = (c.cost.short_name, c.cost.ident)
             if cost not in d:
-                d[cost] = [Decimal(), Decimal(), 0]
-            d[cost][0] += (c.percent / Decimal(100)) * price
-            d[cost][1] += price
-            d[cost][2] += 1
-        l = sorted(((k, v) for k, v in d.iteritems()), key=lambda x: x[1])
+                d[cost] = [Decimal(), 0, 0]
+            d[cost][0] += weighted
+            d[cost][1] += 1
+        for cost, prices in d.items():
+            d[cost][2] = (prices[0] / whole) * 100
+        l = sorted(((k, v) for k, v in d.iteritems()), key=lambda x: x[0][1])
         if not l:
             messages.error(req, u'Keine Bestellungen in dieser Zeitspanne '
                 u'gefunden.')
