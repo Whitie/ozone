@@ -1,7 +1,6 @@
 {% extends "index.html" %}
 
-{% block content %}
-<style type="text/css">
+{% block styles %}
 .rating {
     display: block;
     text-align: center;
@@ -10,8 +9,9 @@
 .A { background-color: lime; }
 .B { background-color: yellow; }
 .C { background-color: red; }
-</style>
+{% endblock %}
 
+{% block content %}
 {% if perms.core.summarize %}
 <div class="row-fluid">
     <div class="span10" id="pdf_printout">
