@@ -425,7 +425,7 @@ def ctrl_by_cost(req):
         for c in CostOrder.objects.select_related().filter(
             order__ordered__gte=start, order__ordered__lte=end):
             price = Decimal(c.order.count) * c.order.article.price
-            whole += price
+            whole += (c.percent / Decimal(100)) * price
             if c.order.article.tox_control:
                 chem += price
             cost = (c.cost.short_name, c.cost.ident)
