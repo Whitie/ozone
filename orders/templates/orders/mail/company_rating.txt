@@ -5,7 +5,7 @@ bitte bewerten Sie die folgenden Lieferanten:
     - {{ c.name }} (Letzte Bewertung: {% if c.last_rate %}{{ c.last_rate|date:"d.m.Y" }}{% else %}noch keine{% endif %})
     {% endfor %}
 
-Bewertungen können unter http://archie3:8003{% url orders-rating %} gemacht 
+Bewertungen können unter http://archie2:8003{% url 'orders-rating' %} gemacht 
 werden.
 
 Dies ist eine automatische Nachricht, bitte nicht direkt darauf antworten.

@@ -355,7 +355,7 @@ def show_rate_form(req, cid):
     return render(req, 'orders/ratings/form_dlg.html', ctx, app=u'orders')
 
 
-@permission_required('core.summarize', raise_exception=True)
+@login_required
 def rate_company(req, company_id):
     company = Company.objects.get(id=int(company_id))
     if req.method == 'POST':
@@ -373,8 +373,8 @@ def rate_company(req, company_id):
     sum_form = SummarizeForm(instance=company)
     form = CompanyRatingForm()
     company = h.calculate_ratings([company])[0]
-    ctx = dict(page_title=_(u'Edit Rating'), menus=menus, company=company,
-        form=form, sum_form=sum_form)
+    ctx = dict(page_title=u'Bewertung bearbeiten', menus=menus,
+        company=company, form=form, sum_form=sum_form, subtitle=company.name)
     return render(req, 'orders/ratings/edit.html', ctx, app=u'orders')
 
 
@@ -383,8 +383,10 @@ def company_rating_summary(req):
     companies = Company.objects.select_related().filter(rate=True
         ).order_by('name')
     companies = h.calculate_ratings(companies)
-    ctx = dict(page_title=_(u'Company Rating Summary'), menus=menus,
-        companies=companies, today=date.today())
+    today = date.today()
+    ctx = dict(page_title=u'Lieferantenbewertung', menus=menus, dt=True,
+        companies=companies, need_ajax=True,
+        subtitle=today.strftime('Zusammenfassung %m/%Y'))
     return render(req, 'orders/ratings/summary.html', ctx, app=u'orders')
 
 
@@ -398,9 +400,9 @@ def manage_ratings(req):
     old_ratings = PDFPrintout.objects.filter(
         category=u'Lieferantenbewertung').order_by('-generated')
     companies = Company.objects.filter(rate=True).order_by('rating')
-    ctx = dict(page_title=_(u'Manage Ratings'), menus=menus, users=users,
+    ctx = dict(page_title=u'Bewertungen verwalten', menus=menus, users=users,
         uids=[x.id for x in users], old_ratings=old_ratings,
-        companies=companies)
+        companies=companies, need_ajax=True)
     return render(req, 'orders/ratings/manage.html', ctx, app=u'orders')
 
 

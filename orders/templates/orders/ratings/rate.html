@@ -9,7 +9,7 @@
         <h3>Sie sind für keinen Lieferanten als Bewerter eingetragen.</h3>
         {% endif %}
         <button type="button" class="btn btn-info" id="info-rating">
-            <i class="icon-info-sign"></i> Info
+            <i class="icon-info-sign icon-white"></i> Info
         </button>
         <table class="table table-condensed table-striped">
             <thead>
@@ -28,21 +28,21 @@
                 <tr>
                     <td>{{ forloop.counter }}</td>
                     <td>{{ c.name }}</td>
-                    <td>{{ c.ratings.count }}</td>
+                    <td style="text-align:center;">{{ c.ratings.count }}</td>
                     <td><small>{% for r in c.last_ratings %}
                         <span class="tt" title="{{ r.note|default:'-' }}" style="background-color:{% cycle 'lightblue' 'lightcyan' %};">
                             {{ r.rated|date:'SHORT_DATE_FORMAT' }}: {{ r.rating }}
                         </span>
                         {% empty %}-{% endfor %}</small>
                     </td>
-                    <td>{% if c.average %}
+                    <td style="text-align:center;">{% if c.average %}
                         {{ c.rating }} ({{ c.average|floatformat:1 }})
                         {% else %}-{% endif %}
                     </td>
                     <td>{{ c.rating_users.all|join:' ' }}</td>
                     <td><button type="button" class="btn btn-mini btn-warning"
                         onclick="rate_now('{% url 'orders-rate-form' c.id %}');">
-                            <i class="icon-pencil"></i> Jetzt bewerten
+                            <i class="icon-pencil icon-white"></i> Jetzt bewerten
                         </button>
                     </td>
                 </tr>

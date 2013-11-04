@@ -10,8 +10,6 @@ from django.core.mail import send_mail
 from django.utils import simplejson
 from django.http import HttpResponse
 from django.shortcuts import render as django_render
-from django.utils import translation
-from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.decorators import user_passes_test
 from django.core.exceptions import PermissionDenied
 from django.contrib.sessions.models import Session
@@ -93,38 +91,31 @@ def render(request, template, context=None, app=u'core'):
 
 def json_view(func):
     def wrap(req, *args, **kw):
-        cur_lang = translation.get_language()
-        try:
-            translation.activate(req.LANGUAGE_CODE)
-            response = func(req, *args, **kw)
-            json = simplejson.dumps(response)
-            return HttpResponse(json, content_type='application/json')
-        finally:
-            translation.activate(cur_lang)
+        response = func(req, *args, **kw)
+        json = simplejson.dumps(response)
+        return HttpResponse(json, content_type='application/json')
     return wrap
 
 
 def json_rpc(func):
     def wrap(req, *args, **kwargs):
-        cur_lang = translation.get_language()
-        try:
-            translation.activate(req.LANGUAGE_CODE)
-            if req.method == 'POST' and '_JSON_' in req.POST:
+        if req.method == 'POST' and '_JSON_' in req.POST:
+            try:
                 json_data = simplejson.loads(req.POST['_JSON_'])
                 response = func(req, json_data, *args, **kwargs)
-            else:
-                response = func(req, *args, **kwargs)
-            json = simplejson.dumps(response)
-            return HttpResponse(json, content_type='application/json')
-        finally:
-            translation.activate(cur_lang)
+            except Exception as e:
+                print e
+        else:
+            response = func(req, *args, **kwargs)
+        json = simplejson.dumps(response)
+        return HttpResponse(json, content_type='application/json')
     return wrap
 
 
 def error(req, msg=''):
     if not msg:
-        msg = _('An internal server error occured.')
-    ctx = dict(page_title=_('Ozone Error'), msg=msg)
+        msg = u'Ein interner Serverfehler ist aufgetreten!'
+    ctx = dict(page_title=u'Ozone Fehler', msg=msg)
     return render(req, 'error.html', ctx)
 
 
@@ -133,7 +124,7 @@ def internal_server_error(req):
     msg = u'%s:\n\n%s' % (d.strftime('%c'), traceback.format_exc())
     send_mail(u'Ozone Serverfehler', msg, 'dms@bbz-chemie.de',
         ['weimann@bbz-chemie.de', 'weimann.th@gmail.com'])
-    ctx = dict(page_title=_('Ozone Error'))
+    ctx = dict(page_title=u'Ozone Fehler')
     return render(req, '500.html', ctx)
 
 

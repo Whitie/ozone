@@ -1,6 +1,4 @@
 {% extends "index.html" %}
-{% load i18n %}
-{% load staticfiles %}
 
 {% block content %}
 <style type="text/css">
@@ -14,69 +12,82 @@
 .C { background-color: red; }
 </style>
 
-<h2 class="headline">{% trans "Company Rating" %} - {{ today|date:"F Y" }}</h2>
-<div id="update_message"></div>
 {% if perms.core.summarize %}
-<input type="button" value="{% trans "Generate Printout" %}" onclick="rating_pdf();" />
-<span id="pdf_printout"></span>
+<div class="row-fluid">
+    <div class="span10" id="pdf_printout">
+        <button type="button" class="btn btn-primary" onclick="rating_pdf();">
+            Ausdruck generieren
+        </button>
+    </div>
+</div>
 {% endif %}
 
-<table class="dataTable">
+<table class="table table-striped dataTable">
     <thead>
         <tr>
-            <th>{% trans "Supplier" %}</th>
-            <th>{% trans "Raters" %}</th>
-            <th>{% trans "Rating" %}</th>
-            <th>{% trans "Calculated" %}</th>
-            <th>{% trans "Average Rating" %}</th>
-            <th>{% trans "Min. Rating" %}</th>
-            <th>{% trans "Restriction" %}</th>
-            <th>{% trans "Notes" %}</th>
+            <th>Lieferant</th>
+            <th>Bewerter</th>
+            <th>Aktuelle Bewertung</th>
+            <th>Berechnet</th>
+            <th>&#216; - Bewertungen</th>
+            <th>Mindestbewertung</th>
+            <th>Einschränkungen</th>
+            <th>Bemerkungen</th>
         </tr>
     </thead>
     <tbody>
         {% for c in companies %}
         <tr>
-            <td title="{{ c.short_name }}">{% if perms.core.summarize %}
-                <a href="{% url "orders-rate" c.id %}">{{ c.name }}</a>{% else %}{{ c.name }}{% endif %}
+            <td>
+                <a class="tt" href="{% url 'orders-rate' c.id %}"
+                    title="Jetzt bearbeiten: {{ c.short_name }}">
+                    {{ c.name }}
+                </a>
             </td>
             <td>{{ c.raterlist|join:", " }}</td>
-            <td title="{% trans "All ratings" %}: {{ c.whole_ratings }}">
-                <span class="rating {{ c.rating }}">
-                    {{ c.rating }} ({{ c.ratings.count }})
+            <td>
+                <span class="infos" data-title="Alle Bewertungen"
+                    data-content="{{ c.whole_ratings }}">
+                    <span class="rating {{ c.rating }}">
+                        {{ c.rating }} ({{ c.ratings.count }})
+                    </span>
                 </span>
             </td>
-            {% if perms.core.summarize %}
-            <td style="text-align:center;" title="{% trans "Click here to take the calculated rating." %}">
-                <span onclick="take_rating({{ c.id }}, '{{ c.calculated }}');">{{ c.calculated }}</span>
+            <td style="text-align:center;">
+                {% if perms.core.summarize %}
+                <a href="#" onclick="take_rating({{ c.id }}, '{{ c.calculated }}');" class="tt" title="Hier klicken, um berechnete Bewertung als Gesamtbewertung zu übernehmen.">
+                    {{ c.calculated }}
+                </a>
+                {% else %}
+                {{ c.calculated }}
+                {% endif %}
             </td>
-            {% else %}
-            <td style="text-align:center;">{{ c.calculated }}</td>
-            {% endif %}
             <td style="text-align:center;">{{ c.average|floatformat:2 }}</td>
             <td style="text-align:center;">{{ c.min_rating }}</td>
             <td><small>{{ c.rating_note }}</small></td>
-            <td><small>{{ c.rating_notes|join:"<br />" }}</small></td>
+            <td><small>{{ c.rating_notes|join:"<br>" }}</small></td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+{% endblock %}
 
+{% block additional_js %}
 <script>
-$(document).ready(function() {
-  var oTable = $('.dataTable').dataTable({
-    "bJQueryUI": true,
-    "bPaginate": true,
-    "oLanguage": {
-      "sUrl": "{% static "i18n/de_DE.txt" %}"
-    }
-  });
+$(function() {
+    $('.infos').each(function() {
+        var el = $(this);
+        el.popover({
+            'placement': 'left',
+            'trigger': 'hover'
+        });
+    });
 });
 function rating_pdf() {
-    $.post('{% url "orders-pdf-rating-printout" %}', function(ret_data) {
-        var s = '<a href="'+ret_data['url']+'">'+ret_data['filename']
-               +' ('+ret_data['size']+' Bytes)</a>';
-        $('#pdf_printout').append(s);
+    $.post('{% url "orders-pdf-rating-printout" %}', function(res) {
+        var but = '<a class="btn btn-success" href="'+res['url']+'">'
+                 +res['filename']+' ('+res['size']+' Bytes)</a>';
+        $('#pdf_printout').append(but);
     });
 }
 function take_rating(cid, rating) {
@@ -84,11 +95,10 @@ function take_rating(cid, rating) {
     $.post('{% url "orders-api-takerating" %}',
         {'_JSON_': JSON.stringify(post_data)},
         function(data) {
-            $('#update_message').text(data['msg']).toggle('slow');
-            setTimeout(function() {
-                $('#update_message').text('').toggle('slow');
-            }, 5000);
+            add_update_message(data['msg']);
         });
+    return false;
 }
 </script>
 {% endblock %}
+

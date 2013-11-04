@@ -3,59 +3,95 @@
 {% load ozone_tags %}
 
 {% block content %}
-<h2 class="headline">{% trans "Edit Rating" %} - {{ company.name }}</h2>
-<h3>{% trans "Add Rating" %}</h3>
-<div style="width:50%;border:2px solid green;">
-<form action="{% url "orders-rate" company.id %}" method="post">
-{% csrf_token %}
-<table>
-{{ form.as_table }}
-<tr>
-    <th class="opener">{% trans "Help" %}</th>
-    <td><input type="submit" value="{% trans "Save" %}" /></td>
-</tr>
-</table>
-</form>
-</div>
-
-<h3>{% trans "Rating Summary" %}</h3>
-<div style="width:50%;border:2px solid green;">
-<form action="{% url "orders-rate" company.id %}" method="post">
-{% csrf_token %}
-<input type="hidden" name="rate" value="all" />
-<table>
-{{ sum_form.as_table }}
-<tr>
-    <th class="opener">{% trans "Help" %}</th>
-    <td><input type="submit" value="{% trans "Save" %}" /></td>
-</tr>
-</table>
-</form>
-</div>
-
-<p><a href="{% url "orders-rating-summary" %}">{% trans "Back" %}</a></p>
-
-<div id="summary">
-<ul>
-    <li>{% trans "Rater" %}: {{ company.raterlist|join:", " }}</li>
-    <li>{% trans "Ratings" %}: {{ company.ratings.count }}: {{ company.whole_ratings }}</li>
-    <li>{% trans "Rating" %}: <strong>{{ company.rating }}</strong></li>
-    <li>{% trans "Calculated Rating" %}: {{ company.calculated }}</li>
-    <li>{% trans "Average Rating" %}: {{ company.average|floatformat:2 }}</li>
-    <li>{% trans "Min. Rating" %}: {{ company.min_rating }}</li>
-    <li>{% trans "Restriction" %}: {{ company.rating_note|default:"-" }}</li>
-    <li>{% trans "Notes" %}
-        <ul>
-            {% for n in company.rating_notes %}
-            <li>{{ n }}</li>
-            {% empty %}
-            <li>-</li>
+<div class="row-fluid">
+    <div class="span5">
+        <form action="{% url 'orders-rate' company.id %}" method="post" class="form-horizontal">
+            {% csrf_token %}
+            <legend>
+                Bewertung hinzufügen
+                <button type="button" class="btn btn-info btn-mini pull-right" id="info-rating">
+                    <i class="icon-info-sign icon-white"></i> Info
+                </button>
+            </legend>
+            {% for f in form %}
+            <div class="control-group">
+                <label class="control-label" for="{{ f.auto_id }}">
+                    {{ f.label }}
+                </label>
+                <div class="controls">
+                    {{ f }}
+                    {% if f.help_text %}
+                    <span class="help-block">{{ f.help_text }}</span>
+                    {% endif %}
+                </div>
+            </div>
             {% endfor %}
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn">Speichern</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="span5 offset1">
+        {% if perms.core.summarize %}
+        <form action="{% url 'orders-rate' company.id %}" method="post" class="form-horizontal">
+            {% csrf_token %}
+            <legend>Gesamtbewertung</legend>
+            <input type="hidden" name="rate" value="all">
+            {% for f in sum_form %}
+            <div class="control-group">
+                <label class="control-label" for="{{ f.auto_id }}">
+                    {{ f.label }}
+                </label>
+                <div class="controls">
+                    {{ f }}
+                    {% if f.help_text %}
+                    <span class="help-block">{{ f.help_text }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn">Speichern</button>
+                </div>
+            </div>
+        </form>
+        {% endif %}
+        <ul><strong><u>Zusammenfassung</u></strong>
+            <li>Bewerter: {{ company.raterlist|join:", " }}</li>
+            <li>Bewertungen: {{ company.ratings.count }}: {{ company.whole_ratings }}</li>
+            <li>Gesamtbewertung: <strong>{{ company.get_rating_display }}</strong></li>
+            <li>Berechnet: <em>{{ company.calculated }}</em></li>
+            <li>&#216; - Bewertung: {{ company.average|floatformat:2 }}</li>
+            <li>Mindestbewertung: {{ company.min_rating }}</li>
+            <li>Einschränkungen: {{ company.rating_note|default:"-" }}</li>
+            <li>Bemerkungen
+                <ul>
+                    {% for n in company.rating_notes %}
+                    <li>{{ n }}</li>
+                    {% empty %}
+                    <li>-</li>
+                    {% endfor %}
+                </ul>
+            </li>
         </ul>
-    </li>
-</ul>
+    </div>
 </div>
 
 {% show_help "ratings" %}
 
 {% endblock %}
+
+{% block additional_js %}
+<script type="text/javascript">
+$(function() {
+  $("#info-rating").click(function() {
+    $('#help-dialog-ratings').modal({'show': true});
+  });
+});
+</script>
+{% endblock %}
+

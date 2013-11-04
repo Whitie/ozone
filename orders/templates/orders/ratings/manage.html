@@ -10,46 +10,58 @@
 .C { color: red; }
 </style>
 
-<div id="left" style="width:45%;float:left;clear:right;">
-<h3 class="headline">{% trans "Users - Companies" %}</h3>
-<ul>
-    {% for u in users %}
-    <li>{% trans "User" %}: {{ u.get_profile }}
-        <input type="button" value="{% trans "Send memory mail" %}" onclick="send_mail([{{ u.id }}]);" />
-        <ul>{% trans "Companies to rate" %}:
-            {% for c in u.to_rate %}
-            <li>{{ c.name }} ({% if c.last_rate %}{% trans "Last Rating" %}:
-                {{ c.last_rate|date:"SHORT_DATE_FORMAT" }}{% else %}
-                {% trans "Not rated yet!" %}{% endif %})</li>
+<div class="row-fluid">
+    <div class="span4">
+        <h3>Benutzer - Lieferanten</h3>
+        <hr>
+        <ul>
+            {% for u in users %}
+            <li>Bewerter: {{ u.get_profile }}
+                <button type="button" class="btn btn-mini btn-warning" onclick="send_mail([{{ u.id }}]);">
+                    <i class="icon-envelope icon-white"></i>
+                    Erinnerungsmail senden
+                </button>
+                 <ul>Lieferanten zum Bewerten:
+                    {% for c in u.to_rate %}
+                    <li>{{ c.name }} ({% if c.last_rate %}Letzte Bewertung:
+                        {{ c.last_rate|date:"SHORT_DATE_FORMAT" }}{% else %}
+                        Noch nicht bewertet!{% endif %})
+                    </li>
+                    {% endfor %}
+                </ul>
+            </li>
             {% endfor %}
         </ul>
-    </li>
-    {% endfor %}
-</ul>
+        <hr>
+        <button type="button" class="btn btn-warning" onclick="send_mail([{{ uids|join:', ' }}]);">
+            <i class="icon-envelope icon-white"></i>
+            Erinnerungsmail an alle senden
+        </button>
+    </div>
+
+    <div class="span4">
+        <h3>Bewertungen - Lieferanten</h3>
+        <hr>
+        <ul>
+            {% for c in companies %}
+            <li class="rating {{ c.rating }}" title="{{ c.rating_note|default:"-" }}">{{ c.rating }}: {{ c.name }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="span3 offset1">
+        <h3>Alte Bewertungen</h3>
+        <hr>
+        <ul>
+            {% for r in old_ratings %}
+            <li><a href="{{ r.pdf.url }}">{{ r.category }} {{ r.generated|date:"Y/m" }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
+{% endblock %}
 
-<div id="middle" style="width:29%;float:left;margin-left:5px;">
-<h3 class="headline">{% trans "Ratings - Companies" %}</h3>
-<ul>
-    {% for c in companies %}
-    <li class="rating {{ c.rating }}" title="{{ c.rating_note|default:"-" }}">{{ c.rating }}: {{ c.name }}</li>
-    {% endfor %}
-</ul>
-</div>
-
-<div id="right" style="width:24%;float:right;">
-<h3 class="headline">{% trans "Stored Ratings" %}</h3>
-<ul>
-    {% for r in old_ratings %}
-    <li><a href="{{ r.pdf.url }}">{{ r.category }} {{ r.generated|date:"Y/m" }}</a></li>
-    {% endfor %}
-</ul>
-</div>
-
-<p style="clear:both;padding-top:20px;">
-    <input type="button" value="{% trans "Send memory mail to all" %}" onclick="send_mail([{{ uids|join:", " }}]);" />
-</p>
-
+{% block additional_js %}
 <script type="text/javascript">
 function send_mail(uids) {
     post_data = {'uids': uids};
