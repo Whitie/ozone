@@ -102,7 +102,7 @@ def _export(ids):
             a = c.order.article
             value, unit = h.split_unit(a.quantity)
             tmp = [c.date.strftime('%Y-%m-%d'), a.name, a.ident,
-                a.supplier.name, o.count, u'{:.2f}'.format(value), unit,
+                a.supplier.name, c.count, u'{:.2f}'.format(value), unit,
                 float(a.price), a.barcode]
             row = []
             for x in tmp:
