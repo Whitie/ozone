@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import re
+
 from calendar import monthrange
 from collections import defaultdict
 from datetime import date, timedelta
@@ -8,6 +10,18 @@ from decimal import Decimal
 from django.contrib.auth.models import User
 from core.models import Company, CompanyRating
 from orders.models import OrderDay, Cost, Order, Article
+
+
+UNIT = r'(?P<unit>[a-zµ]+)'
+CALC_re = re.compile(
+    r'(?P<count>\d+)\s*?x\s*?(?P<value>\d+)\s*?' + UNIT, re.I|re.U
+)
+FLOAT_re = re.compile(
+    r'(?P<value>\d+[\.,]\d+)\s*?' + UNIT, re.I|re.U
+)
+INT_re = re.compile(
+    r'(?P<value>\d+)\s*?' + UNIT, re.I|re.U
+)
 
 
 def get_order_for_every_article():
@@ -154,4 +168,23 @@ def extract_barcode(code):
                     pass
         return c.upper()
     return code
+
+
+_clean_unit = lambda unit: unit.replace(u'Liter', u'L')
+
+
+def split_unit(value):
+    m = CALC_re.search(value)
+    if m is not None:
+        val = int(m.group('count')) * Decimal(m.group('value'))
+        return val, _clean_unit(m.group('unit'))
+    m = FLOAT_re.search(value)
+    if m is not None:
+        val = m.group('value').replace(u',', u'.')
+        return Decimal(val), _clean_unit(m.group('unit'))
+    m = INT_re.search(value)
+    if m is not None:
+        val = Decimal(m.group('value'))
+        return val, _clean_unit(m.group('unit'))
+    return 1, value
 

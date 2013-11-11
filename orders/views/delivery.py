@@ -100,9 +100,10 @@ def _export(ids):
         for c in choice:
             o = c.order
             a = c.order.article
+            value, unit = h.split_unit(a.quantity)
             tmp = [c.date.strftime('%Y-%m-%d'), a.name, a.ident,
-                a.supplier.name, o.count, a.quantity, float(a.price),
-                a.barcode]
+                a.supplier.name, o.count, u'{:.2f}'.format(value), unit,
+                float(a.price), a.barcode]
             row = []
             for x in tmp:
                 if isinstance(x, unicode):
