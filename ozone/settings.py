@@ -15,6 +15,13 @@ VERSION = '3.0.4'
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+# Only for production use
+ALLOWED_HOSTS = [
+    'archie2',
+    'archie2.',
+    '10.0.0.175',
+]
+
 ADMINS = (
     ('Thorsten Weimann', 'weimann@bbz-chemie.de'),
 )
