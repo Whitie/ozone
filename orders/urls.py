@@ -55,6 +55,8 @@ urlpatterns += patterns('orders.views.ajax',
     # api
     url(r'^api/article/(?P<article_id>\d+)/$', 'api_article',
         name='orders-api-article'),
+    url(r'^api/article/by_barcode/(?P<barcode>.+?)/$', 'get_article_by_barcode',
+        name='orders-api-article-bybarcode'),
     url(r'^api/articles/get/$', 'get_articles', name='orders-api-articles'),
     url(r'^api/update_count/(?P<order_id>\d+)/(?P<count>\d+)/$',
         'update_article_count', name='orders-api-count'),

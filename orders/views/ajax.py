@@ -57,6 +57,16 @@ def get_articles(req):
 
 
 @json_view
+def get_article_by_barcode(req, barcode):
+    code = h.extract_barcode(barcode)
+    try:
+        a = Article.objects.get(barcode=code)
+    except Article.DoesNotExist:
+        return dict(error=u'Artikel nicht gefunden!')
+    return dict(id=a.id, artnr=a.ident, name=a.name, lieferant=a.supplier.name)
+
+
+@json_view
 def get_suppliers(req):
     term = req.GET.get('term')
     sup = [{'value': x.id, 'label': x.name} for x in Company.objects.filter(
