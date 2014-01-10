@@ -17,12 +17,12 @@ class OrderDayAdmin(admin.ModelAdmin):
 
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ('name', 'supplier', 'ident', 'quantity', 'price',
-        'tox_control', 'id')
+        'tox_control', 'barcode')
     list_display_links = ('name',)
-    list_editable = ('ident', 'quantity', 'price', 'tox_control')
+    list_editable = ('ident', 'quantity', 'price', 'tox_control', 'barcode')
     list_filter = ('supplier__name', 'tox_control')
     ordering = ('supplier__name', 'name')
-    search_fields = ('name', 'supplier__name', 'ident')
+    search_fields = ('name', 'supplier__name', 'ident', 'barcode')
     save_on_top = True
 
     def save_model(self, req, obj, form, change):
