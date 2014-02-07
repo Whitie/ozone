@@ -3,6 +3,6 @@ New DB:
 ./manage.py migrate orders
 ./manage.py migrate core
 ./manage.py createsuperuser
-./manage.py import_chems /img/path /dbfile/path
+./manage.py loaddata chemdb_all.json
 
-# Copy pictograms to media dir
+# Copy pictograms and structures to media dir

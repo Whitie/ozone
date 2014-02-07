@@ -10,6 +10,7 @@ syntax: glob
 *.pdf
 *.aux
 *.log
+*.tar.*
 .directory
 log/*
 build/*
