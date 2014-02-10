@@ -1,4 +1,4 @@
-/* Ozone Javascripts Version 1.0 */
+/* Ozone Javascripts Version 1.1 */
 
 popover_options = {'trigger': 'hover'};
 tooltip_options = {'html': true};
@@ -14,6 +14,19 @@ datatable_options = {
         'sUrl': '/static/i18n/de_DE.txt'
     }
 }
+
+jQuery.fn.highlight = function(str, class_name) {
+    var regex = new RegExp(str, 'gi');
+    return this.each(function() {
+        $(this).contents().filter(function() {
+            return this.nodeType == 3 && regex.test(this.nodeValue);
+        }).replaceWith(function() {
+            return (this.nodeValue || '').replace(regex, function(match) {
+                return '<span class="' + class_name + '">' + match + '</span>';
+            });
+        });
+    });
+};
 
 $(document).ready(
     function() {
