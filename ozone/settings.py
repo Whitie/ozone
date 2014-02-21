@@ -313,6 +313,9 @@ LATEX = {
 
 LATEX_BUILD_DIR = os.path.abspath(os.path.join(_PATH, '..', '_latex_build'))
 
+# CIASS
+CIASS_USE_OZONE = True
+
 ###############################################################################
 
 # Make sure to use a path, which is writeable and not accesible over the web
