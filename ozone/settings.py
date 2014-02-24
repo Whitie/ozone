@@ -315,6 +315,8 @@ LATEX_BUILD_DIR = os.path.abspath(os.path.join(_PATH, '..', '_latex_build'))
 
 # CIASS
 CIASS_USE_OZONE = True
+CIASS_CONVERT_BINARY = '/usr/bin/convert'
+CIASS_TEMPDIR = '/tmp'
 
 ###############################################################################
 
