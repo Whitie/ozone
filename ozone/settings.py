@@ -5,7 +5,10 @@ import sys
 
 _PATH = os.path.dirname(os.path.abspath(__file__))
 EXT_DIR = os.path.normpath(os.path.join(_PATH, '..', 'ext'))
+OZONE_EXT = os.path.normpath(os.path.join(_PATH, '..', '..',
+    'ozone_extensions'))
 
+sys.path.insert(0, OZONE_EXT)
 sys.path.insert(0, EXT_DIR)
 
 # Django settings for ozone project.
