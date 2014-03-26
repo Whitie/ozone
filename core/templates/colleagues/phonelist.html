@@ -11,14 +11,16 @@
                     <th>{% trans "Name" %}</th>
                     <th>{% trans "Private" %}</th>
                     <th>{% trans "Mobile" %}</th>
+                    <th>{% trans "Email" %}</th>
                 </tr>
             </thead>
             <tbody>
             {% for p in profiles %}
             <tr>
                 <td>{{ p.user.last_name }}, {{ p.user.first_name }}</td>
-                <td>{{ p.phone }}</td>
-                <td>{{ p.mobile }}</td>
+                <td>{{ p.phone|default:'-' }}</td>
+                <td>{{ p.mobile|default:'-' }}</td>
+                <td><a href="mailto:{{ p.user.email }}">{{ p.user.email }}</a></td>
             </tr>
             {% endfor %}
             </tbody>

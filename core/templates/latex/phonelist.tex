@@ -30,12 +30,12 @@
 \section*{bbz Telefonliste}
 
 \begin{longtable}{r|l|c|c}
-Nr. & Name & Festnetz & Handy\\
+Nr. & Name & Festnetz & Handy & Email\\
 \endhead
 \hline
 (% for p in profiles %)
 (( loop.cycle('\\rowcolor{blau}', '\\rowcolor{weiss}') ))
-(( loop.index )) & (( p.user.last_name|te )), (( p.user.first_name|te )) & (( p.phone|te )) & (( p.mobile|te ))\\
+(( loop.index )) & (( p.user.last_name|te )), (( p.user.first_name|te )) & (( p.phone|te )) & (( p.mobile|te )) & (( p.user.email ))\\
 \hline
 (% endfor %)
 \end{longtable}
