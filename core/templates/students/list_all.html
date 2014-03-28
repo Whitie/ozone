@@ -54,12 +54,16 @@
 <div class="row-fluid">
     <div class="span6 offset2">
         <ul class="pager">
-            <li class="previous{% if not students.has_previous %} disabled{% endif %}">
+            {% if not students.has_previous %}
+            <li class="previous">
                 <a href="?page={{ students.previous_page_number }}">&larr; {% trans "Back" %}</a>
             </li>
-            <li class="next{% if not students.has_next %} disabled{% endif %}">
+            {% endif %}
+            {% if not students.has_next %}
+            <li class="next">
                 <a href="?page={{ students.next_page_number }}">{% trans "Next" %} &rarr;</a>
             </li>
+            {% endif %}
         </ul>
     </div>
 </div>
