@@ -68,12 +68,12 @@
 <div class="row-fluid">
     <div class="span6 offset2">
         <ul class="pager">
-            {% if not companies.has_previous %}
+            {% if companies.has_previous %}
             <li class="previous">
                 <a href="?page={{ companies.previous_page_number }}">&larr; {% trans "Back" %}</a>
             </li>
             {% endif %}
-            {% if not companies.has_next %}
+            {% if companies.has_next %}
             <li class="next">
                 <a href="?page={{ companies.next_page_number }}">{% trans "Next" %} &rarr;</a>
             </li>
