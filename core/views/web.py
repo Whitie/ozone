@@ -200,7 +200,9 @@ def add_note(req, id):
             messages.error(req, u'Bitte Betreff und Text eingeben.')
     else:
         form = NoteForm()
-    ctx = dict(page_title=_(u'Add Note'), menus=menus, form=form,
+    title = u'Neue Bemerkung: {name} ({company})'.format(
+        name=contact.shortname(), company=company.short_name or company.name)
+    ctx = dict(page_title=title, menus=menus, form=form,
         contact=contact, company=company, notes=old_notes)
     return render(req, 'companies/add_note.html', ctx)
 
