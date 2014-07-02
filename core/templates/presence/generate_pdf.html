@@ -133,7 +133,7 @@ function generate_company(cid) {
         'sdays': sdays, 'year': year, 'month': month, 'incl_sup': incl_sup};
     $.post('{% url "core-api-pdf-presence" %}', {'_JSON_': JSON.stringify(dat)},
         function(res_data) {
-            link = '<a class="btn btn-info btn-mini" href="'+res_data['url']+'">'+res_data['name']+'</a>';
+            link = '<a class="btn btn-info btn-mini" target="_blank" href="'+res_data['url']+'">'+res_data['name']+'</a>';
             $('#res_'+cid).append(link).show();
             stop_bar(progress);
         }
@@ -155,7 +155,7 @@ function generate_all() {
     $.post('{% url "core-api-pdf-presence-all" %}',
         {'_JSON_': JSON.stringify(dat)},
         function(res_data) {
-            link = '<a class="btn btn-info btn-mini" href="'+res_data['url']+'">'+res_data['name']+'</a>';
+            link = '<a class="btn btn-info btn-mini" target="_blank" href="'+res_data['url']+'">'+res_data['name']+'</a>';
             $('#res_all').append(link).show();
             stop_bar(progress);
         }
