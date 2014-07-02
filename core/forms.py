@@ -31,7 +31,7 @@ SEARCHES_CHOICES = sorted([(x, y[0]) for x, y in SEARCHES.iteritems()],
 
 def get_user():
     return ((x.id, u'{0}, {1}'.format(x.last_name, x.first_name))
-            for x in User.objects.filter(active=True).exclude(
+            for x in User.objects.filter(is_active=True).exclude(
                 username='admin').order_by('last_name'))
 
 
