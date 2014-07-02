@@ -20,7 +20,7 @@ from core.menu import menus
 from core.views import helper as h
 from core.models import (Student, StudentGroup, PresencePrintout, Company,
                          PresenceDay, UserProfile)
-from core.forms import PresenceForm
+from core.forms import PresenceForm, get_user
 
 
 PATH = os.path.dirname(os.path.abspath(__file__))
@@ -151,6 +151,7 @@ def generate_presence_filled(req, gid, year, month):
     show = False
     if req.method == 'POST':
         form = PresenceForm(req.POST)
+        form.fields['instructor'].choices = get_user()
         if form.is_valid():
             instructor = User.objects.get(id=form.cleaned_data['instructor'])
             course = form.cleaned_data['course']
@@ -161,6 +162,7 @@ def generate_presence_filled(req, gid, year, month):
             messages.error(req, u'Bitte korrigieren Sie die Pflichtfelder.')
     else:
         form = PresenceForm(initial={'include_supported_days': True})
+        form.fields['instructor'].choices = get_user()
     ctx = dict(page_title=_(u'Presence PDF-Generation'), menus=menus,
         instructor=instructor, course=course, school_days=school_days,
         group=group, show=show, ts=ts, form=form, companies=companies,

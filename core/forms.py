@@ -31,8 +31,8 @@ SEARCHES_CHOICES = sorted([(x, y[0]) for x, y in SEARCHES.iteritems()],
 
 def get_user():
     return ((x.id, u'{0}, {1}'.format(x.last_name, x.first_name))
-            for x in User.objects.exclude(username='admin').order_by(
-            'last_name'))
+            for x in User.objects.filter(active=True).exclude(
+                username='admin').order_by('last_name'))
 
 
 def get_groups():
@@ -180,7 +180,7 @@ class CompanyRatingForm(forms.Form):
 
 class PresenceForm(forms.Form):
     instructor = forms.TypedChoiceField(label=_(u'Instructor'),
-        choices=get_user(), coerce=int)
+        choices=[], coerce=int)
     course = forms.CharField(label=_(u'Course'), max_length=50, required=False)
     school_days = forms.MultipleChoiceField(label=_(u'School days'),
         choices=DAYS, required=False, widget=CheckboxSelectMultiple)
