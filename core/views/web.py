@@ -470,7 +470,7 @@ def presence_for_group(req, gid):
         messages.error(req, u'Gruppen-ID muss eine Zahl sein.')
         return redirect('core-presence')
     try:
-        group = StudentGroup.objects.get(pk=gid)
+        group = StudentGroup.objects.select_related().get(pk=gid)
     except StudentGroup.DoesNotExist:
         messages.error(req, u'Gruppe (ID: %d) existiert nicht.' % gid)
         return redirect('core-presence')
