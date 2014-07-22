@@ -121,7 +121,7 @@ def generate_presence_clean(req, gid, year, month):
         ctx['students'] = h.sort_students_for_presence(s)
     ctx['s'] = latex.get_latex_settings()
     ctx['schooldays'] = u''
-    ctx['instructor'] = unicode(req.user.get_profile())
+    ctx['instructor'] = unicode(req.user.userprofile)
     ctx['course'] = u''
     ctx['empty'] = True
     filename = make_latex(ctx, 'awhl.tex')

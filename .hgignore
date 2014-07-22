@@ -3,6 +3,7 @@ syntax: glob
 *.bak
 *~
 *.db
+*.sqlite3
 *.geany
 *.komodo*
 *.secr*

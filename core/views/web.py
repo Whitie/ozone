@@ -4,7 +4,7 @@ import string
 import os
 import time
 
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from json import dumps
 
 from django.http import HttpResponse
@@ -481,8 +481,8 @@ def presence_for_group(req, gid):
     if start > end:
         messages.error(req, u'Das Enddatum liegt vor dem Startdatum!')
         return redirect('core-presence')
-    req.session['presence_start'] = start
-    req.session['presence_end'] = end
+    req.session['presence_start'] = start.strftime('%Y-%m-%d')
+    req.session['presence_end'] = end.strftime('%Y-%m-%d')
     dt = end - start
     _students = h.sort_students_for_presence(group.students)
     students = h.get_presence(_students, start, end)
@@ -498,8 +498,11 @@ def presence_for_group(req, gid):
 @permission_required('core.change_presenceday')
 def presence_edit(req, student_id):
     _student = Student.objects.select_related().get(id=int(student_id))
-    start = req.session.get('presence_start', date.today())
-    end = req.session.get('presence_end', date.today())
+    _start = req.session.get('presence_start',
+        date.today().strftime('%Y-%m-%d'))
+    _end = req.session.get('presence_end', date.today().strftime('%Y-%m-%d'))
+    start = datetime.strptime(_start, '%Y-%m-%d').date()
+    end = datetime.strptime(_end, '%Y-%m-%d').date()
     student, days = h.get_presence([_student], start, end)[0]
     ctx = dict(page_title=u'Anwesenheit - {0}'.format(unicode(student)),
         menus=menus, student=student, days=days, start=start, end=end,

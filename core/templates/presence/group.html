@@ -56,7 +56,15 @@
     <tbody>
         {% for s, ds in students %}
         <tr>
-            <td>{{ s.company.short_name|default:s.company.name }}</td>
+            <td>
+                {% if s.company %}
+                <span class="tt" title="{{ s.company }}">
+                    {{ s.company.short_name|default:s.company.name }}
+                </span>
+                {% else %}
+                <span class="tt" title="Achtung, dieser Azubi ist keiner Firma zugeordnet!">-</span>
+                {% endif %}
+            </td>
             <td><a href="{% url "core-presence-edit" s.id %}" class="tt" title="{% trans "Click here to enter notes." %}">{{ s.lastname }}</a></td>
             <td>{{ s.firstname }}</td>
             {% for d in ds %}
