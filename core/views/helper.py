@@ -177,7 +177,7 @@ def make_username(last, first):
 
 
 def get_students(user):
-    profile = user.get_profile()
+    profile = user.userprofile
     c = profile.config()
     s = c.get('pstudents', [])
     return Student.objects.select_related().filter(id__in=s)

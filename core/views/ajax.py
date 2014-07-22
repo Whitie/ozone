@@ -195,7 +195,7 @@ def save_student(req, data=None):
 
 @json_rpc
 def mygroups(req, data=None):
-    profile = req.user.get_profile()
+    profile = req.user.userprofile
     config = profile.config()
     pgroups = config.get('pgroups', [])
     pstudents = config.get('pstudents', [])
@@ -220,7 +220,7 @@ def mygroups(req, data=None):
 
 @json_rpc
 def mystudent(req, data=None):
-    profile = req.user.get_profile()
+    profile = req.user.userprofile
     config = profile.config()
     pstudents = config.get('pstudents', [])
     student = Student.objects.get(id=data['sid'])

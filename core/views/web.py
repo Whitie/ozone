@@ -628,7 +628,7 @@ def select_groups(req):
     for j in jobs:
         g = StudentGroup.objects.filter(job=j).order_by('-start_date')
         groups.append((j, [x for x in g if x.active_count()]))
-    profile = req.user.get_profile()
+    profile = req.user.userprofile
     config = profile.config()
     pgroups = config.get('pgroups', [])
     students = Student.objects.select_related().filter(
@@ -641,7 +641,7 @@ def select_groups(req):
 
 @login_required
 def mystudents(req):
-    profile = req.user.get_profile()
+    profile = req.user.userprofile
     config = profile.config()
     pgroups = config.get('pgroups', [])
     students = Student.objects.select_related().filter(
@@ -664,8 +664,8 @@ def mypresence(req):
     if start > end:
         messages.error(req, u'Das Enddatum liegt vor dem Startdatum!')
         return redirect('core-presence')
-    req.session['presence_start'] = start
-    req.session['presence_end'] = end
+    req.session['presence_start'] = start.strftime('%Y-%m-%d')
+    req.session['presence_end'] = end.strftime('%Y-%m-%d')
     dt = end - start
     _studs = h.get_students(req.user)
     _students = h.sort_students_for_presence(_studs)
