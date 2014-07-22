@@ -31,9 +31,12 @@
             <select class="span1" id="p_all" size="1">
                 {% for e in choices %}<option value="{{ e }}"{% if e == "A" %} selected="selected"{% endif %}>{{ e }}</option>{% endfor %}
             </select>
-            <button class="btn" type="button" onclick="update_all();" title="{% trans "Sets the presence for all EMPTY fields." %}">
+            <button class="btn tt" type="button" onclick="update_all();" title="{% trans "Sets the presence for all EMPTY fields." %}">
                 {% trans "Set now" %}
             </button>
+            <span class="tt" title="Alle Felder (auch nichtleere) überschreiben?">
+                <input type="checkbox" id="overwrite">
+            </span>
             <button class="btn btn-warning" type="button" onclick="toggle_lateness();">
                 {% trans "Show/hide lateness" %}
             </button>
@@ -164,8 +167,9 @@ function update_day(did) {
 function update_all() {
     var date = $('#p_all_day :selected').val();
     var entry = $('#p_all :selected').val();
+    var overwrite = $('#overwrite').is(':checked');
     $('select.'+date).each(function(index) {
-        if ($(this).val() == '' || entry == '') {
+        if ($(this).val() == '' || entry == '' || overwrite == true) {
             $(this).val(entry);
             $(this).change();
         }

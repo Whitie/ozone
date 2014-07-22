@@ -92,8 +92,8 @@ def render(request, template, context=None, app=u'core'):
 def json_view(func):
     def wrap(req, *args, **kw):
         response = func(req, *args, **kw)
-        json = json.dumps(response)
-        return HttpResponse(json, content_type='application/json')
+        _json = json.dumps(response)
+        return HttpResponse(_json, content_type='application/json')
     return wrap
 
 
@@ -107,8 +107,8 @@ def json_rpc(func):
                 print e
         else:
             response = func(req, *args, **kwargs)
-        json = json.dumps(response)
-        return HttpResponse(json, content_type='application/json')
+        _json = json.dumps(response)
+        return HttpResponse(_json, content_type='application/json')
     return wrap
 
 
