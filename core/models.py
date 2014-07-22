@@ -9,7 +9,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
-from south.modelsinspector import add_introspection_rules
+#from south.modelsinspector import add_introspection_rules
 
 from audit_log.models.managers import AuditLog
 from audit_log.models import fields
@@ -26,18 +26,18 @@ from core.utils import named
 # After these steps all installations can use normal migrate command:
 #     manage.py schemamigration app --auto (to create the migration)
 #     manage.py migrate app (to apply the migration after sync)
-rules = [(
-    (fields.LastUserField,),
-    [],
-    {
-        'to': ['rel.to', {'default': User}],
-        'null': ['null', {'default': True}],
-    },
-)]
-add_introspection_rules(
-    rules,
-    ['^audit_log\.models\.fields\.LastUserField'],
-)
+# rules = [(
+#     (fields.LastUserField,),
+#     [],
+#     {
+#         'to': ['rel.to', {'default': User}],
+#         'null': ['null', {'default': True}],
+#     },
+# )]
+# add_introspection_rules(
+#     rules,
+#     ['^audit_log\.models\.fields\.LastUserField'],
+# )
 
 
 class CommonInfo(models.Model):

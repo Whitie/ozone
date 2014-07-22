@@ -217,7 +217,7 @@ def do_login(req):
                 password=form.cleaned_data['password']
             )
             if user is not None:
-                p = user.get_profile()
+                p = user.userprofile
                 if user.is_active and p.can_login:
                     login(req, user)
                     if user.is_superuser:

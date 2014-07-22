@@ -161,8 +161,6 @@ INSTALLED_APPS = (
     'core',
     'orders',
     'desktop',
-    'chemdb',
-    'south',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -176,7 +174,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'core.context_processors.set_global_vars',
 )
 
-AUTH_PROFILE_MODULE = 'core.UserProfile'
+# Removed in Django 1.7
+#AUTH_PROFILE_MODULE = 'core.UserProfile'
 
 LOGIN_URL = '/core/login'
 LOGOUT_URL = '/core/logout'

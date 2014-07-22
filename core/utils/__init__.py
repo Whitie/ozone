@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import json
 import os
 import re
 import traceback
@@ -7,7 +8,6 @@ import traceback
 from datetime import date, datetime
 
 from django.core.mail import send_mail
-from django.utils import simplejson
 from django.http import HttpResponse
 from django.shortcuts import render as django_render
 from django.contrib.auth.decorators import user_passes_test
@@ -92,7 +92,7 @@ def render(request, template, context=None, app=u'core'):
 def json_view(func):
     def wrap(req, *args, **kw):
         response = func(req, *args, **kw)
-        json = simplejson.dumps(response)
+        json = json.dumps(response)
         return HttpResponse(json, content_type='application/json')
     return wrap
 
@@ -101,13 +101,13 @@ def json_rpc(func):
     def wrap(req, *args, **kwargs):
         if req.method == 'POST' and '_JSON_' in req.POST:
             try:
-                json_data = simplejson.loads(req.POST['_JSON_'])
+                json_data = json.loads(req.POST['_JSON_'])
                 response = func(req, json_data, *args, **kwargs)
             except Exception as e:
                 print e
         else:
             response = func(req, *args, **kwargs)
-        json = simplejson.dumps(response)
+        json = json.dumps(response)
         return HttpResponse(json, content_type='application/json')
     return wrap
 
