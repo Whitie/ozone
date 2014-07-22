@@ -72,7 +72,7 @@ def internal_admin(req):
 
 @login_required
 def edit_profile(req):
-    profile = req.user.get_profile()
+    profile = req.user.userprofile
     if req.method == 'POST':
         form = ProfileForm(req.POST, instance=profile)
         form.save()
@@ -498,9 +498,9 @@ def presence_for_group(req, gid):
 @permission_required('core.change_presenceday')
 def presence_edit(req, student_id):
     _student = Student.objects.select_related().get(id=int(student_id))
-    _start = req.session.get('presence_start',
-        date.today().strftime('%Y-%m-%d'))
-    _end = req.session.get('presence_end', date.today().strftime('%Y-%m-%d'))
+    today = date.today().strftime('%Y-%m-%d')
+    _start = req.session.get('presence_start', today)
+    _end = req.session.get('presence_end', today)
     start = datetime.strptime(_start, '%Y-%m-%d').date()
     end = datetime.strptime(_end, '%Y-%m-%d').date()
     student, days = h.get_presence([_student], start, end)[0]
