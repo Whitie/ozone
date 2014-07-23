@@ -152,22 +152,33 @@ def ask_order(req):
     return render(req, 'orders/select_article.html', ctx, app=u'orders')
 
 
-@login_required
-def myorders(req):
-    _orders = req.user.order_set.select_related().all()
-    orders = []
+def _get_states():
+    states = []
     for s, disp in STATE_CHOICES:
-        state = dict(name=s, disp=disp, btn=_mapper[s][0], icon=_mapper[s][1])
-        tmp = []
-        ids = set()
-        for o in _orders.filter(state=s).order_by('article__name', '-added'):
-            if not o.article.id in ids:
-                ids.add(o.article.id)
-                tmp.append(o)
-        orders.append((state, tmp))
+        states.append(
+            dict(name=s, disp=disp, btn=_mapper[s][0], icon=_mapper[s][1])
+        )
+    return states
+
+
+@login_required
+def myorders(req, state=u'all'):
+    if state == u'all':
+        _orders = req.user.order_set.select_related().all()
+    else:
+        _orders = req.user.order_set.select_related().filter(state=state)
+    orders = []
+    ids = set()
+    states = _get_states()
+    _states = {x['name']: x for x in states}
+    for o in _orders.order_by('article__name', '-added'):
+        if (o.article.id, o.state) not in ids:
+            ids.add((o.article.id, o.state))
+            o.dsp_state = _states[o.state]
+            orders.append(o)
     ctx = dict(page_title=_(u'My Orders'), dt=True, need_ajax=True,
-        subtitle=unicode(req.user.get_profile()),
-        menus=menus, orders=orders)
+        subtitle=unicode(req.user.userprofile),
+        menus=menus, orders=orders, state=state, states=states)
     return render(req, 'orders/myorders.html', ctx, app=u'orders')
 
 
@@ -498,4 +509,3 @@ def delete_articles(req):
     if edit:
         return redirect('admin:orders_article_change', art.id)
     return redirect('orders-admin-db')
-

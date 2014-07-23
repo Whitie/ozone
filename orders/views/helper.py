@@ -14,13 +14,13 @@ from orders.models import OrderDay, Cost, Order, Article
 
 UNIT = r'(?P<unit>[a-zµ]+)'
 CALC_re = re.compile(
-    r'(?P<count>\d+)\s*?x\s*?(?P<value>\d+)\s*?' + UNIT, re.I|re.U
+    r'(?P<count>\d+)\s*?x\s*?(?P<value>\d+)\s*?' + UNIT, re.I | re.U
 )
 FLOAT_re = re.compile(
-    r'(?P<value>\d+[\.,]\d+)\s*?' + UNIT, re.I|re.U
+    r'(?P<value>\d+[\.,]\d+)\s*?' + UNIT, re.I | re.U
 )
 INT_re = re.compile(
-    r'(?P<value>\d+)\s*?' + UNIT, re.I|re.U
+    r'(?P<value>\d+)\s*?' + UNIT, re.I | re.U
 )
 
 
@@ -187,4 +187,3 @@ def split_unit(value):
         val = Decimal(m.group('value'))
         return val, _clean_unit(m.group('unit'))
     return 1, value
-

@@ -2,8 +2,11 @@
 
 from django.conf.urls import *
 
-from orders.feeds import (LatestOrdersFeed, LatestDeliveriesFeed,
-                          LatestUserDeliveriesFeed)
+from orders.feeds import (
+    LatestOrdersFeed,
+    LatestDeliveriesFeed,
+    LatestUserDeliveriesFeed
+)
 
 
 urlpatterns = patterns('orders.views.web',
@@ -20,6 +23,7 @@ urlpatterns = patterns('orders.views.web',
     url(r'^manage/$', 'manage_orders', name='orders-manage'),
     url(r'^manage/(?P<oday_id>\d+)/$', 'manage_order', name='orders-manage'),
     url(r'^myorders/$', 'myorders', name='orders-myorders'),
+    url(r'^myorders/(?P<state>\w+)/$', 'myorders', name='orders-myorders'),
     url(r'^old/$', 'show_old_orders', name='orders-old'),
     url(r'^list/printouts/$', 'list_printouts', name='orders-list-printouts'),
     url(r'^order/move/$', 'move_order', name='orders-move-order'),
