@@ -187,3 +187,22 @@ def split_unit(value):
         val = Decimal(m.group('value'))
         return val, _clean_unit(m.group('unit'))
     return 1, value
+
+
+def search_article(article_id, name, company):
+    try:
+        article = Article.objects.get(supplier=company,
+            ident__iexact=article_id)
+        return article, False
+    except Article.DoesNotExist:
+        pass
+    for lookup in ('name__iexact', 'name__istartswith', 'name__icontains'):
+        tmp = {'supplier': company, lookup: name}
+        try:
+            articles = Article.objects.filter(**tmp)
+            return articles.first(), False
+        except Article.DoesNotExist:
+            pass
+    article = Article.objects.create(supplier=company, ident=article_id,
+        name=name)
+    return article, True

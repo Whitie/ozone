@@ -96,10 +96,9 @@ def order(req, article_id=0):
             cleaned = form.cleaned_data
             company = Company.objects.get(id=cleaned['art_supplier_id'])
             costs = h.get_costs(req.POST)
-            art, created = Article.objects.get_or_create(
-                supplier=company, ident=cleaned['art_id'].strip())
+            art, created = h.search_article(cleaned['art_id'].strip(),
+                cleaned['art_name'], company)
             if created:
-                art.name = cleaned['art_name']
                 art.quantity = cleaned['art_q']
                 art.tox_control = cleaned['tox']
                 art.save()
