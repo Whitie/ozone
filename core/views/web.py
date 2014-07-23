@@ -114,7 +114,7 @@ def add_colleague(req):
                 last_name=cd['lastname'], first_name=cd['firstname'])
             user.set_unusable_password()
             user.save()
-            p = user.get_profile()
+            p = user.userprofile
             p.name_prefix = cd['name_prefix']
             p.phone = cd['phone']
             p.street = cd['street']

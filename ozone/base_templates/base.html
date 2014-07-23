@@ -41,7 +41,10 @@
         <link href="{% static 'css/datepicker.css' %}" rel="stylesheet">
         <link href="{% static 'css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
         {% endif %}
-        {% if dt %}<link href="{% static 'css/bootstrap-dataTables.css' %}" rel="Stylesheet">{% endif %}
+        {% if dt %}
+        <link href="{% static 'css/jquery.dataTables-1.10.1.min.css' %}" rel="stylesheet">
+        <link href="{% static 'css/bootstrap-dataTables.css' %}" rel="Stylesheet">
+        {% endif %}
         <!-- End Styles -->
 
         <!-- IE Hack -->
@@ -63,7 +66,7 @@
         <script src="{% static 'js/locales/bootstrap-datetimepicker.de.js' %}"></script>
         {% endif %}
         {% if dt %}
-        <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+        <script src="{% static 'js/jquery.dataTables-1.10.1.min.js' %}"></script>
         <script src="{% static 'js/bootstrap-dataTables.js' %}"></script>
         {% endif %}
         {% if need_ajax %}
