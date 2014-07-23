@@ -2,6 +2,10 @@
 {% load staticfiles %}
 {% load i18n %}
 
+{% block head %}
+<link href="{% static 'css/dataTables.fixedColumns.min.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 
 <div class="row-fluid">
@@ -123,6 +127,7 @@
 {% endblock %}
 
 {% block additional_js %}
+<script src="{% static 'js/dataTables.fixedColumns.min.js' %}"></script>
 <script>
 $(function() {
     datatable_options['bPaginate'] = false;
@@ -137,6 +142,7 @@ $(function() {
         null
     ];
     var dtable = $('#dtable').dataTable(datatable_options);
+    new $.fn.dataTable.FixedColumns(dtable, {'leftColumns': 3});
     /* Hide lateness input fields*/
     $('input[id^=l_]').hide();
 });
