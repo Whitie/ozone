@@ -189,20 +189,19 @@ def split_unit(value):
     return 1, value
 
 
-def search_article(article_id, name, company):
+def search_article(article_id, name, quantity, company):
     try:
         article = Article.objects.get(supplier=company,
             ident__iexact=article_id)
         return article, False
     except Article.DoesNotExist:
         pass
+    tmp = {'supplier': company, 'quantity__iexact': quantity}
     for lookup in ('name__iexact', 'name__istartswith', 'name__icontains'):
-        tmp = {'supplier': company, lookup: name}
-        try:
-            articles = Article.objects.filter(**tmp)
-            return articles.first(), False
-        except Article.DoesNotExist:
-            pass
+        tmp[lookup] = name
+        article = Article.objects.filter(**tmp).first()
+        if article is not None:
+            return article, False
     article = Article.objects.create(supplier=company, ident=article_id,
-        name=name)
+        name=name, quantity=quantity)
     return article, True
