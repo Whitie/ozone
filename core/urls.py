@@ -125,6 +125,8 @@ urlpatterns += patterns('core.views.ajax',
         name='core-api-presence-mystudent'),
     url(r'^api/accidents/save/$', 'save_accident',
         name='core-api-accident-save'),
+    url(r'^api/presence/delete_own_list/$', 'delete_own_list',
+        name='core-api-delete-own-presence'),
 )
 
 # PDF generation

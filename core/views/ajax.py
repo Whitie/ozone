@@ -247,3 +247,12 @@ def save_accident(req, data=None):
         messages.error(req, u'Ein Fehler ist aufgetreten: %s' % e)
         messages.warning(req, u'Bitte füllen Sie alle Pflichtfelder aus!')
     return dict()
+
+
+@json_rpc
+def delete_own_list(req, data=None):
+    profile = req.user.userprofile
+    profile.set_value('pgroups', [])
+    profile.set_value('pstudents', [])
+    profile.save()
+    return dict()

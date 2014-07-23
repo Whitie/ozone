@@ -1,5 +1,4 @@
 {% extends "index.html" %}
-{% load url from future %}
 {% load i18n %}
 
 {% block content %}
@@ -12,7 +11,7 @@
     </div>
 </div>
 <div class="row-fluid">
-    <div class="span8 offset1 centered">
+    <div class="span10 centered">
         {% for j in jobs %}
         <a class="btn btn-mini btn-info" href="#{{ j }}">{{ j }}</a>
         {% endfor %}
@@ -41,6 +40,9 @@
             </div>
             <input id="own_pr" class="btn" type="submit" value="{% trans "Show" %}" />
             <a class="btn btn-warning tt" title="{% trans "Edit" %}" href="{% url "core-presence-select-groups" %}"><i class="icon-edit"> </i></a>
+            <button type="button" class="btn btn-danger tt" title="Eigene Liste löschen" onclick="delete_own_list();">
+                <i class="icon-trash"> </i>
+            </button>
         </form>
         {% else %}
         <a class="btn btn-success" href="{% url "core-presence-select-groups" %}">{% trans "Create" %}</a>
@@ -138,6 +140,22 @@ $(function() {
 function disable_btn(btn_id) {
     $('#'+btn_id).attr('disabled', 'disabled');
     return true;
+}
+
+function delete_own_list() {
+    var url = '{% url "core-api-delete-own-presence" %}';
+    bootbox.confirm('Wollen Sie wirklich Ihre eigene Anwesenheitsliste löschen (Einträge bleiben erhalten)?',
+        function(result) {
+            if (result == true) {
+                $.get(url, function(res_data) {
+                    location.reload();
+                });
+            } else {
+                show_update_container();
+                add_update_message('Löschen abgebrochen!');
+            }
+        }
+    );
 }
 </script>
 
