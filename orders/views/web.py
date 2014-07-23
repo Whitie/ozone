@@ -351,7 +351,7 @@ def company_rating(req):
             company=c).order_by('-rated')
         c.average = c.calculate_rating()[1]
     ctx = dict(page_title=u'Lieferantenbewertung', menus=menus,
-        companies=companies, subtitle=unicode(req.user.get_profile()),
+        companies=companies, subtitle=unicode(req.user.userprofile),
         need_ajax=True)
     return render(req, 'orders/ratings/rate.html', ctx, app=u'orders')
 
