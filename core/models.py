@@ -571,7 +571,7 @@ class PresenceDay(models.Model):
         editable=False, null=True, blank=True)
 
     def __unicode__(self):
-        return u'{0} {1} |{2}|'.format(self.student,
+        return u'{0} {1} -{2}-'.format(self.student,
             self.date.strftime('%d.%m.%Y'), self.entry)
 
     class Meta:
