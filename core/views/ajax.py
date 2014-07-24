@@ -65,7 +65,7 @@ def update_day(req, data):
         if pday.instructor != req.user:
             pday.instructor = req.user
         pday.save()
-    return {'instructor': unicode(pday.instructor.get_profile()),
+    return {'instructor': unicode(pday.instructor.userprofile),
             'updated': updated}
 
 

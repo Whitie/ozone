@@ -18,6 +18,8 @@ VERSION = '3.0.5'
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
 # Only for production use
 ALLOWED_HOSTS = [
     'archie2',

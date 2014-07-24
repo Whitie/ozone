@@ -523,6 +523,17 @@ def presence_printouts(req, job):
 
 
 @login_required
+def presence_for_student_overview(req, student_id):
+    student = Student.objects.select_related().get(id=int(student_id))
+    student = h.get_presence_details(student)
+    q = Q(entry__in=[u'T', u'F', u'K', u'|', u'U']) | Q(lateness__gt=0)
+    days = student.presence_days.select_related().filter(q).order_by('date')
+    ctx = dict(page_title=u'Anwesenheitsübersicht', subtitle=unicode(student),
+        menus=menus, student=student, days=days, dt=True)
+    return render(req, 'students/presence_overview.html', ctx)
+
+
+@login_required
 def get_next_birthdays(req):
     days = int(req.GET.get('days', '14'))
     choice = [7, 14, 30, 90, 180]

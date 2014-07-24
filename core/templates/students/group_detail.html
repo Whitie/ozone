@@ -26,7 +26,9 @@
                 {% for s in group.active_students %}
                 <li>
                     <a class="tt" title="{% trans "Click for details." %}" href="{% url "core-students" s.first %}">{{ s.lastname }}</a>, {{ s.firstname }};
+                    {% if s.company %}
                     <a class="tt" title="{% trans "Click for details." %}" href="{% url "core-company-detail" s.company.id %}">{{ s.company.name }}</a>;
+                    {% endif %}
                     {{ s.birthdate|date:"DATE_FORMAT" }}
                     ({% blocktrans with age=s.age %}Age: {{ age }} Years{% endblocktrans %})
                     {% if perms.core.change_student %}

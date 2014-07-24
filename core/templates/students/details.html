@@ -1,94 +1,91 @@
-{% load url from future %}
-{% load i18n %}
 {% load staticfiles %}
 
 <address>
-    {{ s.street|default:"-" }}<br>
-    {{ s.zip_code }} {{ s.city|default:"-" }}<br>
-    {{ s.country|default:"-" }}<br>
-    <abbr title="{% trans "Phone" %}">{% trans "P" %}:</abbr> {{ s.phone|default:"-" }}<br>
-    <abbr title="{% trans "Mobile" %}">{% trans "M" %}:</abbr> {{ s.mobile|default:"-" }}
+    {{ s.street|default:'-' }}<br>
+    {{ s.zip_code }} {{ s.city|default:'-' }}<br>
+    {{ s.country|default:'-' }}<br>
+    <abbr title="Festnetz Telefon">T:</abbr> {{ s.phone|default:'-' }}<br>
+    <abbr title="Mobil">M:</abbr> {{ s.mobile|default:'-' }}
 </address>
 
 <table class="table">
     <tr>
         <td>
             <ul>
-                <li>{% trans "Group" %}: {{ s.group.name|default:"-" }}</li>
-                <li>{% trans "Company" %}:
+                <li>Gruppe: {{ s.group.name|default:'-' }}</li>
+                <li>Firma:
                     {% if s.company %}
-                    <a href="{% url "core-company-detail" s.company.id %}">
+                    <a href="{% url 'core-company-detail' s.company.id %}">
                     {{ s.company }}</a>
                     {% else %}-{% endif %}
                 </li>
-                <li><strong>{% trans "Notice in Emergency" %}:</strong> {{ s.emergency }}</li>
-                <li>{% trans "Birthday" %}: {{ s.birthdate|date:"DATE_FORMAT"|default:"-" }}
-                    ({{ s.age }} {% trans "Years old" %})</li>
-                <li>{% trans "Email" %}:
+                <li><strong>Im Notfall zu benachrichtigen:</strong> {{ s.emergency }}</li>
+                <li>Geburtstag: {{ s.birthdate|date:'DATE_FORMAT'|default:'-' }}
+                    ({{ s.age }} Jahre alt)</li>
+                <li>Email:
                     {% if s.email %}<a href="mailto:{{ s.email }}">{{ s.email }}</a>{% else %}-{% endif %}
                 </li>
                 {% if s.presence_days %}
-                <li><a class="tt" href="{% url "core-presence-edit" s.id %}" title="{% trans "Click here to edit presence" %}">
-                    {% trans "Presence" %}</a>
+                <li><a class="tt" href="{% url 'core-presence-edit' s.id %}" title="Klicken Sie hier, um Anwesenheiten zu bearbeiten.">
+                    Anwesenheit</a>
+                    (<a href="{% url 'core-presence-overview' s.id %}">Übersicht</a>)
                     <ul>
-                        <li>{% trans "All saved presence days" %}: {{ s.p_all }}
-                        <li>{% trans "Total days of absense" %}: {{ s.p_all_days }}
+                        <li>Alle gespeicherten Anwesenheitstage: {{ s.p_all }}
+                        <li>Fehltage gesamt: {{ s.p_all_days }}
                             [{{ s.p_all_days_percent|floatformat:1 }}%]
-                            ({% trans "Presence" %}: T, F, K, |)
+                            (Anwesenheitsliste: T, F, K, |)
                         </li>
-                        <li>{% trans "Holiday" %}: {{ s.p_holiday }}
-                            ({% trans "Presence" %}: U)
-                        </li>
-                        <li>{% trans "Illness days" %}: {{ s.p_ill }}
+                        <li>Urlaub: {{ s.p_holiday }} (Anwesenheitsliste: U)</li>
+                        <li>Krankheitstage: {{ s.p_ill }}
                             [{{ s.p_ill_percent|floatformat:1 }}%]
-                            ({% trans "Presence" %}: K)
+                            (Anwesenheitsliste: K)
                         </li>
-                        <li>{% trans "Not excused" %}: {{ s.p_not_excused }}
-                            ({% trans "Presence" %}: |)
+                        <li><em>Nicht entschuldigt</em>: {{ s.p_not_excused }}
+                            (Anwesenheitsliste: |)
                         </li>
-                        <li>{% trans "Latenesses" %}: {% if s.p_lateness_count %}
-                            <a href="#" class="tt" title="{{ s.p_latenesses|join:", " }}">
+                        <li>Verspätungen: {% if s.p_lateness_count %}
+                            <span class="tt" title="{{ s.p_latenesses|join:', ' }}">
                                 {{ s.p_lateness_count }}
-                            </a>
-                            ({{ s.p_lateness_sum }} {% trans "minutes" %})
+                            </span>
+                            ({{ s.p_lateness_sum }} Minuten)
                             {% else %}0{% endif %}
                         </li>
                     </ul>
                 </li>
                 {% else %}
-                <li>{% trans "No presence found for" %} {{ s }}</li>
+                <li>Keine Anwesenheiten gefunden für {{ s }}</li>
                 {% endif %}
                 {% if s.cabinet or s.key %}
-                <li>{% trans "Misc" %}
+                <li>Sonstiges
                     <ul>
-                        <li>{% trans "Cabinet" %}: {{ s.cabinet|default:"-" }}</li>
-                        <li>{% trans "Key" %}: {{ s.key|default:"-" }}</li>
+                        <li>Spind: {{ s.cabinet|default:'-' }}</li>
+                        <li>Schlüssel: {{ s.key|default:'-' }}</li>
                     </ul>
                 </li>
                 {% endif %}
                 {% if s.test_date %}
-                <li>{% trans "Test" %}: {{ s.test_date|date:"DATE_FORMAT" }},
-                    {{ s.test_result }} {% trans "Points" %}</li>
+                <li>Einstellungstest: {{ s.test_date|date:'DATE_FORMAT' }},
+                    {{ s.test_result }} Punkte</li>
                 {% endif %}
                 {% if s.exam_1 %}
-                <li>{% trans "Exam 1" %}: {{ s.exam_1 }} {% trans "Points" %}</li>
+                <li>Abschlussprüfung Teil 1: {{ s.exam_1 }} Punkte</li>
                 {% endif %}
                 {% if s.exam_2 %}
-                <li>{% trans "Exam 2" %}: {{ s.exam_2 }} {% trans "Points" %}</li>
+                <li>Abschlussprüfung Teil 2: {{ s.exam_2 }} Punkte</li>
                 {% endif %}
                 {% if s.exam_1 and s.exam_2 %}
-                <li>{% trans "Final Grade" %}: {{ s.final_grade }} {% trans "Points" %}</li>
+                <li>Gesamtnote: {{ s.final_grade }} Punkte</li>
                 {% endif %}
             </ul>
         </td>
         <td style="text-align:center;">
             <figure>
                 {% if s.picture %}
-                <img class="img-polaroid" src="{{ s.picture.url }}" alt="{% trans "Picture" %}" width="100" />
+                <img class="img-polaroid" src="{{ s.picture.url }}" alt="Passbild" width="100">
                 <figcaption>{{ s.lastname }}, {{ s.firstname }}</figcaption>
                 {% else %}
-                <img class="img-polaroid" src="{% static "img/mustermann.jpg" %}" width="100" />
-                <figcaption>{% trans "No Picture set." %}</figcaption>
+                <img class="img-polaroid" src="{% static 'img/mustermann.jpg' %}" width="100">
+                <figcaption>Kein Bild vorhanden.</figcaption>
                 {% endif %}
           </figure>
         </td>
