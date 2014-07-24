@@ -1,60 +1,78 @@
-{% extends "index.html" %}
-{% load i18n %}
+{% extends 'index.html' %}
 
 {% block content %}
+{% if not old %}
 <div class="row-fluid">
     <div class="span3">
         <button type="button" class="btn btn-success" onclick="add_accident();">
-            {% trans "Add new accident" %}
+            Neuen Unfall aufnehmen
         </button>
     </div>
     <div class="span3">
-        <a href="{% url "core-accidents-statistic" %}" class="btn btn-info disabled">
-            {% trans "Accidents statistics" %}
+        <a href="{% url 'core-accidents-statistic' %}" class="btn btn-info">
+            Unfallstatistik
         </a>
     </div>
 </div>
+<hr>
+{% endif %}
 
 <div class="row-fluid">
-    <div class="span10">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>{% trans "Date" %}</th>
-                    <th>{% trans "Injured" %}</th>
-                    <th>{% trans "Place" %}</th>
-                    <th>{% trans "Violation" %}</th>
-                    <th>{% trans "Added by" %}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for a in accidents %}
-                <tr>
-                    <td>
-                        <a href="{% url "core-accident-details" a.id %}" class="tt" title="{% trans "Click for details." %}">
-                            {{ a.date_time|date:"DATETIME_FORMAT" }}
-                        </a>
-                    </td>
-                    <td>{{ a.injured }}</td>
-                    <td>
-                        <a href="#" class="tt" title="{{ a.place_def|default:"-" }}">
-                            {{ a.place }}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="#" class="tt" title="{{ a.violation_def|default:"-" }}">
-                            {{ a.get_violation_display }}
-                        </a>
-                    </td>
-                    <td>{{ a.added_by.get_profile }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="5">{% trans "No accidents found." %}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <table class="table table-striped dataTable">
+        <thead>
+            <tr>
+                <th>Datum</th>
+                <th>Verletzte Person</th>
+                <th>Ort</th>
+                <th>Verletzung</th>
+                <th>Eingetragen von</th>
+                <th>Meldepflichtig</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in accidents %}
+            <tr>
+                <td>
+                    <a href="{% url 'core-accident-details' a.id %}" class="tt" title="Klicken für mehr Informationen">
+                        {{ a.date_time|date:'DATETIME_FORMAT' }}
+                    </a>
+                </td>
+                <td>{{ a.injured }}</td>
+                <td>
+                    <span class="tt" title="{{ a.place_def|default:'-' }}">
+                        {{ a.place }}
+                    </span>
+                </td>
+                <td>
+                    <span class="tt" title="{{ a.violation_def|default:'-' }}">
+                        {{ a.get_violation_display }}
+                    </span>
+                </td>
+                <td>{{ a.added_by.userprofile }}</td>
+                <td>
+                    {% if a.notify %}
+                    <span class="badge badge-important">Ja</span>
+                    {% else %}
+                    <span class="badge">Nein</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="row-fluid">
+    <div class="span3">
+        {% if old %}
+        <a href="{% url 'core-accidents' %}" class="btn btn-info">
+            zurück
+        </a>
+        {% else %}
+        <a href="{% url 'core-accidents-old' %}" class="btn btn-info">
+            Ältere Unfälle anzeigen
+        </a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

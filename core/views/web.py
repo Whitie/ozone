@@ -697,19 +697,29 @@ def accidents_index(req):
     today = date.today()
     accidents = AccidentEntry.objects.filter(date_time__year=today.year
         ).order_by('-date_time')
-    ctx = dict(page_title=_(u'Accidents'), subtitle=_(u'This year.'),
-        accidents=accidents, menus=menus, dp=True, need_ajax=True)
+    ctx = dict(page_title=u'Unfälle', subtitle=u'dieses Jahr', dt=True,
+        accidents=accidents, menus=menus, dp=True, need_ajax=True, old=False)
     return render(req, 'accidents/index.html', ctx)
 
 
 @login_required
 def accident_details(req, id):
     accident = AccidentEntry.objects.select_related().get(pk=int(id))
-    ctx = dict(page_title=_(u'Accident'), ac=accident, menus=menus,
-        subtitle=accident.date_time.strftime(settings.DEFAULT_DATETIME_FORMAT))
+    ctx = dict(page_title=u'Unfalldatenblatt', ac=accident, menus=menus)
     if accident.is_employee:
-        ctx['pr'] = accident.employee.get_profile()
+        ctx['pr'] = accident.employee.userprofile
     return render(req, 'accidents/details.html', ctx)
+
+
+@login_required
+def old_accidents(req):
+    today = date.today()
+    older = today - timedelta(days=365)
+    accidents = AccidentEntry.objects.filter(date_time__lt=older
+        ).order_by('-date_time')
+    ctx = dict(page_title=u'Ältere Unfälle', accidents=accidents, menus=menus,
+        old=True, dt=True)
+    return render(req, 'accidents/index.html', ctx)
 
 
 @login_required

@@ -65,6 +65,7 @@ urlpatterns = patterns('core.views.web',
         'presence_for_student_overview', name='core-presence-overview'),
     # Accidents
     url(r'^accidents/$', 'accidents_index', name='core-accidents'),
+    url(r'^accidents/old/$', 'old_accidents', name='core-accidents-old'),
     url(r'^accidents/(?P<id>\d+)/$', 'accident_details',
         name='core-accident-details'),
     url(r'^accidents/statistics/$', 'accidents_statistics',

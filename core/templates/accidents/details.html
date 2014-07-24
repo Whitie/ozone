@@ -1,17 +1,18 @@
-{% extends "index.html" %}
-{% load i18n %}
+{% extends 'index.html' %}
 
 {% block content %}
 {% if ac.notify %}
 <div class="row-fluid">
     <div class="span3">
-        <a href="#" class="btn btn-info">
-            {% trans "Generate report" %}
+        <a href="#" class="btn btn-info disabled">
+            Unfallanzeige
         </a>
     </div>
     <div class="span3">
         <span class="label label-important">
-            {% trans "Dieser Unfall ist meldepflichtig!" %}
+            <i class="icon-warning-sign"></i>
+            Dieser Unfall ist meldepflichtig!
+            <i class="icon-warning-sign"></i>
         </span>
     </div>
 </div>
@@ -19,7 +20,7 @@
 
 <div class="row-fluid">
     <div class="span4">
-        <h3>{% trans "Personal data" %}</h3>
+        <h3>Persönliche Daten</h3>
         {% if ac.is_employee %}
         <address>
             <strong>{{ ac.employee.last_name }}, {{ ac.employee.first_name }}</strong><br>
@@ -27,7 +28,7 @@
             {{ pr.zip_code }} {{ pr.city }}<br>
             {{ pr.country }}<br>
         </address>
-        {% trans "Birthdate" %}: {{ pr.birthdate }}<br>
+        Geburtstag: {{ pr.birthdate }}<br>
         {% else %}
         <address>
             <strong>{{ ac.student.lastname }}, {{ ac.student.firstname }}</strong><br>
@@ -35,59 +36,70 @@
             {{ ac.student.zip_code }} {{ ac.student.city }}<br>
             {{ ac.student.country }}<br>
         </address>
-        {% trans "Birthdate" %}: {{ ac.student.birthdate }}<br>
+        Geburtstag: {{ ac.student.birthdate }}<br>
+        {% if ac.student.company %}
+        <br>
+        Firma: {{ ac.student.company }}<br>
+        {% endif %}
         {% endif %}
     </div>
     <div class="span6">
-        <h3>{% trans "Accident" %}</h3>
+        <h3>Unfalldetails</h3>
         <table class="table">
             <tr>
-                <th>{% trans "Date / time of accident" %}:</th>
-                <td>{{ ac.date_time|date:"DATETIME_FORMAT" }}</td>
+                <th>Datum / Zeit des Unfalls:</th>
+                <td>{{ ac.date_time|date:'DATETIME_FORMAT' }}</td>
             </tr>
             <tr>
-                <th>{% trans "Added" %}:</th>
-                <td>{{ ac.added|date:"DATETIME_FORMAT" }}</td>
+                <th>Eingetragen:</th>
+                <td>{{ ac.added|date:'DATETIME_FORMAT' }}</td>
             </tr>
             <tr>
-                <th>{% trans "Added by" %}:</th>
-                <td>{{ ac.added_by.get_profile }}</td>
+                <th>Eingetragen von:</th>
+                <td>{{ ac.added_by.userprofile }}</td>
             </tr>
             <tr>
-                <th>{% trans "Violation" %}:</th>
+                <th>Verletzung:</th>
                 <td>
                     {{ ac.get_violation_display }}
                     {% if ac.violation_def %}({{ ac.violation_def }}){% endif %}
                 </td>
             </tr>
             <tr>
-                <th>{% trans "Place" %}:</th>
+                <th>Ort:</th>
                 <td>
                     {{ ac.place.name }}
                     {% if ac.place_def %}({{ ac.place_def }}){% endif %}
                 </td>
             </tr>
             <tr>
-                <th>{% trans "Witnesses" %}:</th>
-                <td>{{ ac.witnesses|default:"-" }}</td>
+                <th>Zeugen:</th>
+                <td>{{ ac.witnesses|default:'-' }}</td>
             </tr>
             <tr>
-                <th>{% trans "First helper or doctor" %}:</th>
+                <th>Ersthelfer und/oder Arzt:</th>
                 <td>{{ ac.helper }}</td>
             </tr>
             <tr>
-                <th>{% trans "First aid" %}:</th>
+                <th>Erste-Hilfe-Maßnahmen:</th>
                 <td>{{ ac.first_aid }}</td>
             </tr>
             <tr>
-                <th>{% trans "Used material" %}:</th>
-                <td>{{ ac.used|default:"-" }}</td>
+                <th>Benutztes Material:</th>
+                <td>{{ ac.used|default:'-' }}</td>
             </tr>
             <tr>
-                <th>{% trans "Comment" %}:</th>
-                <td>{{ ac.comment|default:"-" }}</td>
+                <th>Bemerkung:</th>
+                <td>{{ ac.comment|default:'-' }}</td>
             </tr>
         </table>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span3">
+        <a href="{% url 'core-accidents' %}" class="btn btn-info">
+            zurück
+        </a>
     </div>
 </div>
 {% endblock %}
