@@ -1,0 +1,55 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="row-fluid">
+    <div class="span10 centered">
+        <a href="{% url 'core-accidents-statistics-notify' 'all' %}" class="btn btn-info{% if year == 'all' %} disabled{% endif %}">
+            Alle Unfälle
+        </a>
+        {% for y in years %}
+        <a href="{% url 'core-accidents-statistics-notify' y %}" class="btn btn-info{% if year == y %} disabled{% endif %}">
+            Unfälle {{ y }}
+        </a>
+        {% endfor %}
+    </div>
+</div>
+<hr>
+<div class="row-fluid">
+    <table class="table table-striped dataTable">
+        <thead>
+            <tr>
+                <th>Datum / Zeit</th>
+                <th>Berufsgruppe</th>
+                <th>Unfall</th>
+                <th>Verletzung</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in accidents %}
+            <tr>
+                <td>
+                    <a href="{% url 'core-accident-details' a.id %}" class="tt" title="Klicken für mehr Informationen">
+                        {{ a.date_time|date:'DATETIME_FORMAT' }}
+                    </a>
+                </td>
+                <td>{% if a.is_employee %}
+                    Mitarbeiter <small>{{ a.employee.userprofile.part }}</small>
+                    {% else %}
+                    {{ a.student.group.job }}
+                    {% endif %}
+                </td>
+                <td>{{ a.get_violation_display }}</td>
+                <td>{{ a.violation_def }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="row-fluid">
+    <div class="span3">
+        <a href="{% url 'core-accidents-statistic' %}" class="btn btn-info">
+            zurück
+        </a>
+    </div>
+</div>
+{% endblock %}

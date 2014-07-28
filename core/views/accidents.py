@@ -7,12 +7,10 @@ from datetime import date, timedelta
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.db.models import Q
 
 from core.utils import render, charts
 from core.models import AccidentEntry, Student, VIOLATION_CHOICES
 from core.forms import AccidentForm
-from core.views import helper as h
 from core.menu import menus
 
 
@@ -43,6 +41,15 @@ def _get_accident_chart(year):
     stat.sort(key=lambda x: x[0], reverse=True)
     piechart = charts.LegendedPie3d(stat)
     return piechart
+
+
+def _get_years(**kw):
+    q = AccidentEntry.objects.filter(**kw).values_list(
+        'date_time', flat=True).order_by('date_time')
+    s = set([x.year for x in q])
+    l = list(s)
+    l.sort()
+    return l
 
 
 # Views for accidents
@@ -90,6 +97,52 @@ def accidents_statistics(req):
     ctx = dict(page_title='Unfallstatistik', menus=menus, year=dt.year,
         accidents=accidents, start=start_dt.year)
     return render(req, 'accidents/statistics/index.html', ctx)
+
+
+@login_required
+def statistics_notify(req, year='all'):
+    kw = {'notify': True}
+    years = _get_years(**kw)
+    if year != 'all':
+        try:
+            year = int(year)
+        except (TypeError, ValueError):
+            year = date.today().year
+        if year not in years:
+            year = date.today().year
+        kw['date_time__year'] = year
+    accidents = AccidentEntry.objects.select_related().filter(**kw
+        ).order_by('date_time')
+    ctx = dict(page_title='Meldepflichtige Unfälle', menus=menus, year=year,
+        years=years, accidents=accidents, dt=True)
+    if year == 'all':
+        ctx['subtitle'] = 'Alle Jahre'
+    else:
+        ctx['subtitle'] = unicode(year)
+    return render(req, 'accidents/statistics/notify.html', ctx)
+
+
+@login_required
+def statistics_general(req, year='all'):
+    kw = {'notify': False}
+    years = _get_years(**kw)
+    if year != 'all':
+        try:
+            year = int(year)
+        except (TypeError, ValueError):
+            year = date.today().year
+        if year not in years:
+            year = date.today().year
+        kw['date_time__year'] = year
+    accidents = AccidentEntry.objects.select_related().filter(**kw
+        ).order_by('date_time')
+    ctx = dict(page_title='Nichtmeldepflichtige Unfälle', menus=menus,
+        year=year, years=years, accidents=accidents, dt=True)
+    if year == 'all':
+        ctx['subtitle'] = 'Alle Jahre'
+    else:
+        ctx['subtitle'] = unicode(year)
+    return render(req, 'accidents/statistics/general.html', ctx)
 
 
 @login_required
