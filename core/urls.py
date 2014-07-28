@@ -63,14 +63,6 @@ urlpatterns = patterns('core.views.web',
     url(r'^my_presence/list/$', 'mypresence', name='core-presence-own'),
     url(r'^presence/student/(?P<student_id>\d+)/$',
         'presence_for_student_overview', name='core-presence-overview'),
-    # Accidents
-    url(r'^accidents/$', 'accidents_index', name='core-accidents'),
-    url(r'^accidents/old/$', 'old_accidents', name='core-accidents-old'),
-    url(r'^accidents/(?P<id>\d+)/$', 'accident_details',
-        name='core-accident-details'),
-    url(r'^accidents/statistics/$', 'accidents_statistics',
-        name='core-accidents-statistic'),
-    url(r'^accidents/add/$', 'accident_add', name='core-accident-add'),
     # Excel integration
     url(r'^group/export_excel/(?P<gid>\d+)/$', 'export_group_excel',
         name='core-group-to-excel'),
@@ -88,6 +80,23 @@ urlpatterns += patterns('core.views.add_student',
         name='core-student-add'),
     url(r'student/added/(?P<student_id>\d+)/$', 'student_added',
         name='core-student-added'),
+)
+
+# Accidents
+urlpatterns += patterns('core.views.accidents',
+    url(r'^accidents/$', 'accidents_index', name='core-accidents'),
+    url(r'^accidents/old/$', 'old_accidents', name='core-accidents-old'),
+    url(r'^accidents/(?P<id>\d+)/$', 'accident_details',
+        name='core-accident-details'),
+    url(r'^accidents/statistics/$', 'accidents_statistics',
+        name='core-accidents-statistic'),
+    url(r'^accidents/add/$', 'accident_add', name='core-accident-add'),
+    # Images
+    url(r'^accidents/charts/all/$', 'img_all', name='core-accidents-chart-all'),
+    url(r'^accidents/charts/year/$', 'img_accidents_by_year',
+        name='core-accidents-chart-year'),
+    url(r'^accidents/charts/year/(?P<year>\d+)/$', 'img_accidents_by_year',
+        name='core-accidents-chart-year'),
 )
 
 # Journal

@@ -1,0 +1,40 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="row-fluid">
+    <div class="span10 centered">
+        <a href="#" class="btn btn-warning">Meldepflichtige Unfälle</a>
+        <a href="#" class="btn btn-info">Nichtmeldepflichtige Unfälle</a>
+        <a href="#" class="btn btn-primary">Ausdrucke</a>
+    </div>
+</div>
+<hr>
+<div class="row-fluid">
+    <div class="span5">
+        <h3>Unfallverteilung {{ year }}</h3>
+        <img src="{% url 'core-accidents-chart-year' year %}">
+    </div>
+    <div class="span5">
+        <h3>Unfallanalyse {{ start }} bis {{ year }}</h3>
+        <img src="{% url 'core-accidents-chart-all' %}">
+        <table class="table table-condensed" style="margin:20px;">
+            <thead>
+                <tr>
+                    <th>Jahr</th>
+                    <th>Unfälle gesamt</th>
+                    <th>davon Wegeunfälle</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for y, a, w in accidents %}
+                <tr>
+                    <td>{{ y }}</td>
+                    <td>{{ a }}</td>
+                    <td>{{ w }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

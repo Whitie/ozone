@@ -149,7 +149,7 @@ class Migration(migrations.Migration):
             name='OrderDay',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('day', models.DateField(unique=True, verbose_name='Day', validators=[django.core.validators.MinValueValidator(datetime.date(2014, 7, 19))])),
+                ('day', models.DateField(unique=True, verbose_name='Day', validators=[django.core.validators.MinValueValidator(datetime.date(2014, 7, 28))])),
                 ('user', models.ForeignKey(verbose_name='Responsible User', to=settings.AUTH_USER_MODEL)),
             ],
             options={

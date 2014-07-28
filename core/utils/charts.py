@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
+from __future__ import unicode_literals, division
 
-from reportlab.graphics.shapes import Drawing, _DrawingEditorMixin
+from reportlab.graphics.shapes import (
+    Drawing, _DrawingEditorMixin, Rect, String
+)
 from reportlab.graphics.charts.piecharts import Pie3d
 from reportlab.graphics.charts.barcharts import VerticalBarChart3D
 from reportlab.graphics.charts.legends import Legend
@@ -40,7 +42,7 @@ def set_items(n, obj, attr, values):
     m = len(values)
     i = m // n
     for j in xrange(n):
-        setattr(obj[j], attr, values[j*i % m])
+        setattr(obj[j], attr, values[j * i % m])
 
 
 class LegendedPie3d(_DrawingEditorMixin, Drawing):
@@ -110,6 +112,16 @@ class MyBarChart(Drawing):
         ]
         self.legend.fontSize = 14
         self.legend.alignment = 'right'
+
+
+class NoData(Drawing):
+
+    def __init__(self, width=400, height=200, *args, **kw):
+        Drawing.__init__(self, width, height, *args, **kw)
+        self.add(Rect(20, 20, width - 40, height - 40, fillColor=colors.yellow))
+        y = int(height / 2) - 12
+        self.add(String(80, y, 'Keine Daten gefunden!'.encode('utf-8'),
+            fontSize=24, fillColor=colors.red))
 
 
 if __name__ == '__main__':
