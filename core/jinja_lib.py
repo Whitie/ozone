@@ -2,19 +2,22 @@
 
 from __future__ import unicode_literals
 
+from datetime import datetime
+
 from django.http import HttpResponse
 from django.conf import settings
 from django.template import RequestContext
 from django.core.urlresolvers import get_callable, reverse, NoReverseMatch
 from django.contrib.staticfiles.storage import staticfiles_storage
+from pytz import timezone, utc
 
 from jinja2 import FileSystemLoader, PackageLoader, ChoiceLoader, Environment
 
 
-DEFAULT_EXTENSIONS = (
+DEFAULT_EXTENSIONS = set([
     'jinja2.ext.do',
     'jinja2.ext.with_',
-)
+])
 DEFAULT_FORMATS = {
     'DATE_FORMAT': '%Y-%m-%d',
     'DATETIME_FORMAT': '%Y-%m-%d %H:%M:%S',
@@ -31,7 +34,7 @@ for app in settings.INSTALLED_APPS:
 default_formats = DEFAULT_FORMATS.copy()
 default_formats.update(getattr(settings, 'JINJA_DEFAULT_FORMATS', {}))
 jinja_extensions = getattr(settings, 'JINJA_EXTENSIONS', ())
-jinja_extensions = tuple(jinja_extensions) + DEFAULT_EXTENSIONS
+jinja_extensions = set(jinja_extensions) | DEFAULT_EXTENSIONS
 env = Environment(extensions=jinja_extensions, loader=ChoiceLoader(loaders))
 
 if 'jinja2.ext.i18n' in jinja_extensions:
@@ -78,21 +81,42 @@ def url(view_name, *args, **kwargs):
 
 
 def static(path):
+    """Usage: {{ static('path/to/file') }}"""
     return staticfiles_storage.url(path)
 
 
 def date(obj, format_string=None):
+    """Usage: {{ VAR|date() }}
+              {{ VAR|date('%Y') }}
+
+    Format string syntax is Python datetime.strftime syntax. `obj` must be a
+    datetime.datetime or datetime.date object.
+    """
     if obj in (None, ''):
         return ''
+    tz = timezone(settings.TIME_ZONE)
     if format_string is None:
         format_string = 'DATE_FORMAT'
     fmt = default_formats.get(format_string, format_string)
-    return obj.strftime(fmt)
+    local_dt = obj.astimezone(tz)
+    return local_dt.strftime(fmt)
+
+
+def now():
+    """Usage: {{ now() }}
+
+    It can be combined with the date filter: {{ now()|date('%W') }} will
+    return the weeknumber.
+    """
+    tz = timezone(settings.TIME_ZONE)
+    utc_dt = datetime.now(utc)
+    return utc_dt.astimezone(tz)
 
 
 # Register common used functions and filters
 env.globals['url'] = url
 env.globals['static'] = static
+env.globals['now'] = now
 
 env.filters['date'] = date
 

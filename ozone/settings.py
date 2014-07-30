@@ -301,6 +301,13 @@ AD_CACHE_TIME = 8 * 60 * 60
 
 ###############################################################################
 
+# Jinja settings
+JINJA_DEFAULT_FORMATS = {
+    'DATE_FORMAT': '%d.%m.%Y',
+    'DATETIME_FORMAT': '%d.%m.%Y %H:%M:%S',
+    'TIME_FORMAT': '%H:%M:%S',
+}
+
 # Latex settings ##############################################################
 # Deprecated (moved to configuration model), will be removed in 3.1
 LATEX = {
