@@ -1,0 +1,65 @@
+{% extends 'jinja_base.html' %}
+
+{% block styles %}{% endblock %}
+
+{% block head %}{% endblock %}
+
+{% block body %}
+{% include 'jinja_topmenu.html' %}
+
+<!-- Main content block (12 cols) -->
+<div class="container-fluid">
+    <div class="row-fluid">
+        <!-- Left menu -->
+        <div class="span2">
+            {% block menu %}{% endblock %}
+            <!-- Update messages -->
+            <div class="well hide" id="upd_container">
+                <button type="button" class="close" id="upd_close">&times;</button>
+                <h3>Änderungen</h3>
+                <ul id="upd_messages">
+                </ul>
+            </div>
+        </div>
+        {% if messages %}
+        <!-- Messages -->
+        {% for msg in messages %}
+        <div class="span8">
+            <div class="alert{% if msg.tags %} alert-{{ msg.tags }}{% endif %}">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ msg }}
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+        <!-- Page title -->
+        <div class="span8">
+            <div class="page-header centered">
+                <h1>{{ page_title|default('Ozone') }}{% if subtitle %} <small>{{ subtitle }}</small>{% endif %}</h1>
+            </div>
+        </div>
+        <!-- Logo -->
+        <img id="logo" src="{{ LOGO_URL }}">
+        <!-- Content 10 cols -->
+        <div class="span10">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+    {% block footer %}
+    <!-- Footer -->
+    <hr>
+    <footer>
+        <p class="centered">
+            <small>
+                Ozone Version {{ VERSION }},
+                &copy; <time datetime="2011">2011</time> - <time datetime="2014">2014</time>
+                by Thorsten Weimann<a href="mailto:weimann@ymail.com?subject=Ozone%20Feedback"> <i class="icon-envelope"> </i></a>.
+            </small>
+        </p>
+    </footer>
+    {% endblock %}
+</div>
+{% endblock %}
+
+{% block additional_js %}{% endblock %}

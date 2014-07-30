@@ -1,0 +1,10 @@
+<div class="well sidebar-nav">
+    <ul class="nav nav-list">
+        {% for menu in menus %}
+        <li class="nav-header"><a href="#">{{ menu.title }}</a></li>
+        {% for u, name in menu.entries %}
+        <li><a href="{{ url(u) }}">{{ name }}</a></li>
+        {% endfor %}
+        {% endfor %}
+    </ul>
+</div>

@@ -1,0 +1,65 @@
+<!-- Header - Navigationbar on top -->
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="brand" href="https://bitbucket.org/whitie/ozone/">
+                <img src="{{ static('img/ozone-logo-small.png') }}">
+            </a>
+            <div class="nav-collapse collapse">
+                <div class="btn-group pull-right">
+                    {% if user.is_authenticated() %}
+                    <button class="btn dropdown-toggle btn-primary" data-toggle="dropdown">
+                        <i class="icon-user icon-white"> </i>
+                        Angemeldet als {{ userprofile }}
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url('core-logout') }}">
+                            <i class="icon-off"> </i> Abmelden</a>
+                        </li>
+                        <li><a href="{{ url('core-profile') }}">Benutzerprofil</a></li>
+                        {% if user.is_superuser %}
+                        <li><a href="{{ url('core-admin') }}">Interne Aufgaben</a></li>
+                        {% endif %}
+                    </ul>
+                    {% else %}
+                    <a class="btn btn-primary" href="{{ url('core-login') }}">
+                        <i class="icon-user icon-white"></i> Anmelden</a>
+                    {% endif %}
+                </div>
+
+                <ul class="nav">
+                    <li{% if app == "core" %} class="active"{% endif %}>
+                        <a href="{{ url('core-index') }}">
+                            <i class="icon-home icon-white"> </i> Startseite</a>
+                    </li>
+                    <li class="divider-vertical"></li>
+                    <li{% if app == "orders" %} class="active"{% endif %}>
+                        <a href="{{ url('orders-index') }}">
+                            <i class="icon-shopping-cart icon-white"> </i> Bestellsystem</a>
+                    </li>
+                    <!--<li class="divider-vertical"></li>
+                    <li{% if app == "chemdb" %} class="active"{% endif %}>
+                        <a href="{{ url('cdb-index') }}">
+                            <i class="icon-fire icon-white"> </i> Chemikalien</a>
+                    </li>-->
+                    <li class="divider-vertical"></li>
+                    {% if user.is_staff %}
+                    <li>
+                        <a href="{{ url('admin:index') }}">
+                            <i class="icon-wrench icon-white"> </i>
+                            Administration
+                            <i class="icon-globe icon-white"> </i>
+                        </a>
+                    </li>
+                    <li class="divider-vertical"></li>
+                    {% endif %}
+                    <li>
+                        <a href="http://archie2/docs/bbz_datenbank/index.html" target="_blank">
+                            Hilfe <i class="icon-globe icon-white"> </i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

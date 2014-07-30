@@ -22,6 +22,7 @@ from django.core.exceptions import PermissionDenied
 
 from core import utils
 from core.utils import render
+from core.jinja_lib import render_jinja
 from core.models import (News, Company, Student, StudentGroup, Contact, Note,
     UserProfile, PresenceDay, PRESENCE_CHOICES)
 from core.forms import (NewsForm, SearchForm, StudentSearchForm, NoteForm,
@@ -57,7 +58,7 @@ def index(req):
     except (EmptyPage, InvalidPage):
         news = paginator.page(paginator.num_pages)
     ctx = dict(page_title=_(u'News'), menus=menus, news=news)
-    return render(req, 'index.html', ctx)
+    return render_jinja(req, 'jinja_index.html', ctx)
 
 
 @login_required

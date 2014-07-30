@@ -1,0 +1,55 @@
+{% extends 'jinja_layout.html' %}
+
+{% block styles %}{% endblock %}
+
+{% block head %}{% endblock %}
+
+{% block menu %}
+  {% include 'jinja_menu.html' %}
+{% endblock %}
+
+{% block content %}
+{% if news.paginator.count %}
+{% for n in news.object_list %}
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <div class="well">
+            <h3>{{ n.title }}</h3>
+            <p>{{ n.text }}</p>
+            <p>Veröffentlicht am
+                <time datetime="{{ n.date|date('%c') }}">{{ n.date|date('DATETIME_FORMAT') }}</time>
+                von {{ n.author.userprofile }}.
+            </p>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% if news.has_other_pages() %}
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <ul class="pager">
+            <li class="previous{% if not news.has_previous() %} disabled{% endif %}">
+                <a href="?page={% if news.has_previous() %}{{ news.previous_page_number() }}{%endif %}">&larr; Neuere</a>
+            </li>
+            <li class="next{% if not news.has_next() %} disabled{% endif %}">
+                <a href="?page={% if news.has_next() %}{{ news.next_page_number() }}{% endif %}">Ältere &rarr;</a>
+            </li>
+        </ul>
+    </div>
+</div>
+{% endif %}
+
+{% else %}
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <div class="well well-small">
+            Keine aktuellen Meldungen gefunden.
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block additional_js %}{% endblock %}

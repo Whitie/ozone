@@ -11,11 +11,15 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from jinja2 import FileSystemLoader, PackageLoader, ChoiceLoader, Environment
 
 
-JINJA_DEFAULT_EXTENSIONS = (
+DEFAULT_EXTENSIONS = (
     'jinja2.ext.do',
-    'jinja2.ext.loopcontrol',
     'jinja2.ext.with_',
 )
+DEFAULT_FORMATS = {
+    'DATE_FORMAT': '%Y-%m-%d',
+    'DATETIME_FORMAT': '%Y-%m-%d %H:%M:%S',
+    'TIME_FORMAT': '%H:%M:%S',
+}
 
 
 loaders = []
@@ -24,8 +28,10 @@ for path in getattr(settings, 'TEMPLATE_DIRS', ()):
 for app in settings.INSTALLED_APPS:
     loaders.append(PackageLoader(app))
 
+default_formats = DEFAULT_FORMATS.copy()
+default_formats.update(getattr(settings, 'JINJA_DEFAULT_FORMATS', {}))
 jinja_extensions = getattr(settings, 'JINJA_EXTENSIONS', ())
-jinja_extensions = tuple(jinja_extensions) + JINJA_DEFAULT_EXTENSIONS
+jinja_extensions = tuple(jinja_extensions) + DEFAULT_EXTENSIONS
 env = Environment(extensions=jinja_extensions, loader=ChoiceLoader(loaders))
 
 if 'jinja2.ext.i18n' in jinja_extensions:
@@ -59,7 +65,7 @@ for test in global_tests:
 
 # Common used functions and filters
 def url(view_name, *args, **kwargs):
-    """Usage: {% url("view_name", foo, "bar", baz=10) %}"""
+    """Usage: {{ url("view_name", foo, "bar", baz=10) }}"""
     try:
         return reverse(view_name, args=args, kwargs=kwargs)
     except NoReverseMatch:
@@ -75,9 +81,20 @@ def static(path):
     return staticfiles_storage.url(path)
 
 
+def date(obj, format_string=None):
+    if obj in (None, ''):
+        return ''
+    if format_string is None:
+        format_string = 'DATE_FORMAT'
+    fmt = default_formats.get(format_string, format_string)
+    return obj.strftime(fmt)
+
+
 # Register common used functions and filters
 env.globals['url'] = url
 env.globals['static'] = static
+
+env.filters['date'] = date
 
 
 # Render functions
