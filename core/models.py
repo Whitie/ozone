@@ -314,7 +314,16 @@ class CompanyRating(models.Model):
         )
 
 
-SUFFIX_CHOICES = ((u'a', u'a'), (u'b', u'b'), (u'c', u'c'), (u'd', u'd'))
+SUFFIX_CHOICES = (
+    (u'a', u'a'),
+    (u'b', u'b'),
+    (u'c', u'c'),
+    (u'd', u'd'),
+    (u'e', u'e'),
+    (u'f', u'f'),
+    (u's', u's'),
+    (u'u', u'u'),
+)
 
 
 class StudentGroup(models.Model):
