@@ -1,11 +1,21 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 from django.http import HttpResponse
 from django.conf import settings
 from django.template import RequestContext
 from django.core.urlresolvers import get_callable, reverse, NoReverseMatch
+from django.contrib.staticfiles.storage import staticfiles_storage
 
 from jinja2 import FileSystemLoader, PackageLoader, ChoiceLoader, Environment
+
+
+JINJA_DEFAULT_EXTENSIONS = (
+    'jinja2.ext.do',
+    'jinja2.ext.loopcontrol',
+    'jinja2.ext.with_',
+)
 
 
 loaders = []
@@ -15,6 +25,7 @@ for app in settings.INSTALLED_APPS:
     loaders.append(PackageLoader(app))
 
 jinja_extensions = getattr(settings, 'JINJA_EXTENSIONS', ())
+jinja_extensions = tuple(jinja_extensions) + JINJA_DEFAULT_EXTENSIONS
 env = Environment(extensions=jinja_extensions, loader=ChoiceLoader(loaders))
 
 if 'jinja2.ext.i18n' in jinja_extensions:
@@ -60,8 +71,13 @@ def url(view_name, *args, **kwargs):
             return ''
 
 
+def static(path):
+    return staticfiles_storage.url(path)
+
+
 # Register common used functions and filters
 env.globals['url'] = url
+env.globals['static'] = static
 
 
 # Render functions
@@ -92,7 +108,7 @@ def render_jinja(request, template, ctx=None, **kwargs):
         'status': kwargs.pop('status', None),
     }
 
-    ctx['app'] = kwargs.pop('app', u'core')
+    ctx['app'] = kwargs.pop('app', 'core')
 
     if 'context_instance' in kwargs:
         context_instance = kwargs.pop('context_instance')

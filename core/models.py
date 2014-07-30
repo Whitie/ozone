@@ -12,7 +12,6 @@ from django.utils.safestring import mark_safe
 #from south.modelsinspector import add_introspection_rules
 
 from audit_log.models.managers import AuditLog
-from audit_log.models import fields
 from core.utils import named
 
 
