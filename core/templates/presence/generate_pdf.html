@@ -1,6 +1,4 @@
-{% extends "index.html" %}
-{% load url from future %}
-{% load i18n %}
+{% extends 'index.html' %}
 
 {% block content %}
 <div class="row-fluid">
@@ -14,7 +12,7 @@
     {% if not show %}
     <div class="span8 offset1">
         <form action="" method="post" class="form-horizontal">
-            <legend>{% trans "Settings" %}</legend>
+            <legend>Einstellungen</legend>
             {% csrf_token %}
             {% for f in form %}
             <div class="control-group">
@@ -24,7 +22,7 @@
             {% endfor %}
             <div class="control-group">
                 <div class="controls">
-                    <button type="submit" class="btn">{% trans "Apply" %}</button>
+                    <button type="submit" class="btn">Anwenden</button>
                 </div>
             </div>
         </form>
@@ -33,9 +31,9 @@
     {% else %}
 
     <div class="span10 centered">
-        <p><strong>{% trans "Instructor" %}:</strong> {{ instructor.get_profile }},
-            <strong>{% trans "Course" %}:</strong> {{ course }},
-            <strong>{% trans "School days" %}:</strong> {{ school_days|join:", " }},
+        <p><strong>Ausbilder:</strong> {{ instructor.userprofile }},
+            <strong>Kurs:</strong> {{ course }},
+            <strong>Schultag(e):</strong> {{ school_days|join:', ' }},
             <strong>Info:</strong> Förderung wird{% if not incl_sup %} <strong>nicht</strong>{% endif %} aufgedruckt.
         </p>
     </div>
@@ -56,18 +54,18 @@
 
 <div class="row-fluid">
     <div class="span8 offset1">
-        <h3>{% trans "Companies" %}</h3>
+        <h3>Firmen</h3>
         <ul>
             {% for c in companies %}
-            <li><strong>{{ c.name }}</strong> - {{ c.group_count }} {% trans "Student(s)" %}
+            <li><strong>{{ c.name }}</strong> - {{ c.group_count }} Azubi(s)
                 {% if show and perms.core.add_presenceprintout %}
                 <button class="btn btn-primary btn-mini" id="but_{{ c.id }}" type="button" onclick="generate_company({{ c.id }});">
-                    {% trans "Generate Printout" %}
+                    Ausdruck generieren
                 </button>
                 {% endif %}
                 <span style="display:none;" id="res_{{ c.id }}"></span>
                 {% if c.currents %}
-                <ul>{% trans "Generated printouts" %}
+                <ul>Vorhandene Ausdrucke
                     {% for cur in c.currents %}
                     <li><a href="{{ cur.pdf.url }}" class="btn btn-info btn-mini">{{ cur.pdf.name }}</a></li>
                     {% endfor %}
@@ -75,16 +73,16 @@
                 {% endif %}
             </li>
             {% endfor %}
-            <li><strong>{% trans "All" %}</strong>
+            <li><strong>Alle</strong>
                 {% if show %}
                 <button class="btn btn-primary btn-mini" id="but_all" type="button" onclick="generate_all();">
-                    {% trans "Generate Printout" %}
+                    Ausdruck generieren
                 </button>
                 {% endif %}
                 <span style="display:none;" id="res_all"></span>
             </li>
         </ul>
-        <a class="btn btn-info" href="{% url "core-presence" %}">{% trans "Back to overview" %}</a>
+        <a class="btn btn-info" href="{% url 'core-presence' %}">Zurück zur Übersicht</a>
     </div>
 </div>
 
@@ -155,8 +153,9 @@ function generate_all() {
     $.post('{% url "core-api-pdf-presence-all" %}',
         {'_JSON_': JSON.stringify(dat)},
         function(res_data) {
-            link = '<a class="btn btn-info btn-mini" target="_blank" href="'+res_data['url']+'">'+res_data['name']+'</a>';
-            $('#res_all').append(link).show();
+            link1 = '<a class="btn btn-info btn-mini" target="_blank" href="'+res_data['url']+'">'+res_data['name']+'</a>';
+            link2 = '<a class="btn btn-info btn-mini" target="_blank" href="'+res_data['surl']+'">Einzeln: '+res_data['sname']+'</a>';
+            $('#res_all').append(link1).append(link2).show();
             stop_bar(progress);
         }
     );

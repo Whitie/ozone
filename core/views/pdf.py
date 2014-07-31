@@ -19,7 +19,7 @@ from core import latex
 from core.menu import menus
 from core.views import helper as h
 from core.models import (Student, StudentGroup, PresencePrintout, Company,
-                         PresenceDay, UserProfile)
+                         PresenceDay, UserProfile, PDFPrintout)
 from core.forms import PresenceForm, get_user
 
 
@@ -83,7 +83,7 @@ def get_presence_context(gid, year, month):
 
 @login_required
 def pdf(req, what='grouplist'):
-    response = HttpResponse(mimetype='application/pdf')
+    response = HttpResponse(content_type='application/pdf')
     return response
 
 
@@ -170,25 +170,7 @@ def generate_presence_filled(req, gid, year, month):
     return render(req, 'presence/generate_pdf.html', ctx)
 
 
-@utils.json_rpc
-def generate_presence_pdf(req, data):
-    user = User.objects.get(id=data['uid'])
-    ctx = get_presence_context(data['gid'], data['year'], data['month'])
-    student_filter = dict(group=ctx['group'], finished=False)
-    student_sort = ['lastname']
-    if data['cid']:
-        company = Company.objects.get(id=data['cid'])
-        student_filter['company'] = company
-    else:
-        company = Company.objects.get(short_name=u'Alle')
-        student_sort.insert(0, 'company__name')
-    ctx['incl_sup'] = data['incl_sup']
-    ctx['company'] = company
-    start = date(data['year'], data['month'], 1)
-    end = start + timedelta(days=30)
-    _students = Student.objects.select_related().filter(**student_filter
-        ).order_by(*student_sort)
-    students = [x[0] for x in h.get_presence(_students, start, end)]
+def _prepare_students(students, ctx, data):
     k = 0
     whole = 0
     for s in students:
@@ -220,12 +202,37 @@ def generate_presence_pdf(req, data):
         else:
             days.append(u'')
         s.days = days
+    return students, k, whole
+
+
+@utils.json_rpc
+def generate_presence_pdf(req, data):
+    user = User.objects.get(id=data['uid'])
+    ctx = get_presence_context(data['gid'], data['year'], data['month'])
+    student_filter = dict(group=ctx['group'], finished=False)
+    student_sort = ['lastname']
+    if data['cid']:
+        gen_all = False
+        company = Company.objects.get(id=data['cid'])
+        student_filter['company'] = company
+    else:
+        gen_all = True
+        company = Company.objects.get(short_name=u'Alle')
+        student_sort.insert(0, 'company__name')
+    ctx['incl_sup'] = data['incl_sup']
+    ctx['company'] = company
+    start = date(data['year'], data['month'], 1)
+    end = start + timedelta(days=30)
+    _students = Student.objects.select_related().filter(**student_filter
+        ).order_by(*student_sort)
+    students = [x[0] for x in h.get_presence(_students, start, end)]
+    students, k, whole = _prepare_students(students, ctx, data)
     ctx['students'] = students
     ctx['k'] = k
     ctx['whole'] = whole
     ctx['s'] = latex.get_latex_settings()
     ctx['schooldays'] = data['sdays']
-    ctx['instructor'] = unicode(user.get_profile())
+    ctx['instructor'] = unicode(user.userprofile)
     ctx['course'] = data['course']
     ctx['empty'] = False
     fullname = make_latex(ctx, 'awhl.tex', company)
@@ -236,7 +243,18 @@ def generate_presence_pdf(req, data):
         content = ContentFile(fp.read())
     printout.pdf.save(filename, content)
     printout.save()
-    return {'url': printout.pdf.url, 'name': filename}
+    ret = {'url': printout.pdf.url, 'name': filename}
+    if gen_all:
+        full_name = make_latex(ctx, 'awhl_einzeln.tex', company)
+        file_name = os.path.split(full_name)[1]
+        pdf = PDFPrintout.objects.create(category=u'Einzel-AWHL')
+        with open(full_name, 'rb') as fp:
+            content = ContentFile(fp.read())
+        pdf.pdf.save(file_name, content)
+        pdf.save()
+        ret['surl'] = pdf.pdf.url
+        ret['sname'] = file_name
+    return ret
 
 
 # Alias will be removed in 4.0

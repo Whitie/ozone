@@ -12,8 +12,10 @@ def userconf(req):
 
 def set_global_vars(req):
     from django.conf import settings
+    from core.models import Configuration
+    c = Configuration.objects.all().order_by('id').last()
     return {
-        'LOGO_URL': settings.LOGO_URL,
+        'LOGO_URL': c.logo.url,
         'CURRENCY_SYM': settings.CURRENCY[1],
         'CURRENCY_NAME': settings.CURRENCY[0],
         'VERSION': settings.VERSION,

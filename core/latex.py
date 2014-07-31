@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import os
 
 import texescape
@@ -9,6 +11,8 @@ from subprocess import call
 from django.conf import settings
 from jinja2 import Environment, FileSystemLoader
 
+from core.models import Configuration
+
 
 texescape.init()
 
@@ -17,7 +21,7 @@ def tex_escape(text):
     try:
         return text.translate(texescape.tex_hl_escape_map_new)
     except:
-        return u''
+        return ''
 
 
 def escape_path(path):
@@ -43,7 +47,19 @@ def get_latex_env(template_path):
 
 
 def get_latex_settings():
-    s = settings.LATEX.copy()
+    c = Configuration.objects.all().order_by('id').last()
+    s = {
+        'pdflatex': c.pdflatex,
+        'options': c.latex_options.split(),
+        'build_dir': settings.LATEX_BUILD_DIR,
+        'fromfax': c.fax,
+        'fromphone': c.phone,
+        'fromname': c.name,
+        'fromaddress': '{0.street}, {0.zip_code} {0.city}'.format(c),
+        'fromlogo': c.logo.path,
+        'country': c.country,
+        'app_config': c,
+    }
     return s
 
 
