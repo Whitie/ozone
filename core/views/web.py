@@ -577,7 +577,11 @@ def export_group_excel(req, gid):
     row = 4
     for s in group.students.filter(finished=False).order_by(
         'company__short_name', 'lastname'):
-        ws.cell('A{0}'.format(row)).value = s.company.short_name
+        if s.company:
+            comp = s.company.short_name
+        else:
+            comp = u'-'
+        ws.cell('A{0}'.format(row)).value = comp
         ws.cell('B{0}'.format(row)).value = s.lastname
         ws.cell('C{0}'.format(row)).value = s.firstname
         row += 1
