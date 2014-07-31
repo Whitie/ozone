@@ -24,16 +24,16 @@
 \setkomavar{signature}{%
   {\begin{tabularx}{\textwidth}{@{}XX@{}}
     Besteller & genehmigt \\
-    (( user.get_profile() )) & Tanja Cyrus\\
+    (( user.userprofile )) & Tanja Cyrus\\
   \end{tabularx}}%
 }
 \setkomavar{subject}{Bestellung}
 \setkomavar{invoice}[Kundennummer]{(( supplier.customer_number|default('-', true) ))}
 
 \firsthead{
-	\textbf{FAX}%
-	\hspace*{\fill}%
-	\usekomavar{fromlogo}%
+    \textbf{FAX}%
+    \hspace*{\fill}%
+    \usekomavar{fromlogo}%
 }
 
 \firstfoot{\centering Anzahl der Seiten: \pageref{LastPage}}
@@ -59,10 +59,10 @@ Pos. & Anzahl & Einheit & Art.-Nr. & Artikel\\
 
 \begin{center}
 \parbox{7cm}{%
-	\usekomavar{fromname}\\
-	\usekomavar{fromaddress}\\
-	\usekomavar{fromphone}\\
-	\usekomavar{fromfax}\\
+    \usekomavar{fromname}\\
+    \usekomavar{fromaddress}\\
+    \usekomavar{fromphone}\\
+    \usekomavar{fromfax}\\
 }
 \end{center}
 
