@@ -581,7 +581,7 @@ def export_group_excel(req, gid):
         ws.cell('B{0}'.format(row)).value = s.lastname
         ws.cell('C{0}'.format(row)).value = s.firstname
         row += 1
-    dest = os.path.join(settings.LATEX['build_dir'],
+    dest = os.path.join(settings.LATEX_BUILD_DIR,
         'excel_exp_{0}.xlsx'.format(time.time()))
     wb.save(dest)
     with open(dest, 'rb') as fp:
