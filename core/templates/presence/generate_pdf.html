@@ -154,7 +154,7 @@ function generate_all() {
         {'_JSON_': JSON.stringify(dat)},
         function(res_data) {
             link1 = '<a class="btn btn-info btn-mini" target="_blank" href="'+res_data['url']+'">'+res_data['name']+'</a>';
-            link2 = '<a class="btn btn-info btn-mini" target="_blank" href="'+res_data['surl']+'">Einzeln: '+res_data['sname']+'</a>';
+            link2 = ' <a class="btn btn-info btn-mini" target="_blank" href="'+res_data['surl']+'">Einzeln: '+res_data['sname']+'</a>';
             $('#res_all').append(link1).append(link2).show();
             stop_bar(progress);
         }
