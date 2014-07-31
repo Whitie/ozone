@@ -196,7 +196,7 @@ def update_delivery(req, data):
     missing = order.count - dsum
     msg = [u'Wareneingang %(count)dx für %(art)s gespeichert von %(u)s.' %
            {'count': dorder.count, 'art': order.article.name,
-            'u': dorder.user.get_profile()}]
+            'u': dorder.user.userprofile}]
     if not order.is_complete():
         msg.append(u'%dx fehlt noch.' % missing)
     else:

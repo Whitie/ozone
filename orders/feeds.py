@@ -74,7 +74,7 @@ class LatestUserDeliveriesFeed(LatestDeliveriesFeed):
 
     def description(self, obj):
         return _(u'Latest 10 deliveries for {0}.'.format(
-            unicode(obj.get_profile())))
+            unicode(obj.userprofile)))
 
     def items(self, obj):
         return DeliveredOrder.objects.filter(order__users=obj).order_by(

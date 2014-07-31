@@ -270,7 +270,7 @@ class Note(models.Model):
 
     def __unicode__(self):
         return u'{0} - {1}, {2}, {3}'.format(self.contact, self.subject,
-            self.user.get_profile(), self.date.strftime('%Y-%m-%d %H:%M'))
+            self.user.userprofile, self.date.strftime('%Y-%m-%d %H:%M'))
 
     class Meta:
         verbose_name = _(u'Note')
@@ -295,7 +295,7 @@ class CompanyRating(models.Model):
     note = models.TextField(_(u'Note'), blank=True)
 
     def __unicode__(self):
-        return u'{0} - {1} -> {2}'.format(self.user.get_profile(),
+        return u'{0} - {1} -> {2}'.format(self.user.userprofile,
             self.company.name, self.rating)
 
     def as_list(self):

@@ -80,7 +80,7 @@ def get_entries_for_student(req, data):
     tmp = []
     ret = dict(last=student.lastname, first=student.firstname)
     for e in entries:
-        d = dict(inst=unicode(e.created_by.get_profile()))
+        d = dict(inst=unicode(e.created_by.userprofile))
         if e.event:
             d['txt'] = u'{0}: {1}'.format(e.event, e.text)
         else:

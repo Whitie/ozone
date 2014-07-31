@@ -114,7 +114,7 @@ class Order(models.Model):
     audit_log = AuditLog()
 
     def __unicode__(self):
-        names = [unicode(x.get_profile()) for x in self.users.all()]
+        names = [unicode(x.userprofile) for x in self.users.all()]
         return u'{0}x {1} ({2})'.format(self.count, self.article.name,
                                         u', '.join(names))
 

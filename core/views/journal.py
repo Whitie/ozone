@@ -115,14 +115,14 @@ def edit_rights(req, jid):
             for id_ in to_add:
                 u = User.objects.get(id=id_)
                 journal.instructors.add(u)
-                added.append(unicode(u.get_profile()))
+                added.append(unicode(u.userprofile))
             journal.save()
             messages.success(req, u'%s hinzugefügt.' % u', '.join(added))
         if to_remove:
             for id_ in to_remove:
                 u = User.objects.get(id=id_)
                 journal.instructors.remove(u)
-                removed.append(unicode(u.get_profile()))
+                removed.append(unicode(u.userprofile))
             journal.save()
             messages.success(req, u'%s entfernt.' % u', '.join(removed))
         return redirect('core-journal-rights', journal.id)

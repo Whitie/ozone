@@ -207,7 +207,7 @@ class PedagogicJournalAdmin(admin.ModelAdmin):
 
     @named(_(u'Instructors'))
     def get_users(self, obj):
-        users = [unicode(x.get_profile()) for x in obj.instructors.all()]
+        users = [unicode(x.userprofile()) for x in obj.instructors.all()]
         return u', '.join(users)
 
 
