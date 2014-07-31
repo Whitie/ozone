@@ -447,6 +447,7 @@ def presence_overview(req):
     for j in jobs:
         gr = StudentGroup.objects.select_related().filter(job=j).order_by(
             'start_date')
+        gr = [x for x in gr if not x.finished()]
         for g in gr:
             g.pdfs = g.presence_printouts.filter(q).order_by('-date')
             g.pdays = PresenceDay.objects.filter(student__group=g,
