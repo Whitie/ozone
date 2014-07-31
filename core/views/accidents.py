@@ -57,8 +57,8 @@ def _get_years(**kw):
 @login_required
 def accidents_index(req):
     today = date.today()
-    accidents = AccidentEntry.objects.filter(date_time__year=today.year
-        ).order_by('-date_time')
+    accidents = AccidentEntry.objects.select_related().filter(
+        date_time__year=today.year).order_by('-date_time')
     ctx = dict(page_title=u'Unfälle', subtitle=u'dieses Jahr', dt=True,
         accidents=accidents, menus=menus, dp=True, need_ajax=True, old=False)
     return render(req, 'accidents/index.html', ctx)
@@ -75,10 +75,10 @@ def accident_details(req, id):
 
 @login_required
 def old_accidents(req):
-    today = date.today()
-    older = today - timedelta(days=365)
-    accidents = AccidentEntry.objects.filter(date_time__lt=older
-        ).order_by('-date_time')
+    this_year = date.today().year
+    older = date(this_year - 1, 12, 31)
+    accidents = AccidentEntry.objects.select_related().filter(
+        date_time__lte=older).order_by('-date_time')
     ctx = dict(page_title=u'Ältere Unfälle', accidents=accidents, menus=menus,
         old=True, dt=True)
     return render(req, 'accidents/index.html', ctx)
