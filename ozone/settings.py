@@ -20,6 +20,9 @@ TEMPLATE_DEBUG = DEBUG
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
+FILE_UPLOAD_DIRECTORY_PERMISSIONS = 0o775
+FILE_UPLOAD_PERMISSIONS = 0o664
+
 # Only for production use
 ALLOWED_HOSTS = [
     'archie2',
