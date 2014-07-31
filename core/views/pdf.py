@@ -235,14 +235,18 @@ def generate_presence_pdf(req, data):
     ctx['instructor'] = unicode(user.userprofile)
     ctx['course'] = data['course']
     ctx['empty'] = False
-    fullname = make_latex(ctx, 'awhl.tex', company)
-    filename = os.path.split(fullname)[1]
-    printout, created = PresencePrintout.objects.get_or_create(
-        company=company, group=ctx['group'], date=start)
-    with open(fullname, 'rb') as fp:
-        content = ContentFile(fp.read())
-    printout.pdf.save(filename, content)
-    printout.save()
+    try:
+        fullname = make_latex(ctx, 'awhl.tex', company)
+        filename = os.path.split(fullname)[1]
+        printout, created = PresencePrintout.objects.get_or_create(
+            company=company, group=ctx['group'], date=start)
+        with open(fullname, 'rb') as fp:
+            content = ContentFile(fp.read())
+        printout.pdf.save(filename, content)
+        printout.save()
+    except Exception as e:
+        with open('./error.txt') as fp:
+            fp.write(str(e))
     ret = {'url': printout.pdf.url, 'name': filename}
     if gen_all:
         full_name = make_latex(ctx, 'awhl_einzeln.tex', company)
