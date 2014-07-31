@@ -36,7 +36,7 @@
                             id="lateness_{{ d.id }}" onchange="lateness_changed({{ d.id }});" {% if d.lateness %}value="{{ d.lateness }}" {% endif %}/>
                     </td>
                     <td><input type="text" size="25" maxlength="25" id="note_{{ d.id }}" value="{{ d.note }}" onchange="update_day({{ d.id }});" /></td>
-                    <td id="instructor_{{ d.id }}">{{ d.instructor.get_profile|default:"-" }}</td>
+                    <td id="instructor_{{ d.id }}">{{ d.instructor.userprofile|default:"-" }}</td>
                 </tr>
                 </form>
                 {% endfor %}

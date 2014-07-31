@@ -8,7 +8,7 @@
         <h3>{% trans "Instructors with access" %}:</h3>
         <ul>
             {% for inst in journal.instructors.all %}
-            <li>{{ inst.get_profile }}</li>
+            <li>{{ inst.userprofile }}</li>
             {% endfor %}
         </ul>
     </div>

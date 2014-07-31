@@ -16,7 +16,7 @@
         <hr>
         <ul>
             {% for u in users %}
-            <li>Bewerter: {{ u.get_profile }}
+            <li>Bewerter: {{ u.userprofile }}
                 <button type="button" class="btn btn-mini btn-warning" onclick="send_mail([{{ u.id }}]);">
                     <i class="icon-envelope icon-white"></i>
                     Erinnerungsmail senden

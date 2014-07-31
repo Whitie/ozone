@@ -6,7 +6,7 @@
 <div class="row-fluid">
     <div class="span8 offset1">
         <p>{% if entry.event %}<strong>{{ entry.event }}:</strong> {% endif %}{{ entry.text }}</p>
-        <p><strong>{% trans "By" %}:</strong> {{ entry.created_by.get_profile }}</p>
+        <p><strong>{% trans "By" %}:</strong> {{ entry.created_by.userprofile }}</p>
         {% for m in entry.media.all %}
         <h3><a href="{{ m.media.url }}" title="{% trans "Click to download" %}" class="tt">
         {{ m.media.name }}</a> ({{ m.media.size }} Bytes)</h3>

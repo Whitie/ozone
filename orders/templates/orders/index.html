@@ -28,7 +28,7 @@
                         {{ d.day|date:"DATE_FORMAT" }}
                     </a>
                 </td>
-                <td>{{ d.user.get_profile }}</td>
+                <td>{{ d.user.userprofile }}</td>
                 <td style="text-align:center;">{{ d.orders.count }}</td>
             </tr>
             {% endfor %}
@@ -68,7 +68,7 @@
     <div class="span6 offset2">
         <h3>
             {% trans "Last deliveries" %}
-            {% if user.is_authenticated %}{% trans "for" %} {{ user.get_profile }}{% endif %}
+            {% if user.is_authenticated %}{% trans "for" %} {{ user.userprofile }}{% endif %}
         </h3>
         <table class="table table-striped">
             <tr>

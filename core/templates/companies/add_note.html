@@ -21,7 +21,7 @@
         {% for n in notes %}
         <h3>{{ n.subject }} <small>{{ n.date }}</small></h3>
         <p>{{ n.text }}</p>
-        <p class="text-right">von {{ n.user.get_profile }}</p>
+        <p class="text-right">von {{ n.user.userprofile }}</p>
         <hr />
         {% empty %}
         <p><strong>{% trans "No old notes." %}</strong></p>

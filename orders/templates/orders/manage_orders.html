@@ -44,7 +44,7 @@
             <select name="can_order" id="can_order" size="5" multiple="multiple">
                 {% for ou in users %}
                 <option value="{{ ou.id }}"{% if ou.username in can_order %}
-                    selected="selected"{% endif %}>{{ ou.get_profile }}</option>
+                    selected="selected"{% endif %}>{{ ou.userprofile }}</option>
                 {% endfor %}
             </select>
             <div class="form-actions">
@@ -62,7 +62,7 @@
             <select name="can_change_orderstate" id="can_change_orderstate" size="5" multiple="multiple">
                 {% for cu in users %}
                 <option value="{{ cu.id }}"{% if cu.username in can_change %}
-                    selected="selected"{% endif %}>{{ cu.get_profile }}</option>
+                    selected="selected"{% endif %}>{{ cu.userprofile }}</option>
                 {% endfor %}
             </select>
             <div class="form-actions">

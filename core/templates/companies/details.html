@@ -54,7 +54,7 @@
       <li>{% trans "Notes" %} <a class="btn btn-mini btn-success" href="{% url "core-company-addnote" con.id %}">{% trans "Add Note" %}</a>:
         <ul>
         {% for n in con.notes.all %}
-          <li><a href="#" class="pop" data-toggle="popover" data-placement="top" data-content="{{ n.text }}" title="{{ n.user.get_profile }}">
+          <li><a href="#" class="pop" data-toggle="popover" data-placement="top" data-content="{{ n.text }}" title="{{ n.user.userprofile }}">
               {{ n.date }}</a></li>
         {% endfor %}
         </ul>
