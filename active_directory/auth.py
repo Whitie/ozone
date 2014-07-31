@@ -14,6 +14,7 @@ from datetime import datetime, timedelta
 from django.conf import settings
 from django.contrib.auth.models import User, Group
 from django.utils.encoding import smart_str, smart_unicode
+from django.utils import timezone
 
 from active_directory.models import ADCache
 
@@ -75,7 +76,7 @@ class ADAuthBackend:
 
     def _check_cache(self, username, password):
         cache, created = ADCache.objects.get_or_create(username=username)
-        now = datetime.now()
+        now = timezone.now()
         expires = now + timedelta(seconds=self.cache_time)
         if created:
             logger.info('New user, creating cache entry')
