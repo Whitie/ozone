@@ -16,7 +16,7 @@ from core.forms import AccidentForm
 
 @json_rpc
 def update_presence(req, data):
-    pday = PresenceDay.objects.select_for_update().get(id=data['day_id'])
+    pday = PresenceDay.objects.get(id=data['day_id'])
     msg = [u'{0}, {1} ({2}):'.format(pday.student.lastname,
         pday.student.firstname, pday.date.strftime('%d.%m.'))]
     updated = False
@@ -47,7 +47,7 @@ def update_presence(req, data):
 
 @json_rpc
 def update_day(req, data):
-    pday = PresenceDay.objects.select_for_update().get(id=data['day_id'])
+    pday = PresenceDay.objects.get(id=data['day_id'])
     updated = False
     if data['entry'] != pday.entry:
         updated = True

@@ -215,7 +215,7 @@ def update_delivery(req, data):
 @require_POST
 @json_rpc
 def take_calculated_rating(req, data):
-    company = Company.objects.select_for_update().get(id=data['company_id'])
+    company = Company.objects.get(id=data['company_id'])
     company.rating = data['rating']
     company.save()
     return {'msg': u'Bewertung gespeichert.'}
