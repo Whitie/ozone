@@ -22,6 +22,7 @@ ozone/local_*
 dist/*
 tests/*
 docs/_build/*
+docs/changelog.rst
 labels/*
 MANIFEST
 backend/*
