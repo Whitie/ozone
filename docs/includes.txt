@@ -1,0 +1,28 @@
+﻿.. |kos| replace:: Fr. Dr. Koschlig <koschlig@bbz-chemie.de>
+
+.. |paa| replace:: Fr. Paschke <paschke@bbz-chemie.de>
+
+.. |boek| replace:: Hr. Böstfleisch <boestfleisch@bbz-chemie.de>
+
+.. |sce| replace:: Hr. Dr. Schuster <schuster@bbz-chemie.de>
+
+.. |wet| replace:: Hr. Weimann <weimann@bbz-chemie.de>
+
+.. |wnm| replace:: Hr. Prof. Dr. Wichers-Neumann <wichers-neumann@bbz-chemie.de>
+
+.. |wib| replace:: Hr. Wischeropp <wischeropp@bbz-chemie.de>
+
+.. |rat| replace:: Hr. Dr. Rahn <rahn@bbz-chemie.de>
+
+.. |kosz| replace:: Hr. Kobierski <kobierski@bbz-chemie.de>
+
+.. |hoed| replace:: Hr. Höhle <hoehle@bbz-chemie.de>
+
+.. |otb| replace:: Hr. Ottmers <ottmers@bbz-chemie.de>
+
+.. |brc| replace:: Fr. Braun <braun@bbz-chemie.de>
+
+.. |dms_url| replace:: https://217.91.188.203:8002/
+
+.. |db_url| replace:: http://10.0.0.175:8003/
+
