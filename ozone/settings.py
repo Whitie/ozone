@@ -258,7 +258,7 @@ LOGGING = {
 # Active Directory settings ###################################################
 
 # FQDN or IP of the AD server
-AD_DNS_NAME = '10.0.0.3'
+AD_DNS_NAME = '10.0.0.6'
 
 # AD LDAP port
 AD_LDAP_PORT = 389
