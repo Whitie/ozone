@@ -20,6 +20,7 @@ class OrderDay(models.Model):
     day = models.DateField(_(u'Day'), unique=True,
         validators=[MinValueValidator(date.today())])
     user = models.ForeignKey(User, verbose_name=_(u'Responsible User'))
+    accepted = models.BooleanField(u'Genehmigt', default=True)
 
     def __unicode__(self):
         return self.day.strftime('%d.%m.%Y (%W)')
@@ -33,6 +34,9 @@ class OrderDay(models.Model):
     class Meta:
         verbose_name = _(u'Order Day')
         verbose_name_plural = _(u'Order Days')
+        permissions = (
+            ('can_accept_odays', u'Kann Bestelltage freigeben'),
+        )
 
 
 class Article(models.Model):
