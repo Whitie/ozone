@@ -306,7 +306,7 @@ def save_rating(req, data):
 
 
 def accept_oday(req, oday_id):
-    if not req.user.has_perm('orders.can_accept_oday'):
+    if not req.user.has_perm('orders.can_accept_odays'):
         return HttpResponse('FAILED')
     oday = OrderDay.objects.get(id=int(oday_id))
     oday.accepted = True

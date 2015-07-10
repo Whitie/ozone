@@ -24,11 +24,11 @@
             </form>
             <br>
         </div>
-        <div id="not-accepted">
+        <div id="not-accepted"{% if oday.accepted %} style="display:none;"{% endif %}>
             <button id="accepted" class="btn btn-danger">
                 Der Bestelltag muss noch genehmigt werden!
             </button>
-            {% if perms.orders.can_accept_oday %}
+            {% if perms.orders.can_accept_odays %}
             <br>
             <button class="btn btn-success" onclick="accept_oday();">
                 Bestelltag genehmigen
