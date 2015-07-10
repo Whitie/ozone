@@ -81,6 +81,8 @@ urlpatterns += patterns('orders.views.ajax',
         name='orders-api-save-barcode'),
     url(r'^api/order/move/$', 'move_order', name='orders-api-move-order'),
     url(r'^rating/form/save/$', 'save_rating', name='orders-rating-save'),
+    url(r'^api/accept_oday/(?P<oday_id>\d+)/$', 'accept_oday',
+        name='orders-api-accept-oday'),
 )
 
 urlpatterns += patterns('orders.views.pdf',

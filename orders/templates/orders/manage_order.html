@@ -13,14 +13,28 @@
 {% if perms.orders.can_order and oday.has_accepted_order %}
 <div class="row-fluid">
     <div class="span10">
-        <form action="{% url "orders-genpdf" %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="oday_id" value="{{ oday.id }}">
-            <input type="hidden" name="header" value="Chemikalien und Ausbildungsmittel">
-            <button class="btn btn-primary" type="submit">
-                {% trans "Generate printouts" %}
+        <div id="accepted"{% if not oday.accepted %} style="display:none;"{% endif %}>
+            <form action="{% url "orders-genpdf" %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="oday_id" value="{{ oday.id }}">
+                <input type="hidden" name="header" value="Chemikalien und Ausbildungsmittel">
+                <button class="btn btn-primary" type="submit">
+                    {% trans "Generate printouts" %}
+                </button>
+            </form>
+            <br>
+        </div>
+        <div id="not-accepted">
+            <button id="accepted" class="btn btn-danger">
+                Der Bestelltag muss noch genehmigt werden!
             </button>
-        </form>
+            {% if perms.orders.can_accept_oday %}
+            <br>
+            <button class="btn btn-success" onclick="accept_oday();">
+                Bestelltag genehmigen
+            </button>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endif %}
@@ -165,6 +179,18 @@ function move_order(oday_id, oid) {
             $('#move_order').modal({'show': true});
         }
     );
+}
+
+function accept_oday() {
+    $.get('{% url "orders-api-accept-oday" oday.id %}', function(ret) {
+        if (ret == 'FAILED') {
+            add_update_message('Genehmigen fehlgeschlagen!');
+        } else {
+            add_update_message('Bestelltag genehmigt');
+            $('#accepted').show();
+            $('#not-accepted').hide();
+        }
+    });
 }
 
 function save_moved_order() {

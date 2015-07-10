@@ -3,6 +3,7 @@
 from decimal import Decimal
 from smtplib import SMTPException
 
+from django.http import HttpResponse
 from django.db.models import Q
 from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
@@ -304,3 +305,10 @@ def save_rating(req, data):
     return dict(msg=msg)
 
 
+def accept_oday(req, oday_id):
+    if not req.user.has_perm('orders.can_accept_oday'):
+        return HttpResponse('FAILED')
+    oday = OrderDay.objects.get(id=int(oday_id))
+    oday.accepted = True
+    oday.save()
+    return HttpResponse('OK')

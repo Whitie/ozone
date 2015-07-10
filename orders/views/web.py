@@ -220,8 +220,9 @@ def make_extra_order(req, article_id=0):
         if form.is_valid():
             oday, created = OrderDay.objects.get_or_create(day=date.today(),
                 user=req.user)
-            if created:
-                oday.save()
+            if not created:
+                oday.accepted = True
+            oday.save()
             req.session['oday_id'] = oday.id
             art, created = Article.objects.get_or_create(
                 name=form.cleaned_data['art_name'],
@@ -312,7 +313,7 @@ def add_oday(req):
                 messages.error(req, u'Der Benutzer ist nicht gültig.')
                 return redirect('orders-manage')
             oday = OrderDay.objects.create(day=form.cleaned_data['day'],
-                user=form.cleaned_data['user'])
+                user=form.cleaned_data['user'], accepted=False)
             oday.save()
             messages.success(req,
                 u'Neuer Bestelltag %s hinzugefügt.' % unicode(oday))
