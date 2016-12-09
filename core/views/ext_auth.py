@@ -20,9 +20,8 @@ def external_auth(req):
     except InvalidToken:
         data = dict(success=False, message='Token manipulated or to old.')
         return JsonResponse(data)
+    s = s.decode('utf-8')
     username, password = s.split(settings.MESSAGE_SEPARATOR)
-    username = username.decode('utf-8')
-    password = password.decode('utf-8')
     user = authenticate(username=username, password=password)
     if user is not None:
         if user.is_active:
