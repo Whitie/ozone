@@ -357,6 +357,15 @@ except IOError:
 # Global hacks
 EXCLUDE_FROM_COMPANY_LIST = {'short_name': u'Alle'}
 
+# Provide external logins
+EXT_LOGIN = True
+# Set key in local_settings and keep it secret. The external source, which
+# use the login, needs the same key in settings. It is used to crypt the
+# users password over the net. BETTER is to use HTTPS!
+EXT_LOGIN_KEY = b''
+MESSAGE_SEPARATOR = b'~##~'
+
+
 # Try to import local settings
 try:
     from local_settings import *

@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     (r'^desktop/', include('desktop.urls')),
 
     (r'^admin/', include(admin.site.urls)),
+    (r'^external_auth/$', 'core.views.ext_auth.external_auth'),
 )
 
 if settings.DEBUG:
