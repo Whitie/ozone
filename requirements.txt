@@ -1,0 +1,27 @@
+Cython==0.19.1
+Django==1.7.7
+Jinja2==2.7.3
+MarkupSafe==0.23
+Pillow==2.5.1
+South==0.8.2
+bootstrap-admin==0.3.0
+cffi==1.9.1
+cryptography==1.6
+django-audit-log==0.4.0
+docutils==0.12
+enum34==1.1.6
+## FIXME: could not find svn URL in dependency_links for this package:
+flup==1.0.3.dev-20110405
+idna==2.1
+ipaddress==1.0.17
+jdcal==1.0
+lxml==3.3.5
+openpyxl==2.0.4
+psycopg2==2.5
+pyasn1==0.1.9
+pycparser==2.17
+python-ldap==2.4.12
+pytz==2014.4
+reportlab==3.1.8
+six==1.10.0
+wsgiref==0.1.2
