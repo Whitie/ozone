@@ -16,7 +16,7 @@ def external_auth(req):
         token = token.encode('utf-8')
     fernet = Fernet(settings.EXT_LOGIN_KEY)
     try:
-        s = fernet.decrypt(token, ttl=5)
+        s = fernet.decrypt(token)
     except InvalidToken:
         data = dict(success=False, message='Token manipulated or to old.')
         return JsonResponse(data)
