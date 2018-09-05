@@ -101,7 +101,7 @@ def get_presence_details(student):
 
     :returns: The same student object with the following new attributes
               (all prefixed with p_)::
-                  p_all: All saved presence days (entry != '')
+                  p_all: All saved presence days (entry != '', FT, /)
                   p_all_days: All absent days (T, F, K, |)
                   p_all_days_percent: p_all_days in percent from p_all
                   p_ill: All illness days (K)
@@ -111,7 +111,7 @@ def get_presence_details(student):
                   p_latenesses: Dates of the latenesses
                   p_lateness_sum: Sum of all latenesses in minutes
     """
-    q = student.presence_days.exclude(entry=u'')
+    q = student.presence_days.exclude(entry__in=[u'', 'FT', '/'])
     student.p_all = q.count()
     student.p_all_days = q.filter(entry__in=[u'T', u'F', u'K', u'|']).count()
     try:
