@@ -31,6 +31,7 @@
                     (<a href="{% url 'core-presence-overview' s.id %}">Übersicht</a>)
                     <ul>
                         <li>Alle gespeicherten Anwesenheitstage: {{ s.p_all }}
+                            (inkl. Urlaub)
                         <li>Fehltage gesamt: {{ s.p_all_days }}
                             [{{ s.p_all_days_percent|floatformat:1 }}%]
                             (Anwesenheitsliste: T, F, K, |)
