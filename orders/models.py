@@ -53,8 +53,13 @@ class Article(models.Model):
     quantity = models.CharField(_(u'Quantity'), max_length=20, blank=True)
     price = models.DecimalField(_(u'Price'), max_digits=8, decimal_places=2,
                                 blank=True, null=True, default=Decimal())
+    discount_price = models.DecimalField(
+        _(u'Unser Preis'), max_digits=8, decimal_places=2,
+        blank=True, null=True, default=Decimal()
+    )
     tox_control = models.BooleanField(u'Von Toxolution kontrolliert',
                                       default=True)
+    chemman = models.BooleanField(_('GIFTBUCH'), default=False)
 
     def __unicode__(self):
         return u'{0} ({1})'.format(self.name, self.short_desc())
