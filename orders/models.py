@@ -18,7 +18,7 @@ from core.models import Company
 
 class OrderDay(models.Model):
     day = models.DateField(_(u'Day'), unique=True,
-        validators=[MinValueValidator(date.today())])
+                           validators=[MinValueValidator(date.today())])
     user = models.ForeignKey(User, verbose_name=_(u'Responsible User'))
     accepted = models.BooleanField(u'Genehmigt', default=True)
 
@@ -42,17 +42,19 @@ class OrderDay(models.Model):
 class Article(models.Model):
     name = models.CharField(_(u'Name'), max_length=100)
     supplier = models.ForeignKey(Company, verbose_name=_(u'Supplier'),
-        blank=True, null=True)
+                                 blank=True, null=True)
     ident = models.CharField(_(u'Identifier'), max_length=50,
-        help_text=_(u'Article number'), blank=True)
-    barcode = models.CharField(_(u'Barcode'), max_length=40, blank=True,
+                             help_text=_(u'Article number'), blank=True)
+    barcode = models.CharField(
+        _(u'Barcode'), max_length=40, blank=True,
         help_text=(u'Achtung, Strichcode über Scanner immer als Letztes '
-            u'eingeben.'))
+                   u'eingeben.')
+    )
     quantity = models.CharField(_(u'Quantity'), max_length=20, blank=True)
     price = models.DecimalField(_(u'Price'), max_digits=8, decimal_places=2,
-        blank=True, null=True, default=Decimal())
+                                blank=True, null=True, default=Decimal())
     tox_control = models.BooleanField(u'Von Toxolution kontrolliert',
-        default=True)
+                                      default=True)
 
     def __unicode__(self):
         return u'{0} ({1})'.format(self.name, self.short_desc())
@@ -63,7 +65,7 @@ class Article(models.Model):
     def short_desc(self):
         if self.price:
             price = u' {0}/{1:.2f}{2}'.format(self.quantity, self.price,
-                                          settings.CURRENCY[1])
+                                              settings.CURRENCY[1])
         else:
             price = u''
         return u'{0}{1}'.format(self.supplier, price)
@@ -86,9 +88,11 @@ class Cost(models.Model):
         verbose_name_plural = _(u'Costs')
 
 
-STATE_CHOICES = ((u'new', u'Neu'), (u'accepted', u'Akzeptiert'),
+STATE_CHOICES = (
+    (u'new', u'Neu'), (u'accepted', u'Akzeptiert'),
     (u'rejected', u'Zurückgewiesen'), (u'ordered', u'Bestellt'),
-    (u'delivered', u'Geliefert'))
+    (u'delivered', u'Geliefert')
+)
 
 _mapper = dict(
     new=(u'success', u'icon-plus'),
@@ -103,16 +107,16 @@ class Order(models.Model):
     count = models.PositiveIntegerField(_(u'Count'))
     article = models.ForeignKey(Article, verbose_name=_(u'Article'))
     costs = models.ManyToManyField(Cost, through='CostOrder',
-        verbose_name=_(u'Costs'))
+                                   verbose_name=_(u'Costs'))
     users = models.ManyToManyField(User, verbose_name=_(u'Users'))
     memo = models.TextField(_(u'Memo'), blank=True)
     added = models.DateTimeField(_(u'Added'), auto_now_add=True)
     order_day = models.ForeignKey(OrderDay, verbose_name=_(u'Order Day'),
-        related_name='orders')
+                                  related_name='orders')
     for_test = models.BooleanField(_(u'For Exam'), default=False)
     for_repair = models.BooleanField(_(u'For Repair'), default=False)
     state = models.CharField(_(u'State'), max_length=10, default=u'new',
-        choices=STATE_CHOICES)
+                             choices=STATE_CHOICES)
     ordered = models.DateField(_(u'Ordered'), blank=True, null=True)
 
     audit_log = AuditLog()
@@ -125,7 +129,8 @@ class Order(models.Model):
     def price(self):
         try:
             return self.count * self.article.price
-        except:
+        except Exception as error:
+            print error
             return 0.0
 
     def state_icon(self):
@@ -152,16 +157,18 @@ class Order(models.Model):
 
 class DeliveredOrder(models.Model):
     order = models.ForeignKey(Order, verbose_name=_(u'Order'),
-        related_name='deliveries')
+                              related_name='deliveries')
     count = models.PositiveIntegerField(_(u'Count'))
     date = models.DateField(_(u'Date'), auto_now_add=True)
     user = models.ForeignKey(User, verbose_name=_(u'User'))
     exported = models.BooleanField(u'Nach Toxolution exportiert',
-        default=False)
+                                   default=False)
 
     def __unicode__(self):
-        return u'{0}x {1} {2}'.format(self.count,
-            self.order.article.name, self.date.strftime('%Y-%m-%d'))
+        return u'{0}x {1} {2}'.format(
+            self.count, self.order.article.name,
+            self.date.strftime('%Y-%m-%d')
+        )
 
     class Meta:
         verbose_name = _(u'Delivered Order')
@@ -172,8 +179,10 @@ class DeliveredOrder(models.Model):
 class CostOrder(models.Model):
     cost = models.ForeignKey(Cost, verbose_name=_(u'Cost'))
     order = models.ForeignKey(Order, verbose_name=_(u'Order'))
-    percent = models.PositiveIntegerField(_(u'Percent'),
-        validators=[MinValueValidator(0), MaxValueValidator(100)])
+    percent = models.PositiveIntegerField(
+        _(u'Percent'),
+        validators=[MinValueValidator(0), MaxValueValidator(100)]
+    )
 
     def __unicode__(self):
         return u'{0} {1}: {2}%'.format(self.order, self.cost, self.percent)
@@ -186,12 +195,14 @@ class CostOrder(models.Model):
 
 class Printout(models.Model):
     order_day = models.ForeignKey(OrderDay, verbose_name=_(u'Order Day'),
-        related_name='printouts')
-    internal = models.BooleanField(_(u'Internal'), help_text=_(u'Internal '
-        u'means with costs and prices.'), default=True)
+                                  related_name='printouts')
+    internal = models.BooleanField(
+        _(u'Internal'),
+        help_text=_(u'Internal means with costs and prices.'), default=True
+    )
     pdf = models.FileField(_(u'PDF-File'), upload_to='orders/%Y/%m')
     company_name = models.CharField(_(u'Company Name'), max_length=100,
-        blank=True)
+                                    blank=True)
     generated = models.DateTimeField(_(u'Generated'), auto_now=True)
 
     def __unicode__(self):
