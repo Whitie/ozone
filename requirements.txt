@@ -1,5 +1,5 @@
 Cython==0.19.1
-Django==1.7.7
+Django==1.11.23
 Jinja2==2.7.3
 MarkupSafe==0.23
 Pillow==2.5.1
