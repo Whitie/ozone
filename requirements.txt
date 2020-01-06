@@ -6,7 +6,7 @@ Pillow==2.5.1
 South==0.8.2
 bootstrap-admin==0.3.0
 cffi==1.9.1
-cryptography==2.0.3
+cryptography==2.3
 django-audit-log==0.4.0
 docutils==0.12
 enum34==1.1.6
