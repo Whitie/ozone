@@ -9,7 +9,7 @@ except ImportError:
     ldap = None
 
 from collections import defaultdict
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from django.conf import settings
 from django.contrib.auth.models import User, Group
@@ -50,7 +50,7 @@ class ADAuthBackend:
         if self.cache_time:
             logger.info('Checking cache...')
             user = self._check_cache(username, password)
-            print user
+            logger.info('Cached user: %s', user)
             if user is not None:
                 return user
         try:
@@ -65,7 +65,7 @@ class ADAuthBackend:
             return self._get_or_create_user(username, password)
         except ldap.INVALID_CREDENTIALS:
             logger.error('%s: Invalid credentials', username)
-        except:
+        except Exception:
             logger.exception('Error in ADAuthBackend.authenticate')
 
     def get_user(self, user_id):
@@ -119,8 +119,6 @@ class ADAuthBackend:
                 logger.error('No info for %s found in AD', username)
                 return
         if user_info is None:
-            user.is_active = False
-            user.save()
             return user
         elif user_info['is_admin']:
             user.is_staff = True
