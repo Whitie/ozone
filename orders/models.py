@@ -65,14 +65,25 @@ class Article(models.Model):
         return u'{0} ({1})'.format(self.name, self.short_desc())
 
     def fullprice(self):
-        return u'{0:.2f} {1}'.format(self.price, settings.CURRENCY[1])
+        if self.discount_price:
+            price = self.discount_price
+            discount = u' (R)'
+        else:
+            price = self.price
+            discount = u''
+        return u'{0:.2f} {1}{2}'.format(price, settings.CURRENCY[1], discount)
 
     def short_desc(self):
-        if self.price:
-            price = u' {0}/{1:.2f}{2}'.format(self.quantity, self.price,
-                                              settings.CURRENCY[1])
+        if self.discount_price:
+            price = u' {0}/{1:.2f}{2} (R)'.format(
+                self.quantity, self.discount_price, settings.CURRENCY[1]
+            )
         else:
-            price = u''
+            if self.price:
+                price = u' {0}/{1:.2f}{2}'.format(self.quantity, self.price,
+                                                  settings.CURRENCY[1])
+            else:
+                price = u''
         return u'{0}{1}'.format(self.supplier, price)
 
     class Meta:
