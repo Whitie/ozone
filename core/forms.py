@@ -93,6 +93,7 @@ def get_search_field(name):
 class NewJournalForm(forms.ModelForm):
     class Meta:
         model = PedagogicJournal
+        exclude = ('created',)
 
 
 class AccidentForm(forms.ModelForm):

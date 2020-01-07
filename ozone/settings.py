@@ -165,7 +165,7 @@ INSTALLED_APPS = (
     'active_directory',
     'core',
     'orders',
-    'desktop',
+    # 'desktop',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -212,7 +212,7 @@ LOGGING = {
     'handlers': {
         'null': {
             'level': 'DEBUG',
-            'class': 'django.utils.log.NullHandler',
+            'class': 'logging.NullHandler',
         },
         'console': {
             'level': 'DEBUG',
