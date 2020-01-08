@@ -29,8 +29,8 @@ def get_order_for_every_article():
     for art in Article.objects.all().order_by('name'):
         cond = {'article': art, 'state__in': [u'ordered', u'delivered']}
         try:
-            order = Order.objects.select_related().filter(**cond
-                ).latest('added')
+            order = Order.objects.select_related().filter(
+                **cond).latest('added')
             order.userlist = [x.username for x in order.users.all()]
             order.counts = 0
             order.sums = 0
@@ -51,14 +51,14 @@ def get_user_choices():
 
 
 def get_supplier_choices():
-    l = []
+    choices = []
     for c in Company.objects.filter(rate=True).order_by('name'):
         if len(c.name) > 22:
             name = u'{0}...'.format(c.name[:22])
         else:
             name = c.name
-        l.append((c.id, name))
-    return l
+        choices.append((c.id, name))
+    return choices
 
 
 def get_oday_choices(filters):
@@ -137,8 +137,8 @@ def get_company_data_for_rating_user(user):
     if companies:
         for c in companies:
             try:
-                r = CompanyRating.objects.filter(company=c, user=user
-                    ).latest('rated')
+                r = CompanyRating.objects.filter(
+                    company=c, user=user).latest('rated')
                 c.last_rate = r.rated
             except CompanyRating.DoesNotExist:
                 c.last_rate = None
@@ -170,7 +170,8 @@ def extract_barcode(code):
     return code
 
 
-_clean_unit = lambda unit: unit.replace(u'Liter', u'L')
+def _clean_unit(unit):
+    return unit.replace(u'Liter', u'L')
 
 
 def split_unit(value):
@@ -191,8 +192,8 @@ def split_unit(value):
 
 def search_article(article_id, name, quantity, company):
     try:
-        article = Article.objects.get(supplier=company,
-            ident__iexact=article_id)
+        article = Article.objects.get(
+            supplier=company, ident__iexact=article_id)
         return article, False
     except Article.DoesNotExist:
         pass
@@ -202,6 +203,6 @@ def search_article(article_id, name, quantity, company):
         article = Article.objects.filter(**tmp).first()
         if article is not None:
             return article, False
-    article = Article.objects.create(supplier=company, ident=article_id,
-        name=name, quantity=quantity)
+    article = Article.objects.create(
+        supplier=company, ident=article_id, name=name, quantity=quantity)
     return article, True

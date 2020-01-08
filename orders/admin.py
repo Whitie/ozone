@@ -3,7 +3,9 @@
 from django.contrib import admin
 
 from orders.views.helper import extract_barcode
-from orders.models import *
+from orders.models import (
+    OrderDay, Article, Cost, CostOrder, Printout, DeliveredOrder, Order
+)
 
 
 class OrderDayAdmin(admin.ModelAdmin):
@@ -17,7 +19,7 @@ class OrderDayAdmin(admin.ModelAdmin):
 
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ('name', 'supplier', 'ident', 'quantity', 'price',
-        'tox_control', 'barcode')
+                    'tox_control', 'barcode')
     list_display_links = ('name',)
     list_editable = ('ident', 'quantity', 'price', 'tox_control', 'barcode')
     list_filter = ('supplier__name', 'tox_control')

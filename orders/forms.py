@@ -20,26 +20,33 @@ def get_user(uid):
 
 
 class OrderDayForm(forms.Form):
-    day = forms.DateField(label=_(u'Next Orderday'),
-        input_formats=DATE_FORMATS,
-        help_text=_(u'Use this format: dd.mm.yyyy'))
-    user = forms.TypedChoiceField(label=_(u'Responsible User'),
-        coerce=get_user, empty_value=AnonymousUser())
+    day = forms.DateField(
+        label=_(u'Next Orderday'), input_formats=DATE_FORMATS,
+        help_text=_(u'Use this format: dd.mm.yyyy')
+    )
+    user = forms.TypedChoiceField(
+        label=_(u'Responsible User'),
+        coerce=get_user, empty_value=AnonymousUser()
+    )
 
 
 class BaseOrderForm(forms.Form):
     count = _wid.IntegerField5(label=_(u'Count'))
     art_name = forms.CharField(label=_(u'Article'), max_length=100)
-    art_supplier_name = forms.CharField(label=_(u'Supplier'), max_length=100,
-        widget=forms.TextInput(attrs={'autocomplete': 'off'}))
+    art_supplier_name = forms.CharField(
+        label=_(u'Supplier'), max_length=100,
+        widget=forms.TextInput(attrs={'autocomplete': 'off'})
+    )
     art_supplier_id = forms.IntegerField(widget=forms.HiddenInput)
     art_id = forms.CharField(label=u'Artikelnummer', max_length=50,
-        required=False)
+                             required=False)
     art_q = forms.CharField(label=_(u'Quantity'), max_length=20)
-    art_price = forms.CharField(label=_(u'Price'), required=False,
-        widget=forms.TextInput(attrs={'autocomplete': 'off'}))
+    art_price = forms.CharField(
+        label=_(u'Price'), required=False,
+        widget=forms.TextInput(attrs={'autocomplete': 'off'})
+    )
     memo = forms.CharField(label=_(u'Memo'), widget=forms.Textarea,
-        required=False)
+                           required=False)
     exam = forms.BooleanField(label=_(u'Exam'), required=False)
     repair = forms.BooleanField(label=_(u'Repair'), required=False)
     tox = forms.BooleanField(label=u'Muss in Toxolution', required=False)
@@ -52,7 +59,7 @@ class OrderForm(BaseOrderForm):
 class ShortSupplierForm(forms.Form):
     name = forms.CharField(label=_(u'Name'), max_length=100)
     customer_number = forms.CharField(label=_(u'Customer Number'),
-        max_length=50, required=False)
+                                      max_length=50, required=False)
     phone = forms.CharField(label=_(u'Phone'), max_length=30, required=False)
     fax = forms.CharField(label=_(u'Fax'), max_length=30, required=False)
     email = forms.EmailField(label=_(u'Email'), required=False)

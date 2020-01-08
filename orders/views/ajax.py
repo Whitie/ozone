@@ -30,17 +30,19 @@ def update_article_count(req, order_id, count):
     price_diff = new_price - old_count * price
     try:
         u = order.users.get(id=req.user.id)
-    except:
+    except:  # noqa: E722
         u = None
         order.users.add(req.user)
     order.save()
     msg = [u'Anzahl für %(name)s wurde von %(old)d auf %(count)d geändert.' %
-        {'name': order.article.name, 'old': old_count, 'count': count}]
+           {'name': order.article.name, 'old': old_count, 'count': count}]
     if u is None:
         msg.append(u'Benutzer %s wurde hinzugefügt.' % req.user.username)
     user = [x.username for x in order.users.all()]
-    return dict(msg=u' '.join(msg), user=u', '.join(user),
-        price_diff=float(price_diff), new_price=float(new_price))
+    return dict(
+        msg=u' '.join(msg), user=u', '.join(user),
+        price_diff=float(price_diff), new_price=float(new_price)
+    )
 
 
 @json_view
@@ -92,9 +94,11 @@ def api_article(req, article_id=0):
         return {'count': 1}
     oday = h.get_next_odays()[0]
     a = Article.objects.get(pk=article_id)
-    data = dict(art_name=a.name, art_supplier_id=a.supplier.id,
+    data = dict(
+        art_name=a.name, art_supplier_id=a.supplier.id,
         art_id=a.ident, art_q=a.quantity, art_price=float(a.price),
-        count=1, oday=oday.id, art_supplier_name=a.supplier.short_name)
+        count=1, oday=oday.id, art_supplier_name=a.supplier.short_name
+    )
     return data
 
 
@@ -158,8 +162,10 @@ def _send_status_mail(user, order, template):
             tpl = get_template('orders/mail/' + template)
             ctx = dict(user=user, order=order, orderer=u)
             body = tpl.render(Context(ctx))
-            send_mail(u'Statusänderung Ihrer Bestellung',
-                body, 'dms@bbz-chemie.de', [u.email], fail_silently=False)
+            send_mail(
+                u'Statusänderung Ihrer Bestellung',
+                body, 'dms@bbz-chemie.de', [u.email], fail_silently=False
+            )
 
 
 @require_POST
@@ -189,7 +195,7 @@ def update_state(req, data):
 def update_delivery(req, data):
     order = Order.objects.select_related().get(id=data['oid'])
     dorder = DeliveredOrder.objects.create(order=order, count=data['count'],
-        user=req.user)
+                                           user=req.user)
     dorder.save()
     dsum = 0
     for d in DeliveredOrder.objects.filter(order=order):
@@ -209,7 +215,7 @@ def update_delivery(req, data):
         'date': dorder.date.strftime('%d.%m.%Y'),
         'u': dorder.user.username}
     ret = dict(msg=u' '.join(msg), complete=order.is_complete(),
-        missing=missing, entry=entry)
+               missing=missing, entry=entry)
     return ret
 
 
@@ -232,7 +238,7 @@ def send_memory_mail(req, data):
         body = t.render(Context({'user': u}))
         try:
             send_mail(u'Lieferantenbewertung', body, 'dms@bbz-chemie.de',
-                [u.email], fail_silently=False)
+                      [u.email], fail_silently=False)
             msg.append(u'Mail an %s gesendet.' % u.email)
         except SMTPException:
             msg.append(u'Mail an %s konnte nicht gesendet werden.' % u.email)
@@ -273,7 +279,7 @@ def save_barcode(req, data):
             article.barcode, article.name), saved=True)
     except Article.DoesNotExist:
         return dict(msg=u'Fehler! Barcode konnte nicht gespeichert werden.',
-            saved=False)
+                    saved=False)
 
 
 @json_rpc
@@ -297,7 +303,7 @@ def save_rating(req, data):
     if form.is_valid():
         cd = form.cleaned_data
         rating = CompanyRating.objects.create(company=company,
-            user=req.user, **cd)
+                                              user=req.user, **cd)
         rating.save()
         msg = u'Bewertung wurde gespeichert.'
     else:

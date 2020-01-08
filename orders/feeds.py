@@ -18,8 +18,10 @@ class LatestOrdersFeed(Feed):
         return Order.objects.order_by('-added')[:10]
 
     def item_title(self, item):
-        title = u'{article}, {date}'.format(article=unicode(item.article),
-            date=item.added.strftime(settings.DEFAULT_DATETIME_FORMAT))
+        title = u'{article}, {date}'.format(
+            article=unicode(item.article),
+            date=item.added.strftime(settings.DEFAULT_DATETIME_FORMAT)
+        )
         return title
 
     def item_description(self, item):
@@ -59,7 +61,7 @@ class LatestDeliveriesFeed(Feed):
             comp=comp,
         )
         desc = (u'Bestellt: {ocount}x {odate} von {users}, geliefert: '
-            u'{count}x {date}{comp}'.format(**data))
+                u'{count}x {date}{comp}'.format(**data))
         return desc
 
     def item_link(self, item):

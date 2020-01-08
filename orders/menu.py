@@ -5,7 +5,8 @@ from django.utils.translation import ugettext_lazy as _
 from core.menu import Menu
 
 
-order_menu = Menu(_(u'Orders'),
+order_menu = Menu(
+    _(u'Orders'),
     ('orders-ask', _(u'Order now')),
     ('orders-myorders', _(u'My Orders')),
     ('orders-old', _(u'Old Orders')),
@@ -16,19 +17,21 @@ order_menu = Menu(_(u'Orders'),
     ('orders-manage', _(u'Manage Orders')),
 )
 
-controlling_menu = Menu(_(u'Controlling'),
+controlling_menu = Menu(
+    _(u'Controlling'),
     ('orders-ctrl-bycost', _(u'By Cost')),
 )
 
-rating_menu = Menu(_(u'Company Rating'),
+rating_menu = Menu(
+    _(u'Company Rating'),
     ('orders-rating', _(u'Rate')),
     ('orders-rating-summary', _(u'Summary')),
     ('orders-rating-manage', _(u'Manage')),
 )
 
-admin_menu = Menu(u'Wartung',
+admin_menu = Menu(
+    u'Wartung',
     ('orders-admin-db', u'Doppelte Artikel löschen'),
 )
 
 menus = [order_menu, rating_menu, controlling_menu, admin_menu]
-

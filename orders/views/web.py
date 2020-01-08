@@ -52,10 +52,10 @@ def show_old_orders(req):
     try:
         first = Order.objects.all().order_by('added')[0]
         dt = first.added.strftime(settings.DEFAULT_DATE_FORMAT)
-    except:
+    except:  # noqa: E722
         dt = u''
     ctx = dict(page_title=_(u'All ordered articles'), menus=menus,
-        orders=orders, dt=True, subtitle=u'Seit {0}'.format(dt))
+               orders=orders, dt=True, subtitle=u'Seit {0}'.format(dt))
     return render(req, 'orders/old_orders.html', ctx, app=u'orders')
 
 
@@ -63,8 +63,8 @@ def show_old_orders(req):
 def order_detail(req, order_id):
     oid = int(order_id)
     oday = OrderDay.objects.get(id=oid)
-    orders = Order.objects.select_related().filter(order_day=oday
-        ).order_by('-added', 'article__name')
+    orders = Order.objects.select_related().filter(
+        order_day=oday).order_by('-added', 'article__name')
     order_sum = 0
     for o in orders:
         o.userlist = [x.username for x in o.users.all()]
@@ -72,14 +72,19 @@ def order_detail(req, order_id):
                       CostOrder.objects.filter(order=o)]
         order_sum += o.count * o.article.price
         o.sum_price = o.count * o.article.price
-        if req.user.username in o.userlist and o.users.count() == 1 and\
-            o.state in (u'new', u'accepted', u'rejected'):
+        if (
+            req.user.username in o.userlist
+            and o.users.count() == 1
+            and o.state in (u'new', u'accepted', u'rejected')
+        ):
             o.deleteable = True
         else:
             o.deleteable = False
-    ctx = dict(page_title=_(u'Open Orders'), menus=menus, oday=oday,
+    ctx = dict(
+        page_title=_(u'Open Orders'), menus=menus, oday=oday,
         orders=orders, order_sum=order_sum, subtitle=unicode(oday), dt=True,
-        need_ajax=True)
+        need_ajax=True
+    )
     return render(req, 'orders/orderday.html', ctx, app=u'orders')
 
 
@@ -96,8 +101,10 @@ def order(req, article_id=0):
             cleaned = form.cleaned_data
             company = Company.objects.get(id=cleaned['art_supplier_id'])
             costs = h.get_costs(req.POST)
-            art, created = h.search_article(cleaned['art_id'].strip(),
-                cleaned['art_name'], cleaned['art_q'], company)
+            art, created = h.search_article(
+                cleaned['art_id'].strip(),
+                cleaned['art_name'], cleaned['art_q'], company
+            )
             if created:
                 art.tox_control = cleaned['tox']
                 art.save()
@@ -105,12 +112,14 @@ def order(req, article_id=0):
             if _price and art.price != _price:
                 art.price = _price
                 art.save()
-            order = Order.objects.create(count=cleaned['count'], article=art,
-                order_day=OrderDay.objects.get(id=int(cleaned['oday'])))
+            order = Order.objects.create(
+                count=cleaned['count'], article=art,
+                order_day=OrderDay.objects.get(id=int(cleaned['oday']))
+            )
             order.save()
             for cost, percent in costs:
                 co = CostOrder.objects.create(percent=percent, order=order,
-                    cost=cost)
+                                              cost=cost)
                 co.save()
             order.memo = cleaned['memo']
             order.for_test = cleaned['exam']
@@ -131,10 +140,12 @@ def order(req, article_id=0):
         form = OrderForm()
         form.fields['oday'].choices = h.get_oday_choices(choice_filter)
     costs = Cost.objects.all().order_by('ident')
-    ctx = dict(page_title=_(u'New Order'), form=form, menus=menus, costs=costs,
+    ctx = dict(
+        page_title=_(u'New Order'), form=form, menus=menus, costs=costs,
         article_id=article_id, costs_msg=_(u'Sum of costs must be 100!'),
         cur_msg=_(u'Price in %s.' % settings.CURRENCY[0]), extra=False,
-        need_ajax=True)
+        need_ajax=True
+    )
     return render(req, 'orders/order.html', ctx, app=u'orders')
 
 
@@ -174,9 +185,11 @@ def myorders(req, state=u'all'):
             ids.add((o.article.id, o.state))
             o.dsp_state = _states[o.state]
             orders.append(o)
-    ctx = dict(page_title=_(u'My Orders'), dt=True, need_ajax=True,
+    ctx = dict(
+        page_title=_(u'My Orders'), dt=True, need_ajax=True,
         subtitle=unicode(req.user.userprofile),
-        menus=menus, orders=orders, state=state, states=states)
+        menus=menus, orders=orders, state=state, states=states
+    )
     return render(req, 'orders/myorders.html', ctx, app=u'orders')
 
 
@@ -206,7 +219,7 @@ def add_supplier(req):
     else:
         form = ShortSupplierForm(initial={'web': 'http://'})
     ctx = dict(page_title=_(u'Add new Supplier'), menus=menus, form=form,
-        need_ajax=True)
+               need_ajax=True)
     return render(req, 'orders/new_supplier.html', ctx, app=u'orders')
 
 
@@ -218,8 +231,8 @@ def make_extra_order(req, article_id=0):
     if req.method == 'POST':
         form = BaseOrderForm(req.POST)
         if form.is_valid():
-            oday, created = OrderDay.objects.get_or_create(day=date.today(),
-                user=req.user)
+            oday, created = OrderDay.objects.get_or_create(
+                day=date.today(), user=req.user)
             if not created:
                 oday.accepted = True
             oday.save()
@@ -234,11 +247,11 @@ def make_extra_order(req, article_id=0):
                     id=form.cleaned_data['art_supplier_id'])
                 art.save()
             order = Order.objects.create(count=form.cleaned_data['count'],
-                article=art, order_day=oday)
+                                         article=art, order_day=oday)
             order.save()
             cost = Cost.objects.get(ident=4100)
             co = CostOrder.objects.create(percent=100, order=order,
-                cost=cost)
+                                          cost=cost)
             co.save()
             order.memo = form.cleaned_data['memo']
             order.for_test = form.cleaned_data['exam']
@@ -256,8 +269,10 @@ def make_extra_order(req, article_id=0):
         form = BaseOrderForm()
     orders = Order.objects.select_related().filter(id__in=_orders).order_by(
         'article__name')
-    ctx = dict(page_title=_(u'Extra Order'), form=form, menus=menus,
-        article_id=article_id, extra=True, orders=orders, oday_id=oday_id)
+    ctx = dict(
+        page_title=_(u'Extra Order'), form=form, menus=menus,
+        article_id=article_id, extra=True, orders=orders, oday_id=oday_id
+    )
     return render(req, 'orders/extra_order.html', ctx, app=u'orders')
 
 
@@ -266,8 +281,8 @@ def make_extra_order(req, article_id=0):
 def manage_orders(req):
     if req.method == 'POST':
         day = int(req.POST['oday'])
-        messages.warning(req,
-            u'Alle Änderungen werden automatisch gespeichert!')
+        messages.warning(
+            req, u'Alle Änderungen werden automatisch gespeichert!')
         return redirect('orders-manage', oday_id=day)
     users = User.objects.exclude(username='admin')
     can_order = [x.username for x in users if x.has_perm('orders.can_order')]
@@ -275,9 +290,11 @@ def manage_orders(req):
                   if x.has_perm('orders.can_change_orderstate')]
     limit = date.today() - timedelta(days=14)
     odays = OrderDay.objects.filter(day__gte=limit).order_by('day')
-    ctx = dict(page_title=_(u'Manage Orders'), menus=menus, odays=odays,
+    ctx = dict(
+        page_title=_(u'Manage Orders'), menus=menus, odays=odays,
         users=users, can_order=can_order, can_change=can_change,
-        need_ajax=True)
+        need_ajax=True
+    )
     return render(req, 'orders/manage_orders.html', ctx, app=u'orders')
 
 
@@ -296,10 +313,12 @@ def manage_order(req, oday_id):
         o.sum_price = o.count * o.article.price
         o.costlist = [u'%s: %d%%' % (unicode(x.cost), x.percent) for x in
                       CostOrder.objects.filter(order=o)]
-    ctx = dict(page_title=u'Bestellungen bearbeiten', menus=menus, oday=oday,
+    ctx = dict(
+        page_title=u'Bestellungen bearbeiten', menus=menus, oday=oday,
         subtitle=u'für {0}'.format(unicode(oday)), need_ajax=True, dt=True,
         orders=orders, states=(u'new', u'accepted', u'rejected'),
-        order_sum=order_sum, suppliers=h.get_supplier_choices())
+        order_sum=order_sum, suppliers=h.get_supplier_choices()
+    )
     return render(req, 'orders/manage_order.html', ctx, app=u'orders')
 
 
@@ -312,11 +331,14 @@ def add_oday(req):
             if form.cleaned_data['user'].is_anonymous():
                 messages.error(req, u'Der Benutzer ist nicht gültig.')
                 return redirect('orders-manage')
-            oday = OrderDay.objects.create(day=form.cleaned_data['day'],
-                user=form.cleaned_data['user'], accepted=False)
+            oday = OrderDay.objects.create(
+                day=form.cleaned_data['day'],
+                user=form.cleaned_data['user'], accepted=False
+            )
             oday.save()
-            messages.success(req,
-                u'Neuer Bestelltag %s hinzugefügt.' % unicode(oday))
+            messages.success(
+                req, u'Neuer Bestelltag %s hinzugefügt.' % unicode(oday)
+            )
             return redirect('orders-add-oday')
         else:
             messages.error(req, u'Bitte korrigieren Sie das Formular.')
@@ -325,7 +347,7 @@ def add_oday(req):
         form.fields['user'].choices = h.get_user_choices()
     odays = h.get_next_odays(True)
     ctx = dict(page_title=_(u'Add new orderday'), menus=menus, form=form,
-        odays=[unicode(x) for x in odays], dp=True)
+               odays=[unicode(x) for x in odays], dp=True)
     return render(req, 'orders/add_oday.html', ctx, app=u'orders')
 
 
@@ -338,9 +360,10 @@ def list_printouts(req):
         for o in oday.orders.all():
             oday.price += o.price()
             oday.count += 1
-    ctx = dict(page_title=_(u'List of all printouts'),
-        subtitle=_(u'By orderday'),
-        menus=menus, odays=odays)
+    ctx = dict(
+        page_title=_(u'List of all printouts'),
+        subtitle=_(u'By orderday'), menus=menus, odays=odays
+    )
     return render(req, 'orders/list_printouts.html', ctx, app=u'orders')
 
 
@@ -348,12 +371,14 @@ def list_printouts(req):
 def company_rating(req):
     companies = Company.objects.filter(rating_users=req.user)
     for c in companies:
-        c.last_ratings = CompanyRating.objects.filter(user=req.user,
-            company=c).order_by('-rated')
+        c.last_ratings = CompanyRating.objects.filter(
+            user=req.user, company=c).order_by('-rated')
         c.average = c.calculate_rating()[1]
-    ctx = dict(page_title=u'Lieferantenbewertung', menus=menus,
+    ctx = dict(
+        page_title=u'Lieferantenbewertung', menus=menus,
         companies=companies, subtitle=unicode(req.user.userprofile),
-        need_ajax=True)
+        need_ajax=True
+    )
     return render(req, 'orders/ratings/rate.html', ctx, app=u'orders')
 
 
@@ -376,27 +401,31 @@ def rate_company(req, company_id):
         else:
             form = CompanyRatingForm(req.POST)
             if form.is_valid():
-                rating = CompanyRating.objects.create(company=company,
-                    user=req.user, **form.cleaned_data)
+                rating = CompanyRating.objects.create(
+                    company=company, user=req.user, **form.cleaned_data)
                 rating.save()
                 messages.success(req, u'Bewertung wurde gespeichert.')
     sum_form = SummarizeForm(instance=company)
     form = CompanyRatingForm()
     company = h.calculate_ratings([company])[0]
-    ctx = dict(page_title=u'Bewertung bearbeiten', menus=menus,
-        company=company, form=form, sum_form=sum_form, subtitle=company.name)
+    ctx = dict(
+        page_title=u'Bewertung bearbeiten', menus=menus,
+        company=company, form=form, sum_form=sum_form, subtitle=company.name
+    )
     return render(req, 'orders/ratings/edit.html', ctx, app=u'orders')
 
 
 @login_required
 def company_rating_summary(req):
-    companies = Company.objects.select_related().filter(rate=True
-        ).order_by('name')
+    companies = Company.objects.select_related().filter(
+        rate=True).order_by('name')
     companies = h.calculate_ratings(companies)
     today = date.today()
-    ctx = dict(page_title=u'Lieferantenbewertung', menus=menus, dt=True,
+    ctx = dict(
+        page_title=u'Lieferantenbewertung', menus=menus, dt=True,
         companies=companies, need_ajax=True,
-        subtitle=today.strftime('Zusammenfassung %m/%Y'))
+        subtitle=today.strftime('Zusammenfassung %m/%Y')
+    )
     return render(req, 'orders/ratings/summary.html', ctx, app=u'orders')
 
 
@@ -410,17 +439,19 @@ def manage_ratings(req):
     old_ratings = PDFPrintout.objects.filter(
         category=u'Lieferantenbewertung').order_by('-generated')
     companies = Company.objects.filter(rate=True).order_by('rating')
-    ctx = dict(page_title=u'Bewertungen verwalten', menus=menus, users=users,
+    ctx = dict(
+        page_title=u'Bewertungen verwalten', menus=menus, users=users,
         uids=[x.id for x in users], old_ratings=old_ratings,
-        companies=companies, need_ajax=True)
+        companies=companies, need_ajax=True
+    )
     return render(req, 'orders/ratings/manage.html', ctx, app=u'orders')
 
 
-#@permission_required('orders.controlling', raise_exception=True)
+# @permission_required('orders.controlling', raise_exception=True)
 @login_required
 def ctrl_by_cost(req):
     ctx = dict(page_title=u'Nach Kostenstellen', menus=menus, costs=[],
-        start=None, end=None, dp=True, dt=True)
+               start=None, end=None, dp=True, dt=True)
     if req.method == 'POST':
         _start = req.POST.get('start', '')
         _end = req.POST.get('end', '')
@@ -433,7 +464,7 @@ def ctrl_by_cost(req):
         whole = Decimal()
         chem = Decimal()
         for c in CostOrder.objects.select_related().filter(
-            order__ordered__gte=start, order__ordered__lte=end):
+          order__ordered__gte=start, order__ordered__lte=end):
             price = Decimal(c.order.count) * c.order.article.price
             weighted = (c.percent / Decimal(100)) * price
             whole += weighted
@@ -446,13 +477,16 @@ def ctrl_by_cost(req):
             d[cost][1] += 1
         for cost, prices in d.items():
             d[cost][2] = (prices[0] / whole) * 100
-        l = sorted(((k, v) for k, v in d.iteritems()), key=lambda x: x[0][1])
-        if not l:
-            messages.error(req, u'Keine Bestellungen in dieser Zeitspanne '
-                u'gefunden.')
+        costs = sorted(
+            ((k, v) for k, v in d.iteritems()), key=lambda x: x[0][1]
+        )
+        if not costs:
+            messages.error(
+                req, u'Keine Bestellungen in dieser Zeitspanne gefunden.'
+            )
             return redirect('orders-ctrl-bycost')
-        _ctx = dict(costs=l, start=start, end=end, whole=whole, chem=chem,
-            subtitle=u'{:%d.%m.%Y} - {:%d.%m.%Y}'.format(start, end))
+        _ctx = dict(costs=costs, start=start, end=end, whole=whole, chem=chem,
+                    subtitle=u'{:%d.%m.%Y} - {:%d.%m.%Y}'.format(start, end))
         ctx.update(_ctx)
     return render(req, 'orders/controlling/bycost.html', ctx, app=u'orders')
 
@@ -479,8 +513,10 @@ def database_maintenance(req):
                 tmp.append(a)
             if len(tmp) > 1:
                 articles.append((art, tmp))
-    ctx = dict(page_title=u'Finde doppelte Artikel', menus=menus,
-        articles=articles, subtitle=u'{0} vorhanden'.format(len(articles)))
+    ctx = dict(
+        page_title=u'Finde doppelte Artikel', menus=menus,
+        articles=articles, subtitle=u'{0} vorhanden'.format(len(articles))
+    )
     return render(req, 'orders/db_maintenance.html', ctx, app=u'orders')
 
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import *
+from django.conf.urls import patterns, url
 
 from orders.feeds import (
     LatestOrdersFeed,
@@ -9,7 +9,8 @@ from orders.feeds import (
 )
 
 
-urlpatterns = patterns('orders.views.web',
+urlpatterns = patterns(
+    'orders.views.web',
     url(r'^$', 'index', name='orders-index'),
     url(r'^detail/(?P<order_id>\d+)/$', 'order_detail', name='orders-detail'),
     url(r'^order/(?P<article_id>\d+)/$', 'order', name='orders-order'),
@@ -46,7 +47,8 @@ urlpatterns = patterns('orders.views.web',
 )
 
 # Delivery
-urlpatterns += patterns('orders.views.delivery',
+urlpatterns += patterns(
+    'orders.views.delivery',
     url(r'^delivery/$', 'index', name='orders-delivery'),
     url(r'^delivery/by_barcode/$', 'delivery_by_barcode',
         name='orders-delivery-barcode'),
@@ -55,12 +57,13 @@ urlpatterns += patterns('orders.views.delivery',
     url(r'^delivery/csv_export/$', 'export_to_csv', name='orders-csv-export'),
 )
 
-urlpatterns += patterns('orders.views.ajax',
+urlpatterns += patterns(
+    'orders.views.ajax',
     # api
     url(r'^api/article/(?P<article_id>\d+)/$', 'api_article',
         name='orders-api-article'),
-    url(r'^api/article/by_barcode/(?P<barcode>.+?)/$', 'get_article_by_barcode',
-        name='orders-api-article-bybarcode'),
+    url(r'^api/article/by_barcode/(?P<barcode>.+?)/$',
+        'get_article_by_barcode', name='orders-api-article-bybarcode'),
     url(r'^api/articles/get/$', 'get_articles', name='orders-api-articles'),
     url(r'^api/update_count/(?P<order_id>\d+)/(?P<count>\d+)/$',
         'update_article_count', name='orders-api-count'),
@@ -85,9 +88,9 @@ urlpatterns += patterns('orders.views.ajax',
         name='orders-api-accept-oday'),
 )
 
-urlpatterns += patterns('orders.views.pdf',
+urlpatterns += patterns(
+    'orders.views.pdf',
     url(r'^generate_pdf/$', 'generate_pdf', name='orders-genpdf'),
-
     # api
     url(r'^api/generate_pdf/$', 'generate_one_pdf', name='orders-api-pdf'),
     url(r'^api/ratings/printout/$', 'generate_ratings_pdf',
@@ -95,7 +98,8 @@ urlpatterns += patterns('orders.views.pdf',
 )
 
 # Feeds
-urlpatterns += patterns('',
+urlpatterns += patterns(
+    '',
     url(r'^feeds/ordered/$', LatestOrdersFeed(), name='orders-feed-latest'),
     url(r'^feeds/delivered/$', LatestDeliveriesFeed(),
         name='orders-feed-latest-delivery'),

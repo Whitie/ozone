@@ -56,7 +56,7 @@ def summarize_orders(orders):
 def clean_file(filename):
     try:
         os.remove(filename)
-    except:
+    except:  # noqa: E722
         pass
 
 
@@ -67,24 +67,26 @@ def make_latex(ctx, template, includefile=None):
     s = latex.get_latex_settings()
     if includefile is not None:
         ttpl = env.get_template(includefile)
-        tfilename = os.path.join(s['build_dir'],
-            '{0}_{1}'.format(ctx['supplier'].id, includefile))
+        tfilename = os.path.join(
+            s['build_dir'], '{0}_{1}'.format(ctx['supplier'].id, includefile)
+        )
         clean_file(tfilename)
         with codecs.open(tfilename, 'w', encoding='utf-8') as fp:
             fp.write(ttpl.render(**ctx))
         ctx['includefile'] = unicode(tfilename).replace(u'\\', u'/')
     tpl = env.get_template(template)
     _id = getattr(ctx['supplier'], 'id', 'ALL')
-    filename = os.path.join(s['build_dir'], '{0}_{1}_{2}'.format(_id,
-        ctx['oday'].id, template))
+    filename = os.path.join(
+        s['build_dir'], '{0}_{1}_{2}'.format(_id, ctx['oday'].id, template)
+    )
     clean_file(filename)
     with codecs.open(filename, 'w', encoding='utf-8') as fp:
         fp.write(tpl.render(**ctx))
     pdfname, r1, r2 = latex.render_latex_to_pdf(filename)
     pdf = os.path.split(pdfname)[1]
     _name = getattr(ctx['supplier'], 'name', u'ALL')
-    printout, created = Printout.objects.get_or_create(order_day=ctx['oday'],
-        internal=_name == u'ALL', company_name=_name)
+    printout, created = Printout.objects.get_or_create(
+        order_day=ctx['oday'], internal=_name == u'ALL', company_name=_name)
     with open(pdfname, 'rb') as fp:
         content = ContentFile(fp.read())
     printout.pdf.save(pdf, content)
@@ -144,17 +146,20 @@ def generate_pdf(req):
     for s in [x[0].article.supplier for x in orders]:
         s.ocount = 0
         s.osum = Decimal()
-        for o in Order.objects.filter(article__supplier=s, order_day=oday,
-            state__in=[u'accepted', u'ordered']):
+        for o in Order.objects.filter(
+          article__supplier=s, order_day=oday,
+          state__in=[u'accepted', u'ordered']):
             s.ocount += 1
             s.osum += o.price()
         supplier.append(s)
     supplier_ids = [x[0].article.supplier.id for x in orders]
     req.session['extra_orders'] = []
     req.session['oday_id'] = None
-    ctx = dict(page_title=_(u'PDF-Printouts'), menus=menus, oday=oday,
+    ctx = dict(
+        page_title=_(u'PDF-Printouts'), menus=menus, oday=oday,
         subtitle=_(u'for {0}'.format(unicode(oday))), need_ajax=True,
-        ids=supplier_ids, supplier=supplier, header=header)
+        ids=supplier_ids, supplier=supplier, header=header
+    )
     return render(req, 'orders/printouts.html', ctx, app=u'orders')
 
 
@@ -171,22 +176,22 @@ def generate_one_pdf(req, data):
         supplier = Company.objects.get(id=supplier_id)
         printout, filename = generate_external(supplier, ctx)
         return dict(size=printout.pdf.size, filename=filename,
-            url=printout.pdf.url)
+                    url=printout.pdf.url)
     else:
         printout, filename = generate_internal(ctx)
         return dict(size=printout.pdf.size, filename=filename,
-            url=printout.pdf.url)
+                    url=printout.pdf.url)
 
 
 @require_POST
 @json_rpc
 def generate_ratings_pdf(req, data=None):
-    companies = Company.objects.select_related().filter(rate=True
-        ).order_by('name')
+    companies = Company.objects.select_related().filter(
+        rate=True).order_by('name')
     companies = h.calculate_ratings(companies)
     today = date.today()
     ctx = dict(user=req.user, companies=companies,
-        for_date=unicode(today.strftime('%B %Y'), 'utf-8'))
+               for_date=unicode(today.strftime('%B %Y'), 'utf-8'))
     env = latex.get_latex_env(TEMPLATE_PATH)
     s = latex.get_latex_settings()
     tpl = env.get_template('company_rating.tex')
@@ -204,4 +209,4 @@ def generate_ratings_pdf(req, data=None):
     printout.pdf.save(pdf, content)
     printout.save()
     return dict(size=printout.pdf.size, filename=pdf,
-        url=printout.pdf.url)
+                url=printout.pdf.url)
