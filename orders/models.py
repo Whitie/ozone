@@ -64,6 +64,11 @@ class Article(models.Model):
     def __unicode__(self):
         return u'{0} ({1})'.format(self.name, self.short_desc())
 
+    def get_price(self):
+        if self.discount_price:
+            return self.discount_price
+        return self.price
+
     def fullprice(self):
         if self.discount_price:
             price = self.discount_price

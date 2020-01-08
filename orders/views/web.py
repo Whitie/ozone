@@ -309,8 +309,8 @@ def manage_order(req, oday_id):
     for o in orders:
         o.userlist = [x.username for x in o.users.all()]
         if o.state in (u'new', u'accepted'):
-            order_sum += o.count * o.article.price
-        o.sum_price = o.count * o.article.price
+            order_sum += o.count * o.article.get_price()
+        o.sum_price = o.count * o.article.get_price()
         o.costlist = [u'%s: %d%%' % (unicode(x.cost), x.percent) for x in
                       CostOrder.objects.filter(order=o)]
     ctx = dict(

@@ -23,7 +23,7 @@ from orders.views import helper as h
 def update_article_count(req, order_id, count):
     order_id, count = int(order_id), int(count)
     order = Order.objects.select_related().get(id=order_id)
-    price = order.article.price
+    price = order.article.get_price()
     old_count = order.count
     order.count = count
     new_price = count * price
@@ -96,7 +96,7 @@ def api_article(req, article_id=0):
     a = Article.objects.get(pk=article_id)
     data = dict(
         art_name=a.name, art_supplier_id=a.supplier.id,
-        art_id=a.ident, art_q=a.quantity, art_price=float(a.price),
+        art_id=a.ident, art_q=a.quantity, art_price=float(a.get_price()),
         count=1, oday=oday.id, art_supplier_name=a.supplier.short_name
     )
     return data
@@ -136,7 +136,7 @@ def change_order(req, data):
     except Company.DoesNotExist:
         supplier = None
     article = order.article
-    old_price = article.price * order.count
+    old_price = article.get_price() * order.count
     try:
         price = Decimal(data['price'].replace(u',', u'.'))
         article.name = data['art_name']
@@ -149,7 +149,7 @@ def change_order(req, data):
     article.save()
     order.count = data['count']
     order.save()
-    total = article.price * order.count
+    total = article.get_price() * order.count
     diff = total - old_price
     msg = (u'Alle Änderungen an Bestellung: %(name)s (ID: %(id)d) '
            u'gespeichert.' % {'name': article.name, 'id': order.id})

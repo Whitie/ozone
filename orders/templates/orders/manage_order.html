@@ -88,12 +88,12 @@
                     <span id="total_{{ forloop.counter }}" class="tt" title="{% trans "Sum" %}: {{ o.price|floatformat:2 }}{{ CURRENCY_SYM }}">
                         {% if o.state in states %}
                         <div class="input-append">
-                            <input class="input-mini" type="text" value="{{ o.article.price|floatformat:2 }}"
+                            <input class="input-mini" type="text" value="{{ o.article.get_price|floatformat:2 }}"
                                 name="art_price" onchange="update_row({{ forloop.counter }});"
                                 style="text-align:right;" id="art_price_{{ forloop.counter }}">
                             <span class="add-on">{{ CURRENCY_SYM }}</span>
                         </div>
-                        {% else %}{{ o.article.price|floatformat:2 }}{{ CURRENCY_SYM }}{% endif %}
+                        {% else %}{{ o.article.get_price|floatformat:2 }}{{ CURRENCY_SYM }}{% endif %}
                     </span>
                 </td>
                 <td>
@@ -214,7 +214,7 @@ function save_moved_order() {
 function color_sum() {
     var fullcost = parseFloat($('#sum').text().replace(',', '.'));
     var container = $('#sum_container');
-    if (fullcost < 6000) {
+    if (fullcost < 6800) {
         container.css('color', 'green');
     } else {
         container.css('color', 'red');
