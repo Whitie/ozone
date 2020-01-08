@@ -380,7 +380,7 @@ class StudentGroup(models.Model):
         ordering = ['-start_date', 'job']
 
 
-SEX_CHOICES = (('M', _(u'Male')), ('F', _(u'Female')))
+SEX_CHOICES = (('M', _(u'Male')), ('F', _(u'Female')), ('X', 'divers'))
 SUIT_CHOICES = (
     (1, u'Die Berufseignung ist nicht gegeben.'),
     (2, u'Die Berufseignung ist bedingt gegeben.'),
@@ -450,6 +450,7 @@ class Student(CommonInfo):
         related_name='students', null=True, blank=True
     )
     finished = models.BooleanField(_(u'Finished'), default=False)
+    finished_on = models.DateField(u'Beendet am', blank=True, null=True)
 
     audit_log = AuditLog()
 
