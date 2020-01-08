@@ -34,7 +34,6 @@ class ADAuthBackend:
                                           settings.AD_LDAP_PORT)
         self.cache_time = settings.AD_CACHE_TIME
         logger.info('LDAP URL: %s', self.url)
-        #logger.debug('Django PASSWORD_HASHERS: %r', settings.PASSWORD_HASHERS)
         logger.info('AD cache set to %d seconds', self.cache_time)
 
     def authenticate(self, username=None, password=None):
@@ -57,11 +56,11 @@ class ADAuthBackend:
             if settings.AD_USE_SSL:
                 ldap.set_option(ldap.OPT_X_TLS_CACERTFILE,
                                 settings.AD_CERT_FILE)
-            l = ldap.initialize(self.url)
-            l.set_option(ldap.OPT_PROTOCOL_VERSION, 3)
+            ldap_ = ldap.initialize(self.url)
+            ldap_.set_option(ldap.OPT_PROTOCOL_VERSION, 3)
             binddn = u'{0}@{1}'.format(username, settings.AD_NT4_DOMAIN)
-            l.simple_bind_s(smart_str(binddn), smart_str(password))
-            l.unbind_s()
+            ldap_.simple_bind_s(smart_str(binddn), smart_str(password))
+            ldap_.unbind_s()
             return self._get_or_create_user(username, password)
         except ldap.INVALID_CREDENTIALS:
             logger.error('%s: Invalid credentials', username)
@@ -95,7 +94,7 @@ class ADAuthBackend:
             if user.check_password(password):
                 logger.info('Found user, returning cached result')
                 return user
-        except:
+        except:  # noqa: E722
             logger.exception('Error during cache lookup')
 
     def _get_or_create_user(self, username, password):
@@ -107,7 +106,7 @@ class ADAuthBackend:
             created = False
         except User.DoesNotExist:
             user = User.objects.create_user(username=username,
-                password=password)
+                                            password=password)
             created = True
         user.save()
         if not created:
@@ -172,13 +171,13 @@ class ADAuthBackend:
                                 settings.AD_CERT_FILE)
             ldap.set_option(ldap.OPT_REFERRALS, 0)
             logger.debug('Initializing LDAP connection...')
-            l = ldap.initialize(self.url)
-            l.set_option(ldap.OPT_PROTOCOL_VERSION, 3)
+            ldap_ = ldap.initialize(self.url)
+            ldap_.set_option(ldap.OPT_PROTOCOL_VERSION, 3)
             binddn = u'{0}@{1}'.format(username, settings.AD_NT4_DOMAIN)
             logger.debug('LDAP bind: %s', binddn)
-            l.bind_s(smart_str(binddn), smart_str(password))
+            ldap_.bind_s(smart_str(binddn), smart_str(password))
             logger.debug('Searching...')
-            result = l.search_ext_s(
+            result = ldap_.search_ext_s(
                 settings.AD_SEARCH_DN, ldap.SCOPE_SUBTREE,
                 'sAMAccountName={0}'.format(smart_str(username)),
                 settings.AD_SEARCH_FIELDS
@@ -201,7 +200,7 @@ class ADAuthBackend:
             if 'givenName' in result:
                 user_info['first_name'] = smart_unicode(result['givenName'][0])
             logger.debug('user_info: %r', user_info)
-            l.unbind_s()
+            ldap_.unbind_s()
             return user_info
-        except:
+        except:  # noqa: E722
             logger.exception('Error while fetching user info from AD')
