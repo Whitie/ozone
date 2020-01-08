@@ -5,8 +5,9 @@ import sys
 
 _PATH = os.path.dirname(os.path.abspath(__file__))
 EXT_DIR = os.path.normpath(os.path.join(_PATH, '..', 'ext'))
-OZONE_EXT = os.path.normpath(os.path.join(_PATH, '..', '..',
-    'ozone_extensions'))
+OZONE_EXT = os.path.normpath(
+    os.path.join(_PATH, '..', '..', 'ozone_extensions')
+)
 
 sys.path.insert(0, OZONE_EXT)
 sys.path.insert(0, EXT_DIR)
@@ -101,7 +102,6 @@ STATIC_URL = '/static/'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 STATICFILES_DIRS = (
@@ -126,7 +126,6 @@ ADMIN_MEDIA_PREFIX = '/media/'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -180,7 +179,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 # Removed in Django 1.7
-#AUTH_PROFILE_MODULE = 'core.UserProfile'
+# AUTH_PROFILE_MODULE = 'core.UserProfile'
 
 LOGIN_URL = '/core/login'
 LOGOUT_URL = '/core/logout'
@@ -300,7 +299,7 @@ AD_CREATE_GROUPS = True
 # Don't query AD again for x seconds (default: 8 hours)
 # Set to 0 for no cache
 AD_CACHE_TIME = 8 * 60 * 60
-#AD_CACHE_TIME = 0
+# AD_CACHE_TIME = 0
 
 ###############################################################################
 
@@ -310,20 +309,6 @@ JINJA_DEFAULT_FORMATS = {
     'DATETIME_FORMAT': '%d.%m.%Y %H:%M:%S',
     'TIME_FORMAT': '%H:%M:%S',
 }
-
-# Latex settings ##############################################################
-# Deprecated (moved to configuration model), will be removed in 3.1
-##LATEX = {
-##    'pdflatex': (r'P:/Portable/latex-portable/miktex-portable/miktex'
-##                 r'/bin/pdflatex.exe'),
-##    'options': ['-interaction=nonstopmode'],
-##    'build_dir': os.path.abspath(os.path.join(_PATH, '..', '_latex_build')),
-##    'fromfax': u'030 / 6 77 44 53',
-##    'fromphone': u'030 / 67 00 04-0',
-##    'fromname': u'Bildungswerk Nordostchemie e. V.',
-##    'fromaddress': u'Adlergestell 333, 12489 Berlin',
-##    'fromlogo': u'P:/container/bbz-tools/ozone/ozone/static/img/bbzlogo.png',
-##}
 
 LATEX_BUILD_DIR = os.path.abspath(os.path.join(_PATH, '..', '_latex_build'))
 
@@ -349,8 +334,8 @@ except IOError:
         fp.write(SECRET_KEY)
     try:
         os.chmod(SECRET_FILE, 0600)
-    except:
-        pass
+    except Exception as error:
+        print(error)
 
 ###############################################################################
 
