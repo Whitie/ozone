@@ -16,10 +16,10 @@ from core.menu import menus
 
 @login_required
 def my_entries(req):
-    entries = JournalEntry.objects.select_related().filter(created_by=req.user
-        ).order_by('journal__group', '-created')
+    entries = JournalEntry.objects.select_related().filter(
+        created_by=req.user).order_by('journal__group', '-created')
     ctx = dict(page_title=_(u'My Journal Entries'), menus=menus, dt=True,
-        entries=entries)
+               entries=entries)
     return render(req, 'journal/myentries.html', ctx)
 
 
@@ -30,7 +30,7 @@ def list_journals(req):
     if not req.user.has_perm('core.read'):
         journals = journals.filter(instructors=req.user)
     ctx = dict(page_title=_(u'Accessible Journals'), menus=menus,
-        journals=journals)
+               journals=journals)
     return render(req, 'journal/list.html', ctx)
 
 
@@ -38,7 +38,7 @@ def list_journals(req):
 def show_media_for_entry(req, entry_id):
     entry = JournalEntry.objects.select_related().get(id=int(entry_id))
     ctx = dict(page_title=_(u'Media for Entry ID: {0}'.format(entry.id)),
-        menus=menus, entry=entry, include_media=True)
+               menus=menus, entry=entry, include_media=True)
     return render(req, 'journal/show_media.html', ctx)
 
 
@@ -50,22 +50,24 @@ def add_journal(req):
             form.save()
             messages.success(req, u'Neues Tagebuch wurde angelegt.')
         else:
-            messages.error(req, u'Tagebuch konnte nicht angelegt werden, '
-                u'für diese Gruppe existiert bereits eins.')
-    journals = PedagogicJournal.objects.all().order_by('group__job',
-        '-group__start_date')
+            messages.error(
+                req, u'Tagebuch konnte nicht angelegt werden, '
+                     u'für diese Gruppe existiert bereits eins.'
+            )
+    journals = PedagogicJournal.objects.all().order_by(
+        'group__job', '-group__start_date')
     for j in journals:
         j.userlist = [x.last_name for x in j.instructors.all()]
     form = NewJournalForm()
     ctx = dict(page_title=_(u'Add new Journal for Group'),
-        menus=menus, journals=journals, form=form)
+               menus=menus, journals=journals, form=form)
     return render(req, 'journal/add.html', ctx)
 
 
 @login_required
 def add_entry(req, gid):
-    journals = PedagogicJournal.objects.filter(group__id=int(gid),
-        instructors=req.user)
+    journals = PedagogicJournal.objects.filter(
+        group__id=int(gid), instructors=req.user)
     if not journals:
         messages.error(req, u'Sie haben keine Berechtigungen dieses '
                             u'Tagebuch zu ändern.')
@@ -77,9 +79,11 @@ def add_entry(req, gid):
             journal.group)
         jid = int(req.POST.get('journal_id'))
         if form.is_valid():
-            entry = JournalEntry.objects.create(created_by=req.user,
+            entry = JournalEntry.objects.create(
+                created_by=req.user,
                 journal=PedagogicJournal.objects.get(id=jid),
-                **form.cleaned_data)
+                **form.cleaned_data
+            )
             entry.save()
             for name, f in req.FILES.items():
                 media = JournalMedia.objects.create(entry=entry, media=f)
@@ -93,14 +97,14 @@ def add_entry(req, gid):
         form.fields['student'].choices = h.get_students_for_group(
             journal.group)
     ctx = dict(page_title=_(u'Add Entry'), menus=menus, form=form,
-        journal=journal, need_ajax=True)
+               journal=journal, need_ajax=True)
     return render(req, 'journal/add_entry.html', ctx)
 
 
 @login_required
 def edit_rights(req, jid):
-    journals = PedagogicJournal.objects.filter(id=int(jid),
-        instructors=req.user)
+    journals = PedagogicJournal.objects.filter(
+        id=int(jid), instructors=req.user)
     if not journals:
         messages.error(req, u'Sie haben keine Berechtigungen dieses '
                             u'Tagebuch zu ändern.')
@@ -129,5 +133,5 @@ def edit_rights(req, jid):
     users = User.objects.exclude(username='admin').exclude(
         id__in=[x.id for x in journal.instructors.all()])
     ctx = dict(page_title=_(u'Edit Rights for {0}'.format(journal.group)),
-        menus=menus, users=users, journal=journal)
+               menus=menus, users=users, journal=journal)
     return render(req, 'journal/rights.html', ctx)

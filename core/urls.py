@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import *
+from django.conf.urls import patterns, url
 
 
-urlpatterns = patterns('core.views.web',
+urlpatterns = patterns(
+    'core.views.web',
     # Common views
     url(r'^$', 'index', name='core-index'),
     url(r'^add_news/$', 'add_news', name='core-add-news'),
@@ -75,7 +76,8 @@ urlpatterns = patterns('core.views.web',
 )
 
 # Add students
-urlpatterns += patterns('core.views.add_student',
+urlpatterns += patterns(
+    'core.views.add_student',
     url(r'student/add/$', 'student_wizard_view_wrapper',
         name='core-student-add'),
     url(r'student/added/(?P<student_id>\d+)/$', 'student_added',
@@ -83,7 +85,8 @@ urlpatterns += patterns('core.views.add_student',
 )
 
 # Accidents
-urlpatterns += patterns('core.views.accidents',
+urlpatterns += patterns(
+    'core.views.accidents',
     url(r'^accidents/$', 'accidents_index', name='core-accidents'),
     url(r'^accidents/old/$', 'old_accidents', name='core-accidents-old'),
     url(r'^accidents/(?P<id>\d+)/$', 'accident_details',
@@ -96,7 +99,8 @@ urlpatterns += patterns('core.views.accidents',
     url(r'^accidents/statistics/general/(?P<year>\d+|all)/$',
         'statistics_general', name='core-accidents-statistics-general'),
     # Images
-    url(r'^accidents/charts/all/$', 'img_all', name='core-accidents-chart-all'),
+    url(r'^accidents/charts/all/$', 'img_all',
+        name='core-accidents-chart-all'),
     url(r'^accidents/charts/year/$', 'img_accidents_by_year',
         name='core-accidents-chart-year'),
     url(r'^accidents/charts/year/(?P<year>\d+)/$', 'img_accidents_by_year',
@@ -104,7 +108,8 @@ urlpatterns += patterns('core.views.accidents',
 )
 
 # Journal
-urlpatterns += patterns('core.views.journal',
+urlpatterns += patterns(
+    'core.views.journal',
     url(r'^journal/myentries/$', 'my_entries', name='core-myentries'),
     url(r'^journal/$', 'list_journals', name='core-journals'),
     url(r'^journal/media/(?P<entry_id>\d+)/$', 'show_media_for_entry',
@@ -117,7 +122,8 @@ urlpatterns += patterns('core.views.journal',
 )
 
 # JSON API
-urlpatterns += patterns('core.views.ajax',
+urlpatterns += patterns(
+    'core.views.ajax',
     url(r'^api/presence/update/$', 'update_presence',
         name='core-api-presence-update'),
     url(r'^api/presence/update_day/$', 'update_day',
@@ -146,7 +152,8 @@ urlpatterns += patterns('core.views.ajax',
 )
 
 # PDF generation
-urlpatterns += patterns('core.views.pdf',
+urlpatterns += patterns(
+    'core.views.pdf',
     url(r'^pdf/test/$', 'pdf', name='core-pdfgen'),
     url(r'^pdf/presence/clean/(?P<gid>\d+)/'
         r'(?P<year>\d{4})/(?P<month>\d{1,2})/$', 'generate_presence_clean',

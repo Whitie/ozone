@@ -22,8 +22,9 @@ def get_presence_day(day, student):
 
     :returns: PresenceDay object
     """
-    pday, created = PresenceDay.objects.get_or_create(student=student,
-        date=day)
+    pday, created = PresenceDay.objects.get_or_create(
+        student=student, date=day
+    )
     if created:
         if sdg.is_special_day(day):
             pday.entry = u'FT'
@@ -46,7 +47,7 @@ def get_presence(students, start, end):
     :returns: List of 2-tuples with the student as first element and a list
               of all found presence days as the second element.
     """
-    l = []
+    presences = []
     dt = end - start
     past = end < date.today() - timedelta(days=7)
     for s in students:
@@ -62,8 +63,8 @@ def get_presence(students, start, end):
                 d.entry = u'/'
                 d.instructor = User.objects.get(username='admin')
                 d.save()
-        l.append((s, tmp))
-    return l
+        presences.append((s, tmp))
+    return presences
 
 
 def sort_students_for_presence(students):
@@ -144,12 +145,14 @@ def get_presence_details(student):
 
 def get_studentgroups():
     return [(0, u'Alle Gruppen')] + [(x.id, x.name()) for x in
-                                      StudentGroup.objects.all()]
+                                     StudentGroup.objects.all()]
 
 
 def get_students_for_group(group):
-    return [(0, u'------')] + [(x.id, u'%s, %s' % (x.lastname, x.firstname))
-        for x in Student.objects.filter(finished=False, group=group)]
+    return [(0, u'------')] + [
+        (x.id, u'%s, %s' % (x.lastname, x.firstname))
+        for x in Student.objects.filter(finished=False, group=group)
+    ]
 
 
 def replace_umlauts(s):

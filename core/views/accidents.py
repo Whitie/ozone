@@ -46,10 +46,8 @@ def _get_accident_chart(year):
 def _get_years(**kw):
     q = AccidentEntry.objects.filter(**kw).values_list(
         'date_time', flat=True).order_by('date_time')
-    s = set([x.year for x in q])
-    l = list(s)
-    l.sort()
-    return l
+    years = list(set([x.year for x in q]))
+    return sorted(years)
 
 
 # Views for accidents
@@ -59,8 +57,10 @@ def accidents_index(req):
     today = date.today()
     accidents = AccidentEntry.objects.select_related().filter(
         date_time__year=today.year).order_by('-date_time')
-    ctx = dict(page_title=u'Unfälle', subtitle=u'dieses Jahr', dt=True,
-        accidents=accidents, menus=menus, dp=True, need_ajax=True, old=False)
+    ctx = dict(
+        page_title=u'Unfälle', subtitle=u'dieses Jahr', dt=True,
+        accidents=accidents, menus=menus, dp=True, need_ajax=True, old=False
+    )
     return render(req, 'accidents/index.html', ctx)
 
 
@@ -80,7 +80,7 @@ def old_accidents(req):
     accidents = AccidentEntry.objects.select_related().filter(
         date_time__lte=older).order_by('-date_time')
     ctx = dict(page_title=u'Ältere Unfälle', accidents=accidents, menus=menus,
-        old=True, dt=True)
+               old=True, dt=True)
     return render(req, 'accidents/index.html', ctx)
 
 
@@ -95,7 +95,7 @@ def accidents_statistics(req):
             (year, q.count(), q.filter(violation=1).count())
         )
     ctx = dict(page_title='Unfallstatistik', menus=menus, year=dt.year,
-        accidents=accidents, start=start_dt.year)
+               accidents=accidents, start=start_dt.year)
     return render(req, 'accidents/statistics/index.html', ctx)
 
 
@@ -111,10 +111,10 @@ def statistics_notify(req, year='all'):
         if year not in years:
             year = date.today().year
         kw['date_time__year'] = year
-    accidents = AccidentEntry.objects.select_related().filter(**kw
-        ).order_by('date_time')
+    accidents = AccidentEntry.objects.select_related().filter(
+        **kw).order_by('date_time')
     ctx = dict(page_title='Meldepflichtige Unfälle', menus=menus, year=year,
-        years=years, accidents=accidents, dt=True)
+               years=years, accidents=accidents, dt=True)
     if year == 'all':
         ctx['subtitle'] = 'Alle Jahre'
     else:
@@ -134,10 +134,10 @@ def statistics_general(req, year='all'):
         if year not in years:
             year = date.today().year
         kw['date_time__year'] = year
-    accidents = AccidentEntry.objects.select_related().filter(**kw
-        ).order_by('date_time')
+    accidents = AccidentEntry.objects.select_related().filter(
+        **kw).order_by('date_time')
     ctx = dict(page_title='Nichtmeldepflichtige Unfälle', menus=menus,
-        year=year, years=years, accidents=accidents, dt=True)
+               year=year, years=years, accidents=accidents, dt=True)
     if year == 'all':
         ctx['subtitle'] = 'Alle Jahre'
     else:
@@ -158,7 +158,7 @@ def accident_add(req):
 def img_all(req):
     try:
         chart = _get_accident_chart_all()
-    except:
+    except:  # noqa: E722
         chart = charts.NoData()
     bin_image = chart.asString('png')
     return HttpResponse(bin_image, content_type='image/png')
@@ -171,7 +171,7 @@ def img_accidents_by_year(req, year=None):
         year = date.today().year
     try:
         chart = _get_accident_chart(year)
-    except:
+    except:  # noqa: E722
         chart = charts.NoData()
     bin_image = chart.asString('png')
     return HttpResponse(bin_image, content_type='image/png')

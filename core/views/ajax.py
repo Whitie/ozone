@@ -10,22 +10,26 @@ from django.contrib import messages
 
 from core.utils import json_rpc, remove_old_sessions
 from core.models import (PresenceDay, JournalEntry, Student, Company,
-    StudentGroup)
+                         StudentGroup)
 from core.forms import AccidentForm
 
 
 @json_rpc
 def update_presence(req, data):
     pday = PresenceDay.objects.get(id=data['day_id'])
-    msg = [u'{0}, {1} ({2}):'.format(pday.student.lastname,
-        pday.student.firstname, pday.date.strftime('%d.%m.'))]
+    msg = [u'{0}, {1} ({2}):'.format(
+        pday.student.lastname, pday.student.firstname,
+        pday.date.strftime('%d.%m.')
+    )]
     updated = False
     if data['presence'] != pday.entry:
         updated = True
         if data['presence']:
             pday.entry = data['presence']
-            msg.append(u'Anwesenheit aktualisiert mit %(entry)s (%(disp)s).' %
-                {'entry': pday.entry, 'disp': pday.get_entry_display()})
+            msg.append(
+                u'Anwesenheit aktualisiert mit %(entry)s (%(disp)s).' %
+                {'entry': pday.entry, 'disp': pday.get_entry_display()}
+            )
         else:
             pday.entry = u''
             msg.append(u'Anwesenheit auf unbekannt gesetzt!')
@@ -96,7 +100,7 @@ def get_entries_for_student(req, data):
 def get_contracts(req, data=None):
     company = Company.objects.select_related().get(id=data['cid'])
     contracts = [{'id': x.id, 'text': unicode(x)} for x in
-        company.cooperations.all()]
+                 company.cooperations.all()]
     return dict(res=contracts)
 
 
@@ -166,12 +170,18 @@ def delete_student(req, data):
             pdays.delete()
             s.journal_entries.all().delete()
             s.delete()
-            messages.success(req, u'Azubi {name} und {pdays} '
-                u'Anwesenheitstage wurden gelöscht!'.format(name=name,
-                    pdays=c))
+            messages.success(
+                req,
+                u'Azubi {name} und {pdays} Anwesenheitstage wurden'
+                u'gelöscht!'.format(
+                     name=name, pdays=c
+                )
+            )
         except Exception as e:
-            messages.error(req,
-                u'Beim Löschen ist ein Fehler aufgetreten: {0}'.format(e))
+            messages.error(
+                req,
+                u'Beim Löschen ist ein Fehler aufgetreten: {0}'.format(e)
+            )
     else:
         messages.error(req, u'Unzureichende Berechtigungen!')
     return dict()
@@ -207,8 +217,9 @@ def mygroups(req, data=None):
             if sid in pstudents:
                 pstudents.remove(sid)
                 count += 1
-        msg = u'Gruppe {g} wurde entfernt (mit Azubis [{c}]).'.format(g=group,
-            c=count)
+        msg = u'Gruppe {g} wurde entfernt (mit Azubis [{c}]).'.format(
+            g=group, c=count
+        )
     else:
         pgroups.append(data['gid'])
         msg = u'Gruppe {g} wurde hinzugefügt.'.format(g=group)

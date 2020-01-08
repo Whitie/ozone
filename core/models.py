@@ -9,7 +9,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
-#from south.modelsinspector import add_introspection_rules
+# from south.modelsinspector import add_introspection_rules
 
 from audit_log.models.managers import AuditLog
 from core.utils import named
@@ -53,12 +53,15 @@ class CommonInfo(models.Model):
 class Configuration(CommonInfo):
     name = models.CharField(_(u'Organization Name'), max_length=100)
     short_name = models.CharField(_(u'Organization Short Name'),
-        max_length=20, blank=True)
-    pdflatex = models.CharField(_(u'PDFLatex'), max_length=100,
-        default=u'/usr/bin/pdflatex', help_text=_(u'Path to pdflatex '
-        u'executable.'))
-    latex_options = models.CharField(_(u'Latex Commandline Options'),
-        max_length=100, default=u'-interaction=nonstopmode', blank=True)
+                                  max_length=20, blank=True)
+    pdflatex = models.CharField(
+        _(u'PDFLatex'), max_length=100, default=u'/usr/bin/pdflatex',
+        help_text=_(u'Path to pdflatex executable.')
+    )
+    latex_options = models.CharField(
+        _(u'Latex Commandline Options'), max_length=100,
+        default=u'-interaction=nonstopmode', blank=True
+    )
     fax = models.CharField(_(u'Fax'), max_length=30, blank=True)
     logo = models.ImageField(_(u'Logo'), upload_to='pictures', blank=True)
 
@@ -86,18 +89,20 @@ class Part(models.Model):
 class UserProfile(CommonInfo):
     user = models.OneToOneField(User, verbose_name=_(u'User'), editable=False)
     name_prefix = models.CharField(_(u'Name Prefix'), max_length=12,
-        blank=True)
+                                   blank=True)
     birthdate = models.DateField(_(u'Birthdate'), null=True, blank=True)
     mobile = models.CharField(_(u'Mobile'), max_length=30, blank=True)
     part = models.ForeignKey(Part, verbose_name=_(u'Part'), blank=True,
-        null=True, related_name='profiles')
-    subjects = models.CharField(_(u'Subjects'), max_length=150, blank=True,
-        help_text=_(u'Separate two or more subjects with a comma.'))
+                             null=True, related_name='profiles')
+    subjects = models.CharField(
+        _(u'Subjects'), max_length=150, blank=True,
+        help_text=_(u'Separate two or more subjects with a comma.')
+    )
     can_login = models.BooleanField(_(u'Can Login'), default=True)
     external = models.BooleanField(_(u'External'), default=False)
     barcode = models.CharField(max_length=100, editable=False, blank=True)
     _barcode = models.ImageField(upload_to='barcodes', editable=False,
-        blank=True)
+                                 blank=True)
     _config = models.TextField(blank=True, editable=False, default='')
 
     def __unicode__(self):
@@ -164,14 +169,15 @@ class Company(CommonInfo):
     short_name = models.CharField(_(u'Short Name'), max_length=10, blank=True)
     fax = models.CharField(_(u'Fax'), max_length=30, blank=True)
     customer_number = models.CharField(_(u'Customer Number'), max_length=50,
-        blank=True)
+                                       blank=True)
     web = models.URLField(_(u'Web'), blank=True)
     email = models.EmailField(_(u'Email'), blank=True)
     rate = models.BooleanField(_(u'Rate'), default=True)
-    rating_users = models.ManyToManyField(User,
-        verbose_name=_(u'Rating Users'), blank=True)
+    rating_users = models.ManyToManyField(
+        User, verbose_name=_(u'Rating Users'), blank=True
+    )
     rating = models.CharField(_(u'Rating'), max_length=1,
-        choices=RATING_CHOICES, default=u'D')
+                              choices=RATING_CHOICES, default=u'D')
     rating_note = models.TextField(_(u'Rating Note'), blank=True)
 
     def __unicode__(self):
@@ -217,7 +223,7 @@ class Company(CommonInfo):
 
 class CooperationContract(models.Model):
     company = models.ForeignKey(Company, verbose_name=_(u'Company'),
-        related_name='cooperations')
+                                related_name='cooperations')
     date = models.DateField(_(u'Date'))
     job = models.CharField(_(u'Job'), max_length=50)
     full = models.BooleanField(_(u'Full-Cooperation'), default=True)
@@ -225,8 +231,9 @@ class CooperationContract(models.Model):
     note = models.TextField(_(u'Note'), blank=True)
 
     def __unicode__(self):
-        return u'{0}, {1} ({2})'.format(self.company.name,
-            self.date.strftime('%d.%m.%Y'), self.job)
+        return u'{0}, {1} ({2})'.format(
+            self.company.name, self.date.strftime('%d.%m.%Y'), self.job
+        )
 
     class Meta:
         verbose_name = _(u'Cooperation Contract')
@@ -241,7 +248,7 @@ class Contact(models.Model):
     phone = models.CharField(_(u'Phone'), max_length=30, blank=True)
     email = models.EmailField(_(u'Email'), blank=True)
     company = models.ForeignKey(Company, verbose_name=_(u'Company'),
-        related_name='contacts')
+                                related_name='contacts')
 
     audit_log = AuditLog()
 
@@ -262,15 +269,17 @@ class Contact(models.Model):
 
 class Note(models.Model):
     contact = models.ForeignKey(Contact, verbose_name=_(u'Contact'),
-        related_name='notes')
+                                related_name='notes')
     date = models.DateTimeField(_(u'Date'), auto_now_add=True)
     user = models.ForeignKey(User, verbose_name=_(u'User'))
     subject = models.CharField(_(u'Subject'), max_length=50)
     text = models.TextField(_(u'Text'))
 
     def __unicode__(self):
-        return u'{0} - {1}, {2}, {3}'.format(self.contact, self.subject,
-            self.user.userprofile, self.date.strftime('%Y-%m-%d %H:%M'))
+        return u'{0} - {1}, {2}, {3}'.format(
+            self.contact, self.subject, self.user.userprofile,
+            self.date.strftime('%Y-%m-%d %H:%M')
+        )
 
     class Meta:
         verbose_name = _(u'Note')
@@ -279,9 +288,9 @@ class Note(models.Model):
 
 class CompanyRating(models.Model):
     company = models.ForeignKey(Company, verbose_name=_(u'Company'),
-        related_name='ratings')
+                                related_name='ratings')
     user = models.ForeignKey(User, verbose_name=_(u'User'), null=True,
-    blank=True)
+                             blank=True)
     good_quality = models.PositiveSmallIntegerField(_(u'Good Quality'))
     delivery_time = models.PositiveSmallIntegerField(_(u'Delivery Time'))
     quality = models.PositiveSmallIntegerField(_(u'Quality'))
@@ -290,17 +299,20 @@ class CompanyRating(models.Model):
     attainability = models.PositiveSmallIntegerField(_(u'Attainability'))
     documentation = models.PositiveSmallIntegerField(_(u'Documentation'))
     rating = models.CharField(_(u'Rating'), max_length=1,
-        choices=RATING_CHOICES)
+                              choices=RATING_CHOICES)
     rated = models.DateTimeField(_(u'Rated'), auto_now_add=True)
     note = models.TextField(_(u'Note'), blank=True)
 
     def __unicode__(self):
-        return u'{0} - {1} -> {2}'.format(self.user.userprofile,
-            self.company.name, self.rating)
+        return u'{0} - {1} -> {2}'.format(
+            self.user.userprofile, self.company.name, self.rating
+        )
 
     def as_list(self):
-        return [self.good_quality, self.delivery_time, self.quality,
-            self.price, self.service, self.attainability, self.documentation]
+        return [
+            self.good_quality, self.delivery_time, self.quality,
+            self.price, self.service, self.attainability, self.documentation
+        ]
 
     def average(self):
         return sum(self.as_list()) / 7.0
@@ -328,17 +340,20 @@ SUFFIX_CHOICES = (
 class StudentGroup(models.Model):
     start_date = models.DateField(_(u'Start Date'))
     school_nr = models.CharField(_(u'School Number'), max_length=10,
-        blank=True)
+                                 blank=True)
     job = models.CharField(_(u'Job'), max_length=50)
-    job_short = models.CharField(_(u'Job Short'), max_length=10,
-        help_text=_(u'This field will be converted to uppercase.'))
+    job_short = models.CharField(
+        _(u'Job Short'), max_length=10,
+        help_text=_(u'This field will be converted to uppercase.')
+    )
     suffix = models.CharField(_(u'Suffix'), max_length=1, blank=True,
-        choices=SUFFIX_CHOICES)
+                              choices=SUFFIX_CHOICES)
 
     @named(_(u'Groupname'))
     def name(self):
-        return u'{0} {1}{2}'.format(self.job_short,
-            self.start_date.strftime('%Y'), self.suffix)
+        return u'{0} {1}{2}'.format(
+            self.job_short, self.start_date.strftime('%Y'), self.suffix
+        )
 
     def __unicode__(self):
         return self.name()
@@ -385,42 +400,55 @@ class Student(CommonInfo):
     sex = models.CharField(_(u'Sex'), max_length=1, choices=SEX_CHOICES)
     birthdate = models.DateField(_(u'Birthdate'))
     emergency = models.CharField(_(u'Notice in emergency'), max_length=100,
-        blank=True)
+                                 blank=True)
     picture = models.ImageField(_(u'Picture'), upload_to='pictures',
-        blank=True)
+                                blank=True)
     email = models.EmailField(_(u'Email'), blank=True)
     mobile = models.CharField(_(u'Mobile'), max_length=30, blank=True)
-    company = models.ForeignKey(Company, verbose_name=_(u'Company'),
-        related_name='students', blank=True, null=True)
+    company = models.ForeignKey(
+        Company, verbose_name=_(u'Company'), related_name='students',
+        blank=True, null=True
+    )
     group = models.ForeignKey(StudentGroup, verbose_name=_(u'Group'),
-        related_name='students', blank=True, null=True)
+                              related_name='students', blank=True, null=True)
     cabinet = models.CharField(_(u'Cabinet'), max_length=20, blank=True)
     key = models.CharField(_(u'Key'), max_length=20, blank=True)
-    school_education = models.PositiveSmallIntegerField(_(u'School Education'),
-        choices=EDU_CHOICES, null=True, blank=True)
-    applied_to = models.CharField(_(u'Applied to'), max_length=150,
-        help_text=_(u'Separate two or more names with a comma.'), blank=True)
-    forwarded_to = models.CharField(_(u'Forwarded to'), max_length=150,
-        help_text=_(u'Separate two or more names with a comma.'), blank=True)
-    jobs = models.CharField(_(u'Jobs'), max_length=150,
-        help_text=_(u'Separate two or more jobs with a comma.'), blank=True)
-    test_result = models.PositiveSmallIntegerField(_(u'Test Result'),
-        blank=True, null=True)
+    school_education = models.PositiveSmallIntegerField(
+        _(u'School Education'), choices=EDU_CHOICES, null=True, blank=True
+    )
+    applied_to = models.CharField(
+        _(u'Applied to'), max_length=150,
+        help_text=_(u'Separate two or more names with a comma.'), blank=True
+    )
+    forwarded_to = models.CharField(
+        _(u'Forwarded to'), max_length=150,
+        help_text=_(u'Separate two or more names with a comma.'), blank=True
+    )
+    jobs = models.CharField(
+        _(u'Jobs'), max_length=150,
+        help_text=_(u'Separate two or more jobs with a comma.'), blank=True
+    )
+    test_result = models.PositiveSmallIntegerField(
+        _(u'Test Result'), blank=True, null=True
+    )
     test_date = models.DateField(_(u'Test Date'), blank=True, null=True)
-    suit_phrase = models.PositiveSmallIntegerField(_(u'Suit phrase'),
-        choices=SUIT_CHOICES, blank=True, null=True)
+    suit_phrase = models.PositiveSmallIntegerField(
+        _(u'Suit phrase'), choices=SUIT_CHOICES, blank=True, null=True
+    )
     exam_1 = models.PositiveSmallIntegerField(_(u'Exam 1'), blank=True,
-        null=True)
-    exam_1_weight = models.PositiveSmallIntegerField(_(u'Exam 1 weight'),
-        blank=True, null=True, default=30)
+                                              null=True)
+    exam_1_weight = models.PositiveSmallIntegerField(
+        _(u'Exam 1 weight'), blank=True, null=True, default=30
+    )
     exam_2 = models.PositiveSmallIntegerField(_(u'Exam 2'), blank=True,
-        null=True)
+                                              null=True)
     barcode = models.CharField(max_length=100, editable=False, blank=True)
     _barcode = models.ImageField(upload_to='barcodes', editable=False,
-        blank=True)
-    contract = models.ForeignKey(CooperationContract,
-        verbose_name=_(u'Cooperation Contract'), related_name='students',
-        null=True, blank=True)
+                                 blank=True)
+    contract = models.ForeignKey(
+        CooperationContract, verbose_name=_(u'Cooperation Contract'),
+        related_name='students', null=True, blank=True
+    )
     finished = models.BooleanField(_(u'Finished'), default=False)
 
     audit_log = AuditLog()
@@ -445,7 +473,7 @@ class Student(CommonInfo):
         try:
             age = date.today() - self.birthdate
             return age.days // 365
-        except:
+        except:  # noqa: E722
             return 0
 
     class Meta:
@@ -456,9 +484,9 @@ class Student(CommonInfo):
 
 class PedagogicJournal(models.Model):
     group = models.OneToOneField(StudentGroup, verbose_name=_(u'Group'),
-        related_name='journal')
+                                 related_name='journal')
     instructors = models.ManyToManyField(User, verbose_name=_(u'Instructors'),
-        related_name='journals')
+                                         related_name='journals')
     created = models.DateField(_(u'Created'), auto_now_add=True)
 
     def __unicode__(self):
@@ -478,15 +506,17 @@ class PedagogicJournal(models.Model):
 
 class JournalEntry(models.Model):
     journal = models.ForeignKey(PedagogicJournal, verbose_name=_(u'Journal'),
-        related_name='entries')
+                                related_name='entries')
     student = models.ForeignKey(Student, verbose_name=_(u'Student'),
-        related_name='journal_entries')
+                                related_name='journal_entries')
     event = models.CharField(_(u'Event'), max_length=50, blank=True)
     text = models.TextField(_(u'Text'))
     created = models.DateTimeField(_(u'Created'), auto_now_add=True)
-    created_by = models.ForeignKey(User, verbose_name=_(u'Created by'),
+    created_by = models.ForeignKey(
+        User, verbose_name=_(u'Created by'),
         related_name='journal_entries', editable=False, null=True,
-        blank=True)
+        blank=True
+    )
     last_edit = models.DateTimeField(_(u'Last edit'), auto_now=True)
 
     def __unicode__(self):
@@ -522,7 +552,7 @@ MEDIA_TYPES_HTML = {
 
 class JournalMedia(models.Model):
     entry = models.ForeignKey(JournalEntry, verbose_name=_(u'Journal Entry'),
-        related_name='media')
+                              related_name='media')
     media_type = models.CharField(max_length=30, editable=False, blank=True)
     media = models.FileField(_(u'Media'), upload_to='journals/%Y')
 
@@ -568,19 +598,24 @@ PRESENCE_CHOICES = (
 
 class PresenceDay(models.Model):
     student = models.ForeignKey(Student, verbose_name=_(u'Student'),
-        related_name='presence_days')
+                                related_name='presence_days')
     date = models.DateField(_(u'Date'))
-    entry = models.CharField(_(u'Entry'), max_length=2,
-        choices=PRESENCE_CHOICES, default='', blank=True)
+    entry = models.CharField(
+        _(u'Entry'), max_length=2, choices=PRESENCE_CHOICES,
+        default='', blank=True
+    )
     lateness = models.IntegerField(_(u'Lateness'), default=0)
     excused = models.NullBooleanField(_(u'Excused'), blank=True)
     note = models.CharField(_(u'Note'), max_length=25, blank=True)
-    instructor = models.ForeignKey(User, verbose_name=_(u'Instructor'),
-        editable=False, null=True, blank=True)
+    instructor = models.ForeignKey(
+        User, verbose_name=_(u'Instructor'), editable=False, null=True,
+        blank=True
+    )
 
     def __unicode__(self):
-        return u'{0} {1} -{2}-'.format(self.student,
-            self.date.strftime('%d.%m.%Y'), self.entry)
+        return u'{0} {1} -{2}-'.format(
+            self.student, self.date.strftime('%d.%m.%Y'), self.entry
+        )
 
     class Meta:
         verbose_name = _(u'Presence')
@@ -590,16 +625,17 @@ class PresenceDay(models.Model):
 
 class PresencePrintout(models.Model):
     company = models.ForeignKey(Company, verbose_name=_(u'Company'),
-        related_name='printouts')
+                                related_name='printouts')
     pdf = models.FileField(_(u'PDF-File'), upload_to='presence/%Y/%m')
     date = models.DateField(_(u'Date'))
     group = models.ForeignKey(StudentGroup, verbose_name=_(u'Group'),
-        related_name='presence_printouts')
+                              related_name='presence_printouts')
     generated = models.DateTimeField(_(u'Generated'), auto_now=True)
 
     def __unicode__(self):
-        return u'{0} {1}'.format(self.company.short_name,
-            self.date.strftime('%Y/%m'))
+        return u'{0} {1}'.format(
+            self.company.short_name, self.date.strftime('%Y/%m')
+        )
 
     class Meta:
         verbose_name = _(u'Printout')
@@ -625,21 +661,31 @@ class PDFPrintout(models.Model):
 
 
 class InternalHelp(models.Model):
-    title = models.CharField(_(u'Title'), max_length=50,
-        help_text=_(u'Used for the title attribute of the help dialog.'))
-    ident = models.SlugField(_(u'Identifier'),
-        help_text=_(u'Help for the same topic in another language must '
-                    u'define exactly the same identifier.'))
-    lang = models.CharField(_(u'Language'), max_length=5,
-        help_text=_(u'Lookup is done via istartswith.'))
-    width = models.PositiveIntegerField(_(u'Dialog width'), default=500,
-        help_text=_(u'Width of the help dialog.'))
-    opener_class = models.CharField(_(u'Opener class'), max_length=15,
-        default=u'.opener', help_text=_(u'CSS class of the element which '
-            u'gets the click event to open the help dialog (jQuery notation).')
+    title = models.CharField(
+        _(u'Title'), max_length=50,
+        help_text=_(u'Used for the title attribute of the help dialog.')
     )
-    text = models.TextField(_(u'Text'), help_text=_(u'Main help text. You '
-        u'can use HTML here.'))
+    ident = models.SlugField(
+        _(u'Identifier'),
+        help_text=_(u'Help for the same topic in another language must '
+                    u'define exactly the same identifier.')
+    )
+    lang = models.CharField(
+        _(u'Language'), max_length=5,
+        help_text=_(u'Lookup is done via istartswith.')
+    )
+    width = models.PositiveIntegerField(
+        _(u'Dialog width'), default=500,
+        help_text=_(u'Width of the help dialog.')
+    )
+    opener_class = models.CharField(
+        _(u'Opener class'), max_length=15, default=u'.opener',
+        help_text=_(u'CSS class of the element which gets the click event to '
+                    u'open the help dialog (jQuery notation).')
+    )
+    text = models.TextField(
+        _(u'Text'), help_text=_(u'Main help text. You can use HTML here.')
+    )
 
     def __unicode__(self):
         return u'[{0}] {1} ({2})'.format(self.lang, self.title, self.ident)
@@ -684,19 +730,29 @@ class AccidentEntry(models.Model):
     date_time = models.DateTimeField(_(u'Date / Time'))
     added = models.DateTimeField(auto_now_add=True)
     added_by = models.ForeignKey(User, editable=False, blank=True, null=True)
-    student = models.ForeignKey(Student, null=True, blank=True,
-        verbose_name=_(u'Verletzter Azubi'), related_name='accidents')
-    employee = models.ForeignKey(User, null=True, blank=True,
-        verbose_name=_(u'Verletzter Mitarbeiter'), related_name='accidents')
+    student = models.ForeignKey(
+        Student, null=True, blank=True,
+        verbose_name=_(u'Verletzter Azubi'), related_name='accidents'
+    )
+    employee = models.ForeignKey(
+        User, null=True, blank=True,
+        verbose_name=_(u'Verletzter Mitarbeiter'), related_name='accidents'
+    )
     place = models.ForeignKey(Place, verbose_name=_(u'Place'),
-        related_name='accident_entries')
-    place_def = models.CharField(_(u'Ort (genauer)'), max_length=50, blank=True)
-    violation = models.PositiveSmallIntegerField(_(u'Verletzung'),
-        choices=VIOLATION_CHOICES)
+                              related_name='accident_entries')
+    place_def = models.CharField(
+        _(u'Ort (genauer)'), max_length=50, blank=True
+    )
+    violation = models.PositiveSmallIntegerField(
+        _(u'Verletzung'), choices=VIOLATION_CHOICES
+    )
     violation_def = models.TextField(_(u'Genaue Verletzung und Ursache'))
     notify = models.BooleanField(_(u'Meldepflichtig'), default=False)
-    witnesses = models.TextField(_('Zeugen'), blank=True, help_text=_(u'Bitte '
-        u'die Nachnamen der Zeugen durch Komma getrennt hier eingeben.'))
+    witnesses = models.TextField(
+        _('Zeugen'), blank=True,
+        help_text=_(u'Bitte die Nachnamen der Zeugen durch Komma getrennt '
+                    u'hier eingeben.')
+    )
     helper = models.TextField(_(u'Ersthelfer oder Arzt'))
     first_aid = models.TextField(_(u'Erste-Hilfe-Maßnahmen/Behandlung'))
     used = models.TextField(_(u'Benutztes Material'), blank=True)

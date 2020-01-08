@@ -14,14 +14,19 @@ register = template.Library()
 def show_help(context, help_slug):
     lang = context.get('LANGUAGE_CODE', 'en-en')
     try:
-        ihelp = InternalHelp.objects.values().get(lang__istartswith=lang,
-            ident=help_slug)
+        ihelp = InternalHelp.objects.values().get(
+            lang__istartswith=lang, ident=help_slug
+        )
         return ihelp
     except InternalHelp.DoesNotExist:
-        return {'title': _(u'Error'), 'text': _(u'<p>No help found for lang '
-            u'%(lang)s and identifier %(ident)s.</p>' % {'lang': lang,
-                'ident': help_slug}), 'width': 500, 'opener_class': u'.opener',
-            'ident': help_slug}
+        return {
+            'title': _(u'Error'),
+            'text': _(u'<p>No help found for lang %(lang)s and identifier '
+                      u'%(ident)s.</p>' % {'lang': lang, 'ident': help_slug}),
+            'width': 500,
+            'opener_class': u'.opener',
+            'ident': help_slug
+        }
 
 
 @register.filter(name='enumerate')

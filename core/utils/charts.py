@@ -118,10 +118,12 @@ class NoData(Drawing):
 
     def __init__(self, width=400, height=200, *args, **kw):
         Drawing.__init__(self, width, height, *args, **kw)
-        self.add(Rect(20, 20, width - 40, height - 40, fillColor=colors.yellow))
+        self.add(
+            Rect(20, 20, width - 40, height - 40, fillColor=colors.yellow)
+        )
         y = int(height / 2) - 12
         self.add(String(80, y, 'Keine Daten gefunden!'.encode('utf-8'),
-            fontSize=24, fillColor=colors.red))
+                        fontSize=24, fillColor=colors.red))
 
 
 if __name__ == '__main__':

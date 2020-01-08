@@ -14,7 +14,8 @@ class Menu(object):
             yield named_url, name
 
 
-core_menu = Menu(_(u'Core'),
+core_menu = Menu(
+    _(u'Core'),
     ('core-companies', _(u'Companies')),
     ('core-students', _(u'Students')),
     ('core-groups', _(u'Groups')),
@@ -24,18 +25,21 @@ core_menu = Menu(_(u'Core'),
     ('core-students-archive', _(u'Archive')),
 )
 
-journal_menu = Menu(_(u'Journals'),
+journal_menu = Menu(
+    _(u'Journals'),
     ('core-myentries', _(u'My Entries')),
     ('core-add-journal', _(u'Add new Journal')),
     ('core-journals', _(u'Manage Journals')),
 )
 
-extra_menu = Menu(_(u'Extra'),
+extra_menu = Menu(
+    _(u'Extra'),
     ('core-birthdays', _(u'Coming Birthdays')),
     ('core-phonelist', _(u'Internal Phonelist')),
 )
 
-news_menu = Menu(_(u'News'),
+news_menu = Menu(
+    _(u'News'),
     ('core-add-news', _(u'Write News')),
 )
 

@@ -22,8 +22,8 @@ def slugify(value):
     """
     import unicodedata
     value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore')
-    value = unicode(re.sub('[^\w\s-]', '', value).strip().lower())
-    return re.sub('[-\s]+', '-', value)
+    value = unicode(re.sub(r'[^\w\s-]', '', value).strip().lower())
+    return re.sub(r'[-\s]+', '-', value)
 
 
 def create_barcode(prefix, ident, name):
@@ -36,7 +36,7 @@ def create_barcode(prefix, ident, name):
 
 
 def create_student_barcode(sender, **kw):
-    if not 'instance' in kw or not kw.get('created', False):
+    if 'instance' not in kw or not kw.get('created', False):
         return
     instance = kw['instance']
     bc, im = create_barcode(u'STU-{0}'.format(instance.lastname[0]),
@@ -48,7 +48,7 @@ def create_student_barcode(sender, **kw):
 
 
 def create_profile(sender, **kw):
-    if not 'instance' in kw or not kw.get('created', False):
+    if 'instance' not in kw or not kw.get('created', False):
         return
     instance = kw['instance']
     profile = UserProfile()

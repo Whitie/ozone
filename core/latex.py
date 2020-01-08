@@ -20,7 +20,7 @@ texescape.init()
 def tex_escape(text):
     try:
         return text.translate(texescape.tex_hl_escape_map_new)
-    except:
+    except:  # noqa: E722
         return ''
 
 
@@ -33,7 +33,8 @@ def escape_path(path):
 
 def get_latex_env(template_path):
     loader = FileSystemLoader(template_path)
-    env = Environment(loader=loader,
+    env = Environment(
+        loader=loader,
         block_start_string='(%',
         block_end_string='%)',
         variable_start_string='((',
@@ -69,7 +70,7 @@ def clean_build_dir(directory):
         if ext not in ('.sty', '.tex'):
             try:
                 os.remove(os.path.join(directory, f))
-            except:
+            except:  # noqa: E722
                 pass
 
 

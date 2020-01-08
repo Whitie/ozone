@@ -38,9 +38,12 @@ class StudentWizard(SessionWizardView):
 
     def get_context_data(self, form, **kw):
         ctx = super(StudentWizard, self).get_context_data(form=form, **kw)
-        _ctx = dict(page_title=_(u'Add new Student'),
-            subtitle=u'Schritt: {0}/{1}'.format(self.steps.step1,
-                self.steps.count), menus=menus, dp=True, need_ajax=True)
+        _ctx = dict(
+            page_title=_(u'Add new Student'),
+            subtitle=u'Schritt: {0}/{1}'.format(
+                self.steps.step1, self.steps.count
+            ), menus=menus, dp=True, need_ajax=True
+        )
         ctx.update(_ctx)
         return ctx
 
@@ -65,6 +68,8 @@ def student_wizard_view_wrapper(req):
 
 def student_added(req, student_id):
     s = Student.objects.select_related().get(id=int(student_id))
-    ctx = dict(page_title=_(u'New student added'), s=s, menus=menus,
-        subtitle=u'{l}, {f}'.format(l=s.lastname, f=s.firstname))
+    ctx = dict(
+        page_title=_(u'New student added'), s=s, menus=menus,
+        subtitle=u'{last}, {first}'.format(last=s.lastname, first=s.firstname)
+    )
     return render(req, 'students/add/success.html', ctx)

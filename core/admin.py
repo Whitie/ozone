@@ -5,7 +5,12 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
 from core.utils import named
-from core.models import *
+from core.models import (
+    AccidentEntry, Configuration, Contact, CooperationContract, InternalHelp,
+    JournalMedia, JournalEntry, PDFPrintout, PedagogicJournal, Place,
+    PresencePrintout, Note, PresenceDay, StudentGroup, Student, Company,
+    CompanyRating, Part, News, UserProfile
+)
 
 
 class ConfigurationAdmin(admin.ModelAdmin):
@@ -246,12 +251,12 @@ class JournalMediaAdmin(admin.ModelAdmin):
 
 class AccidentEntryAdmin(admin.ModelAdmin):
     list_display = ('date_time', 'get_injured', 'place', 'violation',
-        'notify')
+                    'notify')
     list_display_links = ('date_time',)
     list_editable = ('notify', 'violation')
     list_filter = ('date_time', 'place', 'violation', 'notify')
     search_fields = ('student__lastname', 'employee__last_name', 'witness',
-        'helper', 'violation', 'violation_def')
+                     'helper', 'violation', 'violation_def')
     ordering = ('-date_time', 'place__name')
 
     @named(_(u'Injured'))

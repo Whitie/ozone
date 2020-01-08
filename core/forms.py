@@ -5,14 +5,16 @@ from django.forms.widgets import CheckboxSelectMultiple, TextInput, Textarea
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
-from core.models import (News, RATING_CHOICES, UserProfile, PedagogicJournal,
+from core.models import (
+    News, RATING_CHOICES, UserProfile, PedagogicJournal,
     Student, StudentGroup, SEX_CHOICES, SUIT_CHOICES, EDU_CHOICES, Company,
-    CooperationContract, AccidentEntry)
+    CooperationContract, AccidentEntry
+)
 from core.html5_widgets import SearchInput5
 
 
 DAYS = ((_(u'Mon'), _(u'Mon')), (_(u'Tue'), _(u'Tue')), (_(u'Wed'), _(u'Wed')),
-    (_(u'Thu'), _(u'Thu')), (_(u'Fri'), _(u'Fri')))
+        (_(u'Thu'), _(u'Thu')), (_(u'Fri'), _(u'Fri')))
 
 
 SEARCHES = {
@@ -37,7 +39,7 @@ def get_user():
 
 def get_groups():
     g = [(0, u'----')] + [(x.id, x.name()) for x in StudentGroup.objects.all()
-        if not x.finished()]
+                          if not x.finished()]
     return g
 
 
@@ -66,8 +68,10 @@ def get_company(cid):
 
 
 def get_contracts():
-    c = [(0, _(u'>- Select company first -<'))] + [(x.id, unicode(x)) for x
-        in CooperationContract.objects.filter(active=True)]
+    c = [(0, _(u'>- Select company first -<'))] + [
+        (x.id, unicode(x)) for x in
+        CooperationContract.objects.filter(active=True)
+    ]
     return c
 
 
@@ -120,8 +124,10 @@ class ProfileForm(forms.ModelForm):
 
 
 class SearchForm(forms.Form):
-    search = forms.CharField(label=_(u'Search'), max_length=50,
-        widget=SearchInput5(attrs={'class': 'span2'}))
+    search = forms.CharField(
+        label=_(u'Search'), max_length=50,
+        widget=SearchInput5(attrs={'class': 'span2'})
+    )
 
 
 class StudentSearchForm(SearchForm):
@@ -129,19 +135,25 @@ class StudentSearchForm(SearchForm):
 
 
 class ExtendedSearchForm(forms.Form):
-    search_for_1 = forms.TypedChoiceField(coerce=get_search_field,
-        choices=SEARCHES_CHOICES,
-        widget=forms.Select(attrs={'class': 'span2'}))
+    search_for_1 = forms.TypedChoiceField(
+        coerce=get_search_field, choices=SEARCHES_CHOICES,
+        widget=forms.Select(attrs={'class': 'span2'})
+    )
     search_1 = forms.CharField(max_length=50,
-        widget=SearchInput5(attrs={'class': 'span2'}))
-    connect_with = forms.ChoiceField(choices=(
-        ('and', _(u'and')), ('or', _(u'or'))),
-        widget=forms.Select(attrs={'class': 'span1'}))
-    search_for_2 = forms.TypedChoiceField(coerce=get_search_field,
+                               widget=SearchInput5(attrs={'class': 'span2'}))
+    connect_with = forms.ChoiceField(
+        choices=(('and', _(u'and')), ('or', _(u'or'))),
+        widget=forms.Select(attrs={'class': 'span1'})
+    )
+    search_for_2 = forms.TypedChoiceField(
+        coerce=get_search_field,
         choices=[('', '-----')] + SEARCHES_CHOICES, empty_value='',
-        required=False, widget=forms.Select(attrs={'class': 'span2'}))
-    search_2 = forms.CharField(max_length=50, required=False,
-        widget=SearchInput5(attrs={'class': 'span2'}))
+        required=False, widget=forms.Select(attrs={'class': 'span2'})
+    )
+    search_2 = forms.CharField(
+        max_length=50, required=False,
+        widget=SearchInput5(attrs={'class': 'span2'})
+    )
 
 
 class NoteForm(forms.Form):
@@ -160,33 +172,38 @@ RATINGS = (
 
 class CompanyRatingForm(forms.Form):
     good_quality = forms.TypedChoiceField(label=_(u'Good Quality'),
-        coerce=int, choices=RATINGS)
+                                          coerce=int, choices=RATINGS)
     delivery_time = forms.TypedChoiceField(label=_(u'Delivery Time'),
-        coerce=int, choices=RATINGS)
+                                           coerce=int, choices=RATINGS)
     quality = forms.TypedChoiceField(label=_(u'Quality'),
-        coerce=int, choices=RATINGS)
+                                     coerce=int, choices=RATINGS)
     price = forms.TypedChoiceField(label=_(u'Price'),
-        coerce=int, choices=RATINGS)
+                                   coerce=int, choices=RATINGS)
     service = forms.TypedChoiceField(label=_(u'Service'),
-        coerce=int, choices=RATINGS)
+                                     coerce=int, choices=RATINGS)
     attainability = forms.TypedChoiceField(label=_(u'Attainability'),
-        coerce=int, choices=RATINGS)
+                                           coerce=int, choices=RATINGS)
     documentation = forms.TypedChoiceField(label=_(u'Documentation'),
-        coerce=int, choices=RATINGS)
+                                           coerce=int, choices=RATINGS)
     rating = forms.ChoiceField(label=_(u'Rating'), choices=RATING_CHOICES)
-    note = forms.CharField(label=_(u'Note'), widget=forms.Textarea,
+    note = forms.CharField(
+        label=_(u'Note'), widget=forms.Textarea,
         required=False, help_text=_(u'This field is required if you rate '
-        u'with "B".'))
+                                    u'with "B".')
+    )
 
 
 class PresenceForm(forms.Form):
     instructor = forms.TypedChoiceField(label=_(u'Instructor'),
-        choices=[], coerce=int)
+                                        choices=[], coerce=int)
     course = forms.CharField(label=_(u'Course'), max_length=50, required=False)
-    school_days = forms.MultipleChoiceField(label=_(u'School days'),
-        choices=DAYS, required=False, widget=CheckboxSelectMultiple)
-    include_supported_days = forms.BooleanField(label=_(u'Include supported '
-        u'days'), required=False)
+    school_days = forms.MultipleChoiceField(
+        label=_(u'School days'),
+        choices=DAYS, required=False, widget=CheckboxSelectMultiple
+    )
+    include_supported_days = forms.BooleanField(
+        label=_(u'Include supported days'), required=False
+    )
 
 
 class NewEntryForm(forms.Form):
@@ -199,21 +216,25 @@ class NewUserForm(forms.Form):
     name_prefix = forms.CharField(label=_(u'Name Prefix'), max_length=12)
     lastname = forms.CharField(label=_(u'Lastname'), max_length=30)
     firstname = forms.CharField(label=_(u'Firstname'), max_length=30,
-        required=False)
+                                required=False)
     street = forms.CharField(label=_(u'Street'), max_length=100,
-        required=False)
+                             required=False)
     zip_code = forms.CharField(label=_(u'Zip Code'), max_length=15,
-        required=False)
+                               required=False)
     city = forms.CharField(label=_(u'City'), max_length=100, required=False)
     country = forms.CharField(label=_(u'Country'), max_length=50,
-        required=False)
+                              required=False)
     email = forms.EmailField(label=_(u'Email'), required=False)
     phone = forms.CharField(label=_(u'Phone'), max_length=30, required=False)
     mobile = forms.CharField(label=_(u'Mobile'), max_length=30, required=False)
-    birthdate = forms.DateField(label=_(u'Birthdate'), required=False,
-        input_formats=['%Y-%m-%d', '%m/%d/%Y', '%d.%m.%Y', '%d.%m.%y'])
-    subjects = forms.CharField(label=_(u'Subjects'), max_length=150,
-        required=False, widget=forms.TextInput(attrs={'size': '100'}))
+    birthdate = forms.DateField(
+        label=_(u'Birthdate'), required=False,
+        input_formats=['%Y-%m-%d', '%m/%d/%Y', '%d.%m.%Y', '%d.%m.%y']
+    )
+    subjects = forms.CharField(
+        label=_(u'Subjects'), max_length=150,
+        required=False, widget=forms.TextInput(attrs={'size': '100'})
+    )
     can_login = forms.BooleanField(label=_(u'Can Login'), required=False)
 
 
@@ -223,49 +244,64 @@ class StudentPersonalDataForm(forms.Form):
     lastname = forms.CharField(label=_(u'Lastname'), max_length=50)
     firstname = forms.CharField(label=_(u'Firstname'), max_length=50)
     sex = forms.ChoiceField(label=_(u'Sex'), choices=SEX_CHOICES)
-    birthdate = forms.DateField(label=_(u'Birthdate'),
-        input_formats=['%Y-%m-%d', '%m/%d/%Y', '%d.%m.%Y', '%d.%m.%y'])
+    birthdate = forms.DateField(
+        label=_(u'Birthdate'),
+        input_formats=['%Y-%m-%d', '%m/%d/%Y', '%d.%m.%Y', '%d.%m.%y']
+    )
     street = forms.CharField(label=_(u'Street'), max_length=100,
-        required=False)
+                             required=False)
     zip_code = forms.CharField(label=_(u'Zip Code'), max_length=15,
-        required=False)
+                               required=False)
     city = forms.CharField(label=_(u'City'), max_length=100, required=False)
     country = forms.CharField(label=_(u'Country'), max_length=50,
-        required=False)
+                              required=False)
     phone = forms.CharField(label=_(u'Phone'), max_length=30, required=False)
     mobile = forms.CharField(label=_(u'Mobile'), required=False)
     email = forms.EmailField(label=_(u'Email'), required=False)
     emergency = forms.CharField(label=_(u'Notice in emergency'),
-        max_length=100, required=False)
+                                max_length=100, required=False)
 
 
 class StudentJobForm(forms.Form):
     group = forms.TypedChoiceField(label=_(u'Group'), choices=get_groups(),
-        coerce=get_group, required=False)
-    company = forms.TypedChoiceField(label=_(u'Company'),
-        choices=get_companies(), coerce=get_company, required=False)
-    contract = forms.TypedChoiceField(label=_(u'Cooperation Contract'),
-        choices=get_contracts(), required=False, coerce=get_contract)
-    cabinet = forms.CharField(label=_(u'Cabinet'), max_length=20,
-        required=False)
+                                   coerce=get_group, required=False)
+    company = forms.TypedChoiceField(
+        label=_(u'Company'), choices=get_companies(), coerce=get_company,
+        required=False
+    )
+    contract = forms.TypedChoiceField(
+        label=_(u'Cooperation Contract'),
+        choices=get_contracts(), required=False, coerce=get_contract
+    )
+    cabinet = forms.CharField(
+        label=_(u'Cabinet'), max_length=20, required=False
+    )
     key = forms.CharField(label=_(u'Key'), max_length=20, required=False)
     picture = forms.ImageField(label=_(u'Picture'), required=False)
 
 
 class StudentApplyForm(forms.Form):
-    school_education = forms.TypedChoiceField(label=_(u'School Education'),
-        choices=EDU_CHOICES, required=False, coerce=int)
+    school_education = forms.TypedChoiceField(
+        label=_(u'School Education'), choices=EDU_CHOICES, required=False,
+        coerce=int
+    )
     applied_to = forms.CharField(label=_(u'Applied to'), max_length=150,
-        required=False)
+                                 required=False)
     forwarded_to = forms.CharField(label=_(u'Forwarded to'), max_length=150,
-        required=False)
+                                   required=False)
     jobs = forms.CharField(label=_(u'Jobs'), max_length=150, required=False)
-    test_result = forms.TypedChoiceField(label=_(u'Test Result'),
-        choices=get_points(), required=False, coerce=int)
-    test_date = forms.DateField(label=_(u'Test Date'), required=False,
-        input_formats=['%Y-%m-%d', '%m/%d/%Y', '%d.%m.%Y', '%d.%m.%y'])
-    suit_phrase = forms.TypedChoiceField(label=_(u'Suit phrase'),
-        choices=SUIT_CHOICES, required=False, coerce=int)
+    test_result = forms.TypedChoiceField(
+        label=_(u'Test Result'), choices=get_points(), required=False,
+        coerce=int
+    )
+    test_date = forms.DateField(
+        label=_(u'Test Date'), required=False,
+        input_formats=['%Y-%m-%d', '%m/%d/%Y', '%d.%m.%Y', '%d.%m.%y']
+    )
+    suit_phrase = forms.TypedChoiceField(
+        label=_(u'Suit phrase'), choices=SUIT_CHOICES, required=False,
+        coerce=int
+    )
 
 
 # End of wizard
@@ -273,10 +309,10 @@ class StudentApplyForm(forms.Form):
 
 class StudentEditForm(forms.Form):
     cabinet = forms.CharField(label=_(u'Cabinet'), max_length=20,
-        required=False)
+                              required=False)
     key = forms.CharField(label=_(u'Key'), max_length=20, required=False)
     exam_1 = forms.TypedChoiceField(label=_(u'Exam 1'), required=False,
-        choices=get_points(), coerce=int)
+                                    choices=get_points(), coerce=int)
     exam_2 = forms.TypedChoiceField(label=_(u'Exam 2'), required=False,
-        choices=get_points(), coerce=int)
+                                    choices=get_points(), coerce=int)
     finished = forms.BooleanField(label=_(u'Finished'), required=False)

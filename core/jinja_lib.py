@@ -75,7 +75,7 @@ def url(view_name, *args, **kwargs):
         try:
             name = settings.SETTINGS_MODULE.split('.')[0]
             return reverse('{0}.{1}'.format(name, view_name), args=args,
-                kwargs=kwargs)
+                           kwargs=kwargs)
         except NoReverseMatch:
             return ''
 
