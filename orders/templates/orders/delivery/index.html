@@ -23,7 +23,12 @@
                 {% for o in orders %}
                 <tr>
                     <td>{{ o.ordered|date:"Y-m-d" }}</td>
-                    <td>{{ o.article.name }}</td>
+                    <td>
+                        {{ o.article.name }}
+                        {% if o.article.chemman %}
+                        <span class="label label-important">Giftbuch</span>
+                        {% endif %}
+                    </td>
                     <td>
                         <a href="#" class="tt" title="{% trans 'Barcode' %}: {{ o.article.barcode|default:'-' }}">
                             {{ o.article.ident }}

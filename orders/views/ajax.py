@@ -219,7 +219,8 @@ def update_delivery(req, data):
         'date': dorder.date.strftime('%d.%m.%Y'),
         'u': dorder.user.username}
     ret = dict(msg=u' '.join(msg), complete=order.is_complete(),
-               missing=missing, entry=entry)
+               missing=missing, entry=entry,
+               toxic=order.article.chemman)
     return ret
 
 

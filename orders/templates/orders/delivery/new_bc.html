@@ -7,7 +7,10 @@
     <select size="1" id="new_art">
         <option value="0">----</option>
         {% for a in articles %}
-        <option value="{{ a.id }}">{{ a.name}} ({{ a.ident }})</option>
+        <option value="{{ a.id }}">
+            {{ a.name}} ({{ a.ident }})
+            {% if a.chemman %}GIFTBUCH{% endif %}
+        </option>
         {% endfor %}
     </select>
     <br>

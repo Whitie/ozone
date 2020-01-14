@@ -1,6 +1,7 @@
 {% load i18n %}
 
 <h3>{{ article.name }} <small>{{ orders|length }} {% trans "open order(s)" %}</small></h3>
+{% if article.chemman %}<span class="label label-important">Giftbuch</span>{% endif %}
 <form onsubmit="return save_delivery({{ olen }});">
     {% if olen == 1 %}
     {% with o=orders|first %}
