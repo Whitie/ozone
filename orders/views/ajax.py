@@ -50,12 +50,16 @@ def get_articles(req):
     term = req.GET.get('term')
     query = Q(name__icontains=term) | Q(barcode__istartswith=term)
     query |= Q(ident__istartswith=term)
-    articles = [{
-        'value': x.id,
-        'label': u'{0} ({1}, {2})'.format(x.name, x.ident, x.barcode),
-        'desc': x.short_desc()
-        } for x in Article.objects.filter(query).order_by('name')
-    ]
+    articles = []
+    for x in Article.objects.filter(query).order_by('name'):
+        label = u'{0} ({1})'
+        if x.discount_price:
+            label += u' <b>RABATT</b>'
+        articles.append({
+            'value': x.id,
+            'label': label.format(x.name, x.ident),
+            'desc': x.short_desc()
+        })
     return articles
 
 
