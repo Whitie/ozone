@@ -16,7 +16,7 @@ from core.utils import render
 
 
 @login_required
-def index(req):
+def index(req, days=30):
     orders = []
     for o in Order.objects.select_related().filter(
       state=u'ordered').order_by('-ordered', 'article__name'):
@@ -27,7 +27,7 @@ def index(req):
         o.userlist = [x.username for x in o.users.all()]
         orders.append(o)
     tmp = set()
-    last = date.today() - timedelta(days=14)
+    last = date.today() - timedelta(days=int(days))
     for d in DeliveredOrder.objects.select_related().filter(
       order__state=u'delivered', date__gte=last):
         if d.order.is_complete():
@@ -45,7 +45,7 @@ def index(req):
         o.userlist = [x.username for x in o.users.all()]
         dorders.append(o)
     ctx = dict(page_title=_(u'Delivery'), menus=menus, orders=orders,
-               dorders=dorders, dt=True, need_ajax=True)
+               dorders=dorders, dt=True, need_ajax=True, days=days)
     return render(req, 'orders/delivery/index.html', ctx, app=u'orders')
 
 

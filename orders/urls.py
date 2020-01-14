@@ -50,6 +50,7 @@ urlpatterns = patterns(
 urlpatterns += patterns(
     'orders.views.delivery',
     url(r'^delivery/$', 'index', name='orders-delivery'),
+    url(r'^delivery/(?P<days>\d+)/$', 'index', name='order-delivery-days'),
     url(r'^delivery/by_barcode/$', 'delivery_by_barcode',
         name='orders-delivery-barcode'),
     url(r'^delivery/by_barcode/(?P<barcode>.+)/$', 'get_article_by_barcode',

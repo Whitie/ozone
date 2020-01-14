@@ -55,7 +55,13 @@
 
 <div class="row-fluid">
     <div class="span12">
-        <h2>{% trans "Delivered last 2 weeks" %}</h2>
+        <h2>Lieferungen der letzten {{ days }} Tage</h2>
+        <p>
+            Anzeige:
+            <a class="label" href="{% url 'order-delivery-days' 14 %}">14 Tage</a>
+            <a class="label" href="{% url 'order-delivery-days' 30 %}">30 Tage</a>
+            <a class="label" href="{% url 'order-delivery-days' 60 %}">60 Tage</a>
+        </p>
         <table class="table table-striped dTable">
             <thead>
                 <th>{% trans "Ordered" %}</th>
