@@ -38,6 +38,9 @@ urlpatterns = patterns(
     # Student groups
     url(r'^groups/$', 'list_groups', name='core-groups'),
     url(r'^groups/(?P<gid>\d+)/$', 'group_details', name='core-group-details'),
+    # ILB
+    url(r'^groups/ilb/(?P<gid>\d+)/$', 'make_ilb_group',
+        name='core-ilb-group'),
     # Collegues
     url(r'^colleagues/$', 'list_colleagues', name='core-colleagues'),
     url(r'^colleagues/add/$', 'add_colleague', name='core-user-add'),

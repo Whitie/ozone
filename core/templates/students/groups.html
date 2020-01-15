@@ -46,6 +46,16 @@
                     <a class="btn btn-mini tt" title="JSON-Export" href="{% url "core-group-to-json" g.id %}">
                         <i class="icon-folder-open"></i>
                     </a>
+                    {% if perms.core.change_studentgroup %}
+                    <a class="btn btn-mini btn-info" title="ILB Liste drucken" href="{% url 'core-ilb-group' g.id %}">
+                        <i class="icon-list"></i>
+                    </a>
+                    {% endif %}
+                    {% if perms.core.delete_studentgroup %}
+                    <a class="btn btn-mini btn-danger" title="Gruppe löschen" href="{% url 'admin:core_studentgroup_delete' g.id %}">
+                        <i class="icon-trash"></i>
+                    </a>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
@@ -54,4 +64,3 @@
 </div>
 
 {% endblock %}
-

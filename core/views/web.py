@@ -724,3 +724,12 @@ def mypresence(req):
         today=date.today(), dt=True, need_ajax=True
     )
     return render(req, 'presence/group.html', ctx)
+
+
+@permission_required('core.change_studentgroup')
+def make_ilb_group(req, gid):
+    group = StudentGroup.objects.select_related().get(id=int(gid))
+    students = group.students.all().order_by('company', 'lastname')
+    ctx = dict(page_title=u'ILB Liste erstellen', group=group,
+               students=students)
+    return render(req, 'students/ilb_setup.html', ctx)

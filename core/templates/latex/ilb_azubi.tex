@@ -1,0 +1,59 @@
+\documentclass[a4paper]{scrartcl}
+
+\usepackage[left=10mm,right=10mm,top=30mm]{geometry}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[scaled]{uarial}
+\usepackage{graphicx}
+\usepackage{graphics}
+\usepackage{longtable}
+\usepackage{lastpage}
+\usepackage[automark]{scrlayer-scrpage}
+
+\pagestyle{scrheadings}
+
+\ihead[]{\hspace{1cm}\includegraphics[height=30pt]{logo.png}}
+\chead[]{\textbf{Anwesenheit}}
+\ohead[]{\includegraphics[height=30pt]{bbzlogo.png}\hspace{1cm}}
+
+\ifoot[]{}
+\cfoot[{\thepage\ von \pageref{LastPage}}]{\thepage\ von \pageref{LastPage}}
+\ofoot[]{}
+
+%\renewcommand{\raggedsection}{\centering}
+
+\begin{document}
+\begin{table}
+	\centering
+	\begin{tabular}{rlrl}
+	Berufsgruppe: & Chemielaborant & Ausbildungsjahr: & 2\\
+	Ausbildungsabschnitt: & Biochemische Arbeiten & Zeitraum: & 01.01.20 - 16.03.20\\
+	& & & \\
+	\textbf{Firma:} & Takeda GmbH & \textbf{Auszubildender:} & Max Mustermann\\
+	\end{tabular}
+\end{table}
+
+\Large
+\centering
+
+\begin{longtable}{cccccc}
+	Wochentag & Datum & Unterschrift & Wochentag & Datum & Unterschrift\\
+	\hline
+	\endfirsthead
+	Wochentag & Datum & Unterschrift & Wochentag & Datum & Unterschrift\\
+	\hline
+	\endhead
+	Montag & 06.01.2020 & & Montag & 01.03.2020 & \\
+	\cline{3-3}\cline{6-6}
+	Montag & 06.01.2020 & & Montag & 01.03.2020 & \\
+	\cline{3-3}\cline{6-6}
+	Montag & 06.01.2020 & & Montag & 01.03.2020 & \\
+	\cline{3-3}\cline{6-6}
+	Montag & 06.01.2020 & & Montag & 01.03.2020 & \\
+	\cline{3-3}\cline{6-6}
+	Montag & 06.01.2020 & & Montag & 01.03.2020 & \\
+	\cline{3-3}\cline{6-6}
+\end{longtable}
+\textbf{Verbundtage:} \rule{2cm}{0.4pt}
+\end{document}
