@@ -34,6 +34,7 @@ def easter_sunday(year):
 special_days = {
     # Feste Feiertage
     'Neujahrstag': lambda year: _date(year, 1, 1),
+    'Internationaler Frauentag': lambda year: _date(year, 3, 8),
     'Tag der Arbeit': lambda year: _date(year, 5, 1),
     'Tag der Deutschen Einheit': lambda year: _date(year, 10, 3),
     'Erster Weihnachtstag': lambda year: _date(year, 12, 25),

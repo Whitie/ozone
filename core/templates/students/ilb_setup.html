@@ -2,4 +2,119 @@
 {% load url from future %}
 
 {% block content %}
+<h3>Gruppe: {{ group }}</h3>
+
+{% if step == 1 %}
+<form action="{% url 'core-ilb-group' group.id %}" method="post" class="form-horizontal">
+    {% csrf_token %}
+    <div class="control-group">
+        <label class="control-label" for="{{ form.course.auto_id }}">{{ form.course.label }}</label>
+        <div class="controls">
+            {{ form.course }}
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="{{ form.year.auto_id }}">{{ form.year.label }}</label>
+        <div class="controls">
+            {{ form.year }}
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="{{ form.school1.auto_id }}">Berufsschultag(e)</label>
+        <div class="controls">
+            {{ form.school1 }} {{ form.school2 }}
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="{{ form.start.auto_id }}">{{ form.start.label }}</label>
+        <div class="controls">
+            <div class="datetimepicker input-append date">
+                <input class="input-small" data-format="dd.MM.yyyy" type="text" name="start" id="id_start">
+                <span class="add-on">
+                    <i data-time-icon="icon-time" data-date-icon="icon-calendar"> </i>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="{{ form.end.auto_id }}">{{ form.end.label }}</label>
+        <div class="controls">
+            <div class="datetimepicker input-append date">
+                <input class="input-small" data-format="dd.MM.yyyy" type="text" name="end" id="id_end">
+                <span class="add-on">
+                    <i data-time-icon="icon-time" data-date-icon="icon-calendar"> </i>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="{{ form.students.auto_id }}">{{ form.students.label }}</label>
+        <div class="controls">
+            {{ form.students }}
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <input class="btn" type="submit" value="Absenden">
+        </div>
+    </div>
+</form>
+{% endif %}
+
+{% if step == 2 %}
+<div class="row-fluid">
+    <div class="span4">
+        <p>Folgende Tage werden gedruckt:</p>
+        <p id="dates">
+            {% for check, dt, special in days %}
+            <label class="checkbox">
+                <input type="checkbox" value="{{ dt|date:'Y-m-d' }}"{% if check %} checked{% endif %}>
+                {{ dt|date:'D d. M Y' }}{% if special %} ({{ special }}){% endif %}
+            </label>
+            {% endfor %}
+        </p>
+    </div>
+    <div class="span8">
+        <button class="btn btn-success" id="ilb-go">
+            Listen erzeugen
+        </button>
+        <ul id="ilb-lists"></ul>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block additional_js %}
+<script>
+$(function() {
+    $('.datetimepicker').each(function() {
+        var dtp = $(this);
+        dtp.datetimepicker({
+            'language': 'de',
+            'pickTime': false,
+            'weekStart': 1
+        });
+    });
+});
+{% if step == 2 %}
+$("#ilb-go").click(function() {
+   var send_list = []
+   $('#dates').find('input[type="checkbox"]:checked').each(function () {
+      send_list.push($(this).val());
+   });
+   data = {'dates': send_list, 'year': '{{ cd.year }}',
+           'course': '{{ cd.course }}', 'start': '{{ cd.start|date:"d.m.Y" }}',
+           'end': '{{ cd.end|date:"d.m.Y"}}'};
+   $.post('{% url "core-api-pdf-ilb" %}', {'_JSON_': JSON.stringify(data)},
+       function(res_data) {
+           $('#ilb-lists').empty();
+           $.each(res_data['files'], function(index, value) {
+               $('#ilb-lists').append(value);
+           });
+       }
+   );
+});
+{% endif %}
+</script>
 {% endblock %}

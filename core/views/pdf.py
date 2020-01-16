@@ -4,8 +4,8 @@ import codecs
 import os
 
 from calendar import monthrange
-from datetime import date, timedelta
-
+from datetime import date, datetime, timedelta
+from itertools import izip_longest
 from django.http import HttpResponse
 from django.core.files.base import ContentFile
 from django.utils.translation import ugettext_lazy as _
@@ -26,6 +26,18 @@ from core.forms import PresenceForm, get_user
 PATH = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_PATH = os.path.normpath(
     os.path.join(PATH, '..', 'templates', 'latex'))
+BBZLOGO = os.path.join(TEMPLATE_PATH, 'bbzlogo.png')
+ILBLOGO = os.path.join(TEMPLATE_PATH, 'ilblogo.png')
+DAYS = {
+    0: u'Montag',
+    1: u'Dienstag',
+    2: u'Mittwoch',
+    3: u'Donnerstag',
+    4: u'Freitag',
+    5: u'Sonnabend',
+    6: u'Sonntag',
+}
+MAX_ITEMS = 24
 
 
 def iter_days(start, days):
@@ -33,21 +45,27 @@ def iter_days(start, days):
         yield start + timedelta(days=i)
 
 
-def make_latex(ctx, template, company=None):
+def make_latex(ctx, template, company=None, name=None):
     env = latex.get_latex_env(TEMPLATE_PATH)
     s = latex.get_latex_settings()
     tpl = env.get_template(template)
-    if company is not None:
-        name = u'{0}_{1}_{2}'.format(company.short_name, unicode(ctx['group']),
-                                     template)
+    if name is None:
+        if company is not None:
+            name = u'{0}_{1}_{2}'.format(
+                company.short_name, unicode(ctx['group']), template
+            )
+        else:
+            name = u'{0}_{1}'.format(unicode(ctx['group']), template)
     else:
-        name = '{0}_{1}'.format(unicode(ctx['group']), template)
+        name = u'{0}_{1}'.format(name, template)
     name = utils.secure_filename(name)
     filename = os.path.join(s['build_dir'], name)
     try:
         os.remove(filename)
     except:  # noqa: E722
         pass
+    ctx['BBZLOGO'] = BBZLOGO
+    ctx['ILBLOGO'] = ILBLOGO
     with codecs.open(filename, 'w', encoding='utf-8') as fp:
         fp.write(tpl.render(**ctx))
     pdfname, r1, r2 = latex.render_latex_to_pdf(filename)
@@ -259,6 +277,50 @@ def generate_presence_pdf(req, data):
         ret['surl'] = pdf.pdf.url
         ret['sname'] = file_name
     return ret
+
+
+def _chunks(lst, n):
+    """Yield successive n-sized chunks from lst."""
+    for i in xrange(0, len(lst), n):
+        yield lst[i:i + n]
+
+
+def _split_days(days):
+    chunks = list(_chunks(days, MAX_ITEMS))
+    if len(chunks) % 2 != 0:
+        chunks.append([(u'', u'')] * len(chunks[0]))
+    tmp = []
+    for i in xrange(0, len(chunks), 2):
+        tmp.append(
+            list(izip_longest(chunks[i], chunks[i+1], fillvalue=(u'', u'')))
+        )
+    return tmp
+
+
+@utils.json_rpc
+def generate_ilb_for_group(req, data):
+    students = req.session.get('selected_students', [])
+    items = []
+    days = [datetime.strptime(x, '%Y-%m-%d') for x in data['dates']]
+    dy = [(DAYS[x.weekday()], unicode(x.strftime('%d.%m.%Y'))) for x in days]
+    dy = _split_days(dy)
+    for sid in students:
+        s = Student.objects.select_related().get(id=sid)
+        ctx = dict(student=s, days=dy)
+        ctx.update(data)
+        print(ctx)
+        full_name = make_latex(ctx, 'ilb_azubi.tex', name=s.lastname)
+        file_name = os.path.split(full_name)[1]
+        pdf = PDFPrintout.objects.create(category=u'ILB-Azubi')
+        with open(full_name, 'rb') as fp:
+            content = ContentFile(fp.read())
+        pdf.pdf.save(file_name, content)
+        pdf.save()
+        items.append(
+            u'<li><a href="{0}" target="_blank">{1}</a></li>'
+            u''.format(pdf.pdf.url, file_name)
+        )
+    return {'files': items}
 
 
 # Alias will be removed in 4.0

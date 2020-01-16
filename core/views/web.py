@@ -22,6 +22,7 @@ from django.core.exceptions import PermissionDenied
 
 from core import utils
 from core.utils import render
+from core.utils.special_days_ger import is_special_day, get_special_day_name
 from core.jinja_lib import render_jinja
 from core.models import (
     News, Company, Student, StudentGroup, Contact, Note,
@@ -29,7 +30,8 @@ from core.models import (
 )
 from core.forms import (
     NewsForm, SearchForm, StudentSearchForm, NoteForm,
-    ProfileForm, NewUserForm, ExtendedSearchForm, StudentEditForm
+    ProfileForm, NewUserForm, ExtendedSearchForm, StudentEditForm,
+    ILBForm
 )
 from core.views import helper as h
 from core.menu import menus
@@ -729,7 +731,36 @@ def mypresence(req):
 @permission_required('core.change_studentgroup')
 def make_ilb_group(req, gid):
     group = StudentGroup.objects.select_related().get(id=int(gid))
-    students = group.students.all().order_by('company', 'lastname')
-    ctx = dict(page_title=u'ILB Liste erstellen', group=group,
-               students=students)
+    step = 1
+    days = None
+    cd = None
+    if req.method == 'POST':
+        form = ILBForm(req.POST)
+        if form.is_valid():
+            step = 2
+            cd = form.cleaned_data
+            req.session['selected_students'] = cd['students']
+            dt = cd['end'] - cd['start']
+            not_select = [cd['school1'], cd['school2'], 5, 6]
+            days = []
+            for day in xrange(dt.days + 1):
+                d = cd['start'] + timedelta(days=day)
+                if d.weekday() == 6:
+                    continue
+                day_name = ''
+                if is_special_day(d):
+                    day_name = get_special_day_name(d)
+                if d.weekday() in not_select or day_name:
+                    days.append((False, d, day_name))
+                else:
+                    days.append((True, d, day_name))
+    else:
+        students = group.students.filter(
+            finished=False).order_by('company', 'lastname')
+        form = ILBForm()
+        form.fields['students'].choices = [
+            (x.id, x.fullname()) for x in students]
+    ctx = dict(page_title=u'ILB Liste erstellen', group=group, menus=menus,
+               form=form, dp=True, step=step, days=days, need_ajax=True,
+               cd=cd)
     return render(req, 'students/ilb_setup.html', ctx)

@@ -16,6 +16,8 @@ from core.html5_widgets import SearchInput5
 DAYS = ((_(u'Mon'), _(u'Mon')), (_(u'Tue'), _(u'Tue')), (_(u'Wed'), _(u'Wed')),
         (_(u'Thu'), _(u'Thu')), (_(u'Fri'), _(u'Fri')))
 
+WEEKDAYS = ((None, u'----'), (0, u'Montag'), (1, u'Dienstag'),
+            (2, u'Mittwoch'), (3, u'Donnerstag'), (4, u'Freitag'))
 
 SEARCHES = {
     'lastname': (_(u'Lastname'), 'lastname__icontains'),
@@ -29,6 +31,11 @@ SEARCHES = {
 
 SEARCHES_CHOICES = sorted([(x, y[0]) for x, y in SEARCHES.iteritems()],
                           key=lambda x: x[1])
+
+
+def get_students():
+    return ((x.id, x.fullname()) for x in
+            Student.objects.filter(finished=False).order_by('lastname'))
 
 
 def get_user():
@@ -316,3 +323,27 @@ class StudentEditForm(forms.Form):
     exam_2 = forms.TypedChoiceField(label=_(u'Exam 2'), required=False,
                                     choices=get_points(), coerce=int)
     finished = forms.BooleanField(label=_(u'Finished'), required=False)
+
+
+class ILBForm(forms.Form):
+    course = forms.CharField(label=u'Ausbildungsabschnitt', max_length=40)
+    year = forms.TypedChoiceField(
+        label=u'Ausbildungsjahr', coerce=int,
+        choices=[(x, unicode(x)) for x in xrange(1, 5)]
+    )
+    start = forms.DateField(
+        label=_(u'Kursanfang'),
+        input_formats=['%Y-%m-%d', '%m/%d/%Y', '%d.%m.%Y', '%d.%m.%y']
+    )
+    end = forms.DateField(
+        label=_(u'Kursende'),
+        input_formats=['%Y-%m-%d', '%m/%d/%Y', '%d.%m.%Y', '%d.%m.%y']
+    )
+    students = forms.TypedMultipleChoiceField(
+        label=u'Azubis', choices=get_students(), coerce=int,
+        widget=forms.SelectMultiple(attrs={'size': '18'})
+    )
+    school1 = forms.TypedChoiceField(choices=WEEKDAYS, coerce=int,
+                                     required=False, empty_value=None)
+    school2 = forms.TypedChoiceField(choices=WEEKDAYS, coerce=int,
+                                     required=False, empty_value=None)

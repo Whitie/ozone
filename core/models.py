@@ -470,6 +470,9 @@ class Student(CommonInfo):
     def first(self):
         return self.lastname[0].upper()
 
+    def fullname(self):
+        return u'{0}, {1}'.format(self.lastname, self.firstname)
+
     def age(self):
         try:
             age = date.today() - self.birthdate

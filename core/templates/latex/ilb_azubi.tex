@@ -13,24 +13,25 @@
 
 \pagestyle{scrheadings}
 
-\ihead[]{\hspace{1cm}\includegraphics[height=30pt]{logo.png}}
+\ihead[]{\hspace{1cm}\includegraphics[height=30pt]{(( ILBLOGO ))}}
 \chead[]{\textbf{Anwesenheit}}
-\ohead[]{\includegraphics[height=30pt]{bbzlogo.png}\hspace{1cm}}
+\ohead[]{\includegraphics[height=30pt]{(( BBZLOGO ))}\hspace{1cm}}
 
 \ifoot[]{}
 \cfoot[{\thepage\ von \pageref{LastPage}}]{\thepage\ von \pageref{LastPage}}
 \ofoot[]{}
 
-%\renewcommand{\raggedsection}{\centering}
-
 \begin{document}
 \begin{table}
 	\centering
-	\begin{tabular}{rlrl}
-	Berufsgruppe: & Chemielaborant & Ausbildungsjahr: & 2\\
-	Ausbildungsabschnitt: & Biochemische Arbeiten & Zeitraum: & 01.01.20 - 16.03.20\\
-	& & & \\
-	\textbf{Firma:} & Takeda GmbH & \textbf{Auszubildender:} & Max Mustermann\\
+	\begin{tabular}{rl}
+	Berufsgruppe: & (( student.group.job|te ))\\
+    Ausbildungsjahr: & (( year|te ))\\
+	Ausbildungsabschnitt: & (( course|te ))\\
+    Zeitraum: & (( start|te )) - (( end|te ))\\
+	& \\
+	\textbf{Firma:} & (( student.company.name|te ))\\
+    \textbf{Auszubildende(r):} & (( student.fullname()|te ))\\
 	\end{tabular}
 \end{table}
 
@@ -44,16 +45,13 @@
 	Wochentag & Datum & Unterschrift & Wochentag & Datum & Unterschrift\\
 	\hline
 	\endhead
-	Montag & 06.01.2020 & & Montag & 01.03.2020 & \\
-	\cline{3-3}\cline{6-6}
-	Montag & 06.01.2020 & & Montag & 01.03.2020 & \\
-	\cline{3-3}\cline{6-6}
-	Montag & 06.01.2020 & & Montag & 01.03.2020 & \\
-	\cline{3-3}\cline{6-6}
-	Montag & 06.01.2020 & & Montag & 01.03.2020 & \\
-	\cline{3-3}\cline{6-6}
-	Montag & 06.01.2020 & & Montag & 01.03.2020 & \\
-	\cline{3-3}\cline{6-6}
+    (% for block in days %)
+        (% for left, right in block %)
+        (( left[0]|te )) & (( left[1]|te )) & & (( right[0] ))& (( right[1] )) & \\
+        \cline{3-3}\cline{6-6}
+    	(% endfor %)
+        \pagebreak
+    (% endfor %)
 \end{longtable}
 \textbf{Verbundtage:} \rule{2cm}{0.4pt}
 \end{document}

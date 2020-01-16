@@ -171,4 +171,6 @@ urlpatterns += patterns(
     url(r'^pdf/phonelist/$', 'generate_phonelist', name='core-pdf-phonelist'),
     url(r'^pdf/student/detail/(?P<sid>\d+)/$', 'student_detail',
         name='core-pdf-student-detail'),
+    url(r'^api/ilb_student/pdf/$', 'generate_ilb_for_group',
+        name='core-api-pdf-ilb'),
 )
