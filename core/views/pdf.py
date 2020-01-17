@@ -37,7 +37,7 @@ DAYS = {
     5: u'Sonnabend',
     6: u'Sonntag',
 }
-MAX_ITEMS = 24
+MAX_ITEMS = 26
 
 
 def iter_days(start, days):

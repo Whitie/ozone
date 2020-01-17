@@ -734,6 +734,7 @@ def make_ilb_group(req, gid):
     step = 1
     days = None
     cd = None
+    day_count = 0
     if req.method == 'POST':
         form = ILBForm(req.POST)
         if form.is_valid():
@@ -753,6 +754,7 @@ def make_ilb_group(req, gid):
                 if d.weekday() in not_select or day_name:
                     days.append((False, d, day_name))
                 else:
+                    day_count += 1
                     days.append((True, d, day_name))
     else:
         students = group.students.filter(
@@ -762,5 +764,5 @@ def make_ilb_group(req, gid):
             (x.id, x.fullname()) for x in students]
     ctx = dict(page_title=u'ILB Liste erstellen', group=group, menus=menus,
                form=form, dp=True, step=step, days=days, need_ajax=True,
-               cd=cd)
+               cd=cd, day_count=day_count)
     return render(req, 'students/ilb_setup.html', ctx)

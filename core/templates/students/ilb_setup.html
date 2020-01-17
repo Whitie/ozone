@@ -64,7 +64,7 @@
 {% if step == 2 %}
 <div class="row-fluid">
     <div class="span4">
-        <p>Folgende Tage werden gedruckt:</p>
+        <p>Folgende Tage werden gedruckt (<span id="day-count">{{ day_count }}</span>):</p>
         <p id="dates">
             {% for check, dt, special in days %}
             <label class="checkbox">
@@ -98,8 +98,13 @@ $(function() {
     });
 });
 {% if step == 2 %}
+$(':checkbox').change(function() {
+    var count = $('input[type="checkbox"]:checked').length;
+    $('#day-count').text(count);
+});
 $("#ilb-go").click(function() {
    var send_list = []
+   $('#ilb-lists').empty();
    $('#dates').find('input[type="checkbox"]:checked').each(function () {
       send_list.push($(this).val());
    });
@@ -108,7 +113,6 @@ $("#ilb-go").click(function() {
            'end': '{{ cd.end|date:"d.m.Y"}}'};
    $.post('{% url "core-api-pdf-ilb" %}', {'_JSON_': JSON.stringify(data)},
        function(res_data) {
-           $('#ilb-lists').empty();
            $.each(res_data['files'], function(index, value) {
                $('#ilb-lists').append(value);
            });

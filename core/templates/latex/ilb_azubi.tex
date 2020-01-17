@@ -19,7 +19,7 @@
 
 \ifoot[]{}
 \cfoot[{\thepage\ von \pageref{LastPage}}]{\thepage\ von \pageref{LastPage}}
-\ofoot[]{}
+\ofoot[]{(( student.lastname|te ))}
 
 \begin{document}
 \begin{table}
@@ -47,11 +47,14 @@
 	\endhead
     (% for block in days %)
         (% for left, right in block %)
-        (( left[0]|te )) & (( left[1]|te )) & & (( right[0] ))& (( right[1] )) & \\
+        (( left[0]|te )) & (( left[1]|te )) & & (( right[0]|te ))& (( right[1]|te )) & \\
         \cline{3-3}\cline{6-6}
     	(% endfor %)
+        (% if not loop.last %)
         \pagebreak
+        (% endif %)
     (% endfor %)
 \end{longtable}
+\vspace{0.5cm}
 \textbf{Verbundtage:} \rule{2cm}{0.4pt}
 \end{document}
