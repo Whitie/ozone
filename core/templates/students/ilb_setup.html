@@ -10,7 +10,7 @@
     <div class="control-group">
         <label class="control-label" for="{{ form.course.auto_id }}">{{ form.course.label }}</label>
         <div class="controls">
-            {{ form.course }}
+            <input id="{{ form.course.auto_id }}" class="input-xlarge" name="course" type="text" placeholder="Kurs" data-provide="typeahead" autocomplete="off">
         </div>
     </div>
     <div class="control-group">
@@ -64,6 +64,7 @@
 {% if step == 2 %}
 <div class="row-fluid">
     <div class="span4">
+        <p>Azubis: {{ cd.students|length }}</p>
         <p>Folgende Tage werden gedruckt (<span id="day-count">{{ day_count }}</span>):</p>
         <p id="dates">
             {% for check, dt, special in days %}
@@ -87,6 +88,7 @@
 
 {% block additional_js %}
 <script>
+{% if step == 1 %}
 $(function() {
     $('.datetimepicker').each(function() {
         var dtp = $(this);
@@ -96,7 +98,30 @@ $(function() {
             'weekStart': 1
         });
     });
+    var options = {
+        'source': function(query, process) {
+            courses = [];
+            return $.ajax({
+                'url': '{% url "core-api-course-find" %}',
+                'type': 'get',
+                'data': {'term': query},
+                'dataType': 'json',
+                'success': function(data) {
+                    $.each(data, function(i, course) {
+                        courses.push(course['label']);
+                    });
+                    return process(courses);
+                }
+            });
+        },
+        'updater': function(item) {
+            $('#id_course').val(item);
+            return item;
+        }
+    };
+    $('#id_course').typeahead(options);
 });
+{% endif %}
 {% if step == 2 %}
 $(':checkbox').change(function() {
     var count = $('input[type="checkbox"]:checked').length;

@@ -7,7 +7,7 @@ from django.conf import settings
 
 import core.utils.special_days_ger as sdg
 
-from core.models import StudentGroup, PresenceDay, Student
+from core.models import StudentGroup, PresenceDay, Student, Course
 
 
 def get_presence_day(day, student):
@@ -188,3 +188,9 @@ def get_students(user):
     c = profile.config()
     s = c.get('pstudents', [])
     return Student.objects.select_related().filter(id__in=s)
+
+
+def check_course(name, group):
+    name = name.split('|')[0].strip()
+    course, _ = Course.objects.get_or_create(name=name, job=group.job_short)
+    return name

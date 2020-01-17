@@ -9,7 +9,7 @@ from core.models import (
     AccidentEntry, Configuration, Contact, CooperationContract, InternalHelp,
     JournalMedia, JournalEntry, PDFPrintout, PedagogicJournal, Place,
     PresencePrintout, Note, PresenceDay, StudentGroup, Student, Company,
-    CompanyRating, Part, News, UserProfile
+    CompanyRating, Part, News, UserProfile, Course
 )
 
 
@@ -290,3 +290,4 @@ admin.site.register(Configuration, ConfigurationAdmin)
 admin.site.register(InternalHelp)
 admin.site.register(Place)
 admin.site.register(AccidentEntry, AccidentEntryAdmin)
+admin.site.register(Course)

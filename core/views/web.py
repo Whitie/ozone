@@ -742,6 +742,7 @@ def make_ilb_group(req, gid):
             cd = form.cleaned_data
             req.session['selected_students'] = cd['students']
             dt = cd['end'] - cd['start']
+            cd['course'] = h.check_course(cd['course'], group)
             not_select = [cd['school1'], cd['school2'], 5, 6]
             days = []
             for day in xrange(dt.days + 1):

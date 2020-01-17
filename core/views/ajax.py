@@ -8,9 +8,9 @@ from django.conf import settings
 from django.db.models import Q
 from django.contrib import messages
 
-from core.utils import json_rpc, remove_old_sessions
+from core.utils import json_rpc, remove_old_sessions, json_view
 from core.models import (PresenceDay, JournalEntry, Student, Company,
-                         StudentGroup)
+                         StudentGroup, Course)
 from core.forms import AccidentForm
 
 
@@ -267,3 +267,14 @@ def delete_own_list(req, data=None):
     profile.set_value('pstudents', [])
     profile.save()
     return dict()
+
+
+@json_view
+def get_courses(req):
+    term = req.GET.get('term')
+    query = Q(name__icontains=term) | Q(job__istartswith=term)
+    courses = []
+    for x in Course.objects.filter(query).order_by('name'):
+        label = u'{0} | {1}'
+        courses.append({'label': label.format(x.name, x.job)})
+    return courses

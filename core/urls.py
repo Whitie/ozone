@@ -152,6 +152,7 @@ urlpatterns += patterns(
         name='core-api-accident-save'),
     url(r'^api/presence/delete_own_list/$', 'delete_own_list',
         name='core-api-delete-own-presence'),
+    url(r'^api/course/find/$', 'get_courses', name='core-api-course-find'),
 )
 
 # PDF generation

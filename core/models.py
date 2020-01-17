@@ -781,3 +781,23 @@ class AccidentEntry(models.Model):
         verbose_name_plural = _(u'Accident Entries')
         ordering = ['-date_time']
         get_latest_by = 'date_time'
+
+
+class Course(models.Model):
+    name = models.CharField(u'Name', max_length=50, unique=True)
+    job = models.CharField(u'Beruf (Kürzel)', max_length=10, blank=True)
+
+    def __unicode__(self):
+        if self.job:
+            return u'{0} ({1})'.format(self.name, self.job)
+        else:
+            return self.name
+
+    def save(self, *args, **kwargs):
+        self.job = self.job.upper()
+        super(Course, self).save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = u'Kurs'
+        verbose_name_plural = u'Kurse'
+        ordering = ['job', 'name']
