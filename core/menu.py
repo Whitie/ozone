@@ -23,6 +23,7 @@ core_menu = Menu(
     ('core-presence', _(u'Presences')),
     ('core-accidents', _(u'Accidents')),
     ('core-students-archive', _(u'Archive')),
+    ('core-presence-monthly', u'Monatsübersicht'),
 )
 
 journal_menu = Menu(

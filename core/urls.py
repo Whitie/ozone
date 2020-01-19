@@ -67,6 +67,10 @@ urlpatterns = patterns(
     url(r'^my_presence/list/$', 'mypresence', name='core-presence-own'),
     url(r'^presence/student/(?P<student_id>\d+)/$',
         'presence_for_student_overview', name='core-presence-overview'),
+    url(r'^presence/monthly/$', 'show_monthly_presence',
+        name='core-presence-monthly'),
+    url(r'^presence/monthly/(?P<year>\d+)/(?P<month>\d+)/$',
+        'show_monthly_presence', name='core-presence-monthly'),
     # Excel integration
     url(r'^group/export_excel/(?P<gid>\d+)/$', 'export_group_excel',
         name='core-group-to-excel'),

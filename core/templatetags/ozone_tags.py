@@ -43,6 +43,11 @@ def calc_mod(value, modulo=2):
     return int(value) % int(modulo)
 
 
+@register.filter
+def get_value(d, key):
+    return d.get(key, '-')
+
+
 # Deprecated since Ozone 3.0, will be removed in 3.1
 @register.tag(name='reverse')
 def do_reverse_url(parser, token):

@@ -42,12 +42,16 @@
                 {% endfor %}
             </tbody>
         </table>
+        {% if from_ == 'monthly' %}
+        <a class="btn btn-info" href="{% url 'core-presence-monthly' start.year start.month %}">Zurück</a>
+        {% else %}
         <form action="{% url "core-presence-group" student.group.id %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="start" value="{{ start|date:"d.m.Y" }}" />
             <input type="hidden" name="end" value="{{ end|date:"d.m.Y" }}" />
             <input class="btn btn-info" type="submit" value="{% trans "Back" %}" />
         </form>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

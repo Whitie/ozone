@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from calendar import monthrange
+from collections import defaultdict
 from datetime import date, timedelta
 
 from django.contrib.auth.models import User
@@ -194,3 +196,17 @@ def check_course(name, group):
     name = name.split('|')[0].strip()
     course, _ = Course.objects.get_or_create(name=name, job=group.job_short)
     return name
+
+
+def get_students_for_month(start, end):
+    query = PresenceDay.objects.select_related().filter(
+        date__range=(start, end),
+        entry__in=[u'A', u'K', u'T', u'|', u'F', u'P', u'Pr', u'*F']
+    )
+    student_ids = set()
+    days = defaultdict(int)
+    for day in query.all():
+        student_ids.add(day.student.id)
+        days[day.student.id] += 1
+    res = Student.objects.select_related().filter(id__in=list(student_ids))
+    return res, days

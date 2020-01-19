@@ -14,6 +14,22 @@ from django.contrib.auth.decorators import user_passes_test
 from django.core.exceptions import PermissionDenied
 from django.contrib.sessions.models import Session
 
+
+GERMAN_MONTH = {
+    1: u'Januar',
+    2: u'Februar',
+    3: u'März',
+    4: u'April',
+    5: u'Mai',
+    6: u'Juni',
+    7: u'Juli',
+    8: u'August',
+    9: u'September',
+    10: u'Oktober',
+    11: u'November',
+    12: u'Dezember'
+}
+
 # Taken from werkzeug <http://werkzeug.pocoo.org>
 _filename_ascii_strip_re = re.compile(r'[^A-Za-z0-9_.-]')
 _windows_device_files = ('CON', 'AUX', 'COM1', 'COM2', 'COM3', 'COM4', 'LPT1',

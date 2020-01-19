@@ -459,7 +459,7 @@ class Student(CommonInfo):
             return u'{0}, {1} ({2})'.format(self.lastname, self.firstname,
                                             self.group.name())
         else:
-            return u'{0}, {1}'.format(self.lastname, self.firstname)
+            return self.fullname()
 
     def final_grade(self):
         if self.exam_1 and self.exam_2:

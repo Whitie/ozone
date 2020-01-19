@@ -4,6 +4,7 @@ import string
 import os
 import time
 
+from calendar import monthrange
 from datetime import date, datetime, timedelta
 from json import dumps
 
@@ -529,10 +530,12 @@ def presence_edit(req, student_id):
     start = datetime.strptime(_start, '%Y-%m-%d').date()
     end = datetime.strptime(_end, '%Y-%m-%d').date()
     student, days = h.get_presence([_student], start, end)[0]
+    from_ = req.session.get('from', 'daily')
+    req.session['from'] = 'daily'
     ctx = dict(
         page_title=u'Anwesenheit - {0}'.format(unicode(student)),
         menus=menus, student=student, days=days, start=start, end=end,
-        choices=PRESENCE_CHOICES, dt=True, need_ajax=True
+        choices=PRESENCE_CHOICES, dt=True, need_ajax=True, from_=from_
     )
     return render(req, 'presence/edit.html', ctx)
 
@@ -767,3 +770,28 @@ def make_ilb_group(req, gid):
                form=form, dp=True, step=step, days=days, need_ajax=True,
                cd=cd, day_count=day_count)
     return render(req, 'students/ilb_setup.html', ctx)
+
+
+@login_required
+def show_monthly_presence(req, year=None, month=None):
+    today = date.today()
+    pre = today - timedelta(days=today.day + 1)
+    if year is None:
+        year = pre.year
+    if month is None:
+        month = pre.month
+    year, month = int(year), int(month)
+    start = date(year, month, 1)
+    days_in_month = monthrange(year, month)[1]
+    end = date(year, month, days_in_month)
+    req.session['presence_start'] = start.strftime('%Y-%m-%d')
+    req.session['presence_end'] = end.strftime('%Y-%m-%d')
+    req.session['from'] = 'monthly'
+    students, days = h.get_students_for_month(start, end)
+    next = start + timedelta(days=start.day + days_in_month)
+    prev = start - timedelta(days=start.day + 1)
+    ctx = dict(page_title=u'Anwesenheiten im {0} {1}'.format(
+               utils.GERMAN_MONTH[month], year),
+               students=students.order_by('lastname', 'firstname'),
+               days=days, dt=True, menus=menus, prev=prev, next=next)
+    return render(req, 'presence/monthly.html', ctx)

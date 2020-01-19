@@ -1,0 +1,65 @@
+{% extends "index.html" %}
+{% load url from future %}
+{% load ozone_tags %}
+
+{% block content %}
+<div class="row-fluid">
+    <div class="span10">
+        <table id="dtable" class="dataTable table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Nr.</th>
+                    <th>Teilnehmer</th>
+                    <th>Gruppe</th>
+                    <th>Firma</th>
+                    <th>Anzahl Einträge</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stud in students %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>
+                        <a href="{% url 'core-presence-edit' stud.id %}">
+                            {{ stud.fullname }}
+                        </td>
+                    <td>{{ stud.group.name }}</td>
+                    <td>{{ stud.company.name|truncatechars:30 }}</td>
+                    <td>{{ days|get_value:stud.id }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span10 centered">
+        <a class="btn btn-info pull-left" href="{% url 'core-presence-monthly' prev.year prev.month %}">Vormonat</a>
+        <a class="btn btn-info pull-right" href="{% url 'core-presence-monthly' next.year next.month %}">Nächster Monat</a>
+        <form class="form-inline">
+            <label>Gehe zu:</label>
+            <input id="month" type="text" class="input-small" placeholder="Monat">
+            <input id="year" type="text" class="input-small" placeholder="Jahr">
+            <button id="go" class="btn">Los</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+$(function() {
+    $('#go').click(function() {
+        var month = $('#month').val();
+        var year = $('#year').val();
+        console.log(month+' / '+year);
+        if (!month.trim() || !year.trim()) {
+            bootbox.alert('Sie müssen Monat und Jahr eingeben (als Zahl)!');
+            return false;
+        }
+        window.location.href = '/core/presence/monthly/'+year+'/'+month+'/';
+        return false;
+    });
+});
+</script>
+{% endblock %}
