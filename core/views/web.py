@@ -798,10 +798,14 @@ def show_monthly_presence(req, year=None, month=None):
 
 
 @permission_required('core.add_note')
-def notes_overview(req):
+def notes_overview(req, show=u'short'):
+    query = Q(contacts__isnull=False)
+    sub = u'Alle'
+    if show == u'short':
+        query &= Q(contacts__notes__isnull=False)
+        sub = u'Notizen'
     companies = Company.objects.select_related().filter(
-        contacts__isnull=False
-    ).distinct().order_by('name')
-    ctx = dict(page_title=u'Firmenkontakte', subtitle=u'Notizen',
-               companies=companies, menus=menus)
+        query).distinct().order_by('name')
+    ctx = dict(page_title=u'Firmenkontakte', subtitle=sub,
+               companies=companies, menus=menus, show=show)
     return render(req, 'companies/notes.html', ctx)

@@ -40,4 +40,13 @@
         </div>
     </div>
 </div>
+<div class="row-fluid">
+    <div class="span8">
+        {% if show == 'short' %}
+        <a class="btn btn-info" href="{% url 'core-company-notes' 'full' %}">Alle Firmen mit Kontakten anzeigen</a>
+        {% else %}
+        <a class="btn btn-info" href="{% url 'core-company-notes' %}">Nur Firmen mit vorhandenen Notizen anzeigen</a>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

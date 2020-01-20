@@ -28,6 +28,8 @@ urlpatterns = patterns(
     url(r'^companies/addnote/(?P<id>\d+)/$', 'add_note',
         name='core-company-addnote'),
     url(r'^companies/notes/$', 'notes_overview', name='core-company-notes'),
+    url(r'^companies/notes/(?P<show>short|full)/$', 'notes_overview',
+        name='core-company-notes'),
     # Students
     url(r'^students/$', 'list_students', name='core-students'),
     url(r'^students/(?P<startchar>[A-Z])/$', 'list_students',
