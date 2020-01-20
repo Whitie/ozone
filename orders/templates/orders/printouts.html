@@ -49,6 +49,7 @@
 function generate_external(oday_id, cid) {
     var container = {'oday_id': oday_id, 'supplier_id': cid,
                      'header': '{{ header }}'};
+    $('#but_'+cid).addClass('btn-warning');
     $('#but_'+cid).attr('disabled', 'disabled');
     $.post(
         '{% url "orders-api-pdf" %}',
@@ -63,6 +64,7 @@ function generate_external(oday_id, cid) {
 
 function generate_internal(oday_id) {
     var container = {'oday_id': oday_id};
+    $('#but_internal').addClass('btn-warning');
     $('#but_internal').attr('disabled', 'disabled');
     $.post(
         '{% url "orders-api-pdf" %}',
