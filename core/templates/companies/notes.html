@@ -1,0 +1,43 @@
+{% extends "index.html" %}
+{% load url from future %}
+
+{% block content %}
+<div class="row-fluid">
+    <div class="span12">
+        <div class="tabbable tabs-below">
+            <div class="tab-content">
+                {% for c in companies %}
+                <div class="tab-pane{% if forloop.first %} active{% endif %}" id="tab_{{ forloop.counter }}">
+                    <h3>Kontakte für {{ c.name }}</h3>
+                    <ul>
+                        {% for con in c.contacts.all %}
+                        <li>
+                            <a href="{% url 'core-company-addnote' con.id %}" title="Neue Notiz" class="tt">
+                                {{ con }}
+                            </a>
+                            <ul>
+                                {% for note in con.notes.all %}
+                                <li>
+                                    {{ note.date|date:'SHORT_DATE_FORMAT' }} -
+                                    <span class="tt" title="{{ note.text }}">{{ note.subject }}</span> -
+                                    {{ note.user }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endfor %}
+            </div>
+            <ul class="nav nav-tabs">
+                {% for c in companies %}
+                <li{% if forloop.first %} class="active"{% endif %}>
+                    <a href="#tab_{{ forloop.counter }}" data-toggle="tab">{{ c.short }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

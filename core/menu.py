@@ -37,6 +37,7 @@ extra_menu = Menu(
     _(u'Extra'),
     ('core-birthdays', _(u'Coming Birthdays')),
     ('core-phonelist', _(u'Internal Phonelist')),
+    ('core-company-notes', u'Firmenkontakte'),
 )
 
 news_menu = Menu(

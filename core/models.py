@@ -284,6 +284,7 @@ class Note(models.Model):
     class Meta:
         verbose_name = _(u'Note')
         verbose_name_plural = _(u'Notes')
+        ordering = ['date']
 
 
 class CompanyRating(models.Model):

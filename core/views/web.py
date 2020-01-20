@@ -795,3 +795,13 @@ def show_monthly_presence(req, year=None, month=None):
                students=students.order_by('lastname', 'firstname'),
                days=days, dt=True, menus=menus, prev=prev, next=next)
     return render(req, 'presence/monthly.html', ctx)
+
+
+@permission_required('core.add_note')
+def notes_overview(req):
+    companies = Company.objects.select_related().filter(
+        contacts__isnull=False
+    ).distinct().order_by('name')
+    ctx = dict(page_title=u'Firmenkontakte', subtitle=u'Notizen',
+               companies=companies, menus=menus)
+    return render(req, 'companies/notes.html', ctx)
