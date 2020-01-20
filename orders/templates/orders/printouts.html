@@ -27,6 +27,21 @@
         <span id="pdf_internal" style="display:none;"></span>
     </div>
 </div>
+<div class="row-fluid">
+    <div class="span8 offset1">
+        <h3>Folgende Ausdrucke existieren schon</h3>
+        <ul>
+            {% for p in printouts %}
+            <li>
+                <a href="{{ p.pdf.url }}" target="_blank">{{ p.company_name }}</a>
+                ({{ p.generated|date:"SHORT_DATE_FORMAT" }})
+            </li>
+            {% empty %}
+            <li>Keine vorhanden</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 {% endblock %}
 
 {% block additional_js %}
@@ -39,7 +54,7 @@ function generate_external(oday_id, cid) {
         '{% url "orders-api-pdf" %}',
         {'_JSON_': JSON.stringify(container)},
         function(data) {
-            var s = '<a href="'+data['url']+'">'+data['filename']
+            var s = '<a href="'+data['url']+'" target="_blank">'+data['filename']
                    +' ('+data['size']+' Bytes)</a>';
             $('#pdf_'+cid).append(s).show();
         }
@@ -54,7 +69,7 @@ function generate_internal(oday_id) {
         {'_JSON_': JSON.stringify(container)},
         function(data) {
             $('<hr />').insertAfter('#external');
-            var s = '<a href="'+data['url']+'">'+data['filename']
+            var s = '<a href="'+data['url']+'" target="_blank">'+data['filename']
                    +' ('+data['size']+' Bytes)</a>';
             $('#pdf_internal').append(s).show();
         }

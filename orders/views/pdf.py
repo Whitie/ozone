@@ -155,10 +155,12 @@ def generate_pdf(req):
     supplier_ids = [x[0].article.supplier.id for x in orders]
     req.session['extra_orders'] = []
     req.session['oday_id'] = None
+    printouts = Printout.objects.filter(order_day=oday)
     ctx = dict(
         page_title=_(u'PDF-Printouts'), menus=menus, oday=oday,
-        subtitle=_(u'for {0}'.format(unicode(oday))), need_ajax=True,
-        ids=supplier_ids, supplier=supplier, header=header
+        subtitle=u'für {0}'.format(unicode(oday)), need_ajax=True,
+        ids=supplier_ids, supplier=supplier, header=header,
+        printouts=printouts
     )
     return render(req, 'orders/printouts.html', ctx, app=u'orders')
 
