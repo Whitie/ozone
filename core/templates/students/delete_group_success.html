@@ -1,0 +1,38 @@
+{% extends "index.html" %}
+{% load url from future %}
+
+{% block content %}
+<div class="row-fluid">
+    <div class="span10" id="printout">
+        <h2>Folgende Daten wurden gelöscht:</h2>
+        <h3>Gruppe: {{ gname }}</h3>
+        <h3>Teilnehmer ID's: {{ ids|join:', ' }}</h3>
+        <ul>
+            <li>Anwesenheitslisten</li>
+            <li>Pädagogisches Tagebuch (falls vorhanden)</li>
+            <li>Alle Teilnehmer, inkl. der Anwesenheitstage</li>
+            <li>Unfalleinträge, die <strong>nicht</strong> meldepflichtig waren</li>
+        </ul>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span10">
+        <button class="btn btn-success" onclick="print_div('printout');">
+            Ausdrucken
+        </button>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+function print_div(div_id) {
+    var to_print = $('#printout').html();
+    var original = $('body').html();
+    $('body').html(to_print);
+    $('body').append('<br><h3>Bestätigt: ___________________ (bbz Chemie)</h3>');
+    window.print();
+    $('body').html(original);
+}
+</script>
+{% endblock %}

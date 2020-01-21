@@ -1,0 +1,42 @@
+{% extends "index.html" %}
+{% load url from future %}
+
+{% block content %}
+<div class="row-fluid">
+    <div class="span10 centered">
+        <h3>Teilnehmer</h3>
+        <ul class="unstyled">
+            {% for s in group.students.all %}
+            <li>{{ s.fullname }}</li>
+            {% endfor %}
+        </ul>
+        <h3>Folgende Daten werden gelöscht</h3>
+        <ul class="unstyled">
+            <li>Anwesenheitslisten</li>
+            <li>Pädagogisches Tagebuch (falls vorhanden)</li>
+            <li>Alle Teilnehmer, inkl. der Anwesenheitstage</li>
+            <li>Unfalleinträge, die <strong>nicht</strong> meldepflichtig waren</li>
+        </ul>
+    </div>
+    <div class="span4 offset3">
+        <div class="alert alert-block alert-info">
+            <h4>Wichtig</h4>
+            Teilnehmer, die einen meldepflichtigen Unfall hatten, können erst
+            nach der gesetzlichen Aufbewahrungsfrist von 10 Jahren gelöscht
+            werden. Die Gruppe und alle anderen Teilnehmer werden aber
+            trotzdem gelöscht.
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span10 centered">
+        <form class="form-inline" method="post">
+            {% csrf_token %}
+            <a class="btn" href="{% url 'core-index' %}">Abbruch</a>
+            <button type="submit" class="btn btn-danger">
+                <i class="icon-trash"></i> Löschen
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

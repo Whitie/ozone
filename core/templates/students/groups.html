@@ -52,7 +52,7 @@
                     </a>
                     {% endif %}
                     {% if perms.core.delete_studentgroup %}
-                    <a class="btn btn-mini btn-danger" title="Gruppe löschen" href="{% url 'admin:core_studentgroup_delete' g.id %}">
+                    <a class="btn btn-mini btn-danger" title="Gruppe löschen" href="{% url 'core-group-delete' g.id %}">
                         <i class="icon-trash"></i>
                     </a>
                     {% endif %}

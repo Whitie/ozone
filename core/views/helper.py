@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from calendar import monthrange
 from collections import defaultdict
 from datetime import date, timedelta
 
@@ -211,3 +210,23 @@ def get_students_for_month(start, end):
         days[day.student.id] += 1
     res = Student.objects.select_related().filter(id__in=list(student_ids))
     return res, days
+
+
+def delete_one_student(sid, del_group=False):
+    s = Student.objects.get(id=sid)
+    acc_min_date = date.today() - timedelta(days=365*10)
+    name = u'{0}, {1}'.format(s.lastname, s.firstname)
+    for acc in s.accidents.all():
+        if acc.notify and acc.date_time.date() > acc_min_date:
+            if del_group:
+                s.group = None
+                s.save()
+            raise Exception(
+                u'{0} hatte einen meldepflichtigen Unfall!'.format(name)
+            )
+    pdays = s.presence_days.all()
+    count = pdays.count()
+    pdays.delete()
+    s.journal_entries.all().delete()
+    s.delete()
+    return name, count

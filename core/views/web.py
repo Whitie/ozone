@@ -809,3 +809,43 @@ def notes_overview(req, show=u'short'):
     ctx = dict(page_title=u'Firmenkontakte', subtitle=sub,
                companies=companies, menus=menus, show=show)
     return render(req, 'companies/notes.html', ctx)
+
+
+@permission_required('core.delete_studentgroup')
+def delete_group(req, gid):
+    group = StudentGroup.objects.select_related().get(id=int(gid))
+    gname = unicode(group)
+    if req.method == 'POST':
+        group.presence_printouts.all().delete()
+        deleted = []
+        for stud in group.students.all():
+            try:
+                _id = stud.id
+                name, count = h.delete_one_student(_id, True)
+                deleted.append(_id)
+            except Exception as e:
+                messages.error(
+                    req, u'Beim Löschen eines Teilnehmers ist ein Fehler '
+                    u'aufgetreten: {0}'.format(e)
+                )
+        try:
+            group.delete()
+            req.session['group_name'] = gname
+            req.session['deleted'] = deleted
+            return redirect('core-group-delete-success')
+        except Exception as e:
+            messages.error(
+                req, u'Beim Löschen der Gruppe ist ein Fehler'
+                u'aufgetreten: {0}'.format(e)
+            )
+    ctx = dict(page_title=u'Gruppe löschen', group=group, menus=menus,
+               subtitle=gname)
+    return render(req, 'students/delete_group.html', ctx)
+
+
+def delete_group_success(req):
+    gname = req.session.pop('group_name')
+    ids = req.session.pop('deleted')
+    ctx = dict(page_title=u'DSGVO', gname=gname,
+               ids=ids, menus=menus)
+    return render(req, 'students/delete_group_success.html', ctx)

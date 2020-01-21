@@ -12,6 +12,7 @@ from core.utils import json_rpc, remove_old_sessions, json_view
 from core.models import (PresenceDay, JournalEntry, Student, Company,
                          StudentGroup, Course)
 from core.forms import AccidentForm
+from core.views.helper import delete_one_student
 
 
 @json_rpc
@@ -163,19 +164,11 @@ def delete_student(req, data):
     sid = data['student_id']
     if req.user.has_perm('core.delete_student'):
         try:
-            s = Student.objects.get(id=sid)
-            name = u'{0}, {1}'.format(s.lastname, s.firstname)
-            pdays = s.presence_days.all()
-            c = pdays.count()
-            pdays.delete()
-            s.journal_entries.all().delete()
-            s.delete()
+            name, c = delete_one_student(sid)
             messages.success(
                 req,
                 u'Azubi {name} und {pdays} Anwesenheitstage wurden'
-                u'gelöscht!'.format(
-                     name=name, pdays=c
-                )
+                u'gelöscht!'.format(name=name, pdays=c)
             )
         except Exception as e:
             messages.error(

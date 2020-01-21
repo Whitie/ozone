@@ -15,7 +15,7 @@
                 </a>
                 {% endif %}
                 {% if perms.core.delete_studentgroup %}
-                <a class="btn btn-danger pull-right" href="{% url "admin:core_studentgroup_delete" group.id %}">
+                <a class="btn btn-danger pull-right" href="{% url 'core-group-delete' group.id %}">
                     <i class="icon-trash"> </i> {% trans "Delete" %}
                 </a>
                 {% endif %}
@@ -58,4 +58,3 @@
     </div>
 </div>
 {% endblock %}
-

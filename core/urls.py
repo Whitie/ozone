@@ -41,6 +41,10 @@ urlpatterns = patterns(
     # Student groups
     url(r'^groups/$', 'list_groups', name='core-groups'),
     url(r'^groups/(?P<gid>\d+)/$', 'group_details', name='core-group-details'),
+    url(r'^groups/delete/(?P<gid>\d+)/$', 'delete_group',
+        name='core-group-delete'),
+    url(r'^groups/delete/success/$', 'delete_group_success',
+        name='core-group-delete-success'),
     # ILB
     url(r'^groups/ilb/(?P<gid>\d+)/$', 'make_ilb_group',
         name='core-ilb-group'),
