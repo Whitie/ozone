@@ -313,10 +313,15 @@ JINJA_DEFAULT_FORMATS = {
 
 LATEX_BUILD_DIR = os.path.abspath(os.path.join(_PATH, '..', '_latex_build'))
 
-# CIASS
+# CIASS, now chemmanager
 CIASS_USE_OZONE = True
 CIASS_CONVERT_BINARY = '/usr/bin/convert'
 CIASS_TEMPDIR = '/tmp'
+# Set to empty string to disable
+CHEMMAN_URL = 'http://10.0.0.175:8800'
+CHEMMAN_USER = 'sys_ozone'
+# Set password in local_settings and keep secret
+CHEMMAN_PASSWORD = ''
 
 ###############################################################################
 

@@ -2,10 +2,12 @@
 
 from decimal import Decimal
 from smtplib import SMTPException
+from urlparse import urljoin
 
 from django.http import HttpResponse
 from django.db.models import Q
 from django.core.mail import send_mail
+from django.conf import settings
 from django.views.decorators.http import require_POST
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Permission
@@ -13,6 +15,7 @@ from django.template import Context
 from django.template.loader import get_template
 
 from core.utils import json_view, json_rpc
+from core.utils.cm_proxy import CMRpcProxy
 from core.models import Company, CompanyRating
 from core.forms import CompanyRatingForm
 from orders.models import Order, Article, DeliveredOrder, OrderDay
@@ -194,6 +197,26 @@ def update_state(req, data):
     return dict(msg=msg, new_state=order.state, diff=float(diff))
 
 
+def _notify_chemman(order, count):
+    url = settings.get('CHEMMAN_URL', '')
+    if not url:
+        return
+    user = settings.get('CHEMMAN_USER', '')
+    pw = settings.get('CHEMMAN_PASSWORD', '')
+    endpoint = urljoin(url, 'rpc/delivery/')
+    data = {
+        'ozone_id': order.article.id,
+        'name': order.article.name,
+        'ident': order.article.ident,
+        'barcode': order.article.barcode,
+        'quantity': order.article.quantity,
+        'count': count,
+    }
+    proxy = CMRpcProxy(endpoint)
+    proxy.authenticate(user, pw)
+    return proxy.deliver(data)
+
+
 @require_POST
 @json_rpc
 def update_delivery(req, data):
@@ -208,6 +231,13 @@ def update_delivery(req, data):
     msg = [u'Wareneingang %(count)dx für %(art)s gespeichert von %(u)s.' %
            {'count': dorder.count, 'art': order.article.name,
             'u': dorder.user.userprofile}]
+    if order.article.tox_control:
+        try:
+            _notify_chemman(order, data['count'])
+            msg.append(u'Lieferung wurde an ChemManager übertragen.')
+        except Exception:
+            msg.append(
+                u'Lieferung konnte nicht automatisch übertragen werden!')
     if not order.is_complete():
         msg.append(u'%dx fehlt noch.' % missing)
     else:
