@@ -785,7 +785,7 @@ class AccidentEntry(models.Model):
 
 
 class Course(models.Model):
-    name = models.CharField(u'Name', max_length=50)
+    name = models.CharField(u'Name', max_length=60)
     job = models.CharField(u'Beruf (Kürzel)', max_length=10, blank=True)
 
     def __unicode__(self):

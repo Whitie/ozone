@@ -326,7 +326,7 @@ class StudentEditForm(forms.Form):
 
 
 class ILBForm(forms.Form):
-    course = forms.CharField(label=u'Ausbildungsabschnitt', max_length=40)
+    course = forms.CharField(label=u'Ausbildungsabschnitt', max_length=60)
     year = forms.TypedChoiceField(
         label=u'Ausbildungsjahr', coerce=int,
         choices=[(x, unicode(x)) for x in xrange(1, 5)]
