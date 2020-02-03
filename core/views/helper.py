@@ -193,7 +193,7 @@ def get_students(user):
 
 def check_course(name, group):
     name = name.split('|')[0].strip()
-    course, _ = Course.objects.get_or_create(name=name, job=group.job_short)
+    Course.objects.get_or_create(name=name, job=group.job_short)
     return name
 
 
