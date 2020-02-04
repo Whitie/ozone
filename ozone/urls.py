@@ -21,6 +21,7 @@ urlpatterns = patterns(
 
     (r'^admin/', include(admin.site.urls)),
     (r'^external_auth/$', 'core.views.ext_auth.external_auth'),
+    (r'^external_auth2/$', 'core.views.ext_auth.external_auth_insecure'),
 )
 
 if settings.DEBUG:

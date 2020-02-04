@@ -354,7 +354,7 @@ EXT_LOGIN = True
 # use the login, needs the same key in settings. It is used to crypt the
 # users password over the net. BETTER is to use HTTPS!
 EXT_LOGIN_KEY = b''
-MESSAGE_SEPARATOR = '~##~'
+MESSAGE_SEPARATOR = u'~##~'
 
 
 # Try to import local settings
