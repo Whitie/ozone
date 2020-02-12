@@ -13,9 +13,6 @@ from audit_log.models.managers import AuditLog
 from core.models import Company
 
 
-# Create your models here.
-
-
 class OrderDay(models.Model):
     day = models.DateField(_(u'Day'), unique=True,
                            validators=[MinValueValidator(date.today())])
@@ -40,6 +37,10 @@ class OrderDay(models.Model):
 
 
 class Article(models.Model):
+    TAX_CHOICES = (
+        (7, u'7%'),
+        (19, u'19%'),
+    )
     name = models.CharField(_(u'Name'), max_length=100)
     supplier = models.ForeignKey(Company, verbose_name=_(u'Supplier'),
                                  blank=True, null=True)
@@ -51,11 +52,14 @@ class Article(models.Model):
                    u'eingeben.')
     )
     quantity = models.CharField(_(u'Quantity'), max_length=20, blank=True)
-    price = models.DecimalField(_(u'Price'), max_digits=8, decimal_places=2,
+    price = models.DecimalField(u'Nettopreis', max_digits=8, decimal_places=2,
                                 blank=True, null=True, default=Decimal())
     discount_price = models.DecimalField(
-        _(u'Unser Preis'), max_digits=8, decimal_places=2,
+        _(u'Unser Preis (netto)'), max_digits=8, decimal_places=2,
         blank=True, null=True, default=Decimal()
+    )
+    tax = models.PositiveSmallIntegerField(
+        u'MWST', choices=TAX_CHOICES, default=19
     )
     tox_control = models.BooleanField(u'Von Toxolution kontrolliert',
                                       default=True)

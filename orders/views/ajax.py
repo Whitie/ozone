@@ -104,7 +104,8 @@ def api_article(req, article_id=0):
     data = dict(
         art_name=a.name, art_supplier_id=a.supplier.id,
         art_id=a.ident, art_q=a.quantity, art_price=float(a.get_price()),
-        count=1, oday=oday.id, art_supplier_name=a.supplier.short_name
+        count=1, oday=oday.id, art_supplier_name=a.supplier.short_name,
+        art_tax=a.tax
     )
     return data
 

@@ -28,7 +28,7 @@
             <label class="control-label" for="id_art_supplier">
                 {{ form.art_supplier_name.label }}
             </label>
-            <div class="controls"> 
+            <div class="controls">
                 {{ form.art_supplier_name }}{{ form.art_supplier_name.errors }}
             </div>
         </div>
@@ -53,10 +53,37 @@
                 {{ form.art_price.label }}
             </label>
             <div class="controls">
-                <div class="input-append">
+                <div class="input-append" title="Nur dieser Preis (netto) wird in die Datenbank übernommen. Bitte auf korrekte MWST achten!">
                     {{ form.art_price }}
                     <span class="add-on">{{ CURRENCY_SYM }}</span>
                 </div>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">
+                Bruttopreis
+            </label>
+            <div class="controls">
+                <div class="input-append">
+                    <input type="text" id="brutto">
+                    <span class="add-on">{{ CURRENCY_SYM }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">MWST</label>
+            <div class="controls">
+                <label class="radio inline">
+                    <input type="radio" name="tax" id="tax-19" value="19" checked>
+                    19%
+                </label>
+                <label class="radio inline">
+                    <input type="radio" name="tax" id="tax-7" value="7">
+                    7%
+                </label>
+                <button class="btn btn-mini pull-right" id="reset-price" title="Alle Preisfelder zurücksetzen">
+                    <i class="icon-remove"></i>
+                </button>
             </div>
         </div>
         <div class="control-group">
@@ -111,17 +138,46 @@
 function update_price() {
     var count = $('#id_count').val();
     var price = $('#id_art_price').val();
+    var mwst_val = $('input[name="tax"]:checked'). val();
+    mwst = 1 + (Number(mwst_val) / 100);
     if (count == '' || price == '') {
         $('#fullprice').text('-');
     } else {
-        full = Number(count) * Number(price.replace(',', '.'));
+        full = Number(count) * Number(price.replace(',', '.')) * mwst;
         $('#fullprice').text(full.toFixed(2)+' {{ CURRENCY_SYM }}'
         );
     }
 }
 
+function update_brutto() {
+    var price = $('#id_art_price').val();
+    var mwst_val = $('input[name="tax"]:checked'). val();
+    mwst = 1 + (Number(mwst_val) / 100);
+    if (price == '') {
+        $('#brutto').val('');
+    } else {
+        p = Number(price.replace(',', '.')) * mwst;
+        $('#brutto').val(p.toFixed(2));
+    }
+}
+
+function update_netto() {
+    var brutto = $('#brutto').val();
+    var mwst_val = $('input[name="tax"]:checked'). val();
+    mwst = 1 + (Number(mwst_val) / 100);
+    if (brutto == '') {
+        $('#id_art_price').val('');
+    } else {
+        p = Number(brutto.replace(',', '.')) / mwst;
+        $('#id_art_price').val(p.toFixed(2));
+    }
+}
+
 $(function() {
     $.getJSON('{% url "orders-api-article" article_id %}', function(data) {
+        if (data['art_tax'] == 7) {
+            $('#tax-7').prop('checked', true);
+        }
         $.each(data, function(key, val) {
             $("#id_" + key).val(val);
             update_price();
@@ -137,6 +193,22 @@ $(function() {
     });
     $('#id_art_price').keyup(function() {
         update_price();
+        update_brutto();
+    });
+    $('input[name="tax"]').change(function() {
+        update_brutto();
+        update_price();
+    });
+    $('#brutto').keyup(function() {
+        update_netto();
+        update_price();
+    });
+    $('#reset-price').click(function(e) {
+        e.preventDefault();
+        $('#id_art_price').val('');
+        $('#brutto').val('');
+        $('#fullprice').text('-');
+        $('#tax-19').prop('checked', true);
     });
 });
 $(function() {
@@ -169,4 +241,3 @@ $(function() {
 {% block form_js %}{% endblock %}
 </script>
 {% endblock %}
-

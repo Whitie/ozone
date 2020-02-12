@@ -42,7 +42,7 @@ class BaseOrderForm(forms.Form):
                              required=False)
     art_q = forms.CharField(label=_(u'Quantity'), max_length=20)
     art_price = forms.CharField(
-        label=_(u'Price'), required=False,
+        label=u'Nettopreis', required=False,
         widget=forms.TextInput(attrs={'autocomplete': 'off'})
     )
     memo = forms.CharField(label=_(u'Memo'), widget=forms.Textarea,
