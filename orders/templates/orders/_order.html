@@ -49,6 +49,22 @@
             </div>
         </div>
         <div class="control-group">
+            <label class="control-label">MWST</label>
+            <div class="controls">
+                <label class="radio inline">
+                    <input type="radio" name="tax" id="tax-19" value="19" checked>
+                    19%
+                </label>
+                <label class="radio inline">
+                    <input type="radio" name="tax" id="tax-7" value="7">
+                    7%
+                </label>
+                <button class="btn btn-mini pull-right" id="reset-price" title="Alle Preisfelder zurücksetzen">
+                    <i class="icon-remove"></i>
+                </button>
+            </div>
+        </div>
+        <div class="control-group">
             <label class="control-label" for="id_art_price">
                 {{ form.art_price.label }}
             </label>
@@ -68,22 +84,6 @@
                     <input type="text" id="brutto">
                     <span class="add-on">{{ CURRENCY_SYM }}</span>
                 </div>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">MWST</label>
-            <div class="controls">
-                <label class="radio inline">
-                    <input type="radio" name="tax" id="tax-19" value="19" checked>
-                    19%
-                </label>
-                <label class="radio inline">
-                    <input type="radio" name="tax" id="tax-7" value="7">
-                    7%
-                </label>
-                <button class="btn btn-mini pull-right" id="reset-price" title="Alle Preisfelder zurücksetzen">
-                    <i class="icon-remove"></i>
-                </button>
             </div>
         </div>
         <div class="control-group">
@@ -191,7 +191,11 @@ $(function() {
     $('#id_count').keyup(function() {
         update_price();
     });
+    $('#id_count').change(function() {
+        update_price();
+    });
     $('#id_art_price').keyup(function() {
+        $('#brutto').prop('disabled', true);
         update_price();
         update_brutto();
     });
@@ -200,11 +204,14 @@ $(function() {
         update_price();
     });
     $('#brutto').keyup(function() {
+        $('#id_art_price').prop('disabled', true);
         update_netto();
         update_price();
     });
     $('#reset-price').click(function(e) {
         e.preventDefault();
+        $('#brutto').prop('disabled', false);
+        $('#id_art_price').prop('disabled', false);
         $('#id_art_price').val('');
         $('#brutto').val('');
         $('#fullprice').text('-');
