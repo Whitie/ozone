@@ -166,6 +166,8 @@
 
 {% block additional_js %}
 <script>
+var limit = {{ LIMIT }};
+
 $(function() {
     color_sum();
     datatable_options['bPaginate'] = false;
@@ -214,7 +216,7 @@ function save_moved_order() {
 function color_sum() {
     var fullcost = parseFloat($('#sum').text().replace(',', '.'));
     var container = $('#sum_container');
-    if (fullcost < 6800) {
+    if (fullcost < limit) {
         container.css('color', 'green');
     } else {
         container.css('color', 'red');

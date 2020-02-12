@@ -90,6 +90,8 @@
 
 {% block additional_js %}
 <script>
+var limit = {{ LIMIT }};
+
 $(document).ready(function() {
     color_sum();
 });
@@ -97,7 +99,7 @@ $(document).ready(function() {
 function color_sum() {
     var fullcost = parseFloat($('#sum').text().replace(',', '.'));
     var container = $('#sum_container');
-    if (fullcost < 6000) {
+    if (fullcost < limit) {
         container.css('color', 'green');
     } else {
         container.css('color', 'red');

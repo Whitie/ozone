@@ -19,4 +19,5 @@ def set_global_vars(req):
         'CURRENCY_SYM': settings.CURRENCY[1],
         'CURRENCY_NAME': settings.CURRENCY[0],
         'VERSION': settings.VERSION,
+        'LIMIT': settings.ORDER_LIMIT,
     }

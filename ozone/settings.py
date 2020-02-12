@@ -192,6 +192,7 @@ AUTHENTICATION_BACKENDS = (
 
 # Default currency
 CURRENCY = (u'Euro', u'€')
+ORDER_LIMIT = 6800
 
 # Logging #####################################################################
 
