@@ -105,8 +105,8 @@ def order(req, article_id=0):
                 cleaned['art_id'].strip(),
                 cleaned['art_name'], cleaned['art_q'], company
             )
+            art.tax = int(req.POST.get('tax', '19'))
             if created:
-                art.tax = int(req.POST.get('tax', '19'))
                 art.tox_control = cleaned['tox']
                 art.save()
             _price = h.get_price(cleaned['art_price'])
