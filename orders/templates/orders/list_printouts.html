@@ -8,7 +8,7 @@
     <div class="accordion-group">
         <div class="accordion-heading">
             <a class="accordion-toggle" data-toggle="collapse" data-parent="printouts" href="#day_{{ forloop.counter }}">
-                {{ d }}, {% trans "Orders" %}: {{ d.count }}, {% trans "Sum" %}: {{ d.price|floatformat:2 }} {{ CURRENCY_SYM }}
+                {{ d }}, {% trans "Orders" %}: {{ d.count }}, Summe (brutto): {{ d.price|floatformat:2 }} {{ CURRENCY_SYM }}
             </a>
         </div>
         <div id="day_{{ forloop.counter }}" class="accordion-body collapse">

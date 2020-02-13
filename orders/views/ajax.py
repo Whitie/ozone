@@ -26,7 +26,7 @@ from orders.views import helper as h
 def update_article_count(req, order_id, count):
     order_id, count = int(order_id), int(count)
     order = Order.objects.select_related().get(id=order_id)
-    price = order.article.get_price()
+    price = order.article.price_with_tax()
     old_count = order.count
     order.count = count
     new_price = count * price
@@ -144,7 +144,7 @@ def change_order(req, data):
     except Company.DoesNotExist:
         supplier = None
     article = order.article
-    old_price = article.get_price() * order.count
+    old_price = article.price_with_tax() * order.count
     try:
         price = Decimal(data['price'].replace(u',', u'.'))
         article.name = data['art_name']
@@ -157,7 +157,7 @@ def change_order(req, data):
     article.save()
     order.count = data['count']
     order.save()
-    total = article.get_price() * order.count
+    total = article.price_with_tax() * order.count
     diff = total - old_price
     msg = (u'Alle Änderungen an Bestellung: %(name)s (ID: %(id)d) '
            u'gespeichert.' % {'name': article.name, 'id': order.id})
@@ -184,9 +184,9 @@ def update_state(req, data):
     order.state = data['state']
     order.save()
     if old_state == u'rejected' and order.state in (u'new', u'accepted'):
-        diff = order.count * order.article.price
+        diff = order.count * order.article.price_with_tax()
     elif old_state in (u'new', u'accepted') and order.state == u'rejected':
-        diff = order.count * order.article.price * -1
+        diff = order.count * order.article.price_with_tax() * -1
         try:
             _send_status_mail(req.user, order, u'order_rejected.txt')
         except Exception as e:

@@ -59,7 +59,7 @@
                     <input type="radio" name="tax" id="tax-7" value="7">
                     7%
                 </label>
-                <button class="btn btn-mini pull-right" id="reset-price" title="Alle Preisfelder zurücksetzen">
+                <button class="btn btn-mini pull-right tt" id="reset-price" title="Alle Preisfelder zurücksetzen">
                     <i class="icon-remove"></i>
                 </button>
             </div>
@@ -69,7 +69,7 @@
                 {{ form.art_price.label }}
             </label>
             <div class="controls">
-                <div class="input-append" title="Nur dieser Preis (netto) wird in die Datenbank übernommen. Bitte auf korrekte MWST achten!">
+                <div class="input-append tt" title="Nur dieser Preis (netto) wird in die Datenbank übernommen. Bitte auf korrekte MWST achten!">
                     {{ form.art_price }}
                     <span class="add-on">{{ CURRENCY_SYM }}</span>
                 </div>

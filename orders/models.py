@@ -82,6 +82,9 @@ class Article(models.Model):
             discount = u''
         return u'{0:.2f} {1}{2}'.format(price, settings.CURRENCY[1], discount)
 
+    def price_with_tax(self):
+        return self.get_price() * (1 + self.tax/Decimal(100))
+
     def short_desc(self):
         if self.discount_price:
             price = u' {0}/{1:.2f}{2} (R)'.format(
@@ -147,16 +150,20 @@ class Order(models.Model):
     audit_log = AuditLog()
 
     def __unicode__(self):
-        names = [unicode(x.userprofile) for x in self.users.all()]
+        names = [unicode(x.username) for x in self.users.all()]
         return u'{0}x {1} ({2})'.format(self.count, self.article.name,
                                         u', '.join(names))
 
     def price(self):
+        """This is without tax."""
         try:
             return self.count * self.article.price
         except Exception as error:
             print error
             return 0.0
+
+    def fullprice(self):
+        return self.article.price_with_tax() * self.count
 
     def state_icon(self):
         return _mapper[self.state][1]

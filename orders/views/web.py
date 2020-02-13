@@ -70,8 +70,8 @@ def order_detail(req, order_id):
         o.userlist = [x.username for x in o.users.all()]
         o.costlist = [u'%s: %d%%' % (unicode(x.cost), x.percent) for x in
                       CostOrder.objects.filter(order=o)]
-        order_sum += o.count * o.article.price
-        o.sum_price = o.count * o.article.price
+        order_sum += o.fullprice()
+        o.netto = o.count * o.article.get_price()
         if (
             req.user.username in o.userlist
             and o.users.count() == 1
@@ -81,7 +81,7 @@ def order_detail(req, order_id):
         else:
             o.deleteable = False
     ctx = dict(
-        page_title=_(u'Open Orders'), menus=menus, oday=oday,
+        page_title=u'Offene Bestellungen', menus=menus, oday=oday,
         orders=orders, order_sum=order_sum, subtitle=unicode(oday), dt=True,
         need_ajax=True
     )
@@ -106,6 +106,7 @@ def order(req, article_id=0):
                 cleaned['art_name'], cleaned['art_q'], company
             )
             if created:
+                art.tax = int(req.POST.get('tax', '19'))
                 art.tox_control = cleaned['tox']
                 art.save()
             _price = h.get_price(cleaned['art_price'])
@@ -143,7 +144,7 @@ def order(req, article_id=0):
     ctx = dict(
         page_title=_(u'New Order'), form=form, menus=menus, costs=costs,
         article_id=article_id, costs_msg=_(u'Sum of costs must be 100!'),
-        cur_msg=_(u'Price in %s.' % settings.CURRENCY[0]), extra=False,
+        cur_msg=u'Preis in %s.' % settings.CURRENCY[0], extra=False,
         need_ajax=True
     )
     return render(req, 'orders/order.html', ctx, app=u'orders')
@@ -309,7 +310,7 @@ def manage_order(req, oday_id):
     for o in orders:
         o.userlist = [x.username for x in o.users.all()]
         if o.state in (u'new', u'accepted'):
-            order_sum += o.count * o.article.get_price()
+            order_sum += o.fullprice()
         o.sum_price = o.count * o.article.get_price()
         o.costlist = [u'%s: %d%%' % (unicode(x.cost), x.percent) for x in
                       CostOrder.objects.filter(order=o)]
@@ -358,7 +359,7 @@ def list_printouts(req):
         oday.price = 0
         oday.count = 0
         for o in oday.orders.all():
-            oday.price += o.price()
+            oday.price += o.fullprice()
             oday.count += 1
     ctx = dict(
         page_title=_(u'List of all printouts'),

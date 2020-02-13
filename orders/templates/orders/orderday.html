@@ -5,7 +5,7 @@
 <div class="row-fluid">
     <div class="span10 centered" id="sum_container">
         <h3>
-            {% trans "Sum" %}:
+            Summe (brutto):
             <span id="sum">{{ order_sum|floatformat:2 }}</span>{{ CURRENCY_SYM }}
         </h3>
     </div>
@@ -45,8 +45,8 @@
                         {{ o.article.name }}</td>
                     <td>{{ o.article.quantity }}</td>
                     <td style="text-align:right;">
-                        <span id="price_{{ forloop.counter }}" class="tt" title="{% trans "Single price" %}: <strong>{{ o.article.price|floatformat:2 }}{{ CURRENCY_SYM }}</strong>">
-                            {{ o.sum_price|floatformat:2 }}
+                        <span id="price_{{ forloop.counter }}" class="tt" title="Einzelpreis: <strong>{{ o.article.get_price|floatformat:2 }}{{ CURRENCY_SYM }} (Brutto: {{ o.article.price_with_tax|floatformat:2 }}{{ CURRENCY_SYM }})</strong>">
+                            {{ o.netto|floatformat:2 }}
                         </span>{{ CURRENCY_SYM }}
                     </td>
                     <td>{{ o.article.supplier }}</td>
