@@ -1,0 +1,57 @@
+\documentclass[a4paper,paper=landscape]{scrartcl}
+
+\usepackage[landscape,left=10mm,right=10mm,top=25mm]{geometry}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[scaled]{uarial}
+\usepackage{graphicx}
+\usepackage{graphics}
+\usepackage{longtable}
+\usepackage{lastpage}
+\usepackage[right]{eurosym}
+\usepackage[automark]{scrpage2}
+
+\pagestyle{scrheadings}
+
+\ihead[]{bbz Chemie}
+\chead[]{Besteller: (( user.userprofile ))}
+\ohead[]{\today}
+
+\ifoot[]{Besteller\\(( user.userprofile ))}
+\cfoot[]{Seite \thepage{} von \pageref{LastPage}}
+\ofoot[]{genehmigt\\Tanja Cyrus}
+
+\begin{document}
+\sffamily
+
+(% for os in orders %)
+\begin{center}
+\textbf{BESTELLSCHEIN (( header ))}\\
+\textbf{Lieferant:} (( os[0].article.supplier.name|te ))
+{
+\small
+\begin{longtable}{|c|c|c|p{5.9cm}|c|r|r|c|p{8cm}|}
+\hline
+Pos. & \rotatebox{90}{Anzahl} & \rotatebox{90}{Einheit} & Artikel & Art.-Nr. & \rotatebox{90}{Einzelpreis} & \rotatebox{90}{Gesamtpreis} & \rotatebox{90}{Besteller} & Kostenstelle(n)\\
+\hline
+(% for o in os %)
+(( loop.index )) & (( o.count )) & (( o.article.quantity|te )) & (( o.article.name|te )) & (( o.article.ident|te )) & \EUR{(( "%.2f"|format(o.article.price)|te ))} & \EUR{(( "%.2f"|format(o.price())|te ))} & (( o.userlist|join(' ')|te )) & (( o._costs|join(', ')|te ))\\
+\hline
+(% endfor %)
+\end{longtable}
+}
+% Gesamtsumme
+\textbf{Gesamtsumme:} \EUR{(( "%.2f"|format(sums[os[0].article.supplier.id]) ))} (\EUR{(( "%.2f"|format(brutto[os[0].article.supplier.id]) ))})
+\end{center}
+(% if not loop.last %)
+\newpage
+(% endif %)
+(% endfor %)
+
+\newpage
+\begin{center}
+\textbf{Gesamtsumme für Bestelltag (( oday )): \EUR{(( "%.2f"|format(allsum) ))} (brutto)}
+\end{center}
+
+\end{document}

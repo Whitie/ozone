@@ -107,10 +107,12 @@ def generate_internal(_ctx):
     orders = get_orders(ctx['oday'])
     ctx['costs'] = Cost.objects.all()
     sums = {}
+    brutto = {}
     allsum = 0
     for supp in orders:
         sup_id = supp[0].article.supplier.id
         sums[sup_id] = 0
+        brutto[sup_id] = 0
         for o in supp:
             # Only set state and date on first generation
             if o.state == u'accepted':
@@ -119,20 +121,22 @@ def generate_internal(_ctx):
                 o.save()
             o.userlist = [x.username for x in o.users.all()]
             sums[sup_id] += o.count * o.article.price
-            allsum += o.count * o.article.price
+            brutto[sup_id] += o.fullprice()
+            allsum += o.count * o.article.price_with_tax()
             o._costs = []
             costs = list(o.costs.all())
             for c in Cost.objects.all():
                 if c in costs:
                     cost = CostOrder.objects.get(order=o, cost=c)
-                    o._costs.append(u'{0}'.format(cost.percent))
-                else:
-                    o._costs.append(u'')
+                    o._costs.append(
+                        u'{0}: {1}%'.format(str(c.ident), cost.percent)
+                    )
     ctx['sums'] = sums
+    ctx['brutto'] = brutto
     ctx['allsum'] = allsum
     ctx['orders'] = orders
     ctx['tbl'] = u'c' * Cost.objects.all().count()
-    return make_latex(ctx, 'order.tex')
+    return make_latex(ctx, 'order_new.tex')
 
 
 @require_POST
