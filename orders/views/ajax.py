@@ -199,11 +199,11 @@ def update_state(req, data):
 
 
 def _notify_chemman(order, count):
-    url = settings.get('CHEMMAN_URL', '')
+    url = getattr(settings, 'CHEMMAN_URL', '')
     if not url:
         return
-    user = settings.get('CHEMMAN_USER', '')
-    pw = settings.get('CHEMMAN_PASSWORD', '')
+    user = getattr(settings, 'CHEMMAN_USER', '')
+    pw = getattr(settings, 'CHEMMAN_PASSWORD', '')
     endpoint = urljoin(url, 'rpc/delivery/')
     data = {
         'ozone_id': order.article.id,
