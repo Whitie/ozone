@@ -194,6 +194,10 @@ class Company(CommonInfo):
     def active_students(self):
         return self.students.filter(finished=False).count()
 
+    def get_active_students(self):
+        return self.students.filter(finished=False).order_by(
+            'group__job', 'lastname')
+
     def has_students(self):
         return bool(self.students.count())
 

@@ -262,10 +262,8 @@ def do_logout(req):
 @login_required
 def company_details(req, company_id):
     company = Company.objects.get(pk=int(company_id))
-    students = company.students.select_related().filter(
-        finished=False).order_by('group__job', 'lastname')
-    ctx = dict(page_title=_(u'Details: %s' % company.name), menus=menus,
-               c=company, single_view=True, students=students)
+    ctx = dict(page_title=company.name, menus=menus,
+               c=company, single_view=True)
     return render(req, 'companies/view_company.html', ctx)
 
 

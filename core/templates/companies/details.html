@@ -28,21 +28,18 @@
   <li>{% trans "Note" %}: {{ c.rating_note }}</li>
   {% endif %}
   {% endif %}
-  <li>{% trans "Active Students" %}{% if single_view %} ({{ c.active_students }}){% endif %}:
-  {% if single_view and c.active_students %}
-  <ul>
-  {% for s in students %}
-    <li><a href="{% url "core-group-details"  s.group.id %}">{{ s.group }}</a>:
-      <a href="{% url "core-students" s.first %}">{{ s.lastname }}</a>,
-      {{ s.firstname }}
-      ({{ s.birthdate }}, {{ s.age }} {% trans "Years" %})</li>
-  {% endfor %}
-  </ul>
-  {% else %}
-    {% if c.has_students %}{{ c.active_students }}{% else %}
-    {% trans "No" %}{% endif %}
-  {% endif %}
+  <li>{% trans "Active Students" %} ({{ c.active_students }}):
+  {% if c.active_students %}
+      <ul>
+      {% for s in c.get_active_students %}
+        <li><a href="{% url "core-group-details"  s.group.id %}">{{ s.group }}</a>:
+          <a href="{% url "core-students" s.first %}">{{ s.lastname }}</a>,
+          {{ s.firstname }}
+          ({{ s.birthdate }}, {{ s.age }} {% trans "Years" %})</li>
+      {% endfor %}
+      </ul>
   </li>
+  {% endif %}
   {% for con in c.contacts.all %}
   <li><strong>{{ forloop.counter }}) {{ con }}</strong>
     <ul>
@@ -64,7 +61,7 @@
   {% empty %}
   <li>{% trans "No contacts defined." %}</li>
   {% endfor %}
-  {% if c.cooperations.count %}
+  {% if c.cooperations.count and single_view %}
   <li><strong>{% trans "Cooperation Contracts" %} ({{ c.cooperations.count }})</strong>
     <ul>
       {% for coop in c.cooperations.all %}
@@ -79,7 +76,5 @@
       {% endfor %}
     </ul>
   </li>
-  {% else %}
-  <li>{% trans "No Cooperations" %}</li>
   {% endif %}
 </ul>
