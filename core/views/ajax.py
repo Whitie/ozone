@@ -7,6 +7,7 @@ from datetime import date, timedelta
 from django.conf import settings
 from django.db.models import Q
 from django.contrib import messages
+from django.contrib.auth.models import User
 
 from core.utils import json_rpc, remove_old_sessions, json_view
 from core.models import (PresenceDay, JournalEntry, Student, Company,
@@ -271,3 +272,12 @@ def get_courses(req):
         label = u'{0} | {1}'
         courses.append({'label': label.format(x.name, x.job)})
     return courses
+
+
+@json_view
+def get_user_id(req, username):
+    try:
+        user = User.objects.get(username__iexact=username)
+    except User.DoesNotExist:
+        return {'uid': 0}
+    return {'uid': user.id}
