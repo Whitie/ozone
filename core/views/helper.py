@@ -201,7 +201,7 @@ def get_students_for_month(start, end):
     query = PresenceDay.objects.select_related().filter(
         date__range=(start, end),
         entry__in=[u'A', u'K', u'T', u'|', u'F', u'P', u'Pr', u'*F', u'O',
-                   u'B', u'BK', u'BE']
+                   u'B', u'BK', u'BE', u'W']
     )
     student_ids = set()
     days = defaultdict(int)
