@@ -11,18 +11,22 @@
         <label class="control-label" for="{{ form.course.auto_id }}">{{ form.course.label }}</label>
         <div class="controls">
             <input id="{{ form.course.auto_id }}" class="input-xlarge" name="course" type="text" placeholder="Kurs" data-provide="typeahead" autocomplete="off">
+            {% if user.is_superuser %}<span class="uk-form-help-inline">{{ form.course.errors }}</span>{% endif %}
         </div>
     </div>
     <div class="control-group">
         <label class="control-label" for="{{ form.year.auto_id }}">{{ form.year.label }}</label>
         <div class="controls">
             {{ form.year }}
+            {% if user.is_superuser %}<span class="uk-form-help-inline">{{ form.year.errors }}</span>{% endif %}
         </div>
     </div>
     <div class="control-group">
         <label class="control-label" for="{{ form.school1.auto_id }}">Berufsschultag(e)</label>
         <div class="controls">
             {{ form.school1 }} {{ form.school2 }}
+            {% if user.is_superuser %}<span class="uk-form-help-inline">{{ form.school1.errors }} | <span class="uk-form-help-inline">{{ form.school2.errors }}</span>{% endif %}
+
         </div>
     </div>
     <div class="control-group">
@@ -34,6 +38,7 @@
                     <i data-time-icon="icon-time" data-date-icon="icon-calendar"> </i>
                 </span>
             </div>
+            {% if user.is_superuser %}<span class="uk-form-help-inline">{{ form.start.errors }}</span>{% endif %}
         </div>
     </div>
     <div class="control-group">
@@ -45,12 +50,14 @@
                     <i data-time-icon="icon-time" data-date-icon="icon-calendar"> </i>
                 </span>
             </div>
+            {% if user.is_superuser %}<span class="uk-form-help-inline">{{ form.end.errors }}</span>{% endif %}
         </div>
     </div>
     <div class="control-group">
         <label class="control-label" for="{{ form.students.auto_id }}">{{ form.students.label }}</label>
         <div class="controls">
             {{ form.students }}
+            {% if user.is_superuser %}<span class="uk-form-help-inline">{{ form.students.errors }}</span>{% endif %}
         </div>
     </div>
     <div class="control-group">
