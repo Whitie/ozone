@@ -3,7 +3,7 @@ bootstrap-admin==0.3.0
 certifi==2019.11.28
 cffi==1.9.1
 chardet==3.0.4
-cryptography==2.0.3
+cryptography==3.2
 Cython==0.19.1
 Django==1.7.7
 django-audit-log==0.4.0
