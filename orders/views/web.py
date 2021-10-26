@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 # Create your views here.
 
+import csv
+
 from datetime import date, datetime, timedelta
 from decimal import Decimal
 
 from django.conf import settings
+from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.utils.translation import ugettext as _
 from django.contrib import messages
@@ -366,6 +369,37 @@ def list_printouts(req):
         subtitle=_(u'By orderday'), menus=menus, odays=odays
     )
     return render(req, 'orders/list_printouts.html', ctx, app=u'orders')
+
+
+# Generate CSV files to upload on supplier website
+@permission_required('orders.can_order', raise_exception=True)
+def generate_csv(req, supplier_id, oday_id):
+    supp = Company.objects.get(id=int(supplier_id))
+    oday = OrderDay.objects.get(id=int(oday_id))
+    orders = Order.objects.select_related().filter(
+        order_day=oday, state__in=[u'accepted', u'ordered'],
+        article__supplier=supp
+    )
+    response = HttpResponse(content_type='text/csv')
+    company = supp.short_name or unicode(supp.id)
+    dt = oday.day.strftime('%Y%m%d')
+    filename = u'%s_%s.csv' % (company, dt)
+    response['Content-Disposition'] = 'attachment; filename="%s"' % filename
+    writer = csv.writer(response, delimiter=';')
+    for order in orders:
+        if supp.id == 33:
+            row = [
+                order.article.ident.encode('utf-8'),
+                'ea',
+                str(order.count)
+            ]
+        else:
+            row = [
+                order.article.ident.encode('utf-8'),
+                str(order.count)
+            ]
+        writer.writerow(row)
+    return response
 
 
 @login_required

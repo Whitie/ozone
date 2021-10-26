@@ -11,6 +11,9 @@
                 <button class="btn" type="button" id="but_{{ s.id }}" onclick="generate_external({{ oday.id }}, {{ s.id }});">
                     {% trans "Generate PDF" %}
                 </button>
+                <a href="{% url 'orders-csv' s.id oday.id %}" class="btn btn-primary">
+                    CSV
+                </a>
                 <span id="pdf_{{ s.id }}" style="display:none;"></span>
             </li>
             {% endfor %}

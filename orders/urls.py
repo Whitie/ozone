@@ -28,7 +28,9 @@ urlpatterns = patterns(
     url(r'^old/$', 'show_old_orders', name='orders-old'),
     url(r'^list/printouts/$', 'list_printouts', name='orders-list-printouts'),
     url(r'^order/move/$', 'move_order', name='orders-move-order'),
-
+    # CSV
+    url(r'^order/csv/(?P<supplier_id>\d+)/(?P<oday_id>\d+)/$',
+        'generate_csv', name='orders-csv'),
     # Company Rating
     url(r'^rating/$', 'company_rating', name='orders-rating'),
     url(r'^rating/form/(?P<cid>\d+)/$', 'show_rate_form',
