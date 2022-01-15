@@ -84,10 +84,10 @@ class CompanyRatingAdmin(admin.ModelAdmin):
 
 class StudentAdmin(admin.ModelAdmin):
     list_display = ('lastname', 'firstname', 'group', 'company',
-                    'birthdate', 'phone', 'email', 'finished',
-                    'finished_on')
+                    'birthdate', 'phone', 'email', 'start_date',
+                    'finished', 'finished_on')
     list_display_links = ('lastname',)
-    list_editable = ('phone', 'email', 'finished', 'finished_on')
+    list_editable = ('phone', 'email', 'start_date', 'finished', 'finished_on')
     list_filter = ('group', 'company', 'finished', 'finished_on')
     save_on_top = True
     search_fields = ('lastname', 'company__name', 'group__job_short',

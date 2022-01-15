@@ -165,6 +165,7 @@ urlpatterns += patterns(
         name='core-api-delete-own-presence'),
     url(r'^api/course/find/$', 'get_courses', name='core-api-course-find'),
     url(r'^api/uid/(?P<username>.+)/$', 'get_user_id'),
+    url(r'^api/students/', 'get_active_students'),
 )
 
 # PDF generation

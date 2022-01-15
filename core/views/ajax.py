@@ -7,6 +7,7 @@ from datetime import date, timedelta
 from django.conf import settings
 from django.db.models import Q
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 from core.utils import json_rpc, remove_old_sessions, json_view
@@ -281,3 +282,29 @@ def get_user_id(req, username):
     except User.DoesNotExist:
         return {'uid': 0}
     return {'uid': user.id}
+
+
+def _get_date(dt, format='%d.%m.%Y', default=None):
+    try:
+        return dt.strftime(format)
+    except:
+        return default
+
+
+@login_required
+@json_view
+def get_active_students(req):
+    students = Student.objects.select_related().filter(
+        finished=False
+    ).order_by('lastname')
+    result = []
+    for s in students:
+        result.append({
+            'lastname': s.lastname,
+            'firstname': s.firstname,
+            'birthdate': _get_date(s.birthdate),
+            'group': unicode(s.group),
+            'start': _get_date(s.start_date),
+            '_sort': _get_date(s.start_date, '%Y-%m-%d'),
+        })
+    return result

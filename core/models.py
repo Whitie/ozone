@@ -454,6 +454,8 @@ class Student(CommonInfo):
         CooperationContract, verbose_name=_(u'Cooperation Contract'),
         related_name='students', null=True, blank=True
     )
+    start_date = models.DateField(u'Ausbildungsbeginn', blank=True, null=True,
+                                  default=None)
     finished = models.BooleanField(_(u'Finished'), default=False)
     finished_on = models.DateField(u'Beendet am', blank=True, null=True)
 
