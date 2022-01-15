@@ -12,6 +12,7 @@
     <tr>
         <td>
             <ul>
+                <li>Ausbildungsbeginn: {{ s.start_date|date:'DATE_FORMAT'|default:'nicht erfasst' }}</li>
                 <li>Gruppe: {{ s.group.name|default:'-' }}</li>
                 <li>Firma:
                     {% if s.company %}
