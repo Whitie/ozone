@@ -314,6 +314,15 @@ JINJA_DEFAULT_FORMATS = {
 
 LATEX_BUILD_DIR = os.path.abspath(os.path.join(_PATH, '..', '_latex_build'))
 
+INTERNAL_LINKS = [
+    ('https://10.0.0.196/', u'DMS'),
+    ('http://10.0.0.175:5000/', u'Feedback'),
+    ('http://10.0.0.175:8800/', u'ChemManager'),
+    ('https://bbz.ddns.net/nextcloud/', u'Cloud'),
+    ('https://learning.bbz-chemie.de', u'bbz Moodle'),
+    ('https://bbbserver.de', u'BBB Server'),
+]
+
 # CIASS, now chemmanager
 CIASS_USE_OZONE = True
 CIASS_CONVERT_BINARY = '/usr/bin/convert'

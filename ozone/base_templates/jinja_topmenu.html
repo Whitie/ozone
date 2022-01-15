@@ -44,15 +44,30 @@
                         <a href="{{ url('admin:index') }}">
                             <i class="icon-wrench icon-white"> </i>
                             Administration
-                            <i class="icon-globe icon-white"> </i>
                         </a>
                     </li>
                     <li class="divider-vertical"></li>
                     {% endif %}
+                    {% if user.is_authenticated %}
                     <li>
-                        <a href="http://archie2/docs/bbz_datenbank/index.html" target="_blank">
-                            Hilfe <i class="icon-globe icon-white"> </i></a>
+                        <div class="btn-group">
+                            <button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-globe icon-white"> </i>
+                                Interne Links
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                {% for url, text in INTERNAL_LINKS %}
+                                <li>
+                                    <a href="{{ url }}" target="_blank" rel="noopener">
+                                        {{ text }}
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
                     </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
