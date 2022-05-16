@@ -205,7 +205,7 @@ def _prepare_students(students, ctx, data):
                     d.entry = u'*'
                 if d.entry in (u'K', u'T'):
                     k += 1
-                elif d.entry in (u'*', u'A'):
+                elif d.entry in (u'*', u'A', u'AC', u'W'):
                     whole += 1
                 if d.lateness:
                     days.append(u'$%s_{%d}$' % (
