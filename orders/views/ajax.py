@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.db.models import Q
 from django.core.mail import send_mail
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Permission
@@ -218,6 +219,7 @@ def _notify_chemman(order, count):
     return proxy.deliver(data)
 
 
+@csrf_exempt
 @require_POST
 @json_rpc
 def update_delivery(req, data):
