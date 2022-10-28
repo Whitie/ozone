@@ -84,6 +84,8 @@ urlpatterns = patterns(
     # JSON Export
     url(r'^group/export_json/(?P<gid>\d+)/$', 'export_group_json',
         name='core-group-to-json'),
+    url(r'^group/export_moodle/(?P<gid>\d+)/$', 'export_group_moodle',
+        name='core-group-to-moodle'),
     # Barcode generation (not used yet)
     url(r'^barcode/(?P<format>[a-z]{3,4})/(?P<barcode>.+)/$', 'barcode',
         name='barcode'),

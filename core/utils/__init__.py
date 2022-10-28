@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import codecs
+import csv
+import cStringIO
 import json
 import os
 import re
@@ -196,3 +199,33 @@ def get_date(value, default=None):
             return d
         except ValueError:
             return default
+
+
+class UnicodeCSVWriter(object):
+
+    def __init__(self, fp, fieldnames, dialect=csv.excel, encoding='utf-8',
+                 **kw):
+        self.queue = cStringIO.StringIO()
+        self.writer = csv.DictWriter(self.queue, fieldnames=fieldnames,
+                                     dialect=dialect, **kw)
+        self.stream = fp
+        self.encoder = codecs.getincrementalencoder(encoding)()
+
+    def writeheader(self):
+        self.writerow(row=None)
+
+    def writerow(self, row):
+        if row is None:
+            self.writer.writeheader()
+        else:
+            encoded = {k: v.encode('utf-8') for k, v in row.iteritems()}
+            self.writer.writerow(encoded)
+        data = self.queue.getvalue()
+        data = data.decode('utf-8')
+        data = self.encoder.encode(data)
+        self.stream.write(data)
+        self.queue.truncate(0)
+
+    def writerows(self, rows):
+        for row in rows:
+            self.writerow(row)

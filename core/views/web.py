@@ -645,7 +645,33 @@ def export_group_json(req, gid):
     exp['students'] = students
     response = HttpResponse(dumps(exp), content_type='application/json')
     response['Content-Disposition'] = 'attachment; filename="{0}.json"'.format(
-        group.name())
+        group.name()
+    )
+    return response
+
+
+@login_required
+def export_group_moodle(req, gid):
+    group = StudentGroup.objects.select_related().get(id=int(gid))
+    fields = [u'username', u'lastname', u'firstname', u'email', u'cohort1']
+    response = HttpResponse(content_type='text/csv')
+    writer = utils.UnicodeCSVWriter(response, fields)
+    writer.writeheader()
+    cohort = group.job_short.replace(u' ', u'').lower()
+    if group.suffix:
+        cohort = u'{0}{1}'.format(cohort, group.suffix)
+    for s in group.students.filter(finished=False).order_by('lastname'):
+        if s.email.strip():
+            writer.writerow({
+                'username': s.email.lower(),
+                'lastname': s.lastname,
+                'firstname': s.firstname,
+                'email': s.email.lower(),
+                'cohort1': cohort,
+            })
+    response['Content-Disposition'] = 'attachment; filename={0}.csv'.format(
+        cohort
+    )
     return response
 
 
