@@ -613,7 +613,6 @@ def export_group_excel(req, gid):
         ws.cell('A{0}'.format(row)).value = comp
         ws.cell('B{0}'.format(row)).value = s.lastname
         ws.cell('C{0}'.format(row)).value = s.firstname
-        ws.cell('D{0}'.format(row)).value = s.email
         row += 1
     dest = os.path.join(
         settings.LATEX_BUILD_DIR, 'excel_exp_{0}.xlsx'.format(time.time())
@@ -660,6 +659,7 @@ def export_group_moodle(req, gid):
     cohort = group.job_short.replace(u' ', u'').lower()
     if group.suffix:
         cohort = u'{0}{1}'.format(cohort, group.suffix)
+    no_mail = []
     for s in group.students.filter(finished=False).order_by('lastname'):
         if s.email.strip():
             writer.writerow({
@@ -669,6 +669,11 @@ def export_group_moodle(req, gid):
                 'email': s.email.lower(),
                 'cohort1': cohort,
             })
+        else:
+            no_mail.append(s.lastname)
+    if no_mail:
+        no_mail = ', '.join([s.encode('utf-8') for s in no_mail])
+        response.write('Azubi(s) ohne Mailadresse: {0}'.format(no_mail))
     response['Content-Disposition'] = 'attachment; filename={0}.csv'.format(
         cohort
     )
