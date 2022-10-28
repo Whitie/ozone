@@ -613,6 +613,7 @@ def export_group_excel(req, gid):
         ws.cell('A{0}'.format(row)).value = comp
         ws.cell('B{0}'.format(row)).value = s.lastname
         ws.cell('C{0}'.format(row)).value = s.firstname
+        ws.cell('D{0}'.format(row)).value = s.email
         row += 1
     dest = os.path.join(
         settings.LATEX_BUILD_DIR, 'excel_exp_{0}.xlsx'.format(time.time())
