@@ -107,7 +107,7 @@ def get_presence_details(student):
                   p_all_days: All absent days (T, F, K, |)
                   p_all_days_percent: p_all_days in percent from
                                       p_all - p_holiday
-                  p_ill: All illness days (K)
+                  p_ill: All illness days (K, KI)
                   p_ill_percent: p_ill in percent from p_all - p_holiday
                   p_not_excused: All not excused absent days (|)
                   p_lateness_count: Count of all latenesses
@@ -117,14 +117,16 @@ def get_presence_details(student):
     q = student.presence_days.exclude(entry__in=[u'', 'FT', '/'])
     student.p_all = q.count()
     holiday = q.filter(entry=u'U').count()
-    student.p_all_days = q.filter(entry__in=[u'T', u'F', u'K', u'|']).count()
+    student.p_all_days = q.filter(
+        entry__in=[u'T', u'F', u'K', u'KI', u'|']
+    ).count()
     try:
         student.p_all_days_percent = (
             float(student.p_all_days) / (student.p_all - holiday)
         ) * 100
     except ZeroDivisionError:
         student.p_all_days_percent = 0.0
-    student.p_ill = q.filter(entry=u'K').count()
+    student.p_ill = q.filter(entry__in=[u'K', u'KI']).count()
     try:
         student.p_ill_percent = (
             float(student.p_ill) / (student.p_all - holiday)
